@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x:hidden;}
@@ -745,30 +745,29 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
           <div class="sync-card">
             <div class="sync-row">
               <div class="sync-copy">
-                <div class="sync-label">Connection</div>
-                <div class="sync-sub">Syncs your full vault (all profiles) to a private GitHub Gist. Works on any device with the same token.</div>
+                <div class="sync-label">Google Account</div>
+                <div class="sync-sub">Sign in with Google to sync your full vault (all profiles) to Google Drive. Works on any device with the same account.</div>
               </div>
-              <div id="sync-pill" class="sync-pill"><span class="sync-dot"></span><span id="sync-pill-text">Not connected</span></div>
+              <div id="sync-pill" class="sync-pill"><span class="sync-dot"></span><span id="sync-pill-text">Not signed in</span></div>
             </div>
 
-            <div class="sync-row" id="sync-token-row">
+            <div class="sync-row" id="sync-user-row" style="display:none;">
               <div class="sync-copy">
-                <div class="sync-label">GitHub token</div>
-                <div class="sync-sub">Go to <b>github.com/settings/tokens</b> → Generate new token (classic) → check <b>gist</b> scope only → copy and paste below. Token is stored in your browser only.</div>
+                <div class="sync-label">Signed in as</div>
+                <div class="sync-sub" id="sync-user-name">—</div>
               </div>
-              <input id="sync-token-input" class="rename-input" type="password" placeholder="ghp_…" autocomplete="off" style="max-width:220px;font-size:12px;letter-spacing:0.5px;"/>
             </div>
 
             <div class="sync-row">
               <div class="sync-copy">
                 <div class="sync-label">Actions</div>
-                <div class="sync-sub" id="sync-subtext">Connect first, then push or pull your vault on demand.</div>
+                <div class="sync-sub" id="sync-subtext">Sign in, then push your vault up or pull it down on any device.</div>
               </div>
               <div class="sync-actions">
-                <button id="sync-connect-btn" class="set-btn secondary" onclick="connectGist()">Connect</button>
+                <button id="sync-connect-btn" class="set-btn secondary" onclick="connectGoogle()">Sign in with Google</button>
                 <button id="sync-now-btn" class="set-btn secondary" onclick="syncNow()">↑ Push</button>
                 <button id="sync-load-btn" class="set-btn secondary" onclick="loadFromCloud()">↓ Pull</button>
-                <button id="sync-disconnect-btn" class="set-btn danger" onclick="disconnectSync()">Disconnect</button>
+                <button id="sync-disconnect-btn" class="set-btn danger" onclick="disconnectSync()">Sign out</button>
               </div>
             </div>
 
@@ -779,7 +778,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
               </div>
               <div class="sync-grid">
                 <div class="sync-sub">Profiles: <span id="sync-profile-count">1</span></div>
-                <div class="sync-sub" id="sync-gist-info" style="color:#c8a84b;"></div>
+                <div class="sync-sub" id="sync-file-info" style="color:#c8a84b;"></div>
               </div>
             </div>
 
@@ -795,6 +794,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
             </div>
 
             <div class="sync-note" id="sync-note"></div>
+            <div class="sync-setup">⚠ App is in test mode — only Google accounts added under <b>Google Auth Platform → Público → Usuarios de prueba</b> can sign in.</div>
           </div>
         </div>
         <div class="card">
@@ -833,7 +833,7 @@ const SETTINGS_KEY='primo-tracker-settings-v1';
 const PAGE_SIZE=5,ROW_H=44;
 const PAGES=['dashboard','stats','planner','settings'];
 let entries=[],chartInst=null,histInst=null,activeMetric='primos',welkin=false,offset=0,expandedDate=null,activePage='dashboard',statsAvgRange='all';
-let APP={lang:'en',persistLocal:true,syncConnected:false,syncLastAt:'',syncProvider:'google_drive',localVaultUpdatedAt:'',cloudVaultUpdatedAt:'',syncMode:'manual',plannerRegion:'America'};
+let APP={lang:'en',persistLocal:true,syncConnected:false,syncLastAt:'',syncProvider:'google_drive',localVaultUpdatedAt:'',cloudVaultUpdatedAt:'',syncMode:'manual',plannerRegion:'America',syncUserEmail:'',syncUserName:'',gdFileId:''};
 let PROFILES={activeId:'main',items:[]};
 let profileEditMode=null;
 let timelineScrollLeft=0;
@@ -1239,22 +1239,142 @@ function updateStorageUI(){
   if(status)status.textContent=APP.persistLocal?t('storage_enabled'):t('storage_disabled');
   if(pill)pill.textContent='Browser local storage';
 }
-// ── GITHUB GIST SYNC ──────────────────────────────────────────────────────────
-const GIST_SYNC_KEY = 'primo-tracker-gist-v1';
-let GIST_CFG = { token: '', gistId: '' };
+// ── GOOGLE DRIVE SYNC ─────────────────────────────────────────────────────────
+const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
+const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
+const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
 
-function loadGistConfig() {
+let gdToken = null;
+let gdTokenClient = null;
+
+function initGoogleAuth() {
+  if (!window.google || !window.google.accounts) {
+    setTimeout(initGoogleAuth, 300);
+    return;
+  }
+  gdTokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: GDRIVE_CLIENT_ID,
+    scope: GDRIVE_SCOPE,
+    callback: onGoogleToken
+  });
+  // If user was previously signed in, silently refresh the token
+  if (APP.syncConnected) {
+    gdTokenClient.requestAccessToken({ prompt: '' });
+  }
+}
+
+async function onGoogleToken(resp) {
+  if (resp.error) {
+    if (resp.error !== 'access_denied') setSyncNote('Sign-in failed: ' + resp.error, true);
+    return;
+  }
+  gdToken = resp.access_token;
+  // Fetch user info to show name/email
   try {
-    const raw = localStorage.getItem(GIST_SYNC_KEY);
-    if (raw) GIST_CFG = Object.assign({ token: '', gistId: '' }, JSON.parse(raw));
-  } catch(e) {}
-  // Pre-fill token input if we have it stored
-  const inp = document.getElementById('sync-token-input');
-  if (inp && GIST_CFG.token) inp.value = GIST_CFG.token;
+    const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: 'Bearer ' + gdToken }
+    });
+    const user = await r.json();
+    APP.syncConnected = true;
+    APP.syncUserEmail = user.email || '';
+    APP.syncUserName = user.name || user.email || '';
+    await saveSettings();
+    updateSyncUI();
+    setSyncNote('✓ Signed in as ' + APP.syncUserName);
+  } catch(e) {
+    APP.syncConnected = true;
+    await saveSettings();
+    updateSyncUI();
+  }
 }
-function saveGistConfig() {
-  try { localStorage.setItem(GIST_SYNC_KEY, JSON.stringify(GIST_CFG)); } catch(e) {}
+
+async function connectGoogle() {
+  if (!gdTokenClient) { setSyncNote('Google Sign-In loading, try again in a second.', true); return; }
+  const prompt = APP.syncConnected ? '' : 'select_account';
+  gdTokenClient.requestAccessToken({ prompt });
 }
+
+async function findDriveFile() {
+  const q = encodeURIComponent("name='" + GDRIVE_FILE_NAME + "' and trashed=false");
+  const r = await fetch('https://www.googleapis.com/drive/v3/files?q=' + q + '&fields=files(id,name,modifiedTime)', {
+    headers: { Authorization: 'Bearer ' + gdToken }
+  });
+  const d = await r.json();
+  return (d.files && d.files[0]) ? d.files[0] : null;
+}
+
+async function syncNow() {
+  if (!gdToken) { setSyncNote('Sign in first.', true); return; }
+  setSyncNote('Pushing vault to Google Drive…');
+  try {
+    const payload = JSON.stringify(getVaultPayload(), null, 2);
+    const meta = JSON.stringify({ name: GDRIVE_FILE_NAME, mimeType: 'application/json' });
+    const b = 'drv_boundary_primo';
+    const body = '--'+b+'\r\nContent-Type: application/json\r\n\r\n'+meta+'\r\n--'+b+'\r\nContent-Type: application/json\r\n\r\n'+payload+'\r\n--'+b+'--';
+
+    // Use stored file ID or search for existing file
+    let fileId = APP.gdFileId;
+    if (!fileId) { const f = await findDriveFile(); if (f) fileId = f.id; }
+
+    const url = fileId
+      ? 'https://www.googleapis.com/upload/drive/v3/files/' + fileId + '?uploadType=multipart'
+      : 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart';
+    const r = await fetch(url, {
+      method: fileId ? 'PATCH' : 'POST',
+      headers: { Authorization: 'Bearer ' + gdToken, 'Content-Type': 'multipart/related; boundary="'+b+'"' },
+      body
+    });
+    if (!r.ok) { setSyncNote('Push failed: HTTP ' + r.status, true); return; }
+    const data = await r.json();
+    APP.gdFileId = data.id;
+    APP.syncLastAt = new Date().toISOString();
+    APP.cloudVaultUpdatedAt = APP.syncLastAt;
+    await saveSettings();
+    updateSyncUI();
+    setSyncNote('✓ Vault pushed to Google Drive — ' + new Date().toLocaleTimeString());
+  } catch(e) { setSyncNote('Push error: ' + e.message, true); }
+}
+
+async function loadFromCloud() {
+  if (!gdToken) { setSyncNote('Sign in first.', true); return; }
+  setSyncNote('Pulling vault from Google Drive…');
+  try {
+    let fileId = APP.gdFileId;
+    if (!fileId) { const f = await findDriveFile(); if (!f) { setSyncNote('No vault found in Drive — push first to create one.', true); return; } fileId = f.id; APP.gdFileId = fileId; }
+    const r = await fetch('https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media', {
+      headers: { Authorization: 'Bearer ' + gdToken }
+    });
+    if (!r.ok) { setSyncNote('Pull failed: HTTP ' + r.status, true); return; }
+    const data = await r.json();
+    applyVaultPayload(data);
+    await saveSettings();
+    await save();
+    applyProfileStateToUI();
+    render();
+    renderProfileManager();
+    renderPlannerRegionUI();
+    renderTimeline(PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS);
+    calcPlanner();
+    APP.cloudVaultUpdatedAt = new Date().toISOString();
+    await saveSettings();
+    updateSyncUI();
+    setSyncNote('✓ Vault pulled from Google Drive — ' + new Date().toLocaleTimeString());
+  } catch(e) { setSyncNote('Pull error: ' + e.message, true); }
+}
+
+async function disconnectSync() {
+  if (gdToken && window.google) google.accounts.oauth2.revoke(gdToken, () => {});
+  gdToken = null;
+  APP.syncConnected = false;
+  APP.syncLastAt = '';
+  APP.syncUserEmail = '';
+  APP.syncUserName = '';
+  APP.gdFileId = '';
+  await saveSettings();
+  updateSyncUI();
+  setSyncNote('');
+}
+
 function setSyncNote(msg, isErr) {
   const el = document.getElementById('sync-note');
   if (!el) return;
@@ -1264,7 +1384,9 @@ function setSyncNote(msg, isErr) {
 }
 
 function updateSyncUI() {
-  const connected = !!APP.syncConnected && !!GIST_CFG.token;
+  const connected = !!APP.syncConnected && !!gdToken;
+  const savedIn   = !!APP.syncConnected;
+
   const pill        = document.getElementById('sync-pill');
   const pillText    = document.getElementById('sync-pill-text');
   const last        = document.getElementById('sync-last-text');
@@ -1275,141 +1397,28 @@ function updateSyncUI() {
   const loadBtn     = document.getElementById('sync-load-btn');
   const disconnectBtn = document.getElementById('sync-disconnect-btn');
   const count       = document.getElementById('sync-profile-count');
-  const tokenRow    = document.getElementById('sync-token-row');
-  const gistInfo    = document.getElementById('sync-gist-info');
+  const userRow     = document.getElementById('sync-user-row');
+  const userName    = document.getElementById('sync-user-name');
+  const fileInfo    = document.getElementById('sync-file-info');
 
-  if (pill)      pill.classList.toggle('connected', connected);
-  if (pillText)  pillText.textContent = connected ? 'Connected · GitHub Gist' : 'Not connected';
-  if (last)      last.textContent = APP.syncLastAt ? 'Last pushed: ' + new Date(APP.syncLastAt).toLocaleString() : 'Not synced yet';
-  if (localTs)   localTs.textContent = APP.localVaultUpdatedAt ? new Date(APP.localVaultUpdatedAt).toLocaleString() : 'Not saved yet';
-  if (cloudTs)   cloudTs.textContent = APP.cloudVaultUpdatedAt ? new Date(APP.cloudVaultUpdatedAt).toLocaleString() : 'No snapshot yet';
+  if (pill)     pill.classList.toggle('connected', savedIn);
+  if (pillText) pillText.textContent = connected ? 'Connected · Google Drive' : (savedIn ? 'Token expired — re-authenticate' : 'Not signed in');
+  if (last)     last.textContent = APP.syncLastAt ? 'Last pushed: ' + new Date(APP.syncLastAt).toLocaleString() : 'Not synced yet';
+  if (localTs)  localTs.textContent = APP.localVaultUpdatedAt ? new Date(APP.localVaultUpdatedAt).toLocaleString() : 'Not saved yet';
+  if (cloudTs)  cloudTs.textContent = APP.cloudVaultUpdatedAt ? new Date(APP.cloudVaultUpdatedAt).toLocaleString() : 'No snapshot yet';
 
-  if (connectBtn) {
-    connectBtn.textContent = connected ? 'Re-connect' : 'Connect';
-    connectBtn.disabled = false;
-  }
-  if (syncBtn)       syncBtn.disabled = !connected;
-  if (loadBtn)       loadBtn.disabled = !connected;
-  if (disconnectBtn) disconnectBtn.disabled = !connected;
+  if (connectBtn) { connectBtn.textContent = savedIn ? 'Re-authenticate' : 'Sign in with Google'; connectBtn.disabled = connected; }
+  if (syncBtn)    syncBtn.disabled = !connected;
+  if (loadBtn)    loadBtn.disabled = !connected;
+  if (disconnectBtn) disconnectBtn.disabled = !savedIn;
 
-  if (tokenRow)  tokenRow.style.display = connected ? 'none' : '';
-
-  if (gistInfo)  gistInfo.textContent = connected && GIST_CFG.gistId
-    ? '✓ Gist: ' + GIST_CFG.gistId.slice(0, 8) + '…'
-    : '';
-
-  if (count) count.textContent = String((PROFILES&&PROFILES.items&&PROFILES.items.length) || 1);
+  if (userRow)  userRow.style.display = APP.syncUserName ? '' : 'none';
+  if (userName) userName.textContent = APP.syncUserName || APP.syncUserEmail || '';
+  if (fileInfo) fileInfo.textContent = APP.gdFileId ? '✓ Drive file linked' : '';
+  if (count)    count.textContent = String((PROFILES&&PROFILES.items&&PROFILES.items.length) || 1);
 }
 
-async function connectGist() {
-  const inp = document.getElementById('sync-token-input');
-  const token = inp ? inp.value.trim() : GIST_CFG.token;
-  if (!token) { setSyncNote('Paste your GitHub token first.', true); return; }
-  setSyncNote('Verifying token…');
-  try {
-    const r = await fetch('https://api.github.com/user', {
-      headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' }
-    });
-    if (!r.ok) { setSyncNote('Token invalid (status ' + r.status + '). Double-check the token and its gist scope.', true); return; }
-    const user = await r.json();
-    GIST_CFG.token = token;
-    // Try to find an existing vault gist
-    const gr = await fetch('https://api.github.com/gists', {
-      headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' }
-    });
-    if (gr.ok) {
-      const gists = await gr.json();
-      const found = gists.find(g => g.files && g.files['primogem_tracker_vault.json']);
-      if (found) GIST_CFG.gistId = found.id;
-    }
-    saveGistConfig();
-    APP.syncConnected = true;
-    APP.syncProvider = 'github_gist';
-    await saveSettings();
-    updateSyncUI();
-    setSyncNote('✓ Connected as ' + user.login + (GIST_CFG.gistId ? ' — existing vault found. Pull to load it.' : ' — no vault yet. Push to create one.'));
-  } catch(e) {
-    setSyncNote('Connection error: ' + e.message, true);
-  }
-}
-
-async function syncNow() {
-  if (!APP.syncConnected || !GIST_CFG.token) { setSyncNote('Not connected.', true); return; }
-  setSyncNote('Pushing vault…');
-  try {
-    const payload = JSON.stringify(getVaultPayload(), null, 2);
-    const body = JSON.stringify({
-      description: 'Primogem Tracker Vault',
-      public: false,
-      files: { 'primogem_tracker_vault.json': { content: payload } }
-    });
-    const headers = { Authorization: 'token ' + GIST_CFG.token, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' };
-
-    let r;
-    if (GIST_CFG.gistId) {
-      r = await fetch('https://api.github.com/gists/' + GIST_CFG.gistId, { method: 'PATCH', headers, body });
-    } else {
-      r = await fetch('https://api.github.com/gists', { method: 'POST', headers, body });
-    }
-    if (!r.ok) { setSyncNote('Push failed: HTTP ' + r.status, true); return; }
-    const data = await r.json();
-    GIST_CFG.gistId = data.id;
-    saveGistConfig();
-    APP.syncLastAt = new Date().toISOString();
-    APP.cloudVaultUpdatedAt = APP.syncLastAt;
-    await saveSettings();
-    updateSyncUI();
-    setSyncNote('✓ Vault pushed to GitHub Gist — ' + new Date().toLocaleTimeString());
-  } catch(e) {
-    setSyncNote('Push error: ' + e.message, true);
-  }
-}
-
-async function loadFromCloud() {
-  if (!APP.syncConnected || !GIST_CFG.token) { setSyncNote('Not connected.', true); return; }
-  if (!GIST_CFG.gistId) { setSyncNote('No cloud vault yet — push first to create one.', true); return; }
-  setSyncNote('Pulling vault…');
-  try {
-    const r = await fetch('https://api.github.com/gists/' + GIST_CFG.gistId, {
-      headers: { Authorization: 'token ' + GIST_CFG.token, Accept: 'application/vnd.github.v3+json' }
-    });
-    if (!r.ok) { setSyncNote('Pull failed: HTTP ' + r.status, true); return; }
-    const gist = await r.json();
-    const file = gist.files['primogem_tracker_vault.json'];
-    if (!file) { setSyncNote('Vault file not found in Gist.', true); return; }
-    const data = JSON.parse(file.content);
-    applyVaultPayload(data);
-    await saveSettings();
-    await save();
-    applyProfileStateToUI();
-    render();
-    renderProfileManager();
-    renderPlannerRegionUI();
-    const b = PL.banners && PL.banners.length ? PL.banners : STATIC_BANNERS;
-    renderTimeline(b); calcPlanner();
-    APP.cloudVaultUpdatedAt = gist.updated_at;
-    await saveSettings();
-    updateSyncUI();
-    setSyncNote('✓ Vault pulled from GitHub Gist — ' + new Date().toLocaleTimeString());
-  } catch(e) {
-    setSyncNote('Pull error: ' + e.message, true);
-  }
-}
-
-async function disconnectSync() {
-  APP.syncConnected = false;
-  APP.syncLastAt = '';
-  GIST_CFG = { token: '', gistId: '' };
-  saveGistConfig();
-  await saveSettings();
-  const inp = document.getElementById('sync-token-input');
-  if (inp) inp.value = '';
-  updateSyncUI();
-  setSyncNote('');
-}
-
-// keep stub so old callers don't crash (connect button now calls connectGist directly)
-async function toggleMockSync() { connectGist(); }
+async function toggleMockSync() { connectGoogle(); }
 function setSettingsStatus(msg){
   const el=document.getElementById('settings-status');
   if(el)el.textContent=msg;
@@ -1501,7 +1510,7 @@ async function load(){
   applyProfileStateToUI();
   renderProfileManager();
   renderPlannerRegionUI();
-  loadGistConfig();
+  initGoogleAuth();
   updateSyncUI();
   setupWheel();setupSwipe();render();
   const banners=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;
@@ -1524,7 +1533,7 @@ function goTo(pg){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===pg));
   if(pg==='stats')renderStats();
   if(pg==='planner'){const b=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;renderTimeline(b);calcPlanner();}
-  if(pg==='settings'){updateSettingsControls();updateStorageUI();renderProfileManager();renderPlannerRegionUI();loadGistConfig();updateSyncUI();}
+  if(pg==='settings'){updateSettingsControls();updateStorageUI();renderProfileManager();renderPlannerRegionUI();initGoogleAuth();updateSyncUI();}
 }
 function setupSwipe(){
   let tx=0,ty=0;
