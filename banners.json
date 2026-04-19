@@ -2,6 +2,7 @@
   {
     "phase": "Phase 1", "version": "6.5", "type": "character",
     "characters": ["Linnea", "Chasca"], "elements": ["Geo", "Anemo"],
+    "image": "image/Linnea.JPG",
     "startDate": "2026-04-08", "endDate": "2026-04-28", "status": "live"
   },
   {
