@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="theme-color" content="#0e1219"/>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -36,7 +40,7 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
 }
 @media(max-width:768px){
   .sidebar{display:none;}
-  .main{margin-left:0;padding-bottom:80px;}
+  .main{margin-left:0;padding-bottom:72px;}
   .bottomnav{display:flex;}
   .page{padding:10px 10px 16px;}
 
@@ -59,40 +63,67 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   /* Chart */
   .chart-wrap{height:200px;}
 
-  /* Log */
-  .log-col-hdr{display:none !important;}
-  .v-col{display:none !important;}
+  /* Log — simplified columns for small screens */
+  .log-col-hdr{display:none;}
+  .log-row{
+    grid-template-columns:52px 1fr 1fr 60px;
+    height:auto;
+    padding:10px 12px;
+    gap:4px;
+    font-size:13px;
+  }
+  /* Hide Fates, Total Primos, Pulls columns on mobile — show Date, Primos, Daily Gain, delete */
+  .log-row > span:nth-child(3),
+  .log-row > span:nth-child(4),
+  .log-row > span:nth-child(5){display:none;}
   .log-wrap{gap:0;}
+  .v-col{display:none;}
   .log-vp{max-height:none;}
 
-  /* Stats — fix text overlap */
-  .stats-hero{grid-template-columns:1fr !important;}
-  .stats-hero-main{flex-direction:column;align-items:flex-start;gap:8px;}
-  .stats-hero-value{font-size:28px;}
+  /* Stats */
+  .stats-hero{grid-template-columns:1fr;}
   .stats-hero-side{grid-template-columns:1fr 1fr;min-width:0;}
-  .stats-hero-kicker,.stats-hero-label,.stats-hero-note{font-size:10px;}
-  .stats-grid-3,.stats-grid-2{grid-template-columns:1fr 1fr !important;}
+  .stats-hero-main{flex-direction:column;align-items:flex-start;}
+  .stats-hero-value{font-size:32px;}
+  .stats-grid-3,.stats-grid-2{grid-template-columns:1fr 1fr;}
   .stats-controls{justify-content:flex-start;}
 
-  /* Planner — hide clutter */
-  .gs-tag{display:none !important;}
-  .hp-note{display:none !important;}
-  .goal-sections{grid-template-columns:1fr !important;}
+  /* Planner */
+  .goal-sections{grid-template-columns:1fr;}
   .gs-row{grid-template-columns:1fr;}
   .plan-grid,.plan-rate-grid{grid-template-columns:1fr 1fr;}
   .plan-top{grid-template-columns:1fr;}
   .plan-grade{font-size:42px;text-align:left;}
   .plan-insight{flex-direction:column;align-items:flex-start;}
+  .ptl-head,.ptl-row{grid-template-columns:96px 1fr;}
+  .ptl-info{padding:8px 10px;}
+  .ptl-name2{white-space:normal;font-size:11px;}
 
-  /* Settings */
-  .settings-grid{grid-template-columns:1fr !important;}
+  /* Log desktop/mobile switching — CSS-based, no JS isMobile() needed */
+.log-mobile-only{display:none;}
+.log-desktop-only{display:flex;}
+@media(max-width:768px){
+  .log-desktop-only{display:none !important;}
+  .log-mobile-only{display:block;}
+  /* Mobile log rows */
+  .log-mobile-row{display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;}
+  .log-mobile-row:hover{background:rgba(255,255,255,0.025);}
+  .log-mobile-row.expanded{background:rgba(240,208,128,0.04);border-bottom:none;}
+  /* Planner — hide tags and hard pity note */
+  .gs-tag{display:none;}
+  .hp-note{display:none;}
+  /* Stats hero overlap fix */
+  .stats-hero-main{min-height:0;}
+  .stats-hero-side{display:none;}
+}
+  .settings-grid{grid-template-columns:1fr;}
   .set-row{flex-wrap:wrap;gap:8px;}
   .rename-wrap{min-width:0;width:100%;}
   .profile-select{min-width:0;width:100%;}
   .sync-row{flex-wrap:wrap;}
-  .sync-grid{justify-items:start;min-width:0;}
-  .sync-actions{width:100%;justify-content:flex-start;flex-wrap:wrap;}
-  .sync-pill{align-self:flex-start;white-space:nowrap;}
+  .sync-grid{justify-items:start;}
+  .sync-actions{width:100%;justify-content:flex-start;}
+  .sync-pill{align-self:flex-start;}
 }
 .card{background:rgba(255,255,255,0.05);border:1px solid rgba(240,208,128,0.11);border-radius:12px;padding:16px 18px;}
 .card+.card{margin-top:11px;}
@@ -506,10 +537,11 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
     <span class="nav-label" data-i18n="nav_planner">Planner</span>
   </button>
   <button class="nav-item" data-page="settings" onclick="goTo('settings')">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-    <span class="nav-label">Settings</span>
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    <span class="nav-label" data-i18n="nav_settings">Settings</span>
   </button>
 </nav>
+<main class="main">
 
   <!-- DASHBOARD -->
   <section id="page-dashboard" class="page active">
@@ -560,14 +592,15 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
         </div>
         <span id="log-pos" style="font-size:11px;color:#a090c0;"></span>
       </div>
-      <div class="log-wrap">
+      <div class="log-wrap log-desktop-only">
         <div class="log-outer">
           <div class="log-col-hdr"><span>Date</span><span>💎 Primos</span><span>✨ Fates</span><span>Total Primos</span><span>Pulls</span><span>Daily Gain</span><span></span></div>
           <div class="log-vp" id="log-vp"><div class="log-strip" id="log-strip"></div></div>
         </div>
         <div class="v-col"><input type="range" class="v-slider" id="log-slider" min="0" value="0" step="1" oninput="onSlider()"/></div>
       </div>
-      <div style="min-height:15px;margin-top:4px;text-align:center;"><span class="hint-txt" id="scroll-hint" style="font-style:normal;font-size:10px;color:#504060;"></span></div>
+      <div id="log-mobile-list" class="log-mobile-only"></div>
+      <div style="min-height:15px;margin-top:4px;text-align:center;" class="log-desktop-only"><span class="hint-txt" id="scroll-hint" style="font-style:normal;font-size:10px;color:#504060;"></span></div>
     </div>
   </section>
 
@@ -1565,7 +1598,6 @@ async function load(){
   updateSyncUI();
   setupWheel();setupSwipe();render();
   window.addEventListener('resize',()=>{
-    renderLog();
     const b=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;
     renderTimeline(b);
   });
@@ -1595,7 +1627,16 @@ function goTo(pg){
   if(pg==='settings'){updateSettingsControls();updateStorageUI();renderProfileManager();renderPlannerRegionUI();initGoogleAuth();updateSyncUI();}
 }
 function setupSwipe(){
-  // Swipe disabled — bottom nav handles navigation on mobile
+  let tx=0,ty=0;
+  document.querySelector('.main').addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+  document.querySelector('.main').addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>90&&Math.abs(dx)>Math.abs(dy)*2){
+      const idx=PAGES.indexOf(activePage);
+      if(dx<0&&idx<PAGES.length-1)goTo(PAGES[idx+1]);
+      else if(dx>0&&idx>0)goTo(PAGES[idx-1]);
+    }
+  },{passive:true});
 }
 
 function getBaseline(){return welkin?150:60;}
@@ -1703,45 +1744,45 @@ function renderChart(){
     chartInst=new Chart(ctx,{type:'bar',plugins:[blPlugin],data:{labels,datasets:[{label:'Daily Gain',data:gains,backgroundColor:gains.map(g=>g===null?'transparent':g>baseline?'rgba(128,240,160,0.7)':g===baseline?'rgba(214,170,72,0.88)':'rgba(240,144,96,0.7)'),borderColor:gains.map(g=>g===null?'transparent':g>baseline?'#80f0a0':g===baseline?'#c9922e':'#f09060'),borderWidth:1,borderRadius:3,order:2},{type:'line',label:'7-day average',data:moving,borderColor:'#80c0f0',backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:3,tension:0.3,spanGaps:true,order:1}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:0},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>entries[i[0].dataIndex]?.date||'',label:c=>{if(c.dataset.label==='7-day average')return '  7-day avg: '+c.parsed.y?.toLocaleString();const g=c.parsed.y;if(g===null)return'';const diff=g-baseline;if(diff===0)return '  Gained: '+g.toLocaleString()+'  (at baseline)';return '  Gained: '+g.toLocaleString()+(diff>0?'  (+'+diff+' above)':'  ('+diff+' below)');},}}},scales:{x:{...xSc,offset:true},y:{...ySc,beginAtZero:true}}}});
   }
 }
-function isMobile(){return window.innerWidth<=768;}
 function renderLog(){
   const rev=[...entries].reverse(),total=rev.length,gains=getDG(),baseline=getBaseline();
   document.getElementById('log-count').textContent=total?`${total} entr${total===1?'y':'ies'}`:'';
-  document.getElementById('scroll-hint').textContent=(!isMobile()&&total>PAGE_SIZE)?'scroll for older entries':'';
+  document.getElementById('scroll-hint').textContent=total>PAGE_SIZE?'scroll for older entries':'';
+
+  // ── MOBILE LIST ──────────────────────────────────────────────────────────
+  const mobileList=document.getElementById('log-mobile-list');
+  if(mobileList){
+    mobileList.innerHTML='';
+    if(!total){
+      mobileList.innerHTML='<div style="padding:16px;color:#907898;">No entries yet!</div>';
+    } else {
+      rev.forEach(e=>{
+        const oi=entries.findIndex(x=>x.date===e.date),g=gains[oi];
+        let gh='<span class="gain-base">—</span>';
+        if(g!==null&&g!==undefined){const cls=g>=baseline?'gain-pos':'gain-neg';gh=`<span class="${cls}">${g>=0?'+':''}${g.toLocaleString()}</span>`;}
+        const nd=e.notes?'<span class="note-dot"></span>':'',isExp=expandedDate===e.date;
+        const row=document.createElement('div');
+        row.className='log-mobile-row'+(isExp?' expanded':'');
+        row.innerHTML=`<span style="color:#c8a84b;font-size:13px;min-width:48px;">${fmtDate(e.date)}${nd}</span><span style="flex:1;text-align:center;font-size:14px;">${e.primo!=null?e.primo.toLocaleString():'—'}</span><span style="font-size:14px;min-width:60px;text-align:right;">${gh}</span>`;
+        row.addEventListener('click',()=>toggleRowExpand(e.date));
+        mobileList.appendChild(row);
+        const exp=document.createElement('div');exp.className='log-expand';exp.dataset.date=e.date;
+        exp.style.cssText='overflow:hidden;'+(isExp?'':'height:0px;');
+        exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label">💎 Primogems</div><input class="ef-input" type="number" id="mep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label">✨ Fates</div><input class="ef-input" type="number" id="mef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="mepv-${e.date}"></div><textarea class="expand-note" id="men-${e.date}" placeholder="Notes for ${fmtDate(e.date)}...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
+        mobileList.appendChild(exp);
+      });
+    }
+  }
+
+  // ── DESKTOP VIRTUAL SCROLL ───────────────────────────────────────────────
   const vp=document.getElementById('log-vp'),strip=document.getElementById('log-strip');
   strip.innerHTML='';
   if(!total){
     const e=document.createElement('div');e.className='log-row';e.style.cursor='default';
     e.innerHTML='<span style="grid-column:1/-1;color:#907898;">No entries yet!</span>';
-    strip.appendChild(e);
-    if(!isMobile()) vp.style.height=(PAGE_SIZE*ROW_H)+'px';
-    else vp.style.height='auto';
+    strip.appendChild(e);vp.style.height=(PAGE_SIZE*ROW_H)+'px';
     document.getElementById('log-slider').max=0;document.getElementById('log-pos').textContent='';return;
   }
-  if(isMobile()){
-    // Mobile: simple full list, no virtual scroll
-    vp.style.height='auto';
-    strip.style.transform='';
-    rev.forEach(e=>{
-      const oi=entries.findIndex(x=>x.date===e.date),g=gains[oi];
-      let gh='<span class="gain-base">—</span>';
-      if(g!==null&&g!==undefined){const cls=g>=baseline?'gain-pos':'gain-neg';gh=`<span class="${cls}">${g>=0?'+':''}${g.toLocaleString()}</span>`;}
-      const nd=e.notes?'<span class="note-dot"></span>':'',isExp=expandedDate===e.date;
-      const row=document.createElement('div');
-      row.className='log-row'+(isExp?' expanded':'');
-      row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:11px 12px;height:auto;';
-      row.innerHTML=`<span style="color:#c8a84b;font-size:13px;min-width:44px;">${fmtDate(e.date)}${nd}</span><span style="flex:1;text-align:center;font-size:13px;">${e.primo!=null?e.primo.toLocaleString():'—'}</span><span style="font-size:13px;min-width:54px;text-align:right;">${gh}</span>`;
-      row.addEventListener('click',()=>toggleRowExpand(e.date));
-      strip.appendChild(row);
-      const exp=document.createElement('div');exp.className='log-expand';exp.dataset.date=e.date;
-      exp.style.cssText='overflow:hidden;'+(isExp?'':'height:0px;');
-      exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label">💎 Primogems</div><input class="ef-input" type="number" id="ep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label">✨ Fates</div><input class="ef-input" type="number" id="ef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="epv-${e.date}"></div><textarea class="expand-note" id="en-${e.date}" placeholder="Notes for ${fmtDate(e.date)}...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
-      strip.appendChild(exp);
-    });
-    document.getElementById('log-slider').max=0;document.getElementById('log-pos').textContent='';
-    return;
-  }
-  // Desktop: original virtual scroll
   rev.forEach(e=>{
     const oi=entries.findIndex(x=>x.date===e.date),g=gains[oi];
     let gh='<span class="gain-base">—</span>';
@@ -2126,7 +2167,7 @@ function renderTimeline(banners){
       const countdown=formatCountdownParts(isLive?b.endDate:b.startDate,isLive?'end':'start');
       const statusText=isPast?'Ended':isLive?`${countdown.text} left`:`Starts in ${countdown.text}`;
       const palette = b.color
-        ? { c1: blendHex(b.color,'#ffffff',0.38), c2: blendHex(b.color,'#000000',0.08), fg: '#10131c' }
+        ? { c1: blendHex(b.color,'#ffffff',0.35), c2: b.color, fg: '#10131c' }
         : getElementPalette(b.element,b.type,b.status);
       const dimmed=PL.selBanner!==null&&!isSel?' dimmed':'';
       return `<button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="left:${startOffset+3}px;width:${barWidth}px;top:${top}px;height:${barHeight}px;background:linear-gradient(90deg,${palette.c1},${palette.c2});color:${palette.fg};" onclick="selectBanner(${b._index})">
