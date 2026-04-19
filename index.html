@@ -433,7 +433,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v129</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v130</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1226,7 +1226,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v129';
+const APP_VERSION = 'v130';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2020,9 +2020,24 @@ function renderTimeline(banners){
       const statusClass=isPast?'spec':isLive?'live':isSpec?'spec':'soon';
       const countdown=formatCountdownParts(isLive?b.endDate:b.startDate,isLive?'end':'start');
       const statusText=isPast?'Ended':isLive?`${countdown.text} left`:`Starts in ${countdown.text}`;
-      const palette = b.color
-        ? { c1: blendHex(b.color,'#f5efe2',0.18), c2: blendHex(b.color,'#101318',0.22), fg: '#10131c' }
-        : getElementPalette(b.element,b.type,b.status);
+      // color field accepts: hex (#rrggbb), element name (pyro/cryo/hydro/etc), or omit for auto-detect
+      const ELEMENT_ALIASES={
+        pyro:'Pyro',fire:'Pyro',
+        cryo:'Cryo',ice:'Cryo',
+        hydro:'Hydro',water:'Hydro',
+        electro:'Electro',lightning:'Electro',
+        anemo:'Anemo',wind:'Anemo',
+        dendro:'Dendro',nature:'Dendro',grass:'Dendro',
+        geo:'Geo',rock:'Geo',earth:'Geo'
+      };
+      let palette;
+      if(b.color && b.color.startsWith('#')){
+        palette={c1:blendHex(b.color,'#f5efe2',0.18),c2:blendHex(b.color,'#101318',0.22),fg:'#10131c'};
+      } else if(b.color && ELEMENT_ALIASES[b.color.toLowerCase()]){
+        palette=getElementPalette(ELEMENT_ALIASES[b.color.toLowerCase()],b.type,b.status);
+      } else {
+        palette=getElementPalette(b.element,b.type,b.status);
+      }
       const dimmed=PL.selBanner!==null&&!isSel?' dimmed':'';
       return `<button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="left:${startOffset+3}px;width:${barWidth}px;top:${top}px;height:${barHeight}px;background:linear-gradient(90deg,${palette.c1},${palette.c2});color:${palette.fg};" onclick="selectBanner(${b._index})">
         <span class="ptl-bar-label">${b.displayName}</span>
