@@ -1754,6 +1754,10 @@ function renderChart(){
 }
 function isMobile(){return window.innerWidth<=768;}
 function renderLog(){
+  // Explicitly show/hide based on screen width — beats any CSS specificity
+  const mob = isMobile();
+  document.querySelectorAll('.log-mobile-only').forEach(el => el.style.display = mob ? '' : 'none');
+  document.querySelectorAll('.log-desktop-only').forEach(el => el.style.display = mob ? 'none' : '');
   const rev=[...entries].reverse(),total=rev.length,gains=getDG(),baseline=getBaseline();
   document.getElementById('log-count').textContent=total?`${total} entr${total===1?'y':'ies'}`:'';
   document.getElementById('scroll-hint').textContent=total>PAGE_SIZE?'scroll for older entries':'';
