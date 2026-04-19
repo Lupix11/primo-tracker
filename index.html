@@ -21,11 +21,11 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
 .main{margin-left:190px;flex:1;min-width:0;}
 .page{display:none;padding:18px 20px 28px;}
 .page.active{display:block;}
-.bottomnav{display:none;position:fixed;bottom:0;left:0;right:0;height:60px;z-index:50;background:rgba(10,12,18,0.95);backdrop-filter:blur(12px);border-top:1px solid rgba(240,208,128,0.09);justify-content:space-around;align-items:stretch;}
-.bottomnav .nav-item{flex:1;flex-direction:column;justify-content:center;gap:3px;padding:4px 0;font-size:9px;align-items:center;border-left:none;border-top:2px solid transparent;}
+.bottomnav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;z-index:50;background:rgba(10,12,18,0.97);backdrop-filter:blur(16px);border-top:1px solid rgba(240,208,128,0.09);justify-content:space-around;align-items:stretch;padding-bottom:env(safe-area-inset-bottom);}
+.bottomnav .nav-item{flex:1;flex-direction:column;justify-content:center;gap:4px;padding:6px 0;font-size:10px;align-items:center;border-left:none;border-top:2px solid transparent;}
 .bottomnav .nav-item.active{border-left:none;border-top-color:#f0d080;background:rgba(240,208,128,0.04);}
-.bottomnav .nav-item svg{width:19px;height:19px;}
-@media(max-width:900px) and (min-width:601px){
+.bottomnav .nav-item svg{width:21px;height:21px;}
+@media(max-width:900px) and (min-width:769px){
   .sidebar{width:58px;}
   .sidebar-logo{padding:20px 0 16px;overflow:hidden;font-size:0;}
   .sidebar-logo::after{content:'✦';font-size:14px;display:block;letter-spacing:0;color:#f0d080;}
@@ -34,11 +34,76 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   .nav-item.active{border-left:none;border-right-color:#f0d080;}
   .main{margin-left:58px;}
 }
-@media(max-width:600px){
+@media(max-width:768px){
   .sidebar{display:none;}
-  .main{margin-left:0;padding-bottom:60px;}
+  .main{margin-left:0;padding-bottom:72px;}
   .bottomnav{display:flex;}
-  .page{padding:12px 12px 18px;}
+  .page{padding:10px 10px 16px;}
+
+  /* Cards */
+  .card{padding:12px 13px;border-radius:10px;}
+  .card+.card{margin-top:9px;}
+
+  /* Quick Add — stack vertically */
+  .qa-wrap{flex-direction:column;gap:10px;}
+  .qa-field{min-width:0;width:100%;}
+  .qa-add-btn{width:100%;justify-content:center;padding:12px;font-size:15px;border-radius:10px;}
+  .qa-input{font-size:15px;padding:10px 12px;}
+  .qa-title-row{margin-bottom:10px;}
+
+  /* Overview tiles — 2x2 grid */
+  .tiles{grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:11px;}
+  .tile{height:68px;}
+  .tile-val{font-size:15px;}
+
+  /* Chart */
+  .chart-wrap{height:200px;}
+
+  /* Log — simplified columns for small screens */
+  .log-col-hdr{display:none;}
+  .log-row{
+    grid-template-columns:52px 1fr 1fr 60px;
+    height:auto;
+    padding:10px 12px;
+    gap:4px;
+    font-size:13px;
+  }
+  /* Hide Fates, Total Primos, Pulls columns on mobile — show Date, Primos, Daily Gain, delete */
+  .log-row > span:nth-child(3),
+  .log-row > span:nth-child(4),
+  .log-row > span:nth-child(5){display:none;}
+  .log-wrap{gap:0;}
+  .v-col{display:none;}
+  .log-vp{max-height:none;}
+
+  /* Stats */
+  .stats-hero{grid-template-columns:1fr;}
+  .stats-hero-side{grid-template-columns:1fr 1fr;min-width:0;}
+  .stats-hero-main{flex-direction:column;align-items:flex-start;}
+  .stats-hero-value{font-size:32px;}
+  .stats-grid-3,.stats-grid-2{grid-template-columns:1fr 1fr;}
+  .stats-controls{justify-content:flex-start;}
+
+  /* Planner */
+  .goal-sections{grid-template-columns:1fr;}
+  .gs-row{grid-template-columns:1fr;}
+  .plan-grid,.plan-rate-grid{grid-template-columns:1fr 1fr;}
+  .plan-top{grid-template-columns:1fr;}
+  .plan-grade{font-size:42px;text-align:left;}
+  .plan-insight{flex-direction:column;align-items:flex-start;}
+  .ptl-head,.ptl-row{grid-template-columns:96px 1fr;}
+  .ptl-info{padding:8px 10px;}
+  .ptl-name2{white-space:normal;font-size:11px;}
+
+  /* Settings */
+  .settings-grid{grid-template-columns:1fr;}
+  .set-row{flex-wrap:wrap;gap:8px;}
+  .rename-wrap{min-width:0;width:100%;}
+  .profile-select{min-width:0;width:100%;}
+  .sync-row{flex-wrap:wrap;}
+  .sync-grid{justify-items:start;}
+  .sync-actions{width:100%;justify-content:flex-start;}
+  .sync-pill{align-self:flex-start;}
 }
 .card{background:rgba(255,255,255,0.05);border:1px solid rgba(240,208,128,0.11);border-radius:12px;padding:16px 18px;}
 .card+.card{margin-top:11px;}
@@ -359,22 +424,9 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .plan-bad{color:#f08080;}
 .plan-soft{color:#80c0f0;}
 @media(max-width:920px){.ptl-head,.ptl-row{grid-template-columns:136px 1fr;}.plan-top{grid-template-columns:72px 1fr;}.plan-chip{grid-column:2;justify-self:start;text-align:left;}.plan-grid,.plan-rate-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:600px){.ptl-head,.ptl-row{grid-template-columns:108px 1fr;}.ptl-info{padding:10px;}.ptl-name2{white-space:normal;}.plan-top{grid-template-columns:1fr;}.plan-grade{text-align:left;font-size:42px;}.plan-grid,.plan-rate-grid{grid-template-columns:1fr;}.plan-insight{flex-direction:column;align-items:flex-start;}}
+@media(max-width:768px){.ptl-head,.ptl-row{grid-template-columns:108px 1fr;}.ptl-info{padding:10px;}.ptl-name2{white-space:normal;}.plan-top{grid-template-columns:1fr;}.plan-grade{text-align:left;font-size:42px;}.plan-grid,.plan-rate-grid{grid-template-columns:1fr;}.plan-insight{flex-direction:column;align-items:flex-start;}}
 
-@media(max-width:600px){
-  .tiles,.result-grid{grid-template-columns:repeat(2,1fr);}
-  .stats-hero,.stats-grid-3,.stats-grid-2{grid-template-columns:1fr;}
-  .stats-hero-side{grid-template-columns:1fr 1fr;min-width:0;}
-  .stats-hero-main{flex-direction:column;align-items:flex-start;}
-
-  .goal-sections{grid-template-columns:1fr;}
-  .s-grid-3{grid-template-columns:repeat(2,1fr);}
-  .log-col-hdr,.log-row{grid-template-columns:58px 82px 56px 94px 68px minmax(88px,1fr) 14px;font-size:12px;}
-  .expand-fields{grid-template-columns:1fr;}
-  .gs-row{grid-template-columns:1fr;}
-}
-
-/* Settings */
+@media(max-width:760px){.settings-grid{grid-template-columns:1fr;}}
 .settings-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:11px;}
 .settings-stack{display:grid;gap:11px;}
 .set-card{background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.08);border-radius:10px;padding:14px 15px;}
@@ -397,10 +449,10 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .set-dot{width:7px;height:7px;border-radius:50%;background:#80f0a0;display:inline-block;}
 
 .file-hidden{display:none;}
-.profile-select{min-width:220px;background:rgba(18,22,38,0.95);border:1px solid rgba(240,208,128,0.18);border-radius:10px;color:#e8dfc8;padding:10px 12px;font-family:'Nunito',sans-serif;font-size:13px;appearance:auto;}
+.profile-select{min-width:160px;max-width:100%;background:rgba(18,22,38,0.95);border:1px solid rgba(240,208,128,0.18);border-radius:10px;color:#e8dfc8;padding:10px 12px;font-family:'Nunito',sans-serif;font-size:13px;appearance:auto;}
 .profile-select option{background:#121626;color:#e8dfc8;}
 .profile-meta{font-size:11px;color:#8f84a2;line-height:1.45;}
-.rename-wrap{display:flex;flex-direction:column;gap:8px;align-items:flex-end;min-width:380px;max-width:420px;}
+.rename-wrap{display:flex;flex-direction:column;gap:8px;align-items:flex-end;min-width:0;max-width:100%;}
 .profile-action-row{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap;}
 .profile-action-row.hidden{display:none !important;}
 .profile-edit-panel{display:none;gap:8px;align-items:center;justify-content:flex-end;width:100%;}
@@ -419,10 +471,10 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .sync-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
 .sync-note{font-size:12px;min-height:18px;padding:7px 11px;border-radius:7px;margin-top:4px;}
 .sync-setup{font-size:11px;color:#8f84a2;line-height:1.45;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.04);}
-.sync-grid{display:grid;gap:4px;justify-items:end;min-width:170px;}
+.sync-grid{display:grid;gap:4px;justify-items:end;min-width:0;}
 .sync-grid .sync-sub{margin-top:0;}
 
-.rename-input{min-width:220px;background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.18);border-radius:10px;color:#e8dfc8;padding:10px 12px;font-family:'Nunito',sans-serif;font-size:13px;flex:1 1 auto;}
+.rename-input{min-width:0;width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.18);border-radius:10px;color:#e8dfc8;padding:10px 12px;font-family:'Nunito',sans-serif;font-size:13px;flex:1 1 auto;}
 
 
 @media(max-width:760px){.settings-grid{grid-template-columns:1fr;}}
@@ -433,7 +485,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v130</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v131</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1226,7 +1278,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v130';
+const APP_VERSION = 'v131';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1520,6 +1572,11 @@ async function load(){
   initGoogleAuth();
   updateSyncUI();
   setupWheel();setupSwipe();render();
+  window.addEventListener('resize',()=>{
+    renderLog();
+    const b=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;
+    renderTimeline(b);
+  });
   const banners=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;
   renderTimeline(banners);
   calcPlanner();
@@ -1550,7 +1607,7 @@ function setupSwipe(){
   document.querySelector('.main').addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
   document.querySelector('.main').addEventListener('touchend',e=>{
     const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
-    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){
+    if(Math.abs(dx)>90&&Math.abs(dx)>Math.abs(dy)*2){
       const idx=PAGES.indexOf(activePage);
       if(dx<0&&idx<PAGES.length-1)goTo(PAGES[idx+1]);
       else if(dx>0&&idx>0)goTo(PAGES[idx-1]);
@@ -1663,18 +1720,45 @@ function renderChart(){
     chartInst=new Chart(ctx,{type:'bar',plugins:[blPlugin],data:{labels,datasets:[{label:'Daily Gain',data:gains,backgroundColor:gains.map(g=>g===null?'transparent':g>baseline?'rgba(128,240,160,0.7)':g===baseline?'rgba(214,170,72,0.88)':'rgba(240,144,96,0.7)'),borderColor:gains.map(g=>g===null?'transparent':g>baseline?'#80f0a0':g===baseline?'#c9922e':'#f09060'),borderWidth:1,borderRadius:3,order:2},{type:'line',label:'7-day average',data:moving,borderColor:'#80c0f0',backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:3,tension:0.3,spanGaps:true,order:1}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:0},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>entries[i[0].dataIndex]?.date||'',label:c=>{if(c.dataset.label==='7-day average')return '  7-day avg: '+c.parsed.y?.toLocaleString();const g=c.parsed.y;if(g===null)return'';const diff=g-baseline;if(diff===0)return '  Gained: '+g.toLocaleString()+'  (at baseline)';return '  Gained: '+g.toLocaleString()+(diff>0?'  (+'+diff+' above)':'  ('+diff+' below)');},}}},scales:{x:{...xSc,offset:true},y:{...ySc,beginAtZero:true}}}});
   }
 }
+function isMobile(){return window.innerWidth<=768;}
 function renderLog(){
   const rev=[...entries].reverse(),total=rev.length,gains=getDG(),baseline=getBaseline();
   document.getElementById('log-count').textContent=total?`${total} entr${total===1?'y':'ies'}`:'';
-  document.getElementById('scroll-hint').textContent=total>PAGE_SIZE?'scroll for older entries':'';
+  document.getElementById('scroll-hint').textContent=(!isMobile()&&total>PAGE_SIZE)?'scroll for older entries':'';
   const vp=document.getElementById('log-vp'),strip=document.getElementById('log-strip');
   strip.innerHTML='';
   if(!total){
     const e=document.createElement('div');e.className='log-row';e.style.cursor='default';
     e.innerHTML='<span style="grid-column:1/-1;color:#907898;">No entries yet!</span>';
-    strip.appendChild(e);vp.style.height=(PAGE_SIZE*ROW_H)+'px';
+    strip.appendChild(e);
+    if(!isMobile()) vp.style.height=(PAGE_SIZE*ROW_H)+'px';
+    else vp.style.height='auto';
     document.getElementById('log-slider').max=0;document.getElementById('log-pos').textContent='';return;
   }
+  if(isMobile()){
+    // Mobile: simple full list, no virtual scroll
+    vp.style.height='auto';
+    strip.style.transform='';
+    rev.forEach(e=>{
+      const oi=entries.findIndex(x=>x.date===e.date),g=gains[oi];
+      let gh='<span class="gain-base">—</span>';
+      if(g!==null&&g!==undefined){const cls=g>=baseline?'gain-pos':'gain-neg';gh=`<span class="${cls}">${g>=0?'+':''}${g.toLocaleString()}</span>`;}
+      const nd=e.notes?'<span class="note-dot"></span>':'',isExp=expandedDate===e.date;
+      const row=document.createElement('div');
+      row.className='log-row'+(isExp?' expanded':'');
+      row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:11px 12px;height:auto;';
+      row.innerHTML=`<span style="color:#c8a84b;font-size:13px;min-width:44px;">${fmtDate(e.date)}${nd}</span><span style="flex:1;text-align:center;font-size:13px;">${e.primo!=null?e.primo.toLocaleString():'—'}</span><span style="font-size:13px;min-width:54px;text-align:right;">${gh}</span>`;
+      row.addEventListener('click',()=>toggleRowExpand(e.date));
+      strip.appendChild(row);
+      const exp=document.createElement('div');exp.className='log-expand';exp.dataset.date=e.date;
+      exp.style.cssText='overflow:hidden;'+(isExp?'':'height:0px;');
+      exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label">💎 Primogems</div><input class="ef-input" type="number" id="ep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label">✨ Fates</div><input class="ef-input" type="number" id="ef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="epv-${e.date}"></div><textarea class="expand-note" id="en-${e.date}" placeholder="Notes for ${fmtDate(e.date)}...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
+      strip.appendChild(exp);
+    });
+    document.getElementById('log-slider').max=0;document.getElementById('log-pos').textContent='';
+    return;
+  }
+  // Desktop: original virtual scroll
   rev.forEach(e=>{
     const oi=entries.findIndex(x=>x.date===e.date),g=gains[oi];
     let gh='<span class="gain-base">—</span>';
@@ -1977,6 +2061,44 @@ function renderTimeline(banners){
     });
   });
 
+  // ── MOBILE: simple card list ──────────────────────────────────────────────
+  if(isMobile()){
+    // Deduplicate by groupKey + first character name
+    const seen=new Set();
+    const groups=[];
+    baseParsed.forEach(b=>{
+      const key=b._groupKey;
+      if(seen.has(key)) return;
+      seen.add(key);
+      groups.push(b);
+    });
+    const cards=groups.map(b=>{
+      const isSel=PL.selBanner===b._index;
+      const endMoment=b._endMoment, startMoment=b._startMoment;
+      const isLive=now>=startMoment&&now<=endMoment;
+      const isEnded=now>endMoment;
+      const isSoon=now<startMoment;
+      const statusLabel=isEnded?'Ended':isLive?formatCountdownParts(b.endDate,'end').text:'Starts '+formatCountdownParts(b.startDate,'start').text;
+      const statusColor=isEnded?'#907898':isLive?'#80f0a0':'#f0d080';
+      const typeLabel=b.type==='weapon'?'⚔ Weapon':'✦ Character';
+      const names=(Array.isArray(b.characters)?b.characters:[b.characters]).join(' · ');
+      const bg=b.color?`background:${b.color}22;border-color:${b.color}55;`:(isLive?'background:rgba(128,240,160,0.07);border-color:rgba(128,240,160,0.25);':isSoon?'background:rgba(240,208,128,0.05);border-color:rgba(240,208,128,0.2);':'');
+      const selStyle=isSel?'outline:2px solid #f0d080;':'';
+      return `<button onclick="selectBanner(${b._index})" style="width:100%;text-align:left;${bg}${selStyle}border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:12px 14px;margin-bottom:7px;cursor:pointer;display:block;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+          <div style="min-width:0;">
+            <div style="font-size:11px;color:#907898;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">${typeLabel} · ${b.version} ${b.phase}</div>
+            <div style="font-size:14px;color:#e8dfc8;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${names}</div>
+            <div style="font-size:11px;margin-top:4px;color:${statusColor};">${statusLabel}</div>
+          </div>
+          ${isSel?'<div style="font-size:11px;color:#f0d080;white-space:nowrap;padding-top:2px;">✓ Selected</div>':''}
+        </div>
+      </button>`;
+    }).join('');
+    list.innerHTML=cards+'<div style="font-size:11px;color:#504060;text-align:center;margin-top:4px;">Tap a banner to use it as your planner target</div>';
+    return;
+  }
+
   let minDate=new Date(Math.min(...baseParsed.map(b=>b._start.getTime()),today.getTime()));
   let maxDate=new Date(Math.max(...baseParsed.map(b=>b._end.getTime()),today.getTime()));
   minDate.setDate(minDate.getDate()-1);
@@ -2020,24 +2142,9 @@ function renderTimeline(banners){
       const statusClass=isPast?'spec':isLive?'live':isSpec?'spec':'soon';
       const countdown=formatCountdownParts(isLive?b.endDate:b.startDate,isLive?'end':'start');
       const statusText=isPast?'Ended':isLive?`${countdown.text} left`:`Starts in ${countdown.text}`;
-      // color field accepts: hex (#rrggbb), element name (pyro/cryo/hydro/etc), or omit for auto-detect
-      const ELEMENT_ALIASES={
-        pyro:'Pyro',fire:'Pyro',
-        cryo:'Cryo',ice:'Cryo',
-        hydro:'Hydro',water:'Hydro',
-        electro:'Electro',lightning:'Electro',
-        anemo:'Anemo',wind:'Anemo',
-        dendro:'Dendro',nature:'Dendro',grass:'Dendro',
-        geo:'Geo',rock:'Geo',earth:'Geo'
-      };
-      let palette;
-      if(b.color && b.color.startsWith('#')){
-        palette={c1:blendHex(b.color,'#f5efe2',0.18),c2:blendHex(b.color,'#101318',0.22),fg:'#10131c'};
-      } else if(b.color && ELEMENT_ALIASES[b.color.toLowerCase()]){
-        palette=getElementPalette(ELEMENT_ALIASES[b.color.toLowerCase()],b.type,b.status);
-      } else {
-        palette=getElementPalette(b.element,b.type,b.status);
-      }
+      const palette = b.color
+        ? { c1: blendHex(b.color,'#f5efe2',0.18), c2: blendHex(b.color,'#101318',0.22), fg: '#10131c' }
+        : getElementPalette(b.element,b.type,b.status);
       const dimmed=PL.selBanner!==null&&!isSel?' dimmed':'';
       return `<button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="left:${startOffset+3}px;width:${barWidth}px;top:${top}px;height:${barHeight}px;background:linear-gradient(90deg,${palette.c1},${palette.c2});color:${palette.fg};" onclick="selectBanner(${b._index})">
         <span class="ptl-bar-label">${b.displayName}</span>
