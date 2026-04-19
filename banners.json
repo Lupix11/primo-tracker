@@ -1,102 +1,52 @@
 [
   {
-    "phase": "Phase 1",
-    "version": "6.5",
-    "type": "character",
-    "characters": ["Linnea", "Chasca"],
-    "startDate": "2026-04-08",
-    "endDate": "2026-04-28",
-    "status": "live",
-    "color": "#80f0a0"
+    "phase": "Phase 1", "version": "6.5", "type": "character",
+    "characters": ["Linnea", "Chasca"], "elements": ["Geo", "Anemo"],
+    "startDate": "2026-04-08", "endDate": "2026-04-28", "status": "live"
   },
   {
-    "phase": "Phase 1",
-    "version": "6.5",
-    "type": "weapon",
-    "characters": ["Golden Frostbound Oath", "Astral Vulture's Crimson Plumage"],
-    "startDate": "2026-04-08",
-    "endDate": "2026-04-28",
-    "status": "live",
-    "color": "#f0b050"
+    "phase": "Phase 1", "version": "6.5", "type": "weapon",
+    "characters": ["Golden Frostbound Oath", "Astral Vulture's Crimson Plumage"], "elements": ["Geo", "Anemo"],
+    "startDate": "2026-04-08", "endDate": "2026-04-28", "status": "live"
   },
   {
-    "phase": "Phase 2",
-    "version": "6.5",
-    "type": "character",
-    "characters": ["Nefer", "Lauma"],
-    "startDate": "2026-04-28",
-    "endDate": "2026-05-19",
-    "status": "soon",
-    "color": "#80f0a0"
+    "phase": "Phase 2", "version": "6.5", "type": "character",
+    "characters": ["Nefer", "Lauma"], "elements": ["Dendro", "Hydro"],
+    "startDate": "2026-04-28", "endDate": "2026-05-19", "status": "soon"
   },
   {
-    "phase": "Phase 2",
-    "version": "6.5",
-    "type": "weapon",
-    "characters": ["Reliquary of Truth", "Nightweaver's Looking Glass"],
-    "startDate": "2026-04-28",
-    "endDate": "2026-05-19",
-    "status": "soon",
-    "color": "#f0b050"
+    "phase": "Phase 2", "version": "6.5", "type": "weapon",
+    "characters": ["Reliquary of Truth", "Nightweaver's Looking Glass"], "elements": ["Dendro", "Hydro"],
+    "startDate": "2026-04-28", "endDate": "2026-05-19", "status": "soon"
   },
   {
-    "phase": "Phase 1",
-    "version": "6.6",
-    "type": "character",
-    "characters": ["Nicole", "Lohen"],
-    "startDate": "2026-05-20",
-    "endDate": "2026-06-09",
-    "status": "speculative",
-    "color": "#80f0a0"
+    "phase": "Phase 1", "version": "6.6", "type": "character",
+    "characters": ["Nicole", "Lohen"], "elements": ["Pyro", "Cryo"],
+    "startDate": "2026-05-20", "endDate": "2026-06-09", "status": "speculative"
   },
   {
-    "phase": "Phase 1",
-    "version": "6.6",
-    "type": "weapon",
-    "characters": ["Nicole's weapon", "Lohen's weapon"],
-    "startDate": "2026-05-20",
-    "endDate": "2026-06-09",
-    "status": "speculative",
-    "color": "#f0b050"
+    "phase": "Phase 1", "version": "6.6", "type": "weapon",
+    "characters": ["Nicole's weapon", "Lohen's weapon"], "elements": ["Pyro", "Cryo"],
+    "startDate": "2026-05-20", "endDate": "2026-06-09", "status": "speculative"
   },
   {
-    "phase": "Phase 2",
-    "version": "6.6",
-    "type": "character",
-    "characters": ["Durin (rerun)", "Mavuika (rerun)"],
-    "startDate": "2026-06-09",
-    "endDate": "2026-06-30",
-    "status": "speculative",
-    "color": "#80f0a0"
+    "phase": "Phase 2", "version": "6.6", "type": "character",
+    "characters": ["Durin (rerun)", "Mavuika (rerun)"], "elements": ["Pyro", "Pyro"],
+    "startDate": "2026-06-09", "endDate": "2026-06-30", "status": "speculative"
   },
   {
-    "phase": "Phase 2",
-    "version": "6.6",
-    "type": "weapon",
-    "characters": ["Athame Artis", "A Thousand Blazing Suns"],
-    "startDate": "2026-06-09",
-    "endDate": "2026-06-30",
-    "status": "speculative",
-    "color": "#f0b050"
+    "phase": "Phase 2", "version": "6.6", "type": "weapon",
+    "characters": ["Athame Artis", "A Thousand Blazing Suns"], "elements": ["Pyro", "Pyro"],
+    "startDate": "2026-06-09", "endDate": "2026-06-30", "status": "speculative"
   },
   {
-    "phase": "Phase 1",
-    "version": "6.7",
-    "type": "character",
-    "characters": ["Sandrone"],
-    "startDate": "2026-07-01",
-    "endDate": "2026-07-21",
-    "status": "speculative",
-    "color": "#80f0a0"
+    "phase": "Phase 1", "version": "6.7", "type": "character",
+    "characters": ["Sandrone"], "elements": ["Unknown"],
+    "startDate": "2026-07-01", "endDate": "2026-07-21", "status": "speculative"
   },
   {
-    "phase": "Phase 1",
-    "version": "6.7",
-    "type": "weapon",
-    "characters": ["Sandrone's weapon"],
-    "startDate": "2026-07-01",
-    "endDate": "2026-07-21",
-    "status": "speculative",
-    "color": "#f0b050"
+    "phase": "Phase 1", "version": "6.7", "type": "weapon",
+    "characters": ["Sandrone's weapon"], "elements": ["Unknown"],
+    "startDate": "2026-07-01", "endDate": "2026-07-21", "status": "speculative"
   }
 ]
