@@ -514,7 +514,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v141</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v142</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1313,7 +1313,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v141';
+const APP_VERSION = 'v142';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2157,9 +2157,12 @@ function renderTimeline(banners){
         : getElementPalette(b.element||'Unknown',b.type,b.status);
       const borderColor=isSel?'rgba(240,208,128,0.8)':(isLive?'rgba(128,240,160,0.3)':isEnded?'rgba(255,255,255,0.06)':'rgba(255,255,255,0.07)');
       const selOutline=isSel?'outline:2px solid #f0d080;outline-offset:-2px;':'';
-      const imgUrl=b.image?`https://lupix11.github.io/primo-tracker/${b.image}`:'';
+      const REPO_BASE='https://lupix11.github.io/primo-tracker/';
+      const imgUrl=b.image
+        ? (b.image.startsWith('http') ? b.image : REPO_BASE + b.image)
+        : '';
       const imgHeader=imgUrl?`<div style="position:relative;height:80px;border-radius:8px 8px 0 0;overflow:hidden;margin:-1px -1px 0 -1px;">
-        <img src="${imgUrl}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;"/>
+        <img src="${imgUrl}" alt="" loading="lazy" onerror="console.warn('Banner image not found:','${imgUrl}');this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;"/>
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,${palette.c1}44 0%,${palette.c2}22 50%,rgba(14,18,25,0.85) 100%);"></div>
         <div style="position:absolute;bottom:7px;left:12px;font-size:10px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;">${typeLabel} · ${b.version} ${b.phase}</div>
       </div>`:'';
@@ -2228,10 +2231,13 @@ function renderTimeline(banners){
         : getElementPalette(b.element,b.type,b.status);
       const dimmed=PL.selBanner!==null&&!isSel?' dimmed':'';
       const zIdx=2+Math.floor(diffDays(b._start,minDate)/7);
-      // Image: use banner image field, only show if bar is wide enough
-      const imgUrl = b.image ? `https://lupix11.github.io/primo-tracker/${b.image}` : '';
+      // Image: resolve URL relative to banners.json location
+      const REPO_BASE='https://lupix11.github.io/primo-tracker/';
+      const imgUrl = b.image
+        ? (b.image.startsWith('http') ? b.image : REPO_BASE + b.image)
+        : '';
       const imgHtml = imgUrl && barWidth > 120
-        ? `<img class="ptl-bar-img" src="${imgUrl}" alt="" loading="lazy" onerror="this.style.display='none'"/><div class="ptl-bar-fade" style="background:linear-gradient(to right,${palette.c1} 30%,${palette.c1}cc 55%,${palette.c1}00 100%);"></div>`
+        ? `<img class="ptl-bar-img" src="${imgUrl}" alt="" loading="lazy" onerror="console.warn('Banner image not found:','${imgUrl}');this.style.opacity='0';"/><div class="ptl-bar-fade" style="background:linear-gradient(to right,${palette.c1} 30%,${palette.c1}cc 55%,${palette.c1}00 100%);"></div>`
         : '';
       return `<button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="left:${startOffset+3}px;width:${barWidth}px;top:${top}px;height:${barHeight}px;z-index:${zIdx};background:linear-gradient(90deg,${palette.c1},${palette.c2});color:${palette.fg};" onclick="selectBanner(${b._index})">
         ${imgHtml}
