@@ -11,12 +11,12 @@
   },
   {
     "phase": "Phase 2", "version": "6.5", "type": "character",
-    "characters": ["Nefer", "Lauma"], "elements": ["Dendro", "Dendro"],
+    "characters": ["Nefer", "Lauma"], "elements": ["Dendro", "Pyro"],
     "startDate": "2026-04-28", "endDate": "2026-05-19", "status": "soon"
   },
   {
     "phase": "Phase 2", "version": "6.5", "type": "weapon",
-    "characters": ["Reliquary of Truth", "Nightweaver's Looking Glass"], "elements": ["Dendro", "Dendro"],
+    "characters": ["Reliquary of Truth", "Nightweaver's Looking Glass"], "elements": ["Dendro", "Pyro"],
     "startDate": "2026-04-28", "endDate": "2026-05-19", "status": "soon"
   },
   {
