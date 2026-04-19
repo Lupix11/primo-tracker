@@ -112,9 +112,9 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   /* Mobile log: native touch scroll */
   .log-mobile-wrap{display:block;}
   .log-mobile-outer{width:100%;}
-  .log-mobile-vp{overflow-y:auto;max-height:420px;-webkit-overflow-scrolling:touch;position:relative;}
-  .log-mobile-vp::after{content:'';position:absolute;left:0;right:0;bottom:0;height:24px;z-index:2;pointer-events:none;background:linear-gradient(to top,rgba(14,18,25,0.7),transparent);}
+  .log-mobile-vp{overflow-y:auto;max-height:420px;-webkit-overflow-scrolling:touch;}
   .log-mobile-strip{}
+  #log-pos{display:none;}
   /* Planner — hide tags and hard pity note */
   .gs-tag{display:none;}
   .hp-note{display:none;}
@@ -512,7 +512,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v134</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v135</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -663,7 +663,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
                 </select>
               </div>
               <div class="gs-field">
-                <div class="gs-label">Current Pity (0–89)</div>
+                <div class="gs-label">Current Pity</div>
                 <input type="number" class="gs-input" id="char-pity" placeholder="0" min="0" max="89" oninput="calcPlanner()"/>
               </div>
             </div>
@@ -693,7 +693,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
                 </select>
               </div>
               <div class="gs-field">
-                <div class="gs-label">Current Pity (0–79)</div>
+                <div class="gs-label">Current Pity</div>
                 <input type="number" class="gs-input" id="weap-pity" placeholder="0" min="0" max="79" oninput="calcPlanner()"/>
               </div>
             </div>
@@ -1311,7 +1311,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v134';
+const APP_VERSION = 'v135';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1881,10 +1881,10 @@ function renderStats(){
           <div class="stats-chip-label">Days tracked</div>
           <div class="stats-chip-sub">From ${fmtDate(first.date)} to ${fmtDate(last.date)}.</div>
         </div>
-        <div class="stats-chip">
-          <div class="stats-chip-value" style="color:${paceUp?'#80f0a0':'#f09060'};">${paceVal===null?'—':(paceUp?'+':'−')+Math.abs(paceVal).toLocaleString()}</div>
-          <div class="stats-chip-label">7-day pace delta</div>
-          <div class="stats-chip-sub">${paceVal===null?'Recent pace unavailable.':paceUp?'Recent gains are above average.':'Recent gains are below average.'}</div>
+        <div class="stats-chip" id="stats-chip-2">
+          <div class="stats-chip-value" id="stats-chip-2-val" style="color:${paceUp?'#80f0a0':'#f09060'};">${paceVal===null?'—':(paceUp?'+':'−')+Math.abs(paceVal).toLocaleString()}</div>
+          <div class="stats-chip-label" id="stats-chip-2-lbl">7-day pace delta</div>
+          <div class="stats-chip-sub" id="stats-chip-2-sub">${paceVal===null?'Recent pace unavailable.':paceUp?'Recent gains are above average.':'Recent gains are below average.'}</div>
         </div>
       </div>
     </div>
@@ -1915,6 +1915,7 @@ function renderStats(){
       </div>
     </div>`;
   renderHistogram(validGains);
+  swapMobileStatsChip();
 }
 function renderHistogram(validGains){
   const buckets=[{label:'0–100',min:0,max:100,color:'rgba(128,192,240,0.7)',border:'#80c0f0'},{label:'100–300',min:100,max:300,color:'rgba(128,240,160,0.65)',border:'#80f0a0'},{label:'300–600',min:300,max:600,color:'rgba(240,208,128,0.65)',border:'#f0d080'},{label:'600–1000',min:600,max:1000,color:'rgba(192,128,240,0.65)',border:'#c080f0'},{label:'1000+',min:1000,max:Infinity,color:'rgba(240,128,128,0.65)',border:'#f08080'}];
@@ -1931,6 +1932,17 @@ function setStatsAvg(r){
   const val=r==='7d'?a7:r==='30d'?a30:aAll;
   const d=document.getElementById('avg-display');if(d)d.textContent=val!=null?val.toLocaleString():'—';
   document.querySelectorAll('.avg-pill').forEach(p=>p.classList.toggle('active',p.textContent.toLowerCase()===r||(p.textContent==='All'&&r==='all')));
+  swapMobileStatsChip();
+}
+function swapMobileStatsChip(){
+  if(window.innerWidth>768) return;
+  const gains=getDG(),aAll=avg(gains);
+  const v2=document.getElementById('stats-chip-2-val');
+  const l2=document.getElementById('stats-chip-2-lbl');
+  const s2=document.getElementById('stats-chip-2-sub');
+  if(v2) v2.style.color='#f0d080', v2.textContent=aAll!=null?aAll.toLocaleString():'—';
+  if(l2) l2.textContent='Avg daily gain';
+  if(s2) s2.textContent='Average per tracked day.';
 }
 
 // ── PLANNER ──
@@ -2257,12 +2269,20 @@ function renderTimeline(banners){
 
 
 function selectBanner(i){
+  // Save scroll positions before re-render
   const scroller=document.querySelector('.ptl-scroll');
-  if(scroller)timelineScrollLeft=scroller.scrollLeft;
+  if(scroller) timelineScrollLeft=scroller.scrollLeft;
+  const mScroll=document.getElementById('m-banner-scroll');
+  const mScrollTop=mScroll?mScroll.scrollTop:0;
+
   PL.selBanner=PL.selBanner===i?null:i;
   const banners=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;
   renderTimeline(banners);
   savePL();calcPlanner();
+
+  // Restore mobile scroll position after re-render
+  const mScrollNew=document.getElementById('m-banner-scroll');
+  if(mScrollNew) mScrollNew.scrollTop=mScrollTop;
 }
 
 function toggleSection(type){
