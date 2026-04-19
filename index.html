@@ -433,7 +433,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos</div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v127</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -763,11 +763,15 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
                 <div class="sync-label">Actions</div>
                 <div class="sync-sub" id="sync-subtext">Sign in, then push your vault up or pull it down on any device.</div>
               </div>
-              <div class="sync-actions">
-                <button id="sync-connect-btn" class="set-btn secondary" onclick="connectGoogle()">Sign in with Google</button>
-                <button id="sync-now-btn" class="set-btn secondary" onclick="syncNow()">↑ Push</button>
-                <button id="sync-load-btn" class="set-btn secondary" onclick="loadFromCloud()">↓ Pull</button>
-                <button id="sync-disconnect-btn" class="set-btn danger" onclick="disconnectSync()">Sign out</button>
+              <div class="sync-actions" style="flex-direction:column;align-items:flex-end;gap:6px;">
+                <div style="display:flex;gap:6px;">
+                  <button id="sync-connect-btn" class="set-btn secondary" onclick="connectGoogle()">Sign in with Google</button>
+                  <button id="sync-disconnect-btn" class="set-btn danger" onclick="disconnectSync()">Sign out</button>
+                </div>
+                <div style="display:flex;gap:6px;">
+                  <button id="sync-now-btn" class="set-btn secondary" onclick="syncNow()">↑ Push</button>
+                  <button id="sync-load-btn" class="set-btn secondary" onclick="loadFromCloud()">↓ Pull</button>
+                </div>
               </div>
             </div>
 
@@ -795,31 +799,10 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 
             <div class="sync-note" id="sync-note"></div>
             <div class="sync-setup">⚠ App is in test mode — only Google accounts added under <b>Google Auth Platform → Público → Usuarios de prueba</b> can sign in.</div>
+            <div style="font-size:11px;color:#504060;margin-top:6px;text-align:right;" id="autosync-status"></div>
           </div>
         </div>
-        <div class="card">
-          <div class="card-title" data-i18n="settings_about_title">About phase 1</div>
-          <div class="set-card" style="margin-top:12px;">
-            <div class="set-row">
-              <div class="set-copy">
-                <div class="set-label" data-i18n="settings_about_item1_label">Local-first saving</div>
-                <div class="set-sub" data-i18n="settings_about_item1_sub">This version saves your data on the current device first, so the app remembers your progress without needing login yet.</div>
-              </div>
-            </div>
-            <div class="set-row">
-              <div class="set-copy">
-                <div class="set-label" data-i18n="settings_about_item2_label">Cloud sync later</div>
-                <div class="set-sub" data-i18n="settings_about_item2_sub">Google / cloud sync, multiple accounts, and online security will fit here later without rebuilding the whole app.</div>
-              </div>
-            </div>
-            <div class="set-row">
-              <div class="set-copy">
-                <div class="set-label" data-i18n="settings_about_item3_label">Current scope</div>
-                <div class="set-sub" data-i18n="settings_about_item3_sub">Phase 1 includes local persistence, backup controls, and language selection.</div>
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
     </div>
   </section>
@@ -1243,9 +1226,22 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
+const APP_VERSION = 'v127';
 
 let gdToken = null;
 let gdTokenClient = null;
+let autoSyncTimer = null;
+
+function scheduleAutoSync() {
+  if (!APP.syncConnected || !gdToken) return;
+  clearTimeout(autoSyncTimer);
+  const el = document.getElementById('autosync-status');
+  if (el) el.textContent = 'Auto-sync in 20s…';
+  autoSyncTimer = setTimeout(async () => {
+    await syncNow(true); // true = silent mode
+    if (el) el.textContent = 'Auto-synced at ' + new Date().toLocaleTimeString();
+  }, 20000);
+}
 
 function initGoogleAuth() {
   if (!window.google || !window.google.accounts) {
@@ -1275,12 +1271,18 @@ async function onGoogleToken(resp) {
       headers: { Authorization: 'Bearer ' + gdToken }
     });
     const user = await r.json();
+    const isFirstConnect = !APP.syncConnected;
     APP.syncConnected = true;
     APP.syncUserEmail = user.email || '';
     APP.syncUserName = user.name || user.email || '';
     await saveSettings();
     updateSyncUI();
-    setSyncNote('✓ Signed in as ' + APP.syncUserName);
+    if (isFirstConnect) {
+      setSyncNote('✓ Signed in as ' + APP.syncUserName + ' — pulling latest vault…');
+      await loadFromCloud(true); // auto-pull on first connect
+    } else {
+      setSyncNote('✓ Re-authenticated as ' + APP.syncUserName);
+    }
   } catch(e) {
     APP.syncConnected = true;
     await saveSettings();
@@ -1303,16 +1305,15 @@ async function findDriveFile() {
   return (d.files && d.files[0]) ? d.files[0] : null;
 }
 
-async function syncNow() {
-  if (!gdToken) { setSyncNote('Sign in first.', true); return; }
-  setSyncNote('Pushing vault to Google Drive…');
+async function syncNow(silent=false) {
+  if (!gdToken) { if (!silent) setSyncNote('Sign in first.', true); return; }
+  if (!silent) setSyncNote('Pushing vault to Google Drive…');
   try {
     const payload = JSON.stringify(getVaultPayload(), null, 2);
     const meta = JSON.stringify({ name: GDRIVE_FILE_NAME, mimeType: 'application/json' });
     const b = 'drv_boundary_primo';
     const body = '--'+b+'\r\nContent-Type: application/json\r\n\r\n'+meta+'\r\n--'+b+'\r\nContent-Type: application/json\r\n\r\n'+payload+'\r\n--'+b+'--';
 
-    // Use stored file ID or search for existing file
     let fileId = APP.gdFileId;
     if (!fileId) { const f = await findDriveFile(); if (f) fileId = f.id; }
 
@@ -1324,27 +1325,27 @@ async function syncNow() {
       headers: { Authorization: 'Bearer ' + gdToken, 'Content-Type': 'multipart/related; boundary="'+b+'"' },
       body
     });
-    if (!r.ok) { setSyncNote('Push failed: HTTP ' + r.status, true); return; }
+    if (!r.ok) { if (!silent) setSyncNote('Push failed: HTTP ' + r.status, true); return; }
     const data = await r.json();
     APP.gdFileId = data.id;
     APP.syncLastAt = new Date().toISOString();
     APP.cloudVaultUpdatedAt = APP.syncLastAt;
     await saveSettings();
     updateSyncUI();
-    setSyncNote('✓ Vault pushed to Google Drive — ' + new Date().toLocaleTimeString());
-  } catch(e) { setSyncNote('Push error: ' + e.message, true); }
+    if (!silent) setSyncNote('✓ Vault pushed to Google Drive — ' + new Date().toLocaleTimeString());
+  } catch(e) { if (!silent) setSyncNote('Push error: ' + e.message, true); }
 }
 
-async function loadFromCloud() {
-  if (!gdToken) { setSyncNote('Sign in first.', true); return; }
-  setSyncNote('Pulling vault from Google Drive…');
+async function loadFromCloud(silent=false) {
+  if (!gdToken) { if (!silent) setSyncNote('Sign in first.', true); return; }
+  if (!silent) setSyncNote('Pulling vault from Google Drive…');
   try {
     let fileId = APP.gdFileId;
-    if (!fileId) { const f = await findDriveFile(); if (!f) { setSyncNote('No vault found in Drive — push first to create one.', true); return; } fileId = f.id; APP.gdFileId = fileId; }
+    if (!fileId) { const f = await findDriveFile(); if (!f) { if (!silent) setSyncNote('No vault found in Drive — push first to create one.', true); return; } fileId = f.id; APP.gdFileId = fileId; }
     const r = await fetch('https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media', {
       headers: { Authorization: 'Bearer ' + gdToken }
     });
-    if (!r.ok) { setSyncNote('Pull failed: HTTP ' + r.status, true); return; }
+    if (!r.ok) { if (!silent) setSyncNote('Pull failed: HTTP ' + r.status, true); return; }
     const data = await r.json();
     applyVaultPayload(data);
     await saveSettings();
@@ -1358,8 +1359,9 @@ async function loadFromCloud() {
     APP.cloudVaultUpdatedAt = new Date().toISOString();
     await saveSettings();
     updateSyncUI();
-    setSyncNote('✓ Vault pulled from Google Drive — ' + new Date().toLocaleTimeString());
-  } catch(e) { setSyncNote('Pull error: ' + e.message, true); }
+    if (!silent) setSyncNote('✓ Vault pulled from Google Drive — ' + new Date().toLocaleTimeString());
+    else setSyncNote('✓ Vault loaded from cloud — ' + new Date().toLocaleTimeString());
+  } catch(e) { if (!silent) setSyncNote('Pull error: ' + e.message, true); }
 }
 
 async function disconnectSync() {
@@ -1523,6 +1525,7 @@ async function save(){
     touchLocalVault();
     if(APP.persistLocal) await storageSetValue(SK,JSON.stringify({profiles:PROFILES.items,activeProfileId:PROFILES.activeId}));
     else await storageRemoveValue(SK);
+    scheduleAutoSync();
   }catch(e){}
 }
 
