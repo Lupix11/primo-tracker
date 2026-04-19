@@ -512,7 +512,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v137</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v138</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1311,7 +1311,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v137';
+const APP_VERSION = 'v138';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1609,10 +1609,11 @@ async function load(){
     const b=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;
     renderTimeline(b);
   });
-  const banners=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;
-  renderTimeline(banners);
+  // Always clear cached banners so banners.json is the source of truth
+  PL.banners=[];
+  renderTimeline(STATIC_BANNERS);
   calcPlanner();
-  // Auto-fetch latest banners in background on every load
+  // Fetch latest banners from JSON (replaces static fallback above)
   fetchBanners();
 }
 async function save(){
@@ -2201,7 +2202,7 @@ function renderTimeline(banners){
       prevGroup=b._groupKey;
       const startOffset=diffDays(b._start,minDate)*dayWidth;
       const durationDays=Math.max(1,diffDays(b._end,b._start));
-      const barWidth=Math.max(84,durationDays*dayWidth-6);
+      const barWidth=Math.max(84,durationDays*dayWidth-2);
       const isLive=now>=b._startMoment&&now<=b._endMoment;
       const isPast=now>b._endMoment;
       const isSpec=b.status==='speculative';
@@ -2518,12 +2519,11 @@ async function fetchBanners(){
     const data = await r.json();
     if(!Array.isArray(data) || !data.length) throw new Error('Empty');
     PL.banners = data;
-    save();
+    // Don't save banners to localStorage — always fetch fresh from JSON
     renderTimeline(PL.banners);
   }catch(e){
-    // fallback to built-in
+    // Fallback to built-in static banners (no network or bad JSON)
     PL.banners=[...STATIC_BANNERS];
-    save();
     renderTimeline(PL.banners);
   }finally{
     btn.style.opacity='';btn.style.pointerEvents='';
