@@ -109,12 +109,19 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   .log-mobile-row{display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;}
   .log-mobile-row:hover{background:rgba(255,255,255,0.025);}
   .log-mobile-row.expanded{background:rgba(240,208,128,0.04);border-bottom:none;}
+  /* Mobile log: fixed height + slider like desktop */
+  .log-mobile-wrap{display:flex;gap:9px;align-items:stretch;}
+  .log-mobile-outer{flex:1;min-width:0;}
+  .log-mobile-vp{overflow:hidden;position:relative;}
+  .log-mobile-vp::after{content:'';position:absolute;left:0;right:0;bottom:0;height:18px;z-index:2;pointer-events:none;background:linear-gradient(to top,rgba(14,18,25,0.6),transparent);}
+  .log-mobile-strip{will-change:transform;transition:transform 0.18s cubic-bezier(0.25,0.8,0.25,1);}
   /* Planner — hide tags and hard pity note */
   .gs-tag{display:none;}
   .hp-note{display:none;}
   /* Stats hero overlap fix */
-  .stats-hero-main{min-height:0;}
-  .stats-hero-side{display:none;}
+  .stats-hero{grid-template-columns:1fr;}
+  .stats-hero-main{display:none;}
+  .stats-hero-side{display:grid;grid-template-columns:1fr 1fr;min-width:0;}
 }
   .settings-grid{grid-template-columns:1fr;}
   .set-row{flex-wrap:wrap;gap:8px;}
@@ -505,7 +512,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v132</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v133</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -600,6 +607,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
         <div class="v-col"><input type="range" class="v-slider" id="log-slider" min="0" value="0" step="1" oninput="onSlider()"/></div>
       </div>
       <div id="log-mobile-list" class="log-mobile-only"></div>
+      <div style="min-height:15px;margin-top:4px;text-align:center;" class="log-mobile-only"><span class="hint-txt" id="m-scroll-hint" style="font-style:normal;font-size:10px;color:#504060;"></span></div>
       <div style="min-height:15px;margin-top:4px;text-align:center;" class="log-desktop-only"><span class="hint-txt" id="scroll-hint" style="font-style:normal;font-size:10px;color:#504060;"></span></div>
     </div>
   </section>
@@ -1303,7 +1311,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v132';
+const APP_VERSION = 'v133';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1624,7 +1632,7 @@ function goTo(pg){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===pg));
   if(pg==='stats')renderStats();
   if(pg==='planner'){const b=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;renderTimeline(b);calcPlanner();}
-  if(pg==='settings'){updateSettingsControls();updateStorageUI();renderProfileManager();renderPlannerRegionUI();initGoogleAuth();updateSyncUI();}
+  if(pg==='settings'){updateSettingsControls();updateStorageUI();renderProfileManager();renderPlannerRegionUI();updateSyncUI();}
 }
 function setupSwipe(){
   let tx=0,ty=0;
@@ -1744,6 +1752,7 @@ function renderChart(){
     chartInst=new Chart(ctx,{type:'bar',plugins:[blPlugin],data:{labels,datasets:[{label:'Daily Gain',data:gains,backgroundColor:gains.map(g=>g===null?'transparent':g>baseline?'rgba(128,240,160,0.7)':g===baseline?'rgba(214,170,72,0.88)':'rgba(240,144,96,0.7)'),borderColor:gains.map(g=>g===null?'transparent':g>baseline?'#80f0a0':g===baseline?'#c9922e':'#f09060'),borderWidth:1,borderRadius:3,order:2},{type:'line',label:'7-day average',data:moving,borderColor:'#80c0f0',backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:3,tension:0.3,spanGaps:true,order:1}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:0},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>entries[i[0].dataIndex]?.date||'',label:c=>{if(c.dataset.label==='7-day average')return '  7-day avg: '+c.parsed.y?.toLocaleString();const g=c.parsed.y;if(g===null)return'';const diff=g-baseline;if(diff===0)return '  Gained: '+g.toLocaleString()+'  (at baseline)';return '  Gained: '+g.toLocaleString()+(diff>0?'  (+'+diff+' above)':'  ('+diff+' below)');},}}},scales:{x:{...xSc,offset:true},y:{...ySc,beginAtZero:true}}}});
   }
 }
+function isMobile(){return window.innerWidth<=768;}
 function renderLog(){
   const rev=[...entries].reverse(),total=rev.length,gains=getDG(),baseline=getBaseline();
   document.getElementById('log-count').textContent=total?`${total} entr${total===1?'y':'ies'}`:'';
@@ -1751,11 +1760,25 @@ function renderLog(){
 
   // ── MOBILE LIST ──────────────────────────────────────────────────────────
   const mobileList=document.getElementById('log-mobile-list');
+  const mScrollHint=document.getElementById('m-scroll-hint');
   if(mobileList){
     mobileList.innerHTML='';
     if(!total){
       mobileList.innerHTML='<div style="padding:16px;color:#907898;">No entries yet!</div>';
+      if(mScrollHint) mScrollHint.textContent='';
     } else {
+      const MOB_PAGE=8,MOB_ROW_H=48;
+      // Build the slider+viewport structure
+      mobileList.innerHTML=`
+        <div class="log-mobile-wrap">
+          <div class="log-mobile-outer">
+            <div class="log-mobile-vp" id="m-log-vp" style="height:${MOB_PAGE*MOB_ROW_H}px;">
+              <div class="log-mobile-strip" id="m-log-strip"></div>
+            </div>
+          </div>
+          <div class="v-col"><input type="range" class="v-slider" id="m-log-slider" min="0" value="0" step="1" oninput="onMSlider()"/></div>
+        </div>`;
+      const strip=document.getElementById('m-log-strip');
       rev.forEach(e=>{
         const oi=entries.findIndex(x=>x.date===e.date),g=gains[oi];
         let gh='<span class="gain-base">—</span>';
@@ -1763,14 +1786,25 @@ function renderLog(){
         const nd=e.notes?'<span class="note-dot"></span>':'',isExp=expandedDate===e.date;
         const row=document.createElement('div');
         row.className='log-mobile-row'+(isExp?' expanded':'');
+        row.style.height=MOB_ROW_H+'px';
         row.innerHTML=`<span style="color:#c8a84b;font-size:13px;min-width:48px;">${fmtDate(e.date)}${nd}</span><span style="flex:1;text-align:center;font-size:14px;">${e.primo!=null?e.primo.toLocaleString():'—'}</span><span style="font-size:14px;min-width:60px;text-align:right;">${gh}</span>`;
         row.addEventListener('click',()=>toggleRowExpand(e.date));
-        mobileList.appendChild(row);
+        strip.appendChild(row);
         const exp=document.createElement('div');exp.className='log-expand';exp.dataset.date=e.date;
         exp.style.cssText='overflow:hidden;'+(isExp?'':'height:0px;');
-        exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label">💎 Primogems</div><input class="ef-input" type="number" id="mep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label">✨ Fates</div><input class="ef-input" type="number" id="mef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="mepv-${e.date}"></div><textarea class="expand-note" id="men-${e.date}" placeholder="Notes for ${fmtDate(e.date)}...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
-        mobileList.appendChild(exp);
+        exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label">💎 Primogems</div><input class="ef-input" type="number" id="mep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label">✨ Fates</div><input class="ef-input" type="number" id="mef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="mepv-${e.date}"></div><textarea class="expand-note" id="men-${e.date}" placeholder="Notes...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
+        strip.appendChild(exp);
       });
+      // Set up slider
+      let expandH=0;
+      if(expandedDate){const op=strip.querySelector(`.log-expand[data-date="${expandedDate}"]`);if(op){op.style.height='auto';expandH=op.offsetHeight;}}
+      const vp=document.getElementById('m-log-vp');
+      if(vp) vp.style.height=(MOB_PAGE*MOB_ROW_H+expandH)+'px';
+      const sl=document.getElementById('m-log-slider');
+      const maxO=Math.max(0,total-MOB_PAGE);
+      if(sl){sl.max=maxO;sl.value=maxO-Math.min(offset,maxO);}
+      applyMSlider(Math.min(offset,maxO),MOB_ROW_H);
+      if(mScrollHint) mScrollHint.textContent=total>MOB_PAGE?`${Math.min(offset+1,total)}–${Math.min(offset+MOB_PAGE,total)} of ${total}`:'';
     }
   }
 
@@ -1813,6 +1847,21 @@ function onSlider(){
   if(newO!==offset)expandedDate=null;
   offset=newO;applySlider(offset);
   if(expandedDate===null)renderLog();
+}
+function applyMSlider(o,rowH){
+  const strip=document.getElementById('m-log-strip');
+  if(strip) strip.style.transform=`translateY(-${o*rowH}px)`;
+}
+function onMSlider(){
+  const MOB_ROW_H=48,s=document.getElementById('m-log-slider');
+  if(!s) return;
+  const newO=(parseInt(s.max)||0)-parseInt(s.value);
+  if(newO!==offset) expandedDate=null;
+  offset=newO;
+  applyMSlider(offset,MOB_ROW_H);
+  const total=entries.length,MOB_PAGE=8,el=document.getElementById('m-scroll-hint');
+  if(el) el.textContent=total>MOB_PAGE?`${Math.min(offset+1,total)}–${Math.min(offset+MOB_PAGE,total)} of ${total}`:'';
+  if(expandedDate===null) renderLog();
 }
 
 function renderStats(){
