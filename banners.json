@@ -16,7 +16,7 @@
   },
   {
     "phase": "Phase 2", "version": "6.5", "type": "weapon",
-    "characters": ["Reliquary of Truth", "Nightweaver's Looking Glass"], "elements": ["Dendro", "Hydro"],
+    "characters": ["Reliquary of Truth", "Nightweaver's Looking Glass"], "elements": ["Dendro", "Dendro"],
     "startDate": "2026-04-28", "endDate": "2026-05-19", "status": "soon"
   },
   {
