@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +36,7 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
 }
 @media(max-width:768px){
   .sidebar{display:none;}
-  .main{margin-left:0;padding-bottom:72px;}
+  .main{margin-left:0;padding-bottom:80px;}
   .bottomnav{display:flex;}
   .page{padding:10px 10px 16px;}
 
@@ -60,51 +59,40 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   /* Chart */
   .chart-wrap{height:200px;}
 
-  /* Log — simplified columns for small screens */
-  .log-col-hdr{display:none;}
-  .log-row{
-    grid-template-columns:52px 1fr 1fr 60px;
-    height:auto;
-    padding:10px 12px;
-    gap:4px;
-    font-size:13px;
-  }
-  /* Hide Fates, Total Primos, Pulls columns on mobile — show Date, Primos, Daily Gain, delete */
-  .log-row > span:nth-child(3),
-  .log-row > span:nth-child(4),
-  .log-row > span:nth-child(5){display:none;}
+  /* Log */
+  .log-col-hdr{display:none !important;}
+  .v-col{display:none !important;}
   .log-wrap{gap:0;}
-  .v-col{display:none;}
   .log-vp{max-height:none;}
 
-  /* Stats */
-  .stats-hero{grid-template-columns:1fr;}
+  /* Stats — fix text overlap */
+  .stats-hero{grid-template-columns:1fr !important;}
+  .stats-hero-main{flex-direction:column;align-items:flex-start;gap:8px;}
+  .stats-hero-value{font-size:28px;}
   .stats-hero-side{grid-template-columns:1fr 1fr;min-width:0;}
-  .stats-hero-main{flex-direction:column;align-items:flex-start;}
-  .stats-hero-value{font-size:32px;}
-  .stats-grid-3,.stats-grid-2{grid-template-columns:1fr 1fr;}
+  .stats-hero-kicker,.stats-hero-label,.stats-hero-note{font-size:10px;}
+  .stats-grid-3,.stats-grid-2{grid-template-columns:1fr 1fr !important;}
   .stats-controls{justify-content:flex-start;}
 
-  /* Planner */
-  .goal-sections{grid-template-columns:1fr;}
+  /* Planner — hide clutter */
+  .gs-tag{display:none !important;}
+  .hp-note{display:none !important;}
+  .goal-sections{grid-template-columns:1fr !important;}
   .gs-row{grid-template-columns:1fr;}
   .plan-grid,.plan-rate-grid{grid-template-columns:1fr 1fr;}
   .plan-top{grid-template-columns:1fr;}
   .plan-grade{font-size:42px;text-align:left;}
   .plan-insight{flex-direction:column;align-items:flex-start;}
-  .ptl-head,.ptl-row{grid-template-columns:96px 1fr;}
-  .ptl-info{padding:8px 10px;}
-  .ptl-name2{white-space:normal;font-size:11px;}
 
   /* Settings */
-  .settings-grid{grid-template-columns:1fr;}
+  .settings-grid{grid-template-columns:1fr !important;}
   .set-row{flex-wrap:wrap;gap:8px;}
   .rename-wrap{min-width:0;width:100%;}
   .profile-select{min-width:0;width:100%;}
   .sync-row{flex-wrap:wrap;}
-  .sync-grid{justify-items:start;}
-  .sync-actions{width:100%;justify-content:flex-start;}
-  .sync-pill{align-self:flex-start;}
+  .sync-grid{justify-items:start;min-width:0;}
+  .sync-actions{width:100%;justify-content:flex-start;flex-wrap:wrap;}
+  .sync-pill{align-self:flex-start;white-space:nowrap;}
 }
 .card{background:rgba(255,255,255,0.05);border:1px solid rgba(240,208,128,0.11);border-radius:12px;padding:16px 18px;}
 .card+.card{margin-top:11px;}
@@ -486,7 +474,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v131</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v132</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -517,8 +505,11 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
     <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><circle cx="8" cy="14" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="14" r="1.2" fill="currentColor" stroke="none"/><circle cx="16" cy="14" r="1.2" fill="currentColor" stroke="none"/></svg>
     <span class="nav-label" data-i18n="nav_planner">Planner</span>
   </button>
+  <button class="nav-item" data-page="settings" onclick="goTo('settings')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    <span class="nav-label">Settings</span>
+  </button>
 </nav>
-<main class="main">
 
   <!-- DASHBOARD -->
   <section id="page-dashboard" class="page active">
@@ -1279,7 +1270,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v131';
+const APP_VERSION = 'v132';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1604,16 +1595,7 @@ function goTo(pg){
   if(pg==='settings'){updateSettingsControls();updateStorageUI();renderProfileManager();renderPlannerRegionUI();initGoogleAuth();updateSyncUI();}
 }
 function setupSwipe(){
-  let tx=0,ty=0;
-  document.querySelector('.main').addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
-  document.querySelector('.main').addEventListener('touchend',e=>{
-    const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
-    if(Math.abs(dx)>90&&Math.abs(dx)>Math.abs(dy)*2){
-      const idx=PAGES.indexOf(activePage);
-      if(dx<0&&idx<PAGES.length-1)goTo(PAGES[idx+1]);
-      else if(dx>0&&idx>0)goTo(PAGES[idx-1]);
-    }
-  },{passive:true});
+  // Swipe disabled — bottom nav handles navigation on mobile
 }
 
 function getBaseline(){return welkin?150:60;}
@@ -2144,7 +2126,7 @@ function renderTimeline(banners){
       const countdown=formatCountdownParts(isLive?b.endDate:b.startDate,isLive?'end':'start');
       const statusText=isPast?'Ended':isLive?`${countdown.text} left`:`Starts in ${countdown.text}`;
       const palette = b.color
-        ? { c1: blendHex(b.color,'#f5efe2',0.18), c2: blendHex(b.color,'#101318',0.22), fg: '#10131c' }
+        ? { c1: blendHex(b.color,'#ffffff',0.38), c2: blendHex(b.color,'#000000',0.08), fg: '#10131c' }
         : getElementPalette(b.element,b.type,b.status);
       const dimmed=PL.selBanner!==null&&!isSel?' dimmed':'';
       return `<button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="left:${startOffset+3}px;width:${barWidth}px;top:${top}px;height:${barHeight}px;background:linear-gradient(90deg,${palette.c1},${palette.c2});color:${palette.fg};" onclick="selectBanner(${b._index})">
