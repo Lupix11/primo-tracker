@@ -412,7 +412,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .sync-copy{min-width:0;}
 .sync-label{font-size:13px;color:#e8dfc8;}
 .sync-sub{font-size:11px;color:#8f84a2;margin-top:3px;line-height:1.4;}
-.sync-pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#8f84a2;background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.12);padding:6px 10px;border-radius:999px;}
+.sync-pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#8f84a2;background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.12);padding:6px 12px;border-radius:999px;white-space:nowrap;min-width:110px;justify-content:center;}
 .sync-pill.connected{color:#80f0a0;border-color:rgba(128,240,160,0.22);background:rgba(128,240,160,0.06);}
 .sync-dot{width:7px;height:7px;border-radius:50%;background:#707090;display:inline-block;}
 .sync-pill.connected .sync-dot{background:#80f0a0;}
@@ -433,7 +433,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v127</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v128</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1226,11 +1226,12 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v127';
+const APP_VERSION = 'v128';
 
 let gdToken = null;
 let gdTokenClient = null;
 let autoSyncTimer = null;
+let gdSilentReauth = false;
 
 function scheduleAutoSync() {
   if (!APP.syncConnected || !gdToken) return;
@@ -1255,6 +1256,7 @@ function initGoogleAuth() {
   });
   // If user was previously signed in, silently refresh the token
   if (APP.syncConnected) {
+    gdSilentReauth = true;
     gdTokenClient.requestAccessToken({ prompt: '' });
   }
 }
@@ -1262,10 +1264,12 @@ function initGoogleAuth() {
 async function onGoogleToken(resp) {
   if (resp.error) {
     if (resp.error !== 'access_denied') setSyncNote('Sign-in failed: ' + resp.error, true);
+    gdSilentReauth = false;
     return;
   }
+  const wasSilent = gdSilentReauth;
+  gdSilentReauth = false;
   gdToken = resp.access_token;
-  // Fetch user info to show name/email
   try {
     const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
       headers: { Authorization: 'Bearer ' + gdToken }
@@ -1279,10 +1283,11 @@ async function onGoogleToken(resp) {
     updateSyncUI();
     if (isFirstConnect) {
       setSyncNote('✓ Signed in as ' + APP.syncUserName + ' — pulling latest vault…');
-      await loadFromCloud(true); // auto-pull on first connect
-    } else {
+      await loadFromCloud(true);
+    } else if (!wasSilent) {
       setSyncNote('✓ Re-authenticated as ' + APP.syncUserName);
     }
+    // silent background refresh: no message shown
   } catch(e) {
     APP.syncConnected = true;
     await saveSettings();
