@@ -396,7 +396,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-track-sub{font-size:10px;color:#7f7593;line-height:1.3;}
 .ptl-row-track{position:relative;min-height:32px;}
 .ptl-gridline{position:absolute;top:0;bottom:0;border-left:1px solid rgba(255,255,255,0.045);}
-.ptl-bar{position:absolute;height:30px;border-radius:999px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;font-size:11px;color:#10131c;cursor:pointer;z-index:2;transition:transform 0.12s ease, box-shadow 0.16s ease, outline-color 0.16s ease, opacity 0.16s ease;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12);border:none;}
+.ptl-bar{position:absolute;height:36px;border-radius:999px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;font-size:11px;color:#10131c;cursor:pointer;z-index:2;transition:transform 0.12s ease, box-shadow 0.16s ease, outline-color 0.16s ease, opacity 0.16s ease;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12);border:none;overflow:hidden;}
 .ptl-bar:hover{transform:translateY(-1px);}
 .ptl-bar.live{background:linear-gradient(90deg,#bcebd0,#80f0a0);}
 .ptl-bar.soon{background:linear-gradient(90deg,#f3df9e,#f0d080);}
@@ -405,8 +405,10 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-bar.weapon.spec{background:linear-gradient(90deg,#c4abd8,#9f86c0);}
 .ptl-bar.selected{outline:2px solid rgba(240,208,128,0.96);box-shadow:0 0 0 4px rgba(240,208,128,0.16), 0 10px 24px rgba(0,0,0,0.22);z-index:5;transform:translateY(-1px);} 
 .ptl-bar.dimmed{opacity:0.72;}
-.ptl-bar-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;}
-.ptl-bar-end{font-size:10px;white-space:nowrap;color:rgba(15,18,26,0.72);font-weight:700;}
+.ptl-bar-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;position:relative;z-index:2;}
+.ptl-bar-end{font-size:10px;white-space:nowrap;color:rgba(15,18,26,0.72);font-weight:700;position:relative;z-index:2;}
+.ptl-bar-img{position:absolute;right:0;top:0;height:100%;width:40%;object-fit:cover;object-position:top center;pointer-events:none;opacity:0.92;}
+.ptl-bar-fade{position:absolute;right:0;top:0;height:100%;width:55%;pointer-events:none;z-index:1;}
 .ptl-empty{padding:10px 0 2px;color:#7f7593;font-size:10px;text-align:center;}
 .ptl-countdown{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:rgba(15,18,26,0.76);font-weight:700;white-space:nowrap;}
 .ptl-countdown .clock{font-size:11px;}
@@ -512,7 +514,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v140</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v141</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1311,7 +1313,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v140';
+const APP_VERSION = 'v141';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2150,16 +2152,26 @@ function renderTimeline(banners){
       const statusColor=isEnded?'#907898':isLive?'#80f0a0':'#f0d080';
       const typeLabel=b.type==='weapon'?'⚔ Weapon':'✦ Character';
       const names=(Array.isArray(b.characters)?b.characters:[b.characters]).join(' · ');
-      const bg=b.color?`background:${b.color}22;border-color:${b.color}55;`:(isLive?'background:rgba(128,240,160,0.07);border-color:rgba(128,240,160,0.25);':isSoon?'background:rgba(240,208,128,0.05);border-color:rgba(240,208,128,0.2);':'');
-      const selStyle=isSel?'outline:2px solid #f0d080;':'';
-      return `<button onclick="selectBanner(${b._index})" style="width:100%;text-align:left;${bg}${selStyle}border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:12px 14px;margin-bottom:7px;cursor:pointer;display:block;">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
-          <div style="min-width:0;">
-            <div style="font-size:11px;color:#907898;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">${typeLabel} · ${b.version} ${b.phase}</div>
-            <div style="font-size:14px;color:#e8dfc8;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${names}</div>
-            <div style="font-size:11px;margin-top:4px;color:${statusColor};">${statusLabel}</div>
+      const palette=b.color
+        ? {c1:blendHex(b.color,'#ffffff',0.45),c2:b.color}
+        : getElementPalette(b.element||'Unknown',b.type,b.status);
+      const borderColor=isSel?'rgba(240,208,128,0.8)':(isLive?'rgba(128,240,160,0.3)':isEnded?'rgba(255,255,255,0.06)':'rgba(255,255,255,0.07)');
+      const selOutline=isSel?'outline:2px solid #f0d080;outline-offset:-2px;':'';
+      const imgUrl=b.image?`https://lupix11.github.io/primo-tracker/${b.image}`:'';
+      const imgHeader=imgUrl?`<div style="position:relative;height:80px;border-radius:8px 8px 0 0;overflow:hidden;margin:-1px -1px 0 -1px;">
+        <img src="${imgUrl}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,${palette.c1}44 0%,${palette.c2}22 50%,rgba(14,18,25,0.85) 100%);"></div>
+        <div style="position:absolute;bottom:7px;left:12px;font-size:10px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;">${typeLabel} · ${b.version} ${b.phase}</div>
+      </div>`:'';
+      return `<button onclick="selectBanner(${b._index})" style="width:100%;text-align:left;background:rgba(255,255,255,0.03);${selOutline}border:1px solid ${borderColor};border-radius:10px;padding:0;margin-bottom:8px;cursor:pointer;display:block;overflow:hidden;">
+        ${imgHeader}
+        <div style="padding:11px 14px 12px;">
+          ${!imgUrl?`<div style="font-size:10px;color:#907898;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">${typeLabel} · ${b.version} ${b.phase}</div>`:''}
+          <div style="font-size:14px;color:#e8dfc8;font-weight:600;margin-bottom:4px;">${names}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:12px;color:${statusColor};">${statusLabel}</div>
+            ${isSel?'<div style="font-size:11px;color:#f0d080;">✓ Selected</div>':''}
           </div>
-          ${isSel?'<div style="font-size:11px;color:#f0d080;white-space:nowrap;padding-top:2px;">✓ Selected</div>':''}
         </div>
       </button>`;
     }).join('');
@@ -2191,10 +2203,10 @@ function renderTimeline(banners){
   const gridLines=Array.from({length:totalDays},(_,i)=>`<div class="ptl-gridline" style="left:${i*dayWidth}px"></div>`).join('');
 
   function buildTrack(items){
-    const barHeight=26;
+    const barHeight=36;
     const laneBase=6;
     const sameGap=2;
-    const groupGap=6;
+    const groupGap=8;
     let top=laneBase;
     let prevGroup='';
     const bars=items.map((b,idx)=>{
@@ -2216,7 +2228,13 @@ function renderTimeline(banners){
         : getElementPalette(b.element,b.type,b.status);
       const dimmed=PL.selBanner!==null&&!isSel?' dimmed':'';
       const zIdx=2+Math.floor(diffDays(b._start,minDate)/7);
+      // Image: use banner image field, only show if bar is wide enough
+      const imgUrl = b.image ? `https://lupix11.github.io/primo-tracker/${b.image}` : '';
+      const imgHtml = imgUrl && barWidth > 120
+        ? `<img class="ptl-bar-img" src="${imgUrl}" alt="" loading="lazy" onerror="this.style.display='none'"/><div class="ptl-bar-fade" style="background:linear-gradient(to right,${palette.c1} 30%,${palette.c1}cc 55%,${palette.c1}00 100%);"></div>`
+        : '';
       return `<button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="left:${startOffset+3}px;width:${barWidth}px;top:${top}px;height:${barHeight}px;z-index:${zIdx};background:linear-gradient(90deg,${palette.c1},${palette.c2});color:${palette.fg};" onclick="selectBanner(${b._index})">
+        ${imgHtml}
         <span class="ptl-bar-label">${b.displayName}</span>
         <span class="ptl-bar-end" style="color:${palette.fg}cc;"><span class="ptl-countdown" style="color:${palette.fg}cc;"><span class="clock">🕒</span>${isSel?'Selected · ':''}${statusText}</span></span>
       </button>`;
