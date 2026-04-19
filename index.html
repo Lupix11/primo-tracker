@@ -512,7 +512,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v136</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v137</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -916,16 +916,16 @@ let PL={
 };
 
 const STATIC_BANNERS=[
-  {phase:'Phase 1',version:'6.5',type:'character',characters:['Linnea','Chasca'],startDate:'2026-04-08',endDate:'2026-04-28',status:'live'},
-  {phase:'Phase 1',version:'6.5',type:'weapon',characters:['Golden Frostbound Oath','Astral Vulture\'s Crimson Plumage'],startDate:'2026-04-08',endDate:'2026-04-28',status:'live'},
-  {phase:'Phase 2',version:'6.5',type:'character',characters:['Nefer','Lauma'],startDate:'2026-04-28',endDate:'2026-05-19',status:'soon'},
-  {phase:'Phase 2',version:'6.5',type:'weapon',characters:['Reliquary of Truth','Nightweaver\'s Looking Glass'],startDate:'2026-04-28',endDate:'2026-05-19',status:'soon'},
-  {phase:'Phase 1',version:'6.6',type:'character',characters:['Nicole','Lohen'],startDate:'2026-05-20',endDate:'2026-06-09',status:'speculative'},
-  {phase:'Phase 1',version:'6.6',type:'weapon',characters:['Nicole\'s weapon','Lohen\'s weapon'],startDate:'2026-05-20',endDate:'2026-06-09',status:'speculative'},
-  {phase:'Phase 2',version:'6.6',type:'character',characters:['Durin (rerun)','Mavuika (rerun)'],startDate:'2026-06-09',endDate:'2026-06-30',status:'speculative'},
-  {phase:'Phase 2',version:'6.6',type:'weapon',characters:['Athame Artis','A Thousand Blazing Suns'],startDate:'2026-06-09',endDate:'2026-06-30',status:'speculative'},
-  {phase:'Phase 1',version:'6.7',type:'character',characters:['Sandrone'],startDate:'2026-07-01',endDate:'2026-07-21',status:'speculative'},
-  {phase:'Phase 1',version:'6.7',type:'weapon',characters:['Sandrone\'s weapon'],startDate:'2026-07-01',endDate:'2026-07-21',status:'speculative'},
+  {phase:'Phase 1',version:'6.5',type:'character',characters:['Linnea','Chasca'],elements:['Geo','Anemo'],startDate:'2026-04-08',endDate:'2026-04-28',status:'live'},
+  {phase:'Phase 1',version:'6.5',type:'weapon',characters:['Golden Frostbound Oath','Astral Vulture\'s Crimson Plumage'],elements:['Geo','Anemo'],startDate:'2026-04-08',endDate:'2026-04-28',status:'live'},
+  {phase:'Phase 2',version:'6.5',type:'character',characters:['Nefer','Lauma'],elements:['Dendro','Hydro'],startDate:'2026-04-28',endDate:'2026-05-19',status:'soon'},
+  {phase:'Phase 2',version:'6.5',type:'weapon',characters:['Reliquary of Truth','Nightweaver\'s Looking Glass'],elements:['Dendro','Hydro'],startDate:'2026-04-28',endDate:'2026-05-19',status:'soon'},
+  {phase:'Phase 1',version:'6.6',type:'character',characters:['Nicole','Lohen'],elements:['Pyro','Cryo'],startDate:'2026-05-20',endDate:'2026-06-09',status:'speculative'},
+  {phase:'Phase 1',version:'6.6',type:'weapon',characters:['Nicole\'s weapon','Lohen\'s weapon'],elements:['Pyro','Cryo'],startDate:'2026-05-20',endDate:'2026-06-09',status:'speculative'},
+  {phase:'Phase 2',version:'6.6',type:'character',characters:['Durin (rerun)','Mavuika (rerun)'],elements:['Pyro','Pyro'],startDate:'2026-06-09',endDate:'2026-06-30',status:'speculative'},
+  {phase:'Phase 2',version:'6.6',type:'weapon',characters:['Athame Artis','A Thousand Blazing Suns'],elements:['Pyro','Pyro'],startDate:'2026-06-09',endDate:'2026-06-30',status:'speculative'},
+  {phase:'Phase 1',version:'6.7',type:'character',characters:['Sandrone'],elements:['Unknown'],startDate:'2026-07-01',endDate:'2026-07-21',status:'speculative'},
+  {phase:'Phase 1',version:'6.7',type:'weapon',characters:['Sandrone\'s weapon'],elements:['Unknown'],startDate:'2026-07-01',endDate:'2026-07-21',status:'speculative'},
 ];
 
 
@@ -1311,7 +1311,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v136';
+const APP_VERSION = 'v137';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2031,33 +2031,29 @@ function getItemElement(type,name){
   return type==='weapon' ? getCharacterElement(getWeaponOwner(name)) : getCharacterElement(name);
 }
 function getElementPalette(element,type,status){
+  // [light highlight, deep color, text color]
   const palettes={
-    Geo:['#efd57a','#d39d22','#2a1d08'],
-    Anemo:['#9fe8cf','#35c992','#0f261c'],
-    Dendro:['#9fe055','#53b92f','#10240c'],
-    Pyro:['#ff9a6c','#e6501f','#2a120a'],
-    Cryo:['#9fddff','#48b6f2','#0d2230'],
-    Hydro:['#9fd0ff','#3d8fff','#0d1b2d'],
-    Electro:['#cfb6ff','#8d64eb','#1d1530'],
-    Unknown:['#d0cad6','#7b7388','#1d1a24']
+    Geo:      ['#f5e090','#c8920a','#1e1500'],
+    Anemo:    ['#80f0cc','#1ab87a','#051a12'],
+    Dendro:   ['#aaee55','#4aaa18','#0d1e06'],
+    Pyro:     ['#ffb07a','#dd4010','#200a02'],
+    Cryo:     ['#a8e8ff','#2aa8e8','#061420'],
+    Hydro:    ['#78c8ff','#1478e8','#031020'],
+    Electro:  ['#d8b0ff','#7840e0','#140820'],
+    Unknown:  ['#c8c0d4','#6a607a','#141018']
   };
   let [c1,c2,fg]=palettes[element]||palettes.Unknown;
-  c1=blendHex(c1,'#f5efe2',0.12);
   if(type==='weapon'){
-    c1=blendHex(c1,'#65573e',0.14);
-    c2=blendHex(c2,'#3d3426',0.18);
-    fg='#1b1712';
+    // Weapons: darken slightly and shift toward gold-brown
+    c1=blendHex(c1,'#a08040',0.22);
+    c2=blendHex(c2,'#503010',0.28);
+    fg='#170f02';
   }
   if(status==='speculative'){
-    if(element==='Unknown'){
-      c1=blendHex(c1,'#c7c1d0',0.18);
-      c2=blendHex(c2,'#7b7388',0.08);
-      fg='#1d1a24';
-    } else {
-      c1=blendHex(c1,'#ffffff',0.08);
-      c2=blendHex(c2,'#8b809d',0.06);
-      fg=type==='weapon' ? '#1d1713' : '#1d1822';
-    }
+    // Speculative: desaturate and lighten
+    c1=blendHex(c1,'#b0a8bc',0.42);
+    c2=blendHex(c2,'#6a607a',0.38);
+    fg=type==='weapon'?'#1a1408':'#14101c';
   }
   return {c1,c2,fg};
 }
@@ -2125,7 +2121,10 @@ function renderTimeline(banners){
   baseParsed.forEach(b=>{
     const items=(Array.isArray(b.characters)?b.characters:[b.characters]).filter(Boolean);
     items.forEach((name,itemIndex)=>{
-      parsed.push({...b, _itemIndex:itemIndex, itemName:name, displayName:getItemDisplayName(b,name), element:getItemElement(b.type,name)});
+      // Use element from JSON elements array first, fall back to hardcoded map
+      const jsonElement = Array.isArray(b.elements) ? (b.elements[itemIndex]||b.elements[0]) : null;
+      const element = jsonElement && jsonElement!=='Unknown' ? jsonElement : getItemElement(b.type,name);
+      parsed.push({...b, _itemIndex:itemIndex, itemName:name, displayName:getItemDisplayName(b,name), element});
     });
   });
 
@@ -2201,7 +2200,7 @@ function renderTimeline(banners){
       if(idx>0) top += barHeight + (b._groupKey===prevGroup ? sameGap : groupGap);
       prevGroup=b._groupKey;
       const startOffset=diffDays(b._start,minDate)*dayWidth;
-      const durationDays=Math.max(1,diffDays(b._end,b._start)+1);
+      const durationDays=Math.max(1,diffDays(b._end,b._start));
       const barWidth=Math.max(84,durationDays*dayWidth-6);
       const isLive=now>=b._startMoment&&now<=b._endMoment;
       const isPast=now>b._endMoment;
@@ -2212,7 +2211,7 @@ function renderTimeline(banners){
       const countdown=formatCountdownParts(isLive?b.endDate:b.startDate,isLive?'end':'start');
       const statusText=isPast?'Ended':isLive?`${countdown.text} left`:`Starts in ${countdown.text}`;
       const palette = b.color
-        ? { c1: blendHex(b.color,'#ffffff',0.35), c2: b.color, fg: '#10131c' }
+        ? { c1: blendHex(b.color,'#ffffff',0.45), c2: blendHex(b.color,'#000000',0.15), fg: '#10131c' }
         : getElementPalette(b.element,b.type,b.status);
       const dimmed=PL.selBanner!==null&&!isSel?' dimmed':'';
       return `<button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="left:${startOffset+3}px;width:${barWidth}px;top:${top}px;height:${barHeight}px;background:linear-gradient(90deg,${palette.c1},${palette.c2});color:${palette.fg};" onclick="selectBanner(${b._index})">
