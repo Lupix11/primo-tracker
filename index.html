@@ -109,19 +109,19 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   .log-mobile-row{display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;}
   .log-mobile-row:hover{background:rgba(255,255,255,0.025);}
   .log-mobile-row.expanded{background:rgba(240,208,128,0.04);border-bottom:none;}
-  /* Mobile log: fixed height + slider like desktop */
-  .log-mobile-wrap{display:flex;gap:9px;align-items:stretch;}
-  .log-mobile-outer{flex:1;min-width:0;}
-  .log-mobile-vp{overflow:hidden;position:relative;}
-  .log-mobile-vp::after{content:'';position:absolute;left:0;right:0;bottom:0;height:18px;z-index:2;pointer-events:none;background:linear-gradient(to top,rgba(14,18,25,0.6),transparent);}
-  .log-mobile-strip{will-change:transform;transition:transform 0.18s cubic-bezier(0.25,0.8,0.25,1);}
+  /* Mobile log: native touch scroll */
+  .log-mobile-wrap{display:block;}
+  .log-mobile-outer{width:100%;}
+  .log-mobile-vp{overflow-y:auto;max-height:420px;-webkit-overflow-scrolling:touch;position:relative;}
+  .log-mobile-vp::after{content:'';position:absolute;left:0;right:0;bottom:0;height:24px;z-index:2;pointer-events:none;background:linear-gradient(to top,rgba(14,18,25,0.7),transparent);}
+  .log-mobile-strip{}
   /* Planner — hide tags and hard pity note */
   .gs-tag{display:none;}
   .hp-note{display:none;}
   /* Stats hero overlap fix */
-  .stats-hero{grid-template-columns:1fr;}
-  .stats-hero-main{display:none;}
-  .stats-hero-side{display:grid;grid-template-columns:1fr 1fr;min-width:0;}
+  .stats-hero{display:block;}
+  .stats-hero-main{display:none !important;}
+  .stats-hero-side{display:grid;grid-template-columns:1fr 1fr;min-width:0;width:100%;}
 }
   .settings-grid{grid-template-columns:1fr;}
   .set-row{flex-wrap:wrap;gap:8px;}
@@ -451,7 +451,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .plan-bad{color:#f08080;}
 .plan-soft{color:#80c0f0;}
 @media(max-width:920px){.ptl-head,.ptl-row{grid-template-columns:136px 1fr;}.plan-top{grid-template-columns:72px 1fr;}.plan-chip{grid-column:2;justify-self:start;text-align:left;}.plan-grid,.plan-rate-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:768px){.ptl-head,.ptl-row{grid-template-columns:108px 1fr;}.ptl-info{padding:10px;}.ptl-name2{white-space:normal;}.plan-top{grid-template-columns:1fr;}.plan-grade{text-align:left;font-size:42px;}.plan-grid,.plan-rate-grid{grid-template-columns:1fr;}.plan-insight{flex-direction:column;align-items:flex-start;}}
+@media(max-width:768px){.ptl-head,.ptl-row{grid-template-columns:108px 1fr;}.ptl-info{padding:10px;}.ptl-name2{white-space:normal;}.plan-top{grid-template-columns:1fr;}.plan-grade{text-align:left;font-size:42px;}.plan-grid,.plan-rate-grid{grid-template-columns:1fr 1fr;}.plan-insight{flex-direction:column;align-items:flex-start;}.plan-section{padding:8px 12px 0;}.plan-mini{padding:8px 10px;min-height:60px;}.plan-rate{padding:8px 10px;}.plan-mini-v,.plan-rate-v{font-size:20px;}.plan-section-title{font-size:9px;margin-bottom:6px;}.plan-result{padding:10px 12px;}}
 
 @media(max-width:760px){.settings-grid{grid-template-columns:1fr;}}
 .settings-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:11px;}
@@ -512,7 +512,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v133</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v134</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1311,7 +1311,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v133';
+const APP_VERSION = 'v134';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1765,19 +1765,8 @@ function renderLog(){
     mobileList.innerHTML='';
     if(!total){
       mobileList.innerHTML='<div style="padding:16px;color:#907898;">No entries yet!</div>';
-      if(mScrollHint) mScrollHint.textContent='';
     } else {
-      const MOB_PAGE=8,MOB_ROW_H=48;
-      // Build the slider+viewport structure
-      mobileList.innerHTML=`
-        <div class="log-mobile-wrap">
-          <div class="log-mobile-outer">
-            <div class="log-mobile-vp" id="m-log-vp" style="height:${MOB_PAGE*MOB_ROW_H}px;">
-              <div class="log-mobile-strip" id="m-log-strip"></div>
-            </div>
-          </div>
-          <div class="v-col"><input type="range" class="v-slider" id="m-log-slider" min="0" value="0" step="1" oninput="onMSlider()"/></div>
-        </div>`;
+      mobileList.innerHTML=`<div class="log-mobile-wrap"><div class="log-mobile-outer"><div class="log-mobile-vp"><div class="log-mobile-strip" id="m-log-strip"></div></div></div></div>`;
       const strip=document.getElementById('m-log-strip');
       rev.forEach(e=>{
         const oi=entries.findIndex(x=>x.date===e.date),g=gains[oi];
@@ -1786,7 +1775,6 @@ function renderLog(){
         const nd=e.notes?'<span class="note-dot"></span>':'',isExp=expandedDate===e.date;
         const row=document.createElement('div');
         row.className='log-mobile-row'+(isExp?' expanded':'');
-        row.style.height=MOB_ROW_H+'px';
         row.innerHTML=`<span style="color:#c8a84b;font-size:13px;min-width:48px;">${fmtDate(e.date)}${nd}</span><span style="flex:1;text-align:center;font-size:14px;">${e.primo!=null?e.primo.toLocaleString():'—'}</span><span style="font-size:14px;min-width:60px;text-align:right;">${gh}</span>`;
         row.addEventListener('click',()=>toggleRowExpand(e.date));
         strip.appendChild(row);
@@ -1795,16 +1783,7 @@ function renderLog(){
         exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label">💎 Primogems</div><input class="ef-input" type="number" id="mep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label">✨ Fates</div><input class="ef-input" type="number" id="mef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="mepv-${e.date}"></div><textarea class="expand-note" id="men-${e.date}" placeholder="Notes...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
         strip.appendChild(exp);
       });
-      // Set up slider
-      let expandH=0;
-      if(expandedDate){const op=strip.querySelector(`.log-expand[data-date="${expandedDate}"]`);if(op){op.style.height='auto';expandH=op.offsetHeight;}}
-      const vp=document.getElementById('m-log-vp');
-      if(vp) vp.style.height=(MOB_PAGE*MOB_ROW_H+expandH)+'px';
-      const sl=document.getElementById('m-log-slider');
-      const maxO=Math.max(0,total-MOB_PAGE);
-      if(sl){sl.max=maxO;sl.value=maxO-Math.min(offset,maxO);}
-      applyMSlider(Math.min(offset,maxO),MOB_ROW_H);
-      if(mScrollHint) mScrollHint.textContent=total>MOB_PAGE?`${Math.min(offset+1,total)}–${Math.min(offset+MOB_PAGE,total)} of ${total}`:'';
+      if(mScrollHint) mScrollHint.textContent=total>8?'↕ scroll for older entries':'';
     }
   }
 
@@ -2168,7 +2147,8 @@ function renderTimeline(banners){
         </div>
       </button>`;
     }).join('');
-    list.innerHTML=cards+'<div style="font-size:11px;color:#504060;text-align:center;margin-top:4px;">Tap a banner to use it as your planner target</div>';
+    const scrollHint='<div style="font-size:11px;color:#504060;text-align:center;padding:6px 0 2px;">↕ scroll · tap to select</div>';
+    list.innerHTML=`<div id="m-banner-scroll" style="max-height:45vh;overflow-y:auto;-webkit-overflow-scrolling:touch;">${cards}</div>${scrollHint}`;
     return;
   }
 
