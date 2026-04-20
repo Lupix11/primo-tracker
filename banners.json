@@ -2,7 +2,8 @@
   {
     "phase": "Phase 1", "version": "6.5", "type": "character",
     "characters": ["Linnea", "Chasca"], "elements": ["Geo", "Anemo"],
-    "images": {
+    "images": 
+    {
       "Linnea": { "desktop": "images/linnea/linnea-desktop.jpg", "mobile": "images/linnea/linnea-mobile.jpg" },
       "Chasca": { "desktop": "images/chasca/chasca-desktop.jpg", "mobile": "images/chasca/chasca-mobile.jpg" }
     },
@@ -16,7 +17,8 @@
   {
     "phase": "Phase 2", "version": "6.5", "type": "character",
     "characters": ["Nefer", "Lauma"], "elements": ["Dendro", "Dendro"],
-    "images": {
+    "images": 
+    {
       "Nefer": { "desktop": "images/nefer/nefer-desktop.jpg", "mobile": "images/nefer/nefer-mobile.jpg" },
       "Lauma": { "desktop": "images/lauma/lauma-desktop.jpg", "mobile": "images/lauma/lauma-mobile.jpg" }
     },
@@ -30,6 +32,11 @@
   {
     "phase": "Phase 1", "version": "6.6", "type": "character",
     "characters": ["Nicole", "Lohen"], "elements": ["Pyro", "Cryo"],
+    "images": 
+    {
+      "Nicole": { "desktop": "images/nicole/nicole-desktop.jpg", "mobile": "images/nicole/nicole-mobile.jpg" },
+      "Lohen": { "desktop": "images/lohen/lohen-desktop.jpg", "mobile": "images/lohen/lohen-mobile.jpg" }
+    },
     "startDate": "2026-05-20", "endDate": "2026-06-09", "status": "speculative"
   },
   {
