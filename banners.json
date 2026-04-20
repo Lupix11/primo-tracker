@@ -74,73 +74,13 @@
     "startDate": "2026-08-12", "endDate": "2026-09-01", "status": "speculative"
   },
   {
-    "phase": "Phase 2", "version": "7.0", "type": "character",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
-    "startDate": "2026-09-01", "endDate": "2026-09-22", "status": "speculative"
-  },
-  {
-    "phase": "Phase 2", "version": "7.0", "type": "weapon",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
-    "startDate": "2026-09-01", "endDate": "2026-09-22", "status": "speculative"
-  },
-  {
-    "phase": "Phase 1", "version": "7.1", "type": "character",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
-    "startDate": "2026-09-23", "endDate": "2026-10-13", "status": "speculative"
-  },
-  {
-    "phase": "Phase 1", "version": "7.1", "type": "weapon",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
-    "startDate": "2026-09-23", "endDate": "2026-10-13", "status": "speculative"
-  },
-  {
-    "phase": "Phase 2", "version": "7.1", "type": "character",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
-    "startDate": "2026-10-13", "endDate": "2026-11-03", "status": "speculative"
-  },
-  {
-    "phase": "Phase 2", "version": "7.1", "type": "weapon",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
-    "startDate": "2026-10-13", "endDate": "2026-11-03", "status": "speculative"
-  },
-  {
-    "phase": "Phase 1", "version": "7.2", "type": "character",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
-    "startDate": "2026-11-04", "endDate": "2026-11-24", "status": "speculative"
-  },
-  {
-    "phase": "Phase 1", "version": "7.2", "type": "weapon",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
-    "startDate": "2026-11-04", "endDate": "2026-11-24", "status": "speculative"
-  },
-  {
-    "phase": "Phase 2", "version": "7.2", "type": "character",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
-    "startDate": "2026-11-24", "endDate": "2026-12-15", "status": "speculative"
-  },
-  {
-    "phase": "Phase 2", "version": "7.2", "type": "weapon",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
-    "startDate": "2026-11-24", "endDate": "2026-12-15", "status": "speculative"
-  },
-  {
-    "phase": "Phase 1", "version": "7.3", "type": "character",
-    "characters": ["Tsaritsa", "???"], "elements": ["Cryo", "Unknown"],
-    "startDate": "2026-12-16", "endDate": "2027-01-05", "status": "speculative"
-  },
-  {
-    "phase": "Phase 1", "version": "7.3", "type": "weapon",
-    "characters": ["Tsaritsa's weapon", "???"], "elements": ["Cryo", "Unknown"],
-    "startDate": "2026-12-16", "endDate": "2027-01-05", "status": "speculative"
-  },
-  {
     "phase": "Phase 2", "version": "7.3", "type": "character",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
+    "characters": ["Tsaritsa", "???"], "elements": ["Cryo", "Unknown"],
     "startDate": "2027-01-05", "endDate": "2027-01-26", "status": "speculative"
   },
   {
     "phase": "Phase 2", "version": "7.3", "type": "weapon",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
+    "characters": ["Tsaritsa's weapon", "???"], "elements": ["Cryo", "Unknown"],
     "startDate": "2027-01-05", "endDate": "2027-01-26", "status": "speculative"
   }
 ]
