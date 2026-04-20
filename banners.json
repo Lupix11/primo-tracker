@@ -62,25 +62,5 @@
     "phase": "Phase 2", "version": "6.7", "type": "weapon",
     "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
     "startDate": "2026-07-21", "endDate": "2026-08-11", "status": "speculative"
-  },
-  {
-    "phase": "Phase 1", "version": "7.0", "type": "character",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
-    "startDate": "2026-08-12", "endDate": "2026-09-01", "status": "speculative"
-  },
-  {
-    "phase": "Phase 1", "version": "7.0", "type": "weapon",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
-    "startDate": "2026-08-12", "endDate": "2026-09-01", "status": "speculative"
-  },
-  {
-    "phase": "Phase 2", "version": "7.3", "type": "character",
-    "characters": ["Tsaritsa", "???"], "elements": ["Cryo", "Unknown"],
-    "startDate": "2027-01-05", "endDate": "2027-01-26", "status": "speculative"
-  },
-  {
-    "phase": "Phase 2", "version": "7.3", "type": "weapon",
-    "characters": ["Tsaritsa's weapon", "???"], "elements": ["Cryo", "Unknown"],
-    "startDate": "2027-01-05", "endDate": "2027-01-26", "status": "speculative"
   }
 ]
