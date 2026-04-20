@@ -11,6 +11,10 @@
   {
     "phase": "Phase 1", "version": "6.5", "type": "weapon",
     "characters": ["Golden Frostbound Oath", "Astral Vulture's Crimson Plumage"], "elements": ["Geo", "Anemo"],
+    "images": {
+      "Golden Frostbound Oath": { "desktop": "images/golden-frostbound-oath/desktop.jpg", "mobile": "images/golden-frostbound-oath/mobile.jpg" },
+      "Astral Vulture's Crimson Plumage": { "desktop": "images/astral-vultures-crimson-plumage/desktop.jpg", "mobile": "images/astral-vultures-crimson-plumage/mobile.jpg" }
+    },
     "startDate": "2026-04-08", "endDate": "2026-04-28", "status": "live"
   },
   {
