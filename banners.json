@@ -16,6 +16,10 @@
   {
     "phase": "Phase 2", "version": "6.5", "type": "character",
     "characters": ["Nefer", "Lauma"], "elements": ["Dendro", "Dendro"],
+    "images": {
+      "Nefer": { "desktop": "images/nefer/nefer-desktop.jpg", "mobile": "images/nefer/nefer-mobile.jpg" },
+      "Lauma": { "desktop": "images/lauma/lauma-desktop.jpg", "mobile": "images/lauma/lauma-mobile.jpg" }
+    },
     "startDate": "2026-04-28", "endDate": "2026-05-19", "status": "soon"
   },
   {
