@@ -514,7 +514,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v164</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v165</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -929,10 +929,10 @@ const SETTINGS_KEY='primo-tracker-settings-v1';
 const PAGE_SIZE=5,ROW_H=44;
 
 const PLANNER_EXTRA_BANNERS=[
-  {phase:'Phase 1',version:'7.0',type:'character',characters:['??? (7.0 P1)','???'],elements:['Unknown','Unknown'],startDate:'2026-08-12',endDate:'2026-09-01',status:'speculative'},
-  {phase:'Phase 1',version:'7.0',type:'weapon',characters:['??? weapon (7.0 P1)','???'],elements:['Unknown','Unknown'],startDate:'2026-08-12',endDate:'2026-09-01',status:'speculative'},
-  {phase:'Phase 2',version:'7.3',type:'character',characters:['Tsaritsa','???'],elements:['Cryo','Unknown'],startDate:'2027-01-05',endDate:'2027-01-26',status:'speculative'},
-  {phase:'Phase 2',version:'7.3',type:'weapon',characters:["Tsaritsa's weapon",'???'],elements:['Cryo','Unknown'],startDate:'2027-01-05',endDate:'2027-01-26',status:'speculative'}
+  {phase:'Phase 1',version:'7.0',type:'character',characters:['???','???'],elements:['Unknown','Unknown'],startDate:'2026-08-12',endDate:'2026-09-01',status:'speculative'},
+  {phase:'Phase 1',version:'7.0',type:'weapon',characters:['???','???'],elements:['Unknown','Unknown'],startDate:'2026-08-12',endDate:'2026-09-01',status:'speculative'},
+  {phase:'Phase 1',version:'7.3',type:'character',characters:['Tsaritsa','???'],elements:['Cryo','Unknown'],startDate:'2026-12-16',endDate:'2027-01-05',status:'speculative'},
+  {phase:'Phase 1',version:'7.3',type:'weapon',characters:["Tsaritsa's weapon",'???'],elements:['Cryo','Unknown'],startDate:'2026-12-16',endDate:'2027-01-05',status:'speculative'}
 ];
 function getPlannerBanners(){return [...(PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS),...PLANNER_EXTRA_BANNERS];}
 const PAGES=['dashboard','stats','planner','timeline','settings'];
@@ -1349,7 +1349,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v164';
+const APP_VERSION = 'v165';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2343,8 +2343,8 @@ function renderTimeline(banners){
       </div>
     </div>
   </div>
-  <div class="ptl-scroll-hint">Use the mouse wheel or trackpad to scroll</div>
-  <div class="ptl-empty">Use the dropdowns in the Planner tab to set your target banner.</div>`;
+  <div class="ptl-scroll-hint">Shift + scroll to pan left/right</div>
+`;
   setupTimelineScroll();
   // Mirror to mobile list if present
   const mlCopy=document.getElementById('timeline-list-mobile');
