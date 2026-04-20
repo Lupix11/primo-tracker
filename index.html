@@ -514,7 +514,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v165</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v166</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -815,7 +815,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
             <div class="set-title" data-i18n="settings_data_title">Data persistence</div>
             <div class="set-row">
               <div class="set-copy">
-                <div class="set-label" data-i18n="settings_autosave_label" data-i18n="settings_autosave_label">Remember my data on this device</div>
+                <div class="set-label" data-i18n="settings_autosave_label">Remember my data on this device</div>
                 <div class="set-sub" data-i18n="settings_autosave_sub">When this is on, entries, planner data, and preferences are saved locally in your browser.</div>
               </div>
               <div class="seg">
@@ -825,14 +825,14 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
             </div>
             <div class="set-row">
               <div class="set-copy">
-                <div class="set-label" data-i18n="settings_storage_label" data-i18n="settings_storage_label">Storage status</div>
+                <div class="set-label" data-i18n="settings_storage_label">Storage status</div>
                 <div class="set-sub" id="storage-status-text">—</div>
               </div>
               <div class="set-pill"><span class="set-dot"></span><span id="storage-kind-pill">Browser storage</span></div>
             </div>
             <div class="set-row">
               <div class="set-copy">
-                <div class="set-label" data-i18n="settings_backup_label" data-i18n="settings_backup_label">Backup & restore</div>
+                <div class="set-label" data-i18n="settings_backup_label">Backup & restore</div>
                 <div class="set-sub" data-i18n="settings_backup_sub">Export a JSON backup or import one later to restore this device.</div>
               </div>
               <div class="seg">
@@ -843,7 +843,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
             </div>
             <div class="set-row">
               <div class="set-copy">
-                <div class="set-label" data-i18n="settings_clear_label" data-i18n="settings_clear_label">Clear saved local data</div>
+                <div class="set-label" data-i18n="settings_clear_label">Clear saved local data</div>
                 <div class="set-sub" data-i18n="settings_clear_sub">Deletes saved entries, planner data, and preferences from this browser only.</div>
               </div>
               <button class="set-btn danger" onclick="clearLocalData()" data-i18n="settings_clear">Clear data</button>
@@ -941,8 +941,6 @@ let APP={lang:'en',persistLocal:true,syncConnected:false,syncLastAt:'',syncProvi
 let PROFILES={activeId:'main',items:[]};
 let profileEditMode=null;
 let timelineScrollLeft=0;
-let timelineWheelTarget=0;
-let timelineWheelRAF=0;
 
 // Planner state
 let PL={
@@ -983,23 +981,7 @@ const I18N={
     stats_snapshot:'Snapshot',stats_consistency:'Consistency',stats_extremes:'Extremes',
     term_primogems:'Primogems',term_fates:'Fates',term_total_primos:'Total primos',term_total_pulls:'Total pulls',term_daily_gain:'Daily Gain'
   },
-  es:{
-    nav_dashboard:'Inicio',nav_stats:'Estadísticas',nav_planner:'Planner',nav_settings:'Ajustes',
-    settings_title:'Ajustes',settings_language_title:'Idioma',settings_language_label:'Idioma de la app',settings_language_sub:'Cambia el idioma de la interfaz.',
-    settings_data_title:'Persistencia de datos',settings_autosave_label:'Recordar mis datos en este dispositivo',settings_autosave_sub:'Si está activado, las entradas, el planner y las preferencias se guardan localmente en tu navegador.',
-    settings_storage_label:'Estado del almacenamiento',settings_backup_label:'Respaldo y restauración',settings_backup_sub:'Exporta un respaldo JSON o importa uno después para restaurar este dispositivo.',
-    settings_export:'Exportar',settings_import:'Importar',settings_clear_label:'Borrar datos guardados',settings_clear_sub:'Elimina las entradas, el planner y las preferencias guardadas solo en este navegador.',
-    settings_clear:'Borrar datos',settings_about_title:'Sobre la fase 1',settings_about_item1_label:'Guardado local primero',settings_about_item1_sub:'Esta versión guarda tus datos primero en el dispositivo actual, para que la app recuerde tu progreso sin necesitar login todavía.',
-    settings_about_item2_label:'Sincronización en la nube después',settings_about_item2_sub:'Google / sync en la nube, múltiples cuentas y seguridad online encajarán aquí después sin reconstruir toda la app.',
-    settings_about_item3_label:'Alcance actual',settings_about_item3_sub:'La fase 1 incluye persistencia local, controles de respaldo y selección de idioma.',
-    common_on:'Sí',common_off:'No',
-    storage_enabled:'El guardado está activado en este dispositivo.',storage_disabled:'El guardado está desactivado. Tus cambios no se recordarán después de recargar.',
-    status_saved:'Ajustes guardados.',status_exported:'Respaldo descargado.',status_imported:'Respaldo importado correctamente.',status_cleared:'Datos locales borrados.',status_failed:'Algo salió mal.',
-    dash_quick_add:'Añadir rápido',dash_overview:'Resumen',dash_log:'Registro',
-    stats_daily_gain_distribution:'Distribución de ganancia diaria',stats_selected_range_overview:'Resumen del rango seleccionado',stats_average_daily_gain:'Promedio diario ganado',
-    stats_snapshot:'Resumen',stats_consistency:'Consistencia',stats_extremes:'Extremos',
-    term_primogems:'Protogemas',term_fates:'Destinos',term_total_primos:'Protogemas totales',term_total_pulls:'Tiradas totales',term_daily_gain:'Ganancia diaria'
-  }
+
 };
 function t(k){return (I18N[APP.lang]&&I18N[APP.lang][k])||I18N.en[k]||k;}
 
@@ -1322,7 +1304,6 @@ async function storageRemoveValue(key){
   try{localStorage.removeItem(key);}catch(e){}
 }
 function applyLanguage(){
-  APP.lang='en';
   document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n);});
   updateStorageUI();
 }
@@ -1349,7 +1330,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v165';
+const APP_VERSION = 'v166';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1552,11 +1533,6 @@ async function toggleMockSync() { connectGoogle(); }
 function setSettingsStatus(msg){
   const el=document.getElementById('settings-status');
   if(el)el.textContent=msg;
-}
-async function setLanguage(lang){
-  APP.lang='en';
-  saveSettings();
-  applyLanguage();
 }
 async function exportBackup(){
   try{
@@ -2352,29 +2328,6 @@ function renderTimeline(banners){
 }
 
 
-function selectBanner(i){
-  // Save scroll positions before re-render
-  const scroller=document.querySelector('.ptl-scroll');
-  if(scroller) timelineScrollLeft=scroller.scrollLeft;
-  const mScroll=document.getElementById('m-banner-scroll');
-  const mScrollTop=mScroll?mScroll.scrollTop:0;
-
-  const clickedBanner=(PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS)[i];
-  if(clickedBanner){
-    if(clickedBanner.type==='character'){
-      PL.selCharBanner=PL.selCharBanner===i?null:i;
-    } else {
-      PL.selWeapBanner=PL.selWeapBanner===i?null:i;
-    }
-  }
-  const banners=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;
-  renderTimeline(banners);
-  savePL();calcPlanner();
-
-  // Restore mobile scroll position after re-render
-  const mScrollNew=document.getElementById('m-banner-scroll');
-  if(mScrollNew) mScrollNew.scrollTop=mScrollTop;
-}
 
 function toggleSection(type){
   const sec=document.getElementById(type+'-section');
