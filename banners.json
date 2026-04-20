@@ -2,7 +2,10 @@
   {
     "phase": "Phase 1", "version": "6.5", "type": "character",
     "characters": ["Linnea", "Chasca"], "elements": ["Geo", "Anemo"],
-    "image": "images/linnea.jpg",
+    "images": {
+      "Linnea": { "desktop": "images/linnea/linnea-desktop.jpg", "mobile": "images/linnea/linnea-mobile.jpg" },
+      "Chasca": { "desktop": "images/chasca/chasca-desktop.jpg", "mobile": "images/chasca/chasca-mobile.jpg" }
+    },
     "startDate": "2026-04-08", "endDate": "2026-04-28", "status": "live"
   },
   {
@@ -32,22 +35,12 @@
   },
   {
     "phase": "Phase 2", "version": "6.6", "type": "character",
-    "characters": ["Durin", "Mavuika"], "elements": ["Pyro", "Pyro"],
+    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
     "startDate": "2026-06-09", "endDate": "2026-06-30", "status": "speculative"
   },
   {
     "phase": "Phase 2", "version": "6.6", "type": "weapon",
-    "characters": ["Athame Artis", "A Thousand Blazing Suns"], "elements": ["Pyro", "Pyro"],
+    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
     "startDate": "2026-06-09", "endDate": "2026-06-30", "status": "speculative"
-  },
-  {
-    "phase": "Phase 1", "version": "6.7", "type": "character",
-    "characters": ["Sandrone"], "elements": ["Unknown"],
-    "startDate": "2026-07-01", "endDate": "2026-07-21", "status": "speculative"
-  },
-  {
-    "phase": "Phase 1", "version": "6.7", "type": "weapon",
-    "characters": ["Sandrone's weapon"], "elements": ["Unknown"],
-    "startDate": "2026-07-01", "endDate": "2026-07-21", "status": "speculative"
   }
 ]
