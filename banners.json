@@ -30,7 +30,7 @@
   },
   {
     "phase": "Phase 1", "version": "6.6", "type": "weapon",
-    "characters": ["Nicole's weapon", "Lohen's weapon"], "elements": ["Pyro", "Cryo"],
+    "characters": ["Starcaller's Watch", "Lohen's weapon"], "elements": ["Pyro", "Cryo"],
     "startDate": "2026-05-20", "endDate": "2026-06-09", "status": "speculative"
   },
   {
@@ -40,7 +40,7 @@
   },
   {
     "phase": "Phase 2", "version": "6.6", "type": "weapon",
-    "characters": ["Mavuika's weapon", "Durin's weapon"], "elements": ["Pyro", "Anemo"],
+    "characters": ["A Thousand Blazing Suns", "Athame Artis"], "elements": ["Pyro", "Anemo"],
     "startDate": "2026-06-09", "endDate": "2026-06-30", "status": "speculative"
   },
   {
