@@ -514,7 +514,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v161</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v162</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -653,13 +653,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
     </div>
     <!-- Card: Goal + Results -->
     <div class="card">
-      <div class="card-title" style="margin-bottom:8px;">Pull Goal</div>
-      <div style="margin-bottom:12px;">
-        <div style="font-size:10px;color:#c8a84b;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:5px;">Target Banner</div>
-        <select id="planner-banner-select" onchange="setPlannerBanner(this.value)" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.18);border-radius:8px;color:#e8dfc8;padding:8px 10px;font-family:'Nunito',sans-serif;font-size:13px;appearance:auto;">
-          <option value="">— Select target banner —</option>
-        </select>
-      </div>
+      <div class="card-title" style="margin-bottom:4px;">Pull Goal</div>
 
       <!-- Two sections: Character + Weapon -->
       <div class="goal-sections">
@@ -693,6 +687,12 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
               <div class="gs-tdot" id="char-gdot"></div>
               <div class="gs-tlabel" id="char-glabel">Next is 50/50 (no guarantee)</div>
             </div>
+            <div style="margin-top:10px;">
+              <div class="gs-label" style="margin-bottom:4px;">Target Banner</div>
+              <select id="char-banner-select" onchange="setPlannerCharBanner(this.value)" class="gs-select" style="width:100%;">
+                <option value="">— select banner —</option>
+              </select>
+            </div>
           </div>
         </div>
         <!-- Weapon -->
@@ -722,6 +722,12 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
             <div class="gs-toggle-row" id="weap-path-row" onclick="toggleWeapPath()">
               <div class="gs-tdot" id="weap-pdot"></div>
               <div class="gs-tlabel" id="weap-plabel">Epitomized Path: 0 (no progress)</div>
+            </div>
+            <div style="margin-top:10px;">
+              <div class="gs-label" style="margin-bottom:4px;">Target Banner</div>
+              <select id="weap-banner-select" onchange="setPlannerWeapBanner(this.value)" class="gs-select" style="width:100%;">
+                <option value="">— select banner —</option>
+              </select>
             </div>
           </div>
         </div>
@@ -1343,7 +1349,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v161';
+const APP_VERSION = 'v162';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1371,8 +1377,8 @@ function initGoogleAuth() {
     scope: GDRIVE_SCOPE,
     callback: onGoogleToken
   });
-  // If user was previously signed in, silently refresh the token
-  if (APP.syncConnected) {
+  // If user was previously signed in, silently refresh the token (desktop only)
+  if (APP.syncConnected && window.innerWidth > 768) {
     gdSilentReauth = true;
     gdTokenClient.requestAccessToken({ prompt: '' });
   }
@@ -1664,7 +1670,7 @@ function goTo(pg){
   document.getElementById('page-'+pg).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===pg));
   if(pg==='stats')renderStats();
-  if(pg==='planner'){populatePlannerDropdown();calcPlanner();}
+  if(pg==='planner'){populatePlannerDropdown();calcPlanner();if(isMobile()){const b=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;renderTimeline(b);}}
   if(pg==='timeline'){const b=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;renderTimeline(b);}
   if(pg==='settings'){updateSettingsControls();updateStorageUI();renderProfileManager();renderPlannerRegionUI();updateSyncUI();}
 }
@@ -2113,11 +2119,11 @@ function setupTimelineScroll(){
   const maxScroll=Math.max(0,el.scrollWidth-el.clientWidth);
   el.scrollLeft=Math.max(0,Math.min(maxScroll,timelineScrollLeft));
   el.onwheel=e=>{
-    const dominant=Math.abs(e.deltaY)>=Math.abs(e.deltaX)?e.deltaY:e.deltaX;
-    if(!dominant)return;
+    if(!e.shiftKey) return; // normal scroll = page scroll; shift+scroll = timeline pan
     e.preventDefault();
+    const delta=Math.abs(e.deltaY)>=Math.abs(e.deltaX)?e.deltaY:e.deltaX;
     const factor=e.deltaMode===1?48:1.35;
-    el.scrollLeft=Math.max(0,Math.min(el.scrollWidth-el.clientWidth,el.scrollLeft+dominant*factor));
+    el.scrollLeft=Math.max(0,Math.min(el.scrollWidth-el.clientWidth,el.scrollLeft+delta*factor));
     timelineScrollLeft=el.scrollLeft;
   };
   el.onscroll=()=>{timelineScrollLeft=el.scrollLeft;};
@@ -2260,8 +2266,9 @@ function renderTimeline(banners){
       const isLive=now>=b._startMoment&&now<=b._endMoment;
       const isPast=now>b._endMoment;
       const isSpec=b.status==='speculative';
-      const baseSel=PL.selBanner!==null && baseParsed[PL.selBanner];
-      const isSel=baseSel && baseSel.phase===b.phase && baseSel.version===b.version && baseSel.type===b.type && baseSel.startDate===b.startDate && baseSel.endDate===b.endDate;
+      const baseSel=(PL.selCharBanner!==null&&baseParsed[PL.selCharBanner])||(PL.selWeapBanner!==null&&baseParsed[PL.selWeapBanner])||null;
+      const selIdx=b.type==='character'?PL.selCharBanner:PL.selWeapBanner;
+      const isSel=selIdx===b._index;
       const statusClass=isPast?'spec':isLive?'live':isSpec?'spec':'soon';
       const countdown=formatCountdownParts(isLive?b.endDate:b.startDate,isLive?'end':'start');
       const statusText=isPast?'Ended':isLive?`${countdown.text} left`:`Starts in ${countdown.text}`;
@@ -2271,7 +2278,8 @@ function renderTimeline(banners){
       const palette = b.color
         ? { c1: blendHex(b.color,'#ffffff',0.45), c2: blendHex(b.color,'#000000',0.15), fg: '#10131c' }
         : getElementPalette(b.element,b.type,b.status);
-      const dimmed=PL.selBanner!==null&&!isSel?' dimmed':'';
+      const typeSelIdx=b.type==='character'?PL.selCharBanner:PL.selWeapBanner;
+      const dimmed=typeSelIdx!==null&&!isSel?' dimmed':'';
       const zIdx=2+Math.floor(diffDays(b._start,minDate)/7);
       // Image: resolve URL relative to banners.json location
       const REPO_BASE='https://lupix11.github.io/primo-tracker/';
@@ -2336,7 +2344,7 @@ function renderTimeline(banners){
     </div>
   </div>
   <div class="ptl-scroll-hint">Use the mouse wheel or trackpad to scroll</div>
-  <div class="ptl-empty">${PL.selBanner===null?'Click a banner bar to set it as your planner target.':'Target set — see Planner tab for calculations.'}</div>`;
+  <div class="ptl-empty">${PL.selCharBanner===null&&PL.selWeapBanner===null?'Click a banner bar to set it as your planner target.':'Target set — see Planner tab for calculations.'}</div>`;
   setupTimelineScroll();
   // Mirror to mobile list if present
   const mlCopy=document.getElementById('timeline-list-mobile');
@@ -2351,7 +2359,14 @@ function selectBanner(i){
   const mScroll=document.getElementById('m-banner-scroll');
   const mScrollTop=mScroll?mScroll.scrollTop:0;
 
-  PL.selBanner=PL.selBanner===i?null:i;
+  const clickedBanner=(PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS)[i];
+  if(clickedBanner){
+    if(clickedBanner.type==='character'){
+      PL.selCharBanner=PL.selCharBanner===i?null:i;
+    } else {
+      PL.selWeapBanner=PL.selWeapBanner===i?null:i;
+    }
+  }
   const banners=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;
   renderTimeline(banners);
   savePL();calcPlanner();
@@ -2432,37 +2447,32 @@ function calcWeapMinMax(copies,pity,fatePoint){
 }
 
 
-function setPlannerBanner(val){
-  PL.selBanner=val===''?null:parseInt(val);
-  savePL();
-  calcPlanner();
+function setPlannerCharBanner(val){
+  PL.selCharBanner=val===''?null:parseInt(val);
+  savePL(); calcPlanner();
 }
-
+function setPlannerWeapBanner(val){
+  PL.selWeapBanner=val===''?null:parseInt(val);
+  savePL(); calcPlanner();
+}
 function populatePlannerDropdown(){
-  const sel=document.getElementById('planner-banner-select');
-  if(!sel) return;
   const allBanners=getPlannerBanners();
-  const curVal=sel.value;
-  // Clear existing options except first
-  while(sel.options.length>1) sel.remove(1);
-  // Group by type
-  const charGroup=document.createElement('optgroup');
-  charGroup.label='Character Banners';
-  const weapGroup=document.createElement('optgroup');
-  weapGroup.label='Weapon Banners';
-  allBanners.forEach((b,i)=>{
-    const names=Array.isArray(b.characters)?b.characters.join(' · '):b.characters;
-    const label=`${b.version} ${b.phase} · ${names}${b.status==='speculative'?' (spec.)':''}`;
-    const opt=document.createElement('option');
-    opt.value=i;
-    opt.textContent=label;
-    if(b.type==='character') charGroup.appendChild(opt);
-    else weapGroup.appendChild(opt);
-  });
-  sel.appendChild(charGroup);
-  sel.appendChild(weapGroup);
-  // Restore selection
-  if(PL.selBanner!==null) sel.value=PL.selBanner;
+  const fillSel=(selId,type,curVal)=>{
+    const sel=document.getElementById(selId);
+    if(!sel) return;
+    while(sel.options.length>1) sel.remove(1);
+    allBanners.forEach((b,i)=>{
+      if(b.type!==type) return;
+      const names=Array.isArray(b.characters)?b.characters.join(' · '):b.characters;
+      const label=`${b.version} ${b.phase} · ${names}${b.status==='speculative'?' (spec.)':''}`;
+      const opt=document.createElement('option');
+      opt.value=i; opt.textContent=label;
+      sel.appendChild(opt);
+    });
+    if(curVal!==null) sel.value=curVal;
+  };
+  fillSel('char-banner-select','character',PL.selCharBanner);
+  fillSel('weap-banner-select','weapon',PL.selWeapBanner);
 }
 function calcPlanner(){
   savePL();
@@ -2498,15 +2508,28 @@ function calcPlanner(){
   const pullsPerDay=avgPrimoDay/160;
 
   const banners=getPlannerBanners();
-  let daysLeft=null,deadlineStr='',targetName='';
-  if(PL.selBanner!==null&&banners[PL.selBanner]){
-    const b=banners[PL.selBanner];
-    const now=new Date();
+  const now=new Date();
   const today=getRegionDayFloor(now,APP.plannerRegion);
+  const getBannerDeadline=(idx)=>{
+    if(idx===null||!banners[idx]) return null;
+    const b=banners[idx];
     const targetDate=parseISODateLocal(PL.timing==='start'?b.startDate:b.endDate);
-    daysLeft=Math.max(0,Math.ceil((targetDate-today)/(864e5)));
-    deadlineStr=`${PL.timing==='start'?'banner start':'banner end'} · ${PL.timing==='start'?fmtMonthDayWithRegion(b.startDate):fmtMonthDayWithRegion(b.endDate)}`;
-    targetName=Array.isArray(b.characters)?b.characters.join(' · '):b.characters;
+    const dl=Math.max(0,Math.ceil((targetDate-today)/(864e5)));
+    const ds=`${PL.timing==='start'?'banner start':'banner end'} · ${PL.timing==='start'?fmtMonthDayWithRegion(b.startDate):fmtMonthDayWithRegion(b.endDate)}`;
+    const tn=Array.isArray(b.characters)?b.characters.join(' · '):b.characters;
+    return {dl,ds,tn,b};
+  };
+  const charDeadline=PL.charEnabled?getBannerDeadline(PL.selCharBanner):null;
+  const weapDeadline=PL.weapEnabled?getBannerDeadline(PL.selWeapBanner):null;
+  // Use the earlier deadline as the binding constraint
+  let daysLeft=null,deadlineStr='select target',targetName='',_deadlineBanner=null;
+  if(charDeadline&&weapDeadline){
+    const bind=charDeadline.dl<=weapDeadline.dl?charDeadline:weapDeadline;
+    daysLeft=bind.dl; deadlineStr=bind.ds; targetName=bind.tn; _deadlineBanner=bind.b;
+  } else if(charDeadline){
+    daysLeft=charDeadline.dl; deadlineStr=charDeadline.ds; targetName=charDeadline.tn; _deadlineBanner=charDeadline.b;
+  } else if(weapDeadline){
+    daysLeft=weapDeadline.dl; deadlineStr=weapDeadline.ds; targetName=weapDeadline.tn; _deadlineBanner=weapDeadline.b;
   }
 
   const projPulls=daysLeft!==null?Math.floor(curPulls + pullsPerDay*daysLeft):null;
@@ -2568,7 +2591,7 @@ function calcPlanner(){
       <div class="plan-chip">
         <div class="plan-chip-val">${daysLeft!==null?daysLeft+'d':'—'}</div>
         <div class="plan-chip-lbl">${daysLeft!==null?deadlineStr:'select target'}</div>
-        <div class="plan-chip-sub">${daysLeft!==null?formatCountdownParts(PL.timing==='start'?banners[PL.selBanner].startDate:banners[PL.selBanner].endDate, PL.timing).text:'pick a banner bar'}</div>
+        <div class="plan-chip-sub">${daysLeft!==null&&_deadlineBanner?formatCountdownParts(PL.timing==='start'?_deadlineBanner.startDate:_deadlineBanner.endDate, PL.timing).text:'—'}</div>
       </div>
     </div>
 
