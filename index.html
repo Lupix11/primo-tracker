@@ -514,7 +514,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v148</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v149</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1313,7 +1313,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v148';
+const APP_VERSION = 'v149';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2234,6 +2234,8 @@ function renderTimeline(banners){
       const statusClass=isPast?'spec':isLive?'live':isSpec?'spec':'soon';
       const countdown=formatCountdownParts(isLive?b.endDate:b.startDate,isLive?'end':'start');
       const statusText=isPast?'Ended':isLive?`${countdown.text} left`:`Starts in ${countdown.text}`;
+      const shortCountdown=isPast?'Ended':(`${countdown.days}d ${String(countdown.hours).padStart(2,'0')}h`);
+      const shortStatus=isPast?'Ended':isLive?shortCountdown:`${shortCountdown}`;
       const palette = b.color
         ? { c1: blendHex(b.color,'#ffffff',0.45), c2: blendHex(b.color,'#000000',0.15), fg: '#10131c' }
         : getElementPalette(b.element,b.type,b.status);
@@ -2245,12 +2247,12 @@ function renderTimeline(banners){
       const imgUrl=desktopImgRaw?(desktopImgRaw.startsWith('http')?desktopImgRaw:REPO_BASE+desktopImgRaw):'';
       // Images are pre-baked with gradient — no fade overlay needed
       const imgHtml = imgUrl && barWidth > 120
-        ? `<img class="ptl-bar-img" src="${imgUrl}" alt="" loading="lazy" onerror="console.warn('Banner image not found:','${imgUrl}');this.style.opacity='0';"/><div class="ptl-bar-fade" style="background:linear-gradient(to right,${palette.c1} 45%,${palette.c1}dd 62%,${palette.c1}88 75%,${palette.c1}00 100%);"></div>`
+        ? `<img class="ptl-bar-img" src="${imgUrl}" alt="" loading="lazy" onerror="console.warn('Banner image not found:','${imgUrl}');this.style.opacity='0';"/><div class="ptl-bar-fade" style="background:linear-gradient(to right,${palette.c1} 52%,${palette.c1}ee 65%,${palette.c1}99 78%,${palette.c1}00 100%);"></div>`
         : '';
       return `<button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="left:${startOffset+3}px;width:${barWidth}px;top:${top}px;height:${barHeight}px;z-index:${zIdx};background:linear-gradient(90deg,${palette.c1},${palette.c2});color:${palette.fg};" onclick="selectBanner(${b._index})">
         ${imgHtml}
-        <span class="ptl-bar-end" style="color:${palette.fg}cc;"><span class="ptl-countdown" style="color:${palette.fg}cc;"><span class="clock">🕒</span>${isSel?'Selected · ':''}${statusText}</span></span>
-        <span class="ptl-bar-label" style="flex:1;text-align:right;">${b.displayName}</span>
+        <span class="ptl-bar-label">${b.displayName}</span>
+        <span class="ptl-bar-end"><span class="ptl-countdown" style="background:rgba(0,0,0,0.28);color:${palette.fg};padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;">${isSel?'✓ ':''}\${shortStatus}</span></span>
       </button>`;
     }).join('');
     const height=items.length ? top + barHeight + laneBase : 50;
