@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primos Banner Cropper</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Nunito:wght@400;600;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;min-height:100vh;padding:32px 24px;}
+  h1{font-family:'Cinzel',serif;font-size:18px;color:#c8a84b;letter-spacing:2px;margin-bottom:4px;}
+  .sub{font-size:12px;color:#504060;margin-bottom:28px;}
+  .layout{display:grid;grid-template-columns:260px 1fr;gap:24px;max-width:1200px;}
+  .panel{display:flex;flex-direction:column;gap:14px;}
+  .panel-card{background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.1);border-radius:12px;padding:16px;}
+  .lbl{font-size:10px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;display:block;}
+  .upload-zone{border:2px dashed rgba(240,208,128,0.2);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:border-color 0.2s;font-size:12px;color:#504060;}
+  .upload-zone:hover{border-color:rgba(240,208,128,0.5);color:#c8a84b;}
+  .upload-zone input{display:none;}
+  .element-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+  .el-btn{border:2px solid transparent;border-radius:8px;padding:6px 4px;font-size:10px;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;text-align:center;text-transform:uppercase;letter-spacing:0.5px;transition:all 0.15s;}
+  .el-btn.active{border-color:#f0d080;box-shadow:0 0 8px rgba(240,208,128,0.25);}
+  .slider-row{display:flex;align-items:center;gap:10px;}
+  .slider-row input[type=range]{flex:1;accent-color:#c8a84b;}
+  .slider-val{min-width:36px;text-align:right;font-size:12px;color:#c8a84b;font-weight:700;}
+  .side-lbl{font-size:11px;color:#403050;min-width:16px;text-align:center;}
+  .mode-row{display:flex;gap:8px;}
+  .mode-btn{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(240,208,128,0.2);background:rgba(255,255,255,0.02);color:#806870;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.5px;}
+  .mode-btn.active{background:rgba(200,168,75,0.12);border-color:#c8a84b;color:#f0d080;}
+  .export-btn{width:100%;padding:12px;background:linear-gradient(135deg,#c8a84b,#f0d080);border:none;border-radius:10px;color:#1a1200;font-family:'Cinzel',serif;font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer;transition:opacity 0.2s;}
+  .export-btn:hover{opacity:0.85;}
+  .export-btn:disabled{opacity:0.35;cursor:default;}
+  .preview-area{display:flex;flex-direction:column;gap:20px;}
+  .preview-wrap{background:rgba(255,255,255,0.02);border:1px solid rgba(240,208,128,0.08);border-radius:12px;padding:20px;}
+  .preview-label{font-size:10px;color:#504060;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+  .hint{font-size:11px;color:#403050;margin-top:8px;}
+  #desktopCanvas{display:block;width:100%;height:108px;border-radius:999px;cursor:crosshair;user-select:none;}
+  .mobile-card{background:rgba(255,255,255,0.03);border:1px solid rgba(128,240,160,0.3);border-radius:10px;overflow:hidden;width:240px;}
+  #mobileCanvas{display:block;width:240px;height:96px;cursor:crosshair;user-select:none;}
+  .mobile-body{padding:10px 13px 13px;transition:background 0.3s;}
+  .mobile-names{font-size:14px;color:#e8dfc8;font-weight:700;margin-bottom:3px;}
+  .mobile-status{font-size:12px;color:#80f0a0;}
+  .size-badge{display:inline-block;background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.1);border-radius:5px;padding:2px 10px;font-size:11px;color:#504060;margin-top:10px;}
+  .reset-btn{font-size:11px;color:#604870;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;float:right;}
+  .reset-btn:hover{color:#c8a84b;}
+  .toggle-row{display:flex;align-items:center;gap:8px;margin-top:10px;}
+  .tog{appearance:none;width:32px;height:16px;background:rgba(255,255,255,0.1);border-radius:999px;cursor:pointer;position:relative;transition:background 0.2s;border:none;flex-shrink:0;}
+  .tog:checked{background:#c8a84b;}
+  .tog::after{content:'';position:absolute;top:2px;left:2px;width:12px;height:12px;background:white;border-radius:50%;transition:left 0.15s;}
+  .tog:checked::after{left:18px;}
+  .tog-lbl{font-size:11px;color:#806870;}
+</style>
+</head>
+<body>
+<h1>BANNER CROPPER</h1>
+<p class="sub">Crop · blend · export — consistent baked images for every banner</p>
+
+<div class="layout">
+  <div class="panel">
+
+    <div class="panel-card">
+      <span class="lbl">Image</span>
+      <div class="upload-zone" onclick="document.getElementById('fi').click()">
+        <input type="file" id="fi" accept="image/*">
+        <div id="dropText">Click or drop image here</div>
+      </div>
+    </div>
+
+    <div class="panel-card">
+      <span class="lbl">Mode</span>
+      <div class="mode-row">
+        <button class="mode-btn active" id="modeDesktop" onclick="setMode('desktop')">Desktop</button>
+        <button class="mode-btn" id="modeMobile" onclick="setMode('mobile')">Mobile</button>
+      </div>
+    </div>
+
+    <div class="panel-card">
+      <span class="lbl">Element Color</span>
+      <div class="element-grid" id="elGrid"></div>
+    </div>
+
+    <div class="panel-card">
+      <span class="lbl">Position &amp; Scale <button class="reset-btn" onclick="resetState()">Reset</button></span>
+      <span class="lbl" style="margin-top:4px;">Horizontal</span>
+      <div class="slider-row">
+        <span class="side-lbl">◀</span>
+        <input type="range" id="sX" min="-200" max="200" value="0" oninput="onSlider()">
+        <span class="side-lbl">▶</span>
+        <span class="slider-val" id="vX">0</span>
+      </div>
+      <span class="lbl" style="margin-top:10px;">Vertical</span>
+      <div class="slider-row">
+        <span class="side-lbl">▲</span>
+        <input type="range" id="sY" min="-200" max="200" value="0" oninput="onSlider()">
+        <span class="side-lbl">▼</span>
+        <span class="slider-val" id="vY">0</span>
+      </div>
+      <span class="lbl" style="margin-top:10px;">Scale</span>
+      <div class="slider-row">
+        <input type="range" id="sS" min="30" max="500" value="130" oninput="onSlider()">
+        <span class="slider-val" id="vS">130%</span>
+      </div>
+
+      <div id="desktopExtras">
+        <span class="lbl" style="margin-top:10px;">Gradient Reach</span>
+        <div class="slider-row">
+          <input type="range" id="sG" min="15" max="90" value="60" oninput="onSlider()">
+          <span class="slider-val" id="vG">60%</span>
+        </div>
+        <span class="lbl" style="margin-top:10px;">Image Edge Fade</span>
+        <div class="slider-row">
+          <input type="range" id="sF" min="0" max="60" value="25" oninput="onSlider()">
+          <span class="slider-val" id="vF">25%</span>
+        </div>
+        <div class="toggle-row">
+          <input type="checkbox" class="tog" id="flipGrad" onchange="redraw()">
+          <span class="tog-lbl">Flip gradient (char on left side)</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="export-btn" id="exportBtn" onclick="doExport()" disabled>Export JPG</button>
+    <span class="size-badge" id="sizeBadge">—</span>
+
+  </div>
+
+  <div class="preview-area">
+    <div class="preview-wrap">
+      <div class="preview-label">Desktop Timeline Bar · 800×72px output (shown 3× taller for editing)</div>
+      <canvas id="desktopCanvas" width="800" height="72"></canvas>
+      <div class="hint">Drag to reposition · scroll to zoom · use Gradient Reach slider to control blend</div>
+    </div>
+
+    <div class="preview-wrap">
+      <div class="preview-label">Mobile Card Header · 400×160px output · no gradient on image</div>
+      <div class="mobile-card">
+        <canvas id="mobileCanvas" width="400" height="160"></canvas>
+        <div class="mobile-body" id="mobileBody">
+          <div class="mobile-names">Linnea · Chasca</div>
+          <div class="mobile-status">9d 00h 12m left</div>
+        </div>
+      </div>
+      <div class="hint">Drag to reposition · scroll to zoom · element color tints the card body</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ELEMENTS=[
+  {name:'Geo',     color:'#b8841e'},
+  {name:'Anemo',   color:'#35aa8c'},
+  {name:'Dendro',  color:'#6ab830'},
+  {name:'Pyro',    color:'#d04420'},
+  {name:'Cryo',    color:'#68a8c4'},
+  {name:'Hydro',   color:'#1850b0'},
+  {name:'Electro', color:'#7850c8'},
+  {name:'Unknown', color:'#505868'},
+];
+
+let img=null, activeEl=ELEMENTS[0], mode='desktop', srcBaseName='banner';
+const ST={desktop:{x:0,y:0,s:130}, mobile:{x:0,y:0,s:130}};
+let drag=null;
+
+// Build element buttons
+const elGrid=document.getElementById('elGrid');
+ELEMENTS.forEach((el,i)=>{
+  const b=document.createElement('button');
+  b.className='el-btn'+(i===0?' active':'');
+  b.textContent=el.name;
+  b.style.background=el.color+'25';
+  b.style.color=el.color;
+  b.onclick=()=>{
+    document.querySelectorAll('.el-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    activeEl=el;
+    redraw();
+    updateBodyGrad();
+  };
+  elGrid.appendChild(b);
+});
+
+// File input
+document.getElementById('fi').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f)return;
+  srcBaseName=f.name.replace(/\.[^.]+$/,'');
+  const r=new FileReader();
+  r.onload=ev=>{
+    const i=new Image();
+    i.onload=()=>{
+      img=i;
+      document.getElementById('dropText').textContent=f.name;
+      document.getElementById('exportBtn').disabled=false;
+      redraw();
+    };
+    i.src=ev.target.result;
+  };
+  r.readAsDataURL(f);
+});
+
+function setMode(m){
+  mode=m;
+  document.getElementById('modeDesktop').classList.toggle('active',m==='desktop');
+  document.getElementById('modeMobile').classList.toggle('active',m==='mobile');
+  document.getElementById('desktopExtras').style.display=m==='desktop'?'':'none';
+  document.getElementById('sizeBadge').textContent=m==='desktop'?'Output: 800 × 72 px':'Output: 400 × 160 px';
+  const s=ST[m];
+  document.getElementById('sX').value=s.x/2;
+  document.getElementById('sY').value=s.y/2;
+  document.getElementById('sS').value=s.s;
+  document.getElementById('vS').textContent=s.s+'%';
+  document.getElementById('vX').textContent=s.x;
+  document.getElementById('vY').textContent=s.y;
+  redraw();
+}
+
+function onSlider(){
+  const s=ST[mode];
+  s.x=parseInt(document.getElementById('sX').value)*2;
+  s.y=parseInt(document.getElementById('sY').value)*2;
+  s.s=parseInt(document.getElementById('sS').value);
+  document.getElementById('vS').textContent=s.s+'%';
+  document.getElementById('vX').textContent=s.x;
+  document.getElementById('vY').textContent=s.y;
+  document.getElementById('vG').textContent=document.getElementById('sG').value+'%';
+  document.getElementById('vF').textContent=document.getElementById('sF').value+'%';
+  redraw();
+}
+
+function resetState(){
+  ST[mode]={x:0,y:0,s:130};
+  document.getElementById('sX').value=0;
+  document.getElementById('sY').value=0;
+  document.getElementById('sS').value=130;
+  document.getElementById('vS').textContent='130%';
+  document.getElementById('vX').textContent='0';
+  document.getElementById('vY').textContent='0';
+  redraw();
+}
+
+// ── DRAW ──────────────────────────────────────────────────────────────────────
+
+function drawDesktop(ctx,W,H,st){
+  const flip=document.getElementById('flipGrad').checked;
+  const gradReach=parseInt(document.getElementById('sG').value)/100;
+  const imgFade=parseInt(document.getElementById('sF').value)/100;
+
+  // Solid BG
+  ctx.fillStyle=activeEl.color;
+  ctx.fillRect(0,0,W,H);
+
+  // Image — anchored to right (or left if flipped), scaled from center
+  if(img){
+    const sc=st.s/100;
+    const ih=H*sc*3.5;
+    const iw=img.width/img.height*ih;
+    // Center point is fixed: right-center of canvas (or left-center if flipped)
+    const cx=flip?(st.x):(W+st.x);
+    const ix=cx-iw/2;
+    const iy=(H-ih)/2+st.y;
+
+    // Draw image to offscreen, apply fade mask on the inner edge
+    const off=document.createElement('canvas');
+    off.width=W; off.height=H;
+    const octx=off.getContext('2d');
+    octx.drawImage(img,ix,iy,iw,ih);
+
+    // Fade the edge where image meets gradient (left edge if normal, right edge if flipped)
+    const fadeW=iw*imgFade;
+    const fx0=flip?(ix+iw-fadeW):ix;
+    const fx1=flip?ix:(ix+fadeW);
+    const frd=octx.createLinearGradient(fx0,0,fx1,0);
+    frd.addColorStop(0,'rgba(0,0,0,1)');
+    frd.addColorStop(1,'rgba(0,0,0,0)');
+    octx.globalCompositeOperation='destination-out';
+    octx.fillStyle=frd;
+    octx.fillRect(0,0,W,H);
+    octx.globalCompositeOperation='source-over';
+
+    ctx.drawImage(off,0,0);
+  }
+
+  // Gradient overlay: solid on one side → transparent on image side
+  const x0=flip?W:0, x1=flip?0:W;
+  const stop=flip?(1-gradReach):gradReach;
+  const grd=ctx.createLinearGradient(x0,0,x1,0);
+  grd.addColorStop(0,                    activeEl.color+'ff');
+  grd.addColorStop(stop*0.55,            activeEl.color+'f0');
+  grd.addColorStop(stop*0.85,            activeEl.color+'88');
+  grd.addColorStop(Math.min(stop+0.12,1),activeEl.color+'18');
+  grd.addColorStop(1,                    activeEl.color+'00');
+  ctx.fillStyle=grd;
+  ctx.fillRect(0,0,W,H);
+}
+
+function drawMobile(ctx,W,H,st){
+  // Dark BG
+  ctx.fillStyle='#0c1018';
+  ctx.fillRect(0,0,W,H);
+
+  // Image — cover fill, NO gradient over it
+  if(img){
+    const sc=st.s/100;
+    const coverScale=Math.max(W/img.width, H/img.height)*sc;
+    const iw=img.width*coverScale;
+    const ih=img.height*coverScale;
+    ctx.drawImage(img,(W-iw)/2+st.x, st.y, iw, ih);
+  }
+
+  // Only a thin fade at the very bottom edge so it meets the card body cleanly
+  const fade=ctx.createLinearGradient(0,H*0.72,0,H);
+  fade.addColorStop(0,'rgba(12,16,24,0)');
+  fade.addColorStop(1,'rgba(12,16,24,0.82)');
+  ctx.fillStyle=fade;
+  ctx.fillRect(0,0,W,H);
+}
+
+function redraw(){
+  drawDesktop(document.getElementById('desktopCanvas').getContext('2d'),800,72,ST.desktop);
+  drawMobile(document.getElementById('mobileCanvas').getContext('2d'),400,160,ST.mobile);
+  updateBodyGrad();
+}
+
+function updateBodyGrad(){
+  document.getElementById('mobileBody').style.background=
+    `linear-gradient(180deg, ${activeEl.color}30 0%, ${activeEl.color}0a 100%)`;
+}
+
+// ── DRAG ─────────────────────────────────────────────────────────────────────
+['desktopCanvas','mobileCanvas'].forEach(id=>{
+  const c=document.getElementById(id);
+  const m=id==='desktopCanvas'?'desktop':'mobile';
+
+  c.addEventListener('mousedown',e=>{
+    drag={m,sx:e.clientX,sy:e.clientY,ox:ST[m].x,oy:ST[m].y};
+    e.preventDefault();
+  });
+  c.addEventListener('wheel',e=>{
+    e.preventDefault();
+    const oldS=ST[m].s;
+    const newS=Math.max(20,Math.min(600,oldS-e.deltaY*0.12));
+    // Scale from center: adjust x offset so center stays fixed
+    const ratio=newS/oldS;
+    ST[m].x=ST[m].x*ratio;
+    ST[m].y=ST[m].y*ratio;
+    ST[m].s=newS;
+    if(mode===m){document.getElementById('sS').value=newS;document.getElementById('vS').textContent=Math.round(newS)+'%';}
+    redraw();
+  },{passive:false});
+});
+
+document.addEventListener('mousemove',e=>{
+  if(!drag)return;
+  const m=drag.m;
+  ST[m].x=drag.ox+(e.clientX-drag.sx)*(m==='desktop'?3:2);
+  ST[m].y=drag.oy+(e.clientY-drag.sy)*(m==='desktop'?3:2);
+  if(mode===m){document.getElementById('sX').value=ST[m].x/2;document.getElementById('sY').value=ST[m].y/2;document.getElementById('vX').textContent=ST[m].x;document.getElementById('vY').textContent=ST[m].y;}
+  redraw();
+});
+document.addEventListener('mouseup',()=>drag=null);
+
+// ── EXPORT ────────────────────────────────────────────────────────────────────
+function doExport(){
+  if(!img)return;
+  const isD=mode==='desktop';
+  const W=isD?800:400,H=isD?72:160;
+  const off=document.createElement('canvas');
+  off.width=W;off.height=H;
+  const ctx=off.getContext('2d');
+  if(isD)drawDesktop(ctx,W,H,ST.desktop);
+  else   drawMobile(ctx,W,H,ST.mobile);
+  const baseName=srcBaseName||'banner';
+  const suffix=isD?'-desktop':'-mobile';
+  const a=document.createElement('a');
+  a.download=`${baseName}${suffix}.jpg`;
+  a.href=off.toDataURL('image/jpeg',0.92);
+  a.click();
+}
+
+// Init
+setMode('desktop');
+updateBodyGrad();
+</script>
+</body>
+</html>
