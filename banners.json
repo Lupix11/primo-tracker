@@ -11,10 +11,6 @@
   {
     "phase": "Phase 1", "version": "6.5", "type": "weapon",
     "characters": ["Golden Frostbound Oath", "Astral Vulture's Crimson Plumage"], "elements": ["Geo", "Anemo"],
-    "images": {
-      "Golden Frostbound Oath": { "desktop": "images/golden-frostbound-oath/desktop.jpg", "mobile": "images/golden-frostbound-oath/mobile.jpg" },
-      "Astral Vulture's Crimson Plumage": { "desktop": "images/astral-vultures-crimson-plumage/desktop.jpg", "mobile": "images/astral-vultures-crimson-plumage/mobile.jpg" }
-    },
     "startDate": "2026-04-08", "endDate": "2026-04-28", "status": "live"
   },
   {
@@ -39,12 +35,22 @@
   },
   {
     "phase": "Phase 2", "version": "6.6", "type": "character",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
+    "characters": ["Mavuika", "Durin"], "elements": ["Pyro", "Anemo"],
     "startDate": "2026-06-09", "endDate": "2026-06-30", "status": "speculative"
   },
   {
     "phase": "Phase 2", "version": "6.6", "type": "weapon",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
+    "characters": ["Mavuika's weapon", "Durin's weapon"], "elements": ["Pyro", "Anemo"],
     "startDate": "2026-06-09", "endDate": "2026-06-30", "status": "speculative"
+  },
+  {
+    "phase": "Phase 1", "version": "6.7", "type": "character",
+    "characters": ["Sandrone", "???"], "elements": ["Unknown", "Unknown"],
+    "startDate": "2026-07-01", "endDate": "2026-07-21", "status": "speculative"
+  },
+  {
+    "phase": "Phase 1", "version": "6.7", "type": "weapon",
+    "characters": ["Sandrone's weapon", "???"], "elements": ["Unknown", "Unknown"],
+    "startDate": "2026-07-01", "endDate": "2026-07-21", "status": "speculative"
   }
 ]
