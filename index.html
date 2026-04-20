@@ -407,7 +407,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-bar.dimmed{opacity:0.72;}
 .ptl-bar-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;position:relative;z-index:2;}
 .ptl-bar-end{font-size:10px;white-space:nowrap;color:rgba(15,18,26,0.72);font-weight:700;position:relative;z-index:2;}
-.ptl-bar-img{position:absolute;left:0;top:0;height:100%;width:100%;object-fit:fill;pointer-events:none;z-index:1;}
+.ptl-bar-img{position:absolute;left:0;top:0;height:100%;width:100%;object-fit:cover;object-position:right center;pointer-events:none;z-index:1;}
 .ptl-bar-fade{position:absolute;right:0;top:0;height:100%;width:55%;pointer-events:none;z-index:2;}
 .ptl-empty{padding:10px 0 2px;color:#7f7593;font-size:10px;text-align:center;}
 .ptl-countdown{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:rgba(15,18,26,0.76);font-weight:700;white-space:nowrap;}
@@ -514,7 +514,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v150</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v151</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1313,7 +1313,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v150';
+const APP_VERSION = 'v151';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1981,9 +1981,8 @@ function formatGoalHeadline(targetName){
 }
 
 function getItemDisplayName(b,itemName){
-  const cleanName=baseCharacterName(itemName);
-  if(b.status==='speculative') return `${cleanName} (spec.)`;
-  return cleanName;
+  if(b.status==='speculative') return `${itemName} (spec.)`;
+  return itemName;
 }
 
 function baseCharacterName(name){
@@ -2234,7 +2233,7 @@ function renderTimeline(banners){
       const statusClass=isPast?'spec':isLive?'live':isSpec?'spec':'soon';
       const countdown=formatCountdownParts(isLive?b.endDate:b.startDate,isLive?'end':'start');
       const statusText=isPast?'Ended':isLive?`${countdown.text} left`:`Starts in ${countdown.text}`;
-      const shortCountdown=isPast?'Ended':(`${countdown.days}d ${String(countdown.hours).padStart(2,'0')}h`);
+      const shortCountdown=isPast?'Ended':(`${countdown.days}d ${String(countdown.hours).padStart(2,'0')}h ${String(countdown.mins).padStart(2,'0')}m`);
       const shortStatus=isPast?'Ended':isLive?shortCountdown:`${shortCountdown}`;
       const palette = b.color
         ? { c1: blendHex(b.color,'#ffffff',0.45), c2: blendHex(b.color,'#000000',0.15), fg: '#10131c' }
@@ -2254,7 +2253,7 @@ function renderTimeline(banners){
           ${imgHtml}
           <span class="ptl-bar-label">${b.displayName}</span>
         </button>
-        <span style="margin-left:6px;font-size:10px;font-weight:700;color:#a09878;white-space:nowrap;">${isSel?'✓ ':''}${shortStatus}</span>
+        <span style="margin-left:6px;font-size:10px;font-weight:600;color:#c8b88a;white-space:nowrap;background:rgba(255,255,255,0.07);border:1px solid rgba(240,208,128,0.15);border-radius:999px;padding:1px 8px;">${isSel?'✓ ':''}${shortStatus}</span>
       </div>`;
     }).join('');
     const height=items.length ? top + barHeight + laneBase : 50;
