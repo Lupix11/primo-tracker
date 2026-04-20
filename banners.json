@@ -62,6 +62,11 @@
   {
     "phase": "Phase 1", "version": "6.7", "type": "character",
     "characters": ["Sandrone", "???"], "elements": ["Unknown", "Unknown"],
+    "images": 
+    {
+      "Sandrone": { "desktop": "images/sandrone/sandrone-desktop.jpg", "mobile": "images/sandrone/sandrone-mobile.jpg" },
+      "???": { "desktop": "", "mobile": "" }
+    },
     "startDate": "2026-07-01", "endDate": "2026-07-21", "status": "speculative"
   },
   {
