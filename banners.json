@@ -56,7 +56,7 @@
   },
   {
     "phase": "Phase 2", "version": "6.6", "type": "weapon",
-    "characters": ["A Thousand Blazing Suns", "Athame Artis"], "elements": ["Pyro", "Anemo"],
+    "characters": ["A Thousand Blazing Suns", "Athame Artis"], "elements": ["Pyro", "Pyro"],
     "startDate": "2026-06-09", "endDate": "2026-06-30", "status": "speculative"
   },
   {
@@ -65,7 +65,7 @@
     "images": 
     {
       "Sandrone": { "desktop": "images/sandrone/sandrone-desktop.jpg", "mobile": "images/sandrone/sandrone-mobile.jpg" },
-      "???": { "desktop": "", "mobile": "" }
+      "???": { "desktop": "images/sandrone/sandrone-desktop.jpg", "mobile": "images/sandrone/sandrone-mobile.jpg" }
     },
     "startDate": "2026-07-01", "endDate": "2026-07-21", "status": "speculative"
   },
