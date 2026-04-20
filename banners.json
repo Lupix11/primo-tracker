@@ -47,6 +47,11 @@
   {
     "phase": "Phase 2", "version": "6.6", "type": "character",
     "characters": ["Mavuika", "Durin"], "elements": ["Pyro", "Anemo"],
+    "images": 
+    {
+      "Mavuika": { "desktop": "images/mavuika/mavuika-desktop.jpg", "mobile": "images/mavuika/mavuika-mobile.jpg" },
+      "Durin": { "desktop": "images/durin/durin-desktop.jpg", "mobile": "images/durin/durin-mobile.jpg" }
+    },
     "startDate": "2026-06-09", "endDate": "2026-06-30", "status": "speculative"
   },
   {
