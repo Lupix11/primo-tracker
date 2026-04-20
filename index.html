@@ -514,7 +514,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v162</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v163</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -665,6 +665,12 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
             <div class="gs-tag">C0–C6</div>
           </div>
           <div class="goal-section-body">
+            <div style="margin-bottom:10px;">
+              <div class="gs-label" style="margin-bottom:4px;">Target Banner</div>
+              <select id="char-banner-select" onchange="setPlannerCharBanner(this.value)" class="gs-select" style="width:100%;">
+                <option value="">— select banner —</option>
+              </select>
+            </div>
             <div class="gs-row">
               <div class="gs-field">
                 <div class="gs-label">Constellation</div>
@@ -687,12 +693,6 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
               <div class="gs-tdot" id="char-gdot"></div>
               <div class="gs-tlabel" id="char-glabel">Next is 50/50 (no guarantee)</div>
             </div>
-            <div style="margin-top:10px;">
-              <div class="gs-label" style="margin-bottom:4px;">Target Banner</div>
-              <select id="char-banner-select" onchange="setPlannerCharBanner(this.value)" class="gs-select" style="width:100%;">
-                <option value="">— select banner —</option>
-              </select>
-            </div>
           </div>
         </div>
         <!-- Weapon -->
@@ -703,6 +703,12 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
             <div class="gs-tag">R1–R5</div>
           </div>
           <div class="goal-section-body">
+            <div style="margin-bottom:10px;">
+              <div class="gs-label" style="margin-bottom:4px;">Target Banner</div>
+              <select id="weap-banner-select" onchange="setPlannerWeapBanner(this.value)" class="gs-select" style="width:100%;">
+                <option value="">— select banner —</option>
+              </select>
+            </div>
             <div class="gs-row">
               <div class="gs-field">
                 <div class="gs-label">Refinement</div>
@@ -722,12 +728,6 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
             <div class="gs-toggle-row" id="weap-path-row" onclick="toggleWeapPath()">
               <div class="gs-tdot" id="weap-pdot"></div>
               <div class="gs-tlabel" id="weap-plabel">Epitomized Path: 0 (no progress)</div>
-            </div>
-            <div style="margin-top:10px;">
-              <div class="gs-label" style="margin-bottom:4px;">Target Banner</div>
-              <select id="weap-banner-select" onchange="setPlannerWeapBanner(this.value)" class="gs-select" style="width:100%;">
-                <option value="">— select banner —</option>
-              </select>
             </div>
           </div>
         </div>
@@ -1349,7 +1349,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v162';
+const APP_VERSION = 'v163';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2211,7 +2211,7 @@ function renderTimeline(banners){
           <div style="position:absolute;bottom:7px;left:12px;font-size:10px;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:1px;text-shadow:0 1px 3px rgba(0,0,0,0.8);">${typeLabel} · ${b.version} ${b.phase}</div>
         </div>`;
       };
-      return `<button onclick="selectBanner(${b._index})" style="width:100%;text-align:left;background:rgba(255,255,255,0.03);${selOutline}border:1px solid ${borderColor};border-radius:10px;padding:0;margin-bottom:8px;cursor:pointer;display:block;overflow:hidden;">
+      return `<button data-bidx="${b._index}" style="width:100%;text-align:left;background:rgba(255,255,255,0.03);${selOutline}border:1px solid ${borderColor};border-radius:10px;padding:0;margin-bottom:8px;cursor:pointer;display:block;overflow:hidden;">
         ${imgHeader}
         <div style="padding:11px 14px 12px;">
           ${!imgUrls.length?`<div style="font-size:10px;color:#907898;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">${typeLabel} · ${b.version} ${b.phase}</div>`:''}
@@ -2267,8 +2267,7 @@ function renderTimeline(banners){
       const isPast=now>b._endMoment;
       const isSpec=b.status==='speculative';
       const baseSel=(PL.selCharBanner!==null&&baseParsed[PL.selCharBanner])||(PL.selWeapBanner!==null&&baseParsed[PL.selWeapBanner])||null;
-      const selIdx=b.type==='character'?PL.selCharBanner:PL.selWeapBanner;
-      const isSel=selIdx===b._index;
+      const isSel=false;
       const statusClass=isPast?'spec':isLive?'live':isSpec?'spec':'soon';
       const countdown=formatCountdownParts(isLive?b.endDate:b.startDate,isLive?'end':'start');
       const statusText=isPast?'Ended':isLive?`${countdown.text} left`:`Starts in ${countdown.text}`;
@@ -2278,8 +2277,7 @@ function renderTimeline(banners){
       const palette = b.color
         ? { c1: blendHex(b.color,'#ffffff',0.45), c2: blendHex(b.color,'#000000',0.15), fg: '#10131c' }
         : getElementPalette(b.element,b.type,b.status);
-      const typeSelIdx=b.type==='character'?PL.selCharBanner:PL.selWeapBanner;
-      const dimmed=typeSelIdx!==null&&!isSel?' dimmed':'';
+      const dimmed='';
       const zIdx=2+Math.floor(diffDays(b._start,minDate)/7);
       // Image: resolve URL relative to banners.json location
       const REPO_BASE='https://lupix11.github.io/primo-tracker/';
@@ -2290,7 +2288,7 @@ function renderTimeline(banners){
         ? `<img class="ptl-bar-img" src="${imgUrl}" alt="" loading="lazy" onerror="this.style.display='none';"/>`
         : '';
       return `<div style="position:absolute;left:${startOffset+3}px;top:${top}px;display:flex;align-items:center;z-index:${zIdx};">
-        <button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="width:${barWidth}px;height:${barHeight}px;background:linear-gradient(90deg,${palette.c1},${palette.c2});color:${palette.fg};position:relative;" onclick="selectBanner(${b._index})">
+        <button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="width:${barWidth}px;height:${barHeight}px;background:linear-gradient(90deg,${palette.c1},${palette.c2});color:${palette.fg};position:relative;" data-bidx="${b._index}">
           ${imgHtml}
           <span class="ptl-bar-label">${b.displayName}</span>
         </button>
@@ -2344,7 +2342,7 @@ function renderTimeline(banners){
     </div>
   </div>
   <div class="ptl-scroll-hint">Use the mouse wheel or trackpad to scroll</div>
-  <div class="ptl-empty">${PL.selCharBanner===null&&PL.selWeapBanner===null?'Click a banner bar to set it as your planner target.':'Target set — see Planner tab for calculations.'}</div>`;
+  <div class="ptl-empty">${'Use the dropdowns in the Planner tab to set your target banner.':'Target set — see Planner tab for calculations.'}</div>`;
   setupTimelineScroll();
   // Mirror to mobile list if present
   const mlCopy=document.getElementById('timeline-list-mobile');
@@ -2447,13 +2445,33 @@ function calcWeapMinMax(copies,pity,fatePoint){
 }
 
 
+function getPhasePair(idx){
+  // Get version+phase key for linking char/weapon dropdowns
+  if(idx===null) return null;
+  const b=getPlannerBanners()[idx];
+  return b?`${b.version}|${b.phase}`:null;
+}
 function setPlannerCharBanner(val){
   PL.selCharBanner=val===''?null:parseInt(val);
-  savePL(); calcPlanner();
+  // Auto-link weapon dropdown to same phase
+  const pair=getPhasePair(PL.selCharBanner);
+  if(pair){
+    const all=getPlannerBanners();
+    const matchIdx=all.findIndex((b,i)=>b.type==='weapon'&&`${b.version}|${b.phase}`===pair);
+    if(matchIdx!==-1) PL.selWeapBanner=matchIdx;
+  }
+  savePL(); populatePlannerDropdown(); calcPlanner();
 }
 function setPlannerWeapBanner(val){
   PL.selWeapBanner=val===''?null:parseInt(val);
-  savePL(); calcPlanner();
+  // Auto-link character dropdown to same phase
+  const pair=getPhasePair(PL.selWeapBanner);
+  if(pair){
+    const all=getPlannerBanners();
+    const matchIdx=all.findIndex((b,i)=>b.type==='character'&&`${b.version}|${b.phase}`===pair);
+    if(matchIdx!==-1) PL.selCharBanner=matchIdx;
+  }
+  savePL(); populatePlannerDropdown(); calcPlanner();
 }
 function populatePlannerDropdown(){
   const allBanners=getPlannerBanners();
@@ -2483,6 +2501,16 @@ function calcPlanner(){
   }
   if(!entries.length){
     out.innerHTML='<div class="msg" style="padding:12px 0 0;">Add a few entries first so the planner can estimate your farming pace.</div>';
+    return;
+  }
+
+  // Block if enabled section has no target selected
+  if(PL.charEnabled && PL.selCharBanner===null){
+    out.innerHTML='<div class="msg" style="padding:12px 0 0;">Select a target banner for the character section.</div>';
+    return;
+  }
+  if(PL.weapEnabled && PL.selWeapBanner===null){
+    out.innerHTML='<div class="msg" style="padding:12px 0 0;">Select a target banner for the weapon section.</div>';
     return;
   }
 
