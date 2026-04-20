@@ -508,13 +508,52 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 
 @media(max-width:760px){.settings-grid{grid-template-columns:1fr;}}
 
+
+/* ── BANNER CROPPER PAGE ───────────────────────────────────────────────── */
+.cr-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;max-width:1200px;}
+.cr-panel{display:flex;flex-direction:column;gap:12px;}
+.cr-section{background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.1);border-radius:12px;padding:14px;}
+.cr-label{font-size:10px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;display:block;}
+.cr-upload{border:2px dashed rgba(240,208,128,0.2);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:border-color 0.2s;font-size:12px;color:#504060;}
+.cr-upload:hover{border-color:rgba(240,208,128,0.45);color:#c8a84b;}
+.cr-el-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;}
+.cr-el-btn{border:2px solid transparent;border-radius:8px;padding:5px 3px;font-size:10px;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;text-align:center;text-transform:uppercase;transition:all 0.15s;}
+.cr-el-btn.active{border-color:#f0d080;}
+.cr-slider-row{display:flex;align-items:center;gap:8px;}
+.cr-slider-row input[type=range]{flex:1;accent-color:#c8a84b;}
+.cr-slider-val{min-width:38px;text-align:right;font-size:12px;color:#c8a84b;font-weight:700;}
+.cr-side-lbl{font-size:10px;color:#403050;min-width:14px;text-align:center;}
+.cr-mode-row{display:flex;gap:8px;}
+.cr-mode-btn{flex:1;padding:7px;border-radius:8px;border:1px solid rgba(240,208,128,0.2);background:rgba(255,255,255,0.02);color:#806870;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.15s;text-transform:uppercase;}
+.cr-mode-btn.active{background:rgba(200,168,75,0.12);border-color:#c8a84b;color:#f0d080;}
+.cr-export-btn{width:100%;padding:11px;background:linear-gradient(135deg,#c8a84b,#f0d080);border:none;border-radius:10px;color:#1a1200;font-family:'Cinzel',serif;font-size:13px;font-weight:600;letter-spacing:1px;cursor:pointer;transition:opacity 0.2s;}
+.cr-export-btn:hover{opacity:0.85;}
+.cr-export-btn:disabled{opacity:0.35;cursor:default;}
+.cr-preview-area{display:flex;flex-direction:column;gap:16px;}
+.cr-preview-wrap{background:rgba(255,255,255,0.02);border:1px solid rgba(240,208,128,0.08);border-radius:12px;padding:18px;}
+.cr-preview-label{font-size:10px;color:#504060;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+#crDesktopCanvas{display:block;width:100%;height:108px;border-radius:999px;cursor:crosshair;user-select:none;}
+.cr-mobile-card{background:rgba(255,255,255,0.03);border:1px solid rgba(128,240,160,0.3);border-radius:10px;overflow:hidden;width:240px;}
+#crMobileCanvas{display:block;width:240px;height:96px;cursor:crosshair;user-select:none;}
+.cr-mobile-body{padding:10px 13px 13px;transition:background 0.3s;}
+.cr-names{font-size:13px;color:#e8dfc8;font-weight:700;margin-bottom:3px;}
+.cr-status{font-size:11px;color:#80f0a0;}
+.cr-size-badge{display:inline-block;background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.1);border-radius:5px;padding:2px 10px;font-size:11px;color:#504060;margin-top:8px;}
+.cr-hint{font-size:11px;color:#403050;margin-top:6px;}
+.cr-reset-btn{font-size:11px;color:#604870;background:none;border:none;cursor:pointer;text-decoration:underline;float:right;}
+.cr-reset-btn:hover{color:#c8a84b;}
+.cr-tog{appearance:none;width:32px;height:16px;background:rgba(255,255,255,0.1);border-radius:999px;cursor:pointer;position:relative;transition:background 0.2s;border:none;flex-shrink:0;}
+.cr-tog:checked{background:#c8a84b;}
+.cr-tog::after{content:'';position:absolute;top:2px;left:2px;width:12px;height:12px;background:white;border-radius:50%;transition:left 0.15s;}
+.cr-tog:checked::after{left:18px;}
+@media(max-width:768px){#page-cropper{display:none!important;}}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v166</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v168</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -530,6 +569,10 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
   <button class="nav-item" data-page="timeline" onclick="goTo('timeline')">
     <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/></svg>
     <span class="nav-label">Timeline</span>
+  </button>
+  <button class="nav-item crop-only" data-page="crop" onclick="goTo('crop')">
+    <svg viewBox="0 0 24 24"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>
+    <span class="nav-label">Cropper</span>
   </button>
   <button class="nav-item" data-page="settings" onclick="goTo('settings')">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-.33-1A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1-.33H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1-.33A1.65 1.65 0 0 0 4.6 8a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 .33 1A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 8c0 .39.14.76.4 1 .26.25.62.4 1 .33H21a2 2 0 1 1 0 4h-.09c-.38-.07-.74.08-1 .33-.26.24-.4.61-.4 1z"/></svg>
@@ -748,6 +791,101 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 
 
   <!-- SETTINGS -->
+  <section id="page-crop" class="page">
+    <div class="card">
+      <div class="card-title" style="margin-bottom:16px;">Banner Cropper</div>
+      <div class="crop-layout">
+
+        <!-- LEFT PANEL -->
+        <div class="cp-panel">
+          <div class="cp-card">
+            <span class="cp-lbl">Image</span>
+            <div class="cp-upload" onclick="document.getElementById('crop-fi').click()">
+              <input type="file" id="crop-fi" accept="image/*" style="display:none;">
+              <div id="crop-dropText">Click to upload image</div>
+            </div>
+          </div>
+
+          <div class="cp-card">
+            <span class="cp-lbl">Mode</span>
+            <div class="cp-mode-row">
+              <button class="cp-mode-btn active" id="crop-modeDesktop" onclick="cropSetMode('desktop')">Desktop</button>
+              <button class="cp-mode-btn" id="crop-modeMobile" onclick="cropSetMode('mobile')">Mobile</button>
+            </div>
+          </div>
+
+          <div class="cp-card">
+            <span class="cp-lbl">Element Color</span>
+            <div class="cp-elgrid" id="crop-elGrid"></div>
+          </div>
+
+          <div class="cp-card">
+            <span class="cp-lbl">Position &amp; Scale <button class="cp-reset-btn" onclick="cropResetState()">Reset</button></span>
+            <span class="cp-lbl" style="margin-top:4px;">Horizontal</span>
+            <div class="cp-srow">
+              <span class="cp-slbl">◀</span>
+              <input type="range" id="crop-sX" min="-200" max="200" value="0" oninput="cropOnSlider()">
+              <span class="cp-slbl">▶</span>
+              <span class="cp-sval" id="crop-vX">0</span>
+            </div>
+            <span class="cp-lbl" style="margin-top:10px;">Vertical</span>
+            <div class="cp-srow">
+              <span class="cp-slbl">▲</span>
+              <input type="range" id="crop-sY" min="-200" max="200" value="0" oninput="cropOnSlider()">
+              <span class="cp-slbl">▼</span>
+              <span class="cp-sval" id="crop-vY">0</span>
+            </div>
+            <span class="cp-lbl" style="margin-top:10px;">Scale</span>
+            <div class="cp-srow">
+              <input type="range" id="crop-sS" min="30" max="500" value="130" oninput="cropOnSlider()">
+              <span class="cp-sval" id="crop-vS">130%</span>
+            </div>
+            <div id="crop-desktopExtras">
+              <span class="cp-lbl" style="margin-top:10px;">Gradient Reach</span>
+              <div class="cp-srow">
+                <input type="range" id="crop-sG" min="15" max="90" value="60" oninput="cropOnSlider()">
+                <span class="cp-sval" id="crop-vG">60%</span>
+              </div>
+              <span class="cp-lbl" style="margin-top:10px;">Image Edge Fade</span>
+              <div class="cp-srow">
+                <input type="range" id="crop-sF" min="0" max="60" value="25" oninput="cropOnSlider()">
+                <span class="cp-sval" id="crop-vF">25%</span>
+              </div>
+              <div class="cp-tog-row">
+                <input type="checkbox" class="cp-tog" id="crop-flipGrad" onchange="cropRedraw()">
+                <span style="font-size:11px;color:#806870;">Flip gradient (char on left)</span>
+              </div>
+            </div>
+          </div>
+
+          <button class="cp-export" id="crop-exportBtn" onclick="cropDoExport()" disabled>Export JPG</button>
+          <span class="cp-size-badge" id="crop-sizeBadge">—</span>
+        </div>
+
+        <!-- RIGHT PREVIEWS -->
+        <div>
+          <div class="cp-preview-wrap">
+            <div class="cp-preview-lbl">Desktop · 800×72px (shown 3× taller)</div>
+            <canvas id="crop-desktopCanvas" width="800" height="72"></canvas>
+            <div class="cp-hint">Drag to reposition · scroll to zoom</div>
+          </div>
+          <div class="cp-preview-wrap">
+            <div class="cp-preview-lbl">Mobile · 400×160px</div>
+            <div class="cp-mobile-card">
+              <canvas id="crop-mobileCanvas" width="400" height="160"></canvas>
+              <div class="cp-mobile-body" id="crop-mobileBody">
+                <div style="font-size:14px;color:#e8dfc8;font-weight:700;margin-bottom:3px;">Character Name</div>
+                <div style="font-size:12px;color:#80f0a0;">Preview</div>
+              </div>
+            </div>
+            <div class="cp-hint">Drag to reposition · scroll to zoom</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <section id="page-settings" class="page">
     <div class="settings-grid">
       <div class="settings-stack">
@@ -920,6 +1058,101 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
     </div>
   </section>
 
+  <section id="page-cropper" class="page">
+    <div class="card">
+      <div class="card-title" style="margin-bottom:16px;">Banner Cropper</div>
+      <div class="cr-layout">
+
+        <!-- LEFT PANEL -->
+        <div class="cr-panel">
+          <div class="cr-section">
+            <span class="cr-label">Image</span>
+            <div class="cr-upload" id="crDropzone" onclick="document.getElementById('crFileInput').click()">
+              <input type="file" id="crFileInput" accept="image/*" style="display:none">
+              <div id="crDropText">Click or drop image here</div>
+            </div>
+          </div>
+
+          <div class="cr-section">
+            <span class="cr-label">Mode</span>
+            <div class="cr-mode-row">
+              <button class="cr-mode-btn active" id="crModeDesktop" onclick="crSetMode('desktop')">Desktop</button>
+              <button class="cr-mode-btn" id="crModeMobile" onclick="crSetMode('mobile')">Mobile</button>
+            </div>
+          </div>
+
+          <div class="cr-section">
+            <span class="cr-label">Element Color</span>
+            <div class="cr-el-grid" id="crElGrid"></div>
+          </div>
+
+          <div class="cr-section">
+            <span class="cr-label">Position &amp; Scale <button class="cr-reset-btn" onclick="crResetState()">Reset</button></span>
+            <span class="cr-label" style="margin-top:4px;">Horizontal</span>
+            <div class="cr-slider-row">
+              <span class="cr-side-lbl">◀</span>
+              <input type="range" id="crSX" min="-200" max="200" value="0" oninput="crOnSlider()">
+              <span class="cr-side-lbl">▶</span>
+              <span class="cr-slider-val" id="crVX">0</span>
+            </div>
+            <span class="cr-label" style="margin-top:10px;">Vertical</span>
+            <div class="cr-slider-row">
+              <span class="cr-side-lbl">▲</span>
+              <input type="range" id="crSY" min="-200" max="200" value="0" oninput="crOnSlider()">
+              <span class="cr-side-lbl">▼</span>
+              <span class="cr-slider-val" id="crVY">0</span>
+            </div>
+            <span class="cr-label" style="margin-top:10px;">Scale</span>
+            <div class="cr-slider-row">
+              <input type="range" id="crSS" min="30" max="500" value="130" oninput="crOnSlider()">
+              <span class="cr-slider-val" id="crVS">130%</span>
+            </div>
+            <div id="crDesktopExtras">
+              <span class="cr-label" style="margin-top:10px;">Gradient Reach</span>
+              <div class="cr-slider-row">
+                <input type="range" id="crSG" min="15" max="90" value="60" oninput="crOnSlider()">
+                <span class="cr-slider-val" id="crVG">60%</span>
+              </div>
+              <span class="cr-label" style="margin-top:10px;">Image Edge Fade</span>
+              <div class="cr-slider-row">
+                <input type="range" id="crSF" min="0" max="60" value="25" oninput="crOnSlider()">
+                <span class="cr-slider-val" id="crVF">25%</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:10px;">
+                <input type="checkbox" class="cr-tog" id="crFlip" onchange="crRedraw()">
+                <span style="font-size:11px;color:#806870;">Flip gradient (char on left)</span>
+              </div>
+            </div>
+          </div>
+
+          <button class="cr-export-btn" id="crExportBtn" onclick="crDoExport()" disabled>Export JPG</button>
+          <span class="cr-size-badge" id="crSizeBadge">—</span>
+        </div>
+
+        <!-- RIGHT PREVIEWS -->
+        <div class="cr-preview-area">
+          <div class="cr-preview-wrap">
+            <div class="cr-preview-label">Desktop Timeline Bar · 800×72px output (shown 3× taller)</div>
+            <canvas id="crDesktopCanvas" width="800" height="72"></canvas>
+            <div class="cr-hint">Drag to reposition · scroll to zoom</div>
+          </div>
+          <div class="cr-preview-wrap">
+            <div class="cr-preview-label">Mobile Card Header · 400×160px output</div>
+            <div class="cr-mobile-card">
+              <canvas id="crMobileCanvas" width="400" height="160"></canvas>
+              <div class="cr-mobile-body" id="crMobileBody">
+                <div class="cr-names">Linnea · Chasca</div>
+                <div class="cr-status">9d 00h 12m left</div>
+              </div>
+            </div>
+            <div class="cr-hint">Drag to reposition · scroll to zoom</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
 </main>
 </div>
 
@@ -935,7 +1168,8 @@ const PLANNER_EXTRA_BANNERS=[
   {phase:'Phase 1',version:'7.3',type:'weapon',characters:["Tsaritsa's weapon",'???'],elements:['Cryo','Unknown'],startDate:'2026-12-16',endDate:'2027-01-05',status:'speculative'}
 ];
 function getPlannerBanners(){return [...(PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS),...PLANNER_EXTRA_BANNERS];}
-const PAGES=['dashboard','stats','planner','timeline','settings'];
+const PAGES=['dashboard','stats','planner','timeline','crop','settings'];
+const CROPPER_KEY='primo-cropper-settings-v1';
 let entries=[],chartInst=null,histInst=null,activeMetric='primos',welkin=false,offset=0,expandedDate=null,activePage='dashboard',statsAvgRange='all';
 let APP={lang:'en',persistLocal:true,syncConnected:false,syncLastAt:'',syncProvider:'google_drive',localVaultUpdatedAt:'',cloudVaultUpdatedAt:'',syncMode:'manual',plannerRegion:'America',syncUserEmail:'',syncUserName:'',gdFileId:''};
 let PROFILES={activeId:'main',items:[]};
@@ -1330,7 +1564,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v166';
+const APP_VERSION = 'v168';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1649,6 +1883,8 @@ function goTo(pg){
   if(pg==='planner'){populatePlannerDropdown();calcPlanner();if(isMobile()){const b=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;renderTimeline(b);}}
   if(pg==='timeline'){const b=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;renderTimeline(b);}
   if(pg==='settings'){updateSettingsControls();updateStorageUI();renderProfileManager();renderPlannerRegionUI();updateSyncUI();}
+  if(pg==='crop'){cropInit();}
+  if(pg==='cropper'){crInitIfNeeded();}
 }
 function setupSwipe(){
   let tx=0,ty=0;
@@ -2667,6 +2903,388 @@ function runImport(){
 function showIR(t,m){const el=document.getElementById('import-result');el.className='import-result '+t;el.textContent=m;el.style.display='block';}
 function render(){renderTiles();renderChart();renderLog();}
 load();
+
+// ── BANNER CROPPER ───────────────────────────────────────────────────────────
+const CR_ELEMENTS=[
+  {name:'Geo',color:'#b8841e'},{name:'Anemo',color:'#35aa8c'},
+  {name:'Dendro',color:'#6ab830'},{name:'Pyro',color:'#d04420'},
+  {name:'Cryo',color:'#68a8c4'},{name:'Hydro',color:'#1850b0'},
+  {name:'Electro',color:'#7850c8'},{name:'Unknown',color:'#505868'},
+];
+let crImg=null, crActiveEl=CR_ELEMENTS[0], crMode='desktop', crSrcBaseName='banner', crInited=false;
+const CR_ST={desktop:{x:0,y:0,s:130},mobile:{x:0,y:0,s:130}};
+let crDrag=null;
+
+function crInitIfNeeded(){
+  if(crInited) return;
+  crInited=true;
+  // Build element buttons
+  const grid=document.getElementById('crElGrid');
+  CR_ELEMENTS.forEach((el,i)=>{
+    const b=document.createElement('button');
+    b.className='cr-el-btn'+(i===0?' active':'');
+    b.textContent=el.name; b.style.background=el.color+'25'; b.style.color=el.color;
+    b.onclick=()=>{
+      document.querySelectorAll('.cr-el-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active'); crActiveEl=el; crRedraw(); crUpdateBodyGrad();
+    };
+    grid.appendChild(b);
+  });
+  // File input
+  document.getElementById('crFileInput').addEventListener('change',e=>{
+    const f=e.target.files[0]; if(!f) return;
+    crSrcBaseName=f.name.replace(/\.[^.]+$/,'');
+    const r=new FileReader();
+    r.onload=ev=>{
+      const i=new Image();
+      i.onload=()=>{crImg=i;document.getElementById('crDropText').textContent=f.name;document.getElementById('crExportBtn').disabled=false;crRedraw();};
+      i.src=ev.target.result;
+    };
+    r.readAsDataURL(f);
+  });
+  // Drag & scroll on canvases
+  ['crDesktopCanvas','crMobileCanvas'].forEach(id=>{
+    const c=document.getElementById(id);
+    const m=id==='crDesktopCanvas'?'desktop':'mobile';
+    c.addEventListener('mousedown',e=>{crDrag={m,sx:e.clientX,sy:e.clientY,ox:CR_ST[m].x,oy:CR_ST[m].y};e.preventDefault();});
+    c.addEventListener('wheel',e=>{
+      e.preventDefault();
+      const oldS=CR_ST[m].s;
+      const newS=Math.max(20,Math.min(600,oldS-e.deltaY*0.12));
+      CR_ST[m].x=CR_ST[m].x*(newS/oldS); CR_ST[m].y=CR_ST[m].y*(newS/oldS);
+      CR_ST[m].s=newS;
+      if(crMode===m){document.getElementById('crSS').value=newS;document.getElementById('crVS').textContent=Math.round(newS)+'%';}
+      crRedraw();
+    },{passive:false});
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!crDrag) return;
+    const m=crDrag.m;
+    CR_ST[m].x=crDrag.ox+(e.clientX-crDrag.sx)*(m==='desktop'?3:2);
+    CR_ST[m].y=crDrag.oy+(e.clientY-crDrag.sy)*(m==='desktop'?3:2);
+    if(crMode===m){document.getElementById('crSX').value=CR_ST[m].x/2;document.getElementById('crVX').textContent=CR_ST[m].x;document.getElementById('crSY').value=CR_ST[m].y/2;document.getElementById('crVY').textContent=CR_ST[m].y;}
+    crRedraw();
+  });
+  document.addEventListener('mouseup',()=>crDrag=null);
+  crLoadSettings();
+  crSetMode('desktop');
+  crUpdateBodyGrad();
+}
+
+function crSetMode(m){
+  crMode=m;
+  document.getElementById('crModeDesktop').classList.toggle('active',m==='desktop');
+  document.getElementById('crModeMobile').classList.toggle('active',m==='mobile');
+  document.getElementById('crDesktopExtras').style.display=m==='desktop'?'':'none';
+  document.getElementById('crSizeBadge').textContent=m==='desktop'?'Output: 800 × 72 px':'Output: 400 × 160 px';
+  const s=CR_ST[m];
+  document.getElementById('crSX').value=s.x/2; document.getElementById('crVX').textContent=s.x;
+  document.getElementById('crSY').value=s.y/2; document.getElementById('crVY').textContent=s.y;
+  document.getElementById('crSS').value=s.s; document.getElementById('crVS').textContent=s.s+'%';
+  crRedraw();
+}
+
+function crOnSlider(){
+  const s=CR_ST[crMode];
+  s.x=parseInt(document.getElementById('crSX').value)*2;
+  s.y=parseInt(document.getElementById('crSY').value)*2;
+  s.s=parseInt(document.getElementById('crSS').value);
+  document.getElementById('crVX').textContent=s.x;
+  document.getElementById('crVY').textContent=s.y;
+  document.getElementById('crVS').textContent=s.s+'%';
+  document.getElementById('crVG').textContent=document.getElementById('crSG').value+'%';
+  document.getElementById('crVF').textContent=document.getElementById('crSF').value+'%';
+  crRedraw(); crSaveSettings();
+}
+
+function crResetState(){
+  CR_ST[crMode]={x:0,y:0,s:130};
+  document.getElementById('crSX').value=0; document.getElementById('crVX').textContent='0';
+  document.getElementById('crSY').value=0; document.getElementById('crVY').textContent='0';
+  document.getElementById('crSS').value=130; document.getElementById('crVS').textContent='130%';
+  crRedraw();
+}
+
+function crDrawDesktop(ctx,W,H,st){
+  const flip=document.getElementById('crFlip').checked;
+  const gradReach=parseInt(document.getElementById('crSG').value)/100;
+  const imgFade=parseInt(document.getElementById('crSF').value)/100;
+  ctx.fillStyle=crActiveEl.color; ctx.fillRect(0,0,W,H);
+  if(crImg){
+    const sc=st.s/100; const ih=H*sc*3.5; const iw=crImg.width/crImg.height*ih;
+    const cx=flip?st.x:(W+st.x); const ix=cx-iw/2; const iy=(H-ih)/2+st.y;
+    const off=document.createElement('canvas'); off.width=W; off.height=H;
+    const octx=off.getContext('2d'); octx.drawImage(crImg,ix,iy,iw,ih);
+    const fadeW=iw*imgFade; const fx0=flip?(ix+iw-fadeW):ix; const fx1=flip?ix:(ix+fadeW);
+    const frd=octx.createLinearGradient(fx0,0,fx1,0);
+    frd.addColorStop(0,'rgba(0,0,0,1)'); frd.addColorStop(1,'rgba(0,0,0,0)');
+    octx.globalCompositeOperation='destination-out'; octx.fillStyle=frd; octx.fillRect(0,0,W,H);
+    ctx.drawImage(off,0,0);
+  }
+  const x0=flip?W:0,x1=flip?0:W,stop=flip?(1-gradReach):gradReach;
+  const grd=ctx.createLinearGradient(x0,0,x1,0);
+  grd.addColorStop(0,crActiveEl.color+'ff'); grd.addColorStop(stop*0.55,crActiveEl.color+'f0');
+  grd.addColorStop(stop*0.85,crActiveEl.color+'88'); grd.addColorStop(Math.min(stop+0.12,1),crActiveEl.color+'18');
+  grd.addColorStop(1,crActiveEl.color+'00'); ctx.fillStyle=grd; ctx.fillRect(0,0,W,H);
+}
+
+function crDrawMobile(ctx,W,H,st){
+  ctx.fillStyle='#0c1018'; ctx.fillRect(0,0,W,H);
+  if(crImg){
+    const sc=st.s/100; const coverScale=Math.max(W/crImg.width,H/crImg.height)*sc;
+    const iw=crImg.width*coverScale; const ih=crImg.height*coverScale;
+    ctx.drawImage(crImg,(W-iw)/2+st.x,st.y,iw,ih);
+  }
+  const fade=ctx.createLinearGradient(0,H*0.72,0,H);
+  fade.addColorStop(0,'rgba(12,16,24,0)'); fade.addColorStop(1,'rgba(12,16,24,0.82)');
+  ctx.fillStyle=fade; ctx.fillRect(0,0,W,H);
+}
+
+function crRedraw(){
+  const dc=document.getElementById('crDesktopCanvas'); if(!dc) return;
+  crDrawDesktop(dc.getContext('2d'),800,72,CR_ST.desktop);
+  crDrawMobile(document.getElementById('crMobileCanvas').getContext('2d'),400,160,CR_ST.mobile);
+  crUpdateBodyGrad();
+}
+
+function crUpdateBodyGrad(){
+  const b=document.getElementById('crMobileBody');
+  if(b) b.style.background=`linear-gradient(180deg,${crActiveEl.color}30 0%,${crActiveEl.color}0a 100%)`;
+}
+
+function crDoExport(){
+  if(!crImg) return;
+  const isD=crMode==='desktop'; const W=isD?800:400,H=isD?72:160;
+  const off=document.createElement('canvas'); off.width=W; off.height=H;
+  if(isD) crDrawDesktop(off.getContext('2d'),W,H,CR_ST.desktop);
+  else crDrawMobile(off.getContext('2d'),W,H,CR_ST.mobile);
+  const a=document.createElement('a');
+  a.download=`${crSrcBaseName}-${isD?'desktop':'mobile'}.jpg`;
+  a.href=off.toDataURL('image/jpeg',0.92); a.click();
+}
+
+async function crSaveSettings(){
+  const s={elIdx:CR_ELEMENTS.indexOf(crActiveEl),gradReach:document.getElementById('crSG').value,imgFade:document.getElementById('crSF').value};
+  await storageSetValue(CROPPER_KEY,JSON.stringify(s));
+}
+
+async function crLoadSettings(){
+  try{
+    const raw=await storageGetValue(CROPPER_KEY); if(!raw) return;
+    const s=JSON.parse(raw);
+    if(s.elIdx>=0&&s.elIdx<CR_ELEMENTS.length){
+      crActiveEl=CR_ELEMENTS[s.elIdx];
+      document.querySelectorAll('.cr-el-btn').forEach((b,i)=>b.classList.toggle('active',i===s.elIdx));
+    }
+    if(s.gradReach){document.getElementById('crSG').value=s.gradReach;document.getElementById('crVG').textContent=s.gradReach+'%';}
+    if(s.imgFade){document.getElementById('crSF').value=s.imgFade;document.getElementById('crVF').textContent=s.imgFade+'%';}
+    crRedraw();
+  }catch(e){}
+}
+// ── END BANNER CROPPER ────────────────────────────────────────────────────────
+
+// ── BANNER CROPPER ────────────────────────────────────────────────────────────
+const CROP_ELEMENTS=[
+  {name:'Geo',color:'#b8841e'},{name:'Anemo',color:'#35aa8c'},{name:'Dendro',color:'#6ab830'},
+  {name:'Pyro',color:'#d04420'},{name:'Cryo',color:'#68a8c4'},{name:'Hydro',color:'#1850b0'},
+  {name:'Electro',color:'#7850c8'},{name:'Unknown',color:'#505868'},
+];
+let cropImg=null, cropActiveEl=CROP_ELEMENTS[0], cropMode='desktop', cropSrcBaseName='banner';
+const cropST={desktop:{x:0,y:0,s:130}, mobile:{x:0,y:0,s:130}};
+let cropDrag=null, cropInited=false;
+
+function cropSaveState(){
+  try{
+    const idx=CROP_ELEMENTS.indexOf(cropActiveEl);
+    localStorage.setItem('cropState',JSON.stringify({
+      elIdx:idx, mode:cropMode,
+      desktop:cropST.desktop, mobile:cropST.mobile,
+      gradReach:document.getElementById('crop-sG')?.value||60,
+      imgFade:document.getElementById('crop-sF')?.value||25,
+      flip:document.getElementById('crop-flipGrad')?.checked||false
+    }));
+  }catch(e){}
+}
+
+function cropLoadState(){
+  try{
+    const s=JSON.parse(localStorage.getItem('cropState')||'{}');
+    if(s.elIdx!=null){
+      cropActiveEl=CROP_ELEMENTS[s.elIdx]||CROP_ELEMENTS[0];
+      document.querySelectorAll('.cp-elbtn').forEach((b,i)=>b.classList.toggle('active',i===s.elIdx));
+    }
+    if(s.mode) cropMode=s.mode;
+    if(s.desktop) Object.assign(cropST.desktop,s.desktop);
+    if(s.mobile) Object.assign(cropST.mobile,s.mobile);
+    if(s.gradReach) document.getElementById('crop-sG').value=s.gradReach;
+    if(s.imgFade) document.getElementById('crop-sF').value=s.imgFade;
+    if(s.flip) document.getElementById('crop-flipGrad').checked=s.flip;
+  }catch(e){}
+}
+
+function cropInit(){
+  if(cropInited) return;
+  cropInited=true;
+
+  // Build element buttons
+  const grid=document.getElementById('crop-elGrid');
+  CROP_ELEMENTS.forEach((el,i)=>{
+    const b=document.createElement('button');
+    b.className='cp-elbtn'+(i===0?' active':'');
+    b.textContent=el.name;
+    b.style.background=el.color+'25';
+    b.style.color=el.color;
+    b.onclick=()=>{
+      document.querySelectorAll('.cp-elbtn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      cropActiveEl=el;
+      cropRedraw(); cropUpdateBodyGrad(); cropSaveState();
+    };
+    grid.appendChild(b);
+  });
+
+  // File input
+  document.getElementById('crop-fi').addEventListener('change',e=>{
+    const f=e.target.files[0]; if(!f)return;
+    cropSrcBaseName=f.name.replace(/\.[^.]+$/,'');
+    const r=new FileReader();
+    r.onload=ev=>{
+      const i=new Image();
+      i.onload=()=>{cropImg=i;document.getElementById('crop-dropText').textContent=f.name;document.getElementById('crop-exportBtn').disabled=false;cropRedraw();};
+      i.src=ev.target.result;
+    };
+    r.readAsDataURL(f);
+  });
+
+  // Drag on canvases
+  ['crop-desktopCanvas','crop-mobileCanvas'].forEach(id=>{
+    const c=document.getElementById(id);
+    const m=id==='crop-desktopCanvas'?'desktop':'mobile';
+    c.addEventListener('mousedown',e=>{
+      cropDrag={m,sx:e.clientX,sy:e.clientY,ox:cropST[m].x,oy:cropST[m].y};
+      e.preventDefault();
+    });
+    c.addEventListener('wheel',e=>{
+      e.preventDefault();
+      const oldS=cropST[m].s;
+      const newS=Math.max(20,Math.min(600,oldS-e.deltaY*0.12));
+      cropST[m].x*=newS/oldS; cropST[m].y*=newS/oldS; cropST[m].s=newS;
+      if(cropMode===m){document.getElementById('crop-sS').value=newS;document.getElementById('crop-vS').textContent=Math.round(newS)+'%';}
+      cropRedraw(); cropSaveState();
+    },{passive:false});
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!cropDrag)return;
+    const m=cropDrag.m;
+    cropST[m].x=cropDrag.ox+(e.clientX-cropDrag.sx)*(m==='desktop'?3:2);
+    cropST[m].y=cropDrag.oy+(e.clientY-cropDrag.sy)*(m==='desktop'?3:2);
+    if(cropMode===m){document.getElementById('crop-sX').value=cropST[m].x/2;document.getElementById('crop-sY').value=cropST[m].y/2;document.getElementById('crop-vX').textContent=cropST[m].x;document.getElementById('crop-vY').textContent=cropST[m].y;}
+    cropRedraw();
+  });
+  document.addEventListener('mouseup',()=>{if(cropDrag){cropSaveState();cropDrag=null;}});
+
+  cropLoadState();
+  cropSetMode(cropMode);
+}
+
+function cropSetMode(m){
+  cropMode=m;
+  document.getElementById('crop-modeDesktop').classList.toggle('active',m==='desktop');
+  document.getElementById('crop-modeMobile').classList.toggle('active',m==='mobile');
+  document.getElementById('crop-desktopExtras').style.display=m==='desktop'?'':'none';
+  document.getElementById('crop-sizeBadge').textContent=m==='desktop'?'Output: 800×72 px':'Output: 400×160 px';
+  const s=cropST[m];
+  document.getElementById('crop-sX').value=s.x/2;
+  document.getElementById('crop-sY').value=s.y/2;
+  document.getElementById('crop-sS').value=s.s;
+  document.getElementById('crop-vS').textContent=s.s+'%';
+  document.getElementById('crop-vX').textContent=s.x;
+  document.getElementById('crop-vY').textContent=s.y;
+  cropRedraw(); cropSaveState();
+}
+
+function cropOnSlider(){
+  const s=cropST[cropMode];
+  s.x=parseInt(document.getElementById('crop-sX').value)*2;
+  s.y=parseInt(document.getElementById('crop-sY').value)*2;
+  s.s=parseInt(document.getElementById('crop-sS').value);
+  document.getElementById('crop-vS').textContent=s.s+'%';
+  document.getElementById('crop-vX').textContent=s.x;
+  document.getElementById('crop-vY').textContent=s.y;
+  document.getElementById('crop-vG').textContent=document.getElementById('crop-sG').value+'%';
+  document.getElementById('crop-vF').textContent=document.getElementById('crop-sF').value+'%';
+  cropRedraw(); cropSaveState();
+}
+
+function cropResetState(){
+  cropST[cropMode]={x:0,y:0,s:130};
+  document.getElementById('crop-sX').value=0;
+  document.getElementById('crop-sY').value=0;
+  document.getElementById('crop-sS').value=130;
+  document.getElementById('crop-vS').textContent='130%';
+  document.getElementById('crop-vX').textContent='0';
+  document.getElementById('crop-vY').textContent='0';
+  cropRedraw(); cropSaveState();
+}
+
+function cropDrawDesktop(ctx,W,H,st){
+  const flip=document.getElementById('crop-flipGrad').checked;
+  const gradReach=parseInt(document.getElementById('crop-sG').value)/100;
+  const imgFade=parseInt(document.getElementById('crop-sF').value)/100;
+  ctx.fillStyle=cropActiveEl.color; ctx.fillRect(0,0,W,H);
+  if(cropImg){
+    const sc=st.s/100, ih=H*sc*3.5, iw=cropImg.width/cropImg.height*ih;
+    const cx=flip?st.x:(W+st.x), ix=cx-iw/2, iy=(H-ih)/2+st.y;
+    const off=document.createElement('canvas'); off.width=W; off.height=H;
+    const octx=off.getContext('2d'); octx.drawImage(cropImg,ix,iy,iw,ih);
+    const fadeW=iw*imgFade, fx0=flip?(ix+iw-fadeW):ix, fx1=flip?ix:(ix+fadeW);
+    const frd=octx.createLinearGradient(fx0,0,fx1,0);
+    frd.addColorStop(0,'rgba(0,0,0,1)'); frd.addColorStop(1,'rgba(0,0,0,0)');
+    octx.globalCompositeOperation='destination-out'; octx.fillStyle=frd; octx.fillRect(0,0,W,H);
+    ctx.drawImage(off,0,0);
+  }
+  const x0=flip?W:0,x1=flip?0:W,stop=flip?(1-gradReach):gradReach;
+  const grd=ctx.createLinearGradient(x0,0,x1,0);
+  grd.addColorStop(0,cropActiveEl.color+'ff'); grd.addColorStop(stop*0.55,cropActiveEl.color+'f0');
+  grd.addColorStop(stop*0.85,cropActiveEl.color+'88'); grd.addColorStop(Math.min(stop+0.12,1),cropActiveEl.color+'18');
+  grd.addColorStop(1,cropActiveEl.color+'00'); ctx.fillStyle=grd; ctx.fillRect(0,0,W,H);
+}
+
+function cropDrawMobile(ctx,W,H,st){
+  ctx.fillStyle='#0c1018'; ctx.fillRect(0,0,W,H);
+  if(cropImg){
+    const sc=st.s/100, cs=Math.max(W/cropImg.width,H/cropImg.height)*sc;
+    ctx.drawImage(cropImg,(W-cropImg.width*cs)/2+st.x,st.y,cropImg.width*cs,cropImg.height*cs);
+  }
+  const fade=ctx.createLinearGradient(0,H*0.72,0,H);
+  fade.addColorStop(0,'rgba(12,16,24,0)'); fade.addColorStop(1,'rgba(12,16,24,0.82)');
+  ctx.fillStyle=fade; ctx.fillRect(0,0,W,H);
+}
+
+function cropRedraw(){
+  const dc=document.getElementById('crop-desktopCanvas');
+  const mc=document.getElementById('crop-mobileCanvas');
+  if(!dc||!mc) return;
+  cropDrawDesktop(dc.getContext('2d'),800,72,cropST.desktop);
+  cropDrawMobile(mc.getContext('2d'),400,160,cropST.mobile);
+  cropUpdateBodyGrad();
+}
+
+function cropUpdateBodyGrad(){
+  const mb=document.getElementById('crop-mobileBody');
+  if(mb) mb.style.background=`linear-gradient(180deg,${cropActiveEl.color}30 0%,${cropActiveEl.color}0a 100%)`;
+}
+
+function cropDoExport(){
+  if(!cropImg)return;
+  const isD=cropMode==='desktop', W=isD?800:400, H=isD?72:160;
+  const off=document.createElement('canvas'); off.width=W; off.height=H;
+  if(isD) cropDrawDesktop(off.getContext('2d'),W,H,cropST.desktop);
+  else    cropDrawMobile(off.getContext('2d'),W,H,cropST.mobile);
+  const a=document.createElement('a');
+  a.download=`${cropSrcBaseName||'banner'}${isD?'-desktop':'-mobile'}.jpg`;
+  a.href=off.toDataURL('image/jpeg',0.92); a.click();
+}
 </script>
 </body>
 </html>
