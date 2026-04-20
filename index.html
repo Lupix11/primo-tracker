@@ -514,7 +514,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v159</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v160</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1329,7 +1329,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v159';
+const APP_VERSION = 'v160';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2141,11 +2141,9 @@ function renderTimeline(banners){
     // Deduplicate by groupKey + first character name
     const seen=new Set();
     const groups=[];
-    const cutoff=new Date(now.getTime()+120*24*3600000);
     baseParsed.forEach(b=>{
       const key=b._groupKey;
       if(seen.has(key)) return;
-      if(b._startMoment>cutoff) return; // hide far-future on mobile
       seen.add(key);
       groups.push(b);
     });
@@ -2216,7 +2214,7 @@ function renderTimeline(banners){
   maxDate.setDate(maxDate.getDate()+1);
 
   const totalDays=Math.max(2,diffDays(maxDate,minDate)+1);
-  const dayWidth=Math.max(11,Math.min(18,Math.floor(3200/Math.max(1,totalDays))));
+  const dayWidth=18;
   const rightPad=170;
   const trackWidth=Math.max(820,totalDays*dayWidth);
   const timelineWidth=trackWidth+rightPad;
