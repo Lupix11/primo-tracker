@@ -405,12 +405,12 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-bar.weapon.spec{background:linear-gradient(90deg,#c4abd8,#9f86c0);}
 .ptl-bar.selected{outline:2px solid rgba(240,208,128,0.96);box-shadow:0 0 0 4px rgba(240,208,128,0.16), 0 10px 24px rgba(0,0,0,0.22);z-index:5;transform:translateY(-1px);} 
 .ptl-bar.dimmed{opacity:0.72;}
-.ptl-bar-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;position:relative;z-index:2;}
+.ptl-bar-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;position:relative;z-index:2;text-shadow:0 1px 4px rgba(0,0,0,0.6);}
 .ptl-bar-end{font-size:10px;white-space:nowrap;color:rgba(15,18,26,0.72);font-weight:700;position:relative;z-index:2;}
-.ptl-bar-img{position:absolute;left:0;top:0;height:100%;width:100%;object-fit:fill;pointer-events:none;opacity:1;}
+.ptl-bar-img{position:absolute;left:0;top:0;height:100%;width:100%;object-fit:fill;pointer-events:none;opacity:1;z-index:1;}
 .ptl-bar-fade{position:absolute;right:0;top:0;height:100%;width:55%;pointer-events:none;z-index:1;}
 .ptl-empty{padding:10px 0 2px;color:#7f7593;font-size:10px;text-align:center;}
-.ptl-countdown{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:rgba(15,18,26,0.76);font-weight:700;white-space:nowrap;}
+.ptl-countdown{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;white-space:nowrap;background:rgba(0,0,0,0.45);color:#e8dfc8;padding:2px 7px;border-radius:999px;backdrop-filter:blur(2px);}
 .ptl-countdown .clock{font-size:11px;}
 .ptl-scroll-hint{padding:8px 0 2px;text-align:center;font-size:10px;color:#6f657f;}
 
@@ -514,7 +514,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v143</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v144</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1313,7 +1313,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v143';
+const APP_VERSION = 'v144';
 
 let gdToken = null;
 let gdTokenClient = null;
