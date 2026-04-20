@@ -514,7 +514,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v163</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v164</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1349,7 +1349,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v163';
+const APP_VERSION = 'v164';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2168,7 +2168,7 @@ function renderTimeline(banners){
       groups.push(b);
     });
     const cards=groups.map(b=>{
-      const isSel=PL.selBanner===b._index;
+      const isSel=false;
       const endMoment=b._endMoment, startMoment=b._startMoment;
       const isLive=now>=startMoment&&now<=endMoment;
       const isEnded=now>endMoment;
@@ -2225,6 +2225,8 @@ function renderTimeline(banners){
     }).join('');
     const scrollHint='<div style="font-size:11px;color:#504060;text-align:center;padding:6px 0 2px;">↕ scroll · tap to select</div>';
     list.innerHTML=`<div id="m-banner-scroll" style="max-height:45vh;overflow-y:auto;-webkit-overflow-scrolling:touch;">${cards}</div>${scrollHint}`;
+    const mlCopyEarly=document.getElementById('timeline-list-mobile');
+    if(mlCopyEarly) mlCopyEarly.innerHTML=list.innerHTML;
     return;
   }
 
