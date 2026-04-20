@@ -396,7 +396,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-track-sub{font-size:10px;color:#7f7593;line-height:1.3;}
 .ptl-row-track{position:relative;min-height:32px;}
 .ptl-gridline{position:absolute;top:0;bottom:0;border-left:1px solid rgba(255,255,255,0.045);}
-.ptl-bar{position:absolute;height:36px;border-radius:999px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;font-size:11px;color:#10131c;cursor:pointer;z-index:2;transition:transform 0.12s ease, box-shadow 0.16s ease, outline-color 0.16s ease, opacity 0.16s ease;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12);border:none;overflow:hidden;}
+.ptl-bar{height:36px;border-radius:999px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;font-size:11px;color:#10131c;cursor:pointer;z-index:2;transition:transform 0.12s ease, box-shadow 0.16s ease, outline-color 0.16s ease, opacity 0.16s ease;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12);border:none;overflow:hidden;}
 .ptl-bar:hover{transform:translateY(-1px);}
 .ptl-bar.live{background:linear-gradient(90deg,#bcebd0,#80f0a0);}
 .ptl-bar.soon{background:linear-gradient(90deg,#f3df9e,#f0d080);}
@@ -407,7 +407,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-bar.dimmed{opacity:0.72;}
 .ptl-bar-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;position:relative;z-index:2;}
 .ptl-bar-end{font-size:10px;white-space:nowrap;color:rgba(15,18,26,0.72);font-weight:700;position:relative;z-index:2;}
-.ptl-bar-img{position:absolute;right:0;top:0;height:100%;width:40%;object-fit:cover;object-position:top center;pointer-events:none;opacity:0.92;z-index:1;}
+.ptl-bar-img{position:absolute;left:0;top:0;height:100%;width:100%;object-fit:fill;pointer-events:none;z-index:1;}
 .ptl-bar-fade{position:absolute;right:0;top:0;height:100%;width:55%;pointer-events:none;z-index:2;}
 .ptl-empty{padding:10px 0 2px;color:#7f7593;font-size:10px;text-align:center;}
 .ptl-countdown{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:rgba(15,18,26,0.76);font-weight:700;white-space:nowrap;}
@@ -514,7 +514,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v149</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v150</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1313,7 +1313,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v149';
+const APP_VERSION = 'v150';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2247,13 +2247,15 @@ function renderTimeline(banners){
       const imgUrl=desktopImgRaw?(desktopImgRaw.startsWith('http')?desktopImgRaw:REPO_BASE+desktopImgRaw):'';
       // Images are pre-baked with gradient — no fade overlay needed
       const imgHtml = imgUrl && barWidth > 120
-        ? `<img class="ptl-bar-img" src="${imgUrl}" alt="" loading="lazy" onerror="console.warn('Banner image not found:','${imgUrl}');this.style.opacity='0';"/><div class="ptl-bar-fade" style="background:linear-gradient(to right,${palette.c1} 52%,${palette.c1}ee 65%,${palette.c1}99 78%,${palette.c1}00 100%);"></div>`
+        ? `<img class="ptl-bar-img" src="${imgUrl}" alt="" loading="lazy" onerror="this.style.display='none';"/>`
         : '';
-      return `<button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="left:${startOffset+3}px;width:${barWidth}px;top:${top}px;height:${barHeight}px;z-index:${zIdx};background:linear-gradient(90deg,${palette.c1},${palette.c2});color:${palette.fg};" onclick="selectBanner(${b._index})">
-        ${imgHtml}
-        <span class="ptl-bar-label">${b.displayName}</span>
-        <span class="ptl-bar-end"><span class="ptl-countdown" style="background:rgba(0,0,0,0.28);color:${palette.fg};padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;">${isSel?'✓ ':''}\${shortStatus}</span></span>
-      </button>`;
+      return `<div style="position:absolute;left:${startOffset+3}px;top:${top}px;display:flex;align-items:center;z-index:${zIdx};">
+        <button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="width:${barWidth}px;height:${barHeight}px;background:linear-gradient(90deg,${palette.c1},${palette.c2});color:${palette.fg};position:relative;" onclick="selectBanner(${b._index})">
+          ${imgHtml}
+          <span class="ptl-bar-label">${b.displayName}</span>
+        </button>
+        <span style="margin-left:6px;font-size:10px;font-weight:700;color:#a09878;white-space:nowrap;">${isSel?'✓ ':''}${shortStatus}</span>
+      </div>`;
     }).join('');
     const height=items.length ? top + barHeight + laneBase : 50;
     return {bars,height};
