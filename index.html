@@ -553,7 +553,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v171</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v172</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1473,7 +1473,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v171';
+const APP_VERSION = 'v172';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1833,6 +1833,12 @@ function addEntry(){
   if(!date){err.textContent='Pick a date.';err.style.display='block';return;}
   if(isNaN(primo)&&isNaN(fates)){err.textContent='Enter Primogems and/or Fates.';err.style.display='block';return;}
   const p=isNaN(primo)?0:primo,f=isNaN(fates)?0:fates;
+  // Warn if primogems dropped — spend day
+  const lastEntry=entries.length?entries[entries.length-1]:null;
+  if(lastEntry&&!isNaN(primo)&&primo<(lastEntry.primo||0)){
+    const confirmed=confirm(`Primogems dropped from ${(lastEntry.primo||0).toLocaleString()} → ${primo.toLocaleString()}. Log as a spend day?`);
+    if(!confirmed)return;
+  }
   upsert({date,primo:isNaN(primo)?null:primo,fates:isNaN(fates)?null:fates,total:p+f*160,pulls:Math.floor(p/160)+f,notes});
   err.style.display='none';
   ['inp-primo','inp-fates'].forEach(id=>document.getElementById(id).value='');
@@ -1906,7 +1912,7 @@ function renderChart(){
     const pG=ctx.createLinearGradient(0,0,0,250);pG.addColorStop(0,'rgba(192,128,240,0.22)');pG.addColorStop(1,'rgba(192,128,240,0.01)');
     chartInst=new Chart(ctx,{type:'line',data:{labels,datasets:[{label:'Total Pulls',data:entries.map(e=>e.pulls),borderColor:'#c080f0',backgroundColor:pG,borderWidth:2,pointBackgroundColor:'#c080f0',pointRadius:3,pointHoverRadius:5,fill:true,tension:0.3,spanGaps:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>entries[i[0].dataIndex]?.date||'',label:c=>'  '+c.parsed.y?.toLocaleString()+' pulls'}}},scales:{x:xSc,y:{...ySc,beginAtZero:false}}}});
   } else {
-    document.getElementById('legend').innerHTML=`<span class="li"><span class="ls" style="background:#80f0a0;"></span>Above baseline</span><span class="li"><span class="ls" style="background:#c9922e;"></span>At baseline</span><span class="li"><span class="ls" style="background:#f09060;"></span>Below baseline</span><span class="li"><span class="ls" style="background:#80c0f0;"></span>7-day average</span><span class="li"><span class="ld"><span></span></span>&nbsp;<span style="color:#fff6d8;font-size:11px;">Baseline: ${baseline}</span></span>`;
+    document.getElementById('legend').innerHTML=`<span class="li"><span class="ls" style="background:#80f0a0;"></span>Above baseline</span><span class="li"><span class="ls" style="background:#c9922e;"></span>At baseline</span><span class="li"><span class="ls" style="background:#f09060;"></span>Below baseline</span><span class="li"><span class="ls" style="background:#a078c8;"></span>Spend day</span><span class="li"><span class="ls" style="background:#80c0f0;"></span>7-day average</span><span class="li"><span class="ld"><span></span></span>&nbsp;<span style="color:#fff6d8;font-size:11px;">Baseline: ${baseline}</span></span>`;
     const gains=getDG();
     const moving=gains.map((g,i)=>{
       const start=Math.max(1,i-6);
@@ -1914,7 +1920,7 @@ function renderChart(){
       if(!vals.length||g===null)return null;
       return Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
     });
-    chartInst=new Chart(ctx,{type:'bar',plugins:[blPlugin],data:{labels,datasets:[{label:'Daily Gain',data:gains,backgroundColor:gains.map(g=>g===null?'transparent':g>baseline?'rgba(128,240,160,0.7)':g===baseline?'rgba(214,170,72,0.88)':'rgba(240,144,96,0.7)'),borderColor:gains.map(g=>g===null?'transparent':g>baseline?'#80f0a0':g===baseline?'#c9922e':'#f09060'),borderWidth:1,borderRadius:3,order:2},{type:'line',label:'7-day average',data:moving,borderColor:'#80c0f0',backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:3,tension:0.3,spanGaps:true,order:1}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:0},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>entries[i[0].dataIndex]?.date||'',label:c=>{if(c.dataset.label==='7-day average')return '  7-day avg: '+c.parsed.y?.toLocaleString();const g=c.parsed.y;if(g===null)return'';const diff=g-baseline;if(diff===0)return '  Gained: '+g.toLocaleString()+'  (at baseline)';return '  Gained: '+g.toLocaleString()+(diff>0?'  (+'+diff+' above)':'  ('+diff+' below)');},}}},scales:{x:{...xSc,offset:true},y:{...ySc,beginAtZero:true}}}});
+    chartInst=new Chart(ctx,{type:'bar',plugins:[blPlugin],data:{labels,datasets:[{label:'Daily Gain',data:gains,backgroundColor:gains.map(g=>g===null?'transparent':g<0?'rgba(160,120,200,0.6)':g>baseline?'rgba(128,240,160,0.7)':g===baseline?'rgba(214,170,72,0.88)':'rgba(240,144,96,0.7)'),borderColor:gains.map(g=>g===null?'transparent':g<0?'#a078c8':g>baseline?'#80f0a0':g===baseline?'#c9922e':'#f09060'),borderWidth:1,borderRadius:3,order:2},{type:'line',label:'7-day average',data:moving,borderColor:'#80c0f0',backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:3,tension:0.3,spanGaps:true,order:1}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:0},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>entries[i[0].dataIndex]?.date||'',label:c=>{if(c.dataset.label==='7-day average')return '  7-day avg: '+c.parsed.y?.toLocaleString();const g=c.parsed.y;if(g===null)return'';const diff=g-baseline;if(diff===0)return '  Gained: '+g.toLocaleString()+'  (at baseline)';return '  Gained: '+g.toLocaleString()+(diff>0?'  (+'+diff+' above)':'  ('+diff+' below)');},}}},scales:{x:{...xSc,offset:true},y:{...ySc,beginAtZero:true}}}});
   }
 }
 function isMobile(){return window.innerWidth<=768;}
@@ -2018,7 +2024,7 @@ function renderStats(){
   histCard.style.display='block';
   const gains=getDG(),baseline=getBaseline(),validGains=gains.filter(g=>g!==null);
   const first=entries[0],last=entries[entries.length-1];
-  const aAll=avg(gains),a7=avg(gainsFrom(entries.slice(-8))),a30=avg(gainsFrom(entries.slice(-31)));
+  const aAll=avg(gains.filter(g=>g!==null&&g>=0)),a7=avg(gainsFrom(entries.slice(-8)).filter(g=>g!==null&&g>=0)),a30=avg(gainsFrom(entries.slice(-31)).filter(g=>g!==null&&g>=0));
   const curAvg=statsAvgRange==='7d'?a7:statsAvgRange==='30d'?a30:aAll;
   const paceVal=a7!=null&&curAvg!=null?a7-curAvg:null,paceUp=paceVal!==null&&paceVal>=0;
   const daysAbove=validGains.filter(g=>g>baseline).length;
@@ -2100,7 +2106,7 @@ function renderHistogram(validGains){
 }
 function setStatsAvg(r){
   statsAvgRange=r;
-  const gains=getDG(),a7=avg(gainsFrom(entries.slice(-8))),a30=avg(gainsFrom(entries.slice(-31))),aAll=avg(gains);
+  const gains=getDG(),a7=avg(gainsFrom(entries.slice(-8)).filter(g=>g!==null&&g>=0)),a30=avg(gainsFrom(entries.slice(-31)).filter(g=>g!==null&&g>=0)),aAll=avg(gains.filter(g=>g!==null&&g>=0));
   const val=r==='7d'?a7:r==='30d'?a30:aAll;
   const d=document.getElementById('avg-display');if(d)d.textContent=val!=null?val.toLocaleString():'—';
   document.querySelectorAll('.avg-pill').forEach(p=>p.classList.toggle('active',p.textContent.toLowerCase()===r||(p.textContent==='All'&&r==='all')));
@@ -2638,7 +2644,7 @@ function calcPlanner(){
   const curPulls=last.pulls;
   const curPrimos=last.total;
   const gains=getDG().filter(g=>g!==null);
-  const recent=gainsFrom(entries.slice(-15)).filter(g=>g!==null);
+  const recent=gainsFrom(entries.slice(-15)).filter(g=>g!==null&&g>=0); // exclude spending days
   // Soft-cap outliers: cap each day at 3× the median so single event spikes
   // don't inflate the average, but sustained high-gain streaks self-correct naturally
   const sorted=[...recent].sort((a,b)=>a-b);
