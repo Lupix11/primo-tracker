@@ -547,13 +547,69 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .cr-tog::after{content:'';position:absolute;top:2px;left:2px;width:12px;height:12px;background:white;border-radius:50%;transition:left 0.15s;}
 .cr-tog:checked::after{left:18px;}
 @media(max-width:768px){#page-cropper{display:none!important;}}
+
+/* ── PULL PLANNER CHAIN ── */
+.chain-page-hdr{margin-bottom:14px;}
+.chain-page-title{font-family:'Cinzel',serif;font-size:18px;color:#f0d080;font-weight:600;display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.chain-page-sub{font-size:12px;color:#8f84a2;}
+.chain-layout{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
+@media(max-width:900px){.chain-layout{grid-template-columns:1fr;}}
+.chain-col{display:flex;flex-direction:column;gap:8px;}
+.chain-col-hdr{display:flex;align-items:center;gap:8px;padding:0 2px 8px;border-bottom:1px solid rgba(240,208,128,0.09);margin-bottom:2px;}
+.chain-col-icon{width:18px;height:18px;fill:none;stroke:#c8a84b;stroke-width:1.8;flex-shrink:0;}
+.chain-col-title{font-family:'Cinzel',serif;font-size:12px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;}
+.chain-card{position:relative;background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.10);border-radius:12px;overflow:hidden;transition:transform 0.15s ease,box-shadow 0.18s ease,border-color 0.15s ease;}
+.chain-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,0.32),0 0 0 1px rgba(240,208,128,0.2);border-color:rgba(240,208,128,0.24);}
+.chain-card.status-complete{background:rgba(240,208,128,0.055);border-color:rgba(240,208,128,0.22);}
+.chain-card.status-complete .chain-card-body{opacity:0.82;}
+.chain-card.status-missed{opacity:0.50;filter:grayscale(0.3);}
+.chain-accent{position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:12px 0 0 12px;}
+.chain-card-body{padding:11px 14px 13px 16px;}
+.chain-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px;}
+.chain-card-info{display:flex;align-items:flex-start;gap:10px;flex:1;min-width:0;}
+.chain-card-icon{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;margin-top:1px;}
+.chain-card-text{min-width:0;flex:1;}
+.chain-card-name{font-family:'Cinzel',serif;font-size:12px;color:#e8dfc8;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;}
+.chain-card-sub{font-size:10px;color:#8f84a2;margin-top:2px;}
+.chain-status-chip{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:0.4px;padding:3px 9px;border-radius:999px;flex-shrink:0;white-space:nowrap;line-height:1.5;}
+.chip-live{background:rgba(128,240,160,0.12);border:1px solid rgba(128,240,160,0.32);color:#80f0a0;animation:chip-pulse 2.4s ease-in-out infinite;}
+@keyframes chip-pulse{0%,100%{box-shadow:0 0 0 0 rgba(128,240,160,0);}50%{box-shadow:0 0 0 4px rgba(128,240,160,0.18);}}
+.chip-planning{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#907898;}
+.chip-missed{background:rgba(240,80,80,0.09);border:1px solid rgba(240,80,80,0.22);color:#f08080;}
+.chip-complete{background:rgba(240,208,128,0.11);border:1px solid rgba(240,208,128,0.32);color:#f0d080;}
+.chain-card-form{display:grid;grid-template-columns:74px 84px 1fr 1fr;gap:8px;align-items:end;}
+@media(max-width:1100px){.chain-card-form{grid-template-columns:74px 84px 1fr 1fr;}}
+@media(max-width:768px){.chain-card-form{grid-template-columns:1fr 1fr 1fr 1fr;}}
+.chain-field{display:flex;flex-direction:column;gap:3px;}
+.chain-field-label{font-size:9px;color:#a090c0;letter-spacing:0.8px;text-transform:uppercase;}
+.chain-select,.chain-num-inp{background:rgba(255,255,255,0.06);border:1px solid rgba(240,208,128,0.15);border-radius:7px;color:#e8dfc8;font-family:'Nunito',sans-serif;font-size:12px;padding:5px 7px;outline:none;width:100%;}
+.chain-select:focus,.chain-num-inp:focus{border-color:rgba(240,208,128,0.45);}
+.chain-select option{background:#171b25;}
+.chain-toggle-wrap{display:flex;align-items:center;gap:6px;padding-top:4px;}
+.chain-tog{appearance:none;width:30px;height:16px;background:rgba(255,255,255,0.1);border-radius:999px;cursor:pointer;position:relative;transition:background 0.2s;border:none;flex-shrink:0;}
+.chain-tog:checked{background:#80f0a0;}
+.chain-tog::after{content:'';position:absolute;top:2px;left:2px;width:12px;height:12px;background:white;border-radius:50%;transition:left 0.15s;}
+.chain-tog:checked::after{left:16px;}
+.chain-copies-wrap{display:flex;align-items:center;gap:3px;flex-wrap:wrap;padding-top:4px;}
+.chain-copy-sq{width:16px;height:16px;border-radius:3px;border:1.5px solid rgba(240,208,128,0.25);cursor:pointer;transition:background 0.18s,border-color 0.18s,transform 0.1s;flex-shrink:0;background:rgba(255,255,255,0.03);}
+.chain-copy-sq.filled{background:#c8a84b;border-color:#f0d080;box-shadow:0 0 6px rgba(240,208,128,0.25);}
+.chain-copy-sq:hover{transform:scale(1.18);border-color:rgba(240,208,128,0.6);}
+.chain-summary{background:rgba(255,255,255,0.025);border:1px solid rgba(240,208,128,0.09);border-radius:12px;padding:14px 16px;margin-top:4px;}
+.chain-sum-title{font-family:'Cinzel',serif;font-size:9px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:11px;}
+.chain-sum-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;}
+.chain-sum-val{font-family:'Cinzel',serif;font-size:20px;color:#f0d080;line-height:1;display:flex;align-items:center;justify-content:center;gap:4px;}
+.chain-sum-val.neg{color:#f08080;}
+.chain-sum-val.pos{color:#80f0a0;}
+.chain-sum-lbl{font-size:9px;color:#907898;letter-spacing:0.9px;text-transform:uppercase;margin-top:4px;}
+.chain-sum-sub{font-size:9px;color:#6d627f;margin-top:2px;}
+.chain-footer{font-size:11px;color:#6d627f;text-align:center;padding:12px 4px 4px;display:flex;align-items:center;justify-content:center;gap:5px;}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v178</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v179</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -684,109 +740,32 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
   </section>
 
   <section id="page-planner" class="page">
-    <!-- Mobile-only timeline card -->
-    <div class="card mobile-only">
-      <div class="tl-header">
-        <div class="card-title">Banner Timeline</div>
-        <button class="fetch-btn" onclick="fetchBanners()">
-          <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>Refresh
-        </button>
+    <div class="chain-page-hdr">
+      <div class="chain-page-title">
+        <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:none;stroke:#f0d080;stroke-width:1.8;flex-shrink:0;"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+        Pull Planner
       </div>
-      <div id="timeline-list-mobile"><div class="msg">Tap Refresh to load banners ✦</div></div>
+      <div class="chain-page-sub">Plan your future pulls and track the primogems you need for your goals.</div>
     </div>
-    <!-- Card: Goal + Results -->
-    <div class="card">
-      <div class="card-title" style="margin-bottom:4px;">Pull Goal</div>
-
-      <!-- Two sections: Character + Weapon -->
-      <div class="goal-sections">
-        <!-- Character -->
-        <div class="goal-section" id="char-section">
-          <div class="goal-section-header" onclick="toggleSection('char')">
-            <div class="gs-toggle" id="char-toggle"></div>
-            <div class="gs-title">Character</div>
-            <div class="gs-tag">C0–C6</div>
-          </div>
-          <div class="goal-section-body">
-            <div style="margin-bottom:10px;">
-              <div class="gs-label" style="margin-bottom:4px;">Target Banner</div>
-              <select id="char-banner-select" onchange="setPlannerCharBanner(this.value)" class="gs-select" style="width:100%;">
-                <option value="">— select banner —</option>
-              </select>
-            </div>
-            <div class="gs-row">
-              <div class="gs-field">
-                <div class="gs-label">Constellation</div>
-                <select class="gs-select" id="char-goal" onchange="calcPlanner()">
-                  <option value="1">C0</option>
-                  <option value="2">C1</option>
-                  <option value="3">C2</option>
-                  <option value="4">C3</option>
-                  <option value="5">C4</option>
-                  <option value="6">C5</option>
-                  <option value="7">C6</option>
-                </select>
-              </div>
-              <div class="gs-field">
-                <div class="gs-label">Current Pity</div>
-                <input type="number" class="gs-input" id="char-pity" placeholder="0" min="0" max="89" oninput="calcPlanner()"/>
-              </div>
-            </div>
-            <div class="gs-toggle-row" id="char-guarantee-row" onclick="toggleCharGuarantee()">
-              <div class="gs-tdot" id="char-gdot"></div>
-              <div class="gs-tlabel" id="char-glabel">Next is 50/50 (no guarantee)</div>
-            </div>
-          </div>
+    <div class="chain-layout">
+      <div class="chain-col">
+        <div class="chain-col-hdr">
+          <svg class="chain-col-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="chain-col-title">Character</span>
         </div>
-        <!-- Weapon -->
-        <div class="goal-section" id="weap-section">
-          <div class="goal-section-header" onclick="toggleSection('weap')">
-            <div class="gs-toggle" id="weap-toggle"></div>
-            <div class="gs-title">Weapon</div>
-            <div class="gs-tag">R1–R5</div>
-          </div>
-          <div class="goal-section-body">
-            <div style="margin-bottom:10px;">
-              <div class="gs-label" style="margin-bottom:4px;">Target Banner</div>
-              <select id="weap-banner-select" onchange="setPlannerWeapBanner(this.value)" class="gs-select" style="width:100%;">
-                <option value="">— select banner —</option>
-              </select>
-            </div>
-            <div class="gs-row">
-              <div class="gs-field">
-                <div class="gs-label">Refinement</div>
-                <select class="gs-select" id="weap-goal" onchange="calcPlanner()">
-                  <option value="1">R1</option>
-                  <option value="2">R2</option>
-                  <option value="3">R3</option>
-                  <option value="4">R4</option>
-                  <option value="5">R5</option>
-                </select>
-              </div>
-              <div class="gs-field">
-                <div class="gs-label">Current Pity</div>
-                <input type="number" class="gs-input" id="weap-pity" placeholder="0" min="0" max="79" oninput="calcPlanner()"/>
-              </div>
-            </div>
-            <div class="gs-toggle-row" id="weap-path-row" onclick="toggleWeapPath()">
-              <div class="gs-tdot" id="weap-pdot"></div>
-              <div class="gs-tlabel" id="weap-plabel">Epitomized Path: 0 (no progress)</div>
-            </div>
-          </div>
+        <div id="chain-char-cards"><div class="msg">Loading banners…</div></div>
+        <div id="chain-char-summary"></div>
+      </div>
+      <div class="chain-col">
+        <div class="chain-col-hdr">
+          <svg class="chain-col-icon" viewBox="0 0 24 24"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg>
+          <span class="chain-col-title">Weapon</span>
         </div>
+        <div id="chain-weap-cards"><div class="msg">Loading banners…</div></div>
+        <div id="chain-weap-summary"></div>
       </div>
-
-      <!-- Timing + disclaimer -->
-      <div class="timing-row">
-        <span class="timing-label">Target:</span>
-        <button class="timing-btn active" id="timing-end" onclick="setTiming('end')">Banner End</button>
-        <button class="timing-btn" id="timing-start" onclick="setTiming('start')">Banner Start</button>
-      </div>
-      <div class="hp-note">⚠ All calculations use <b>hard pity</b> — Character: 90 pulls · Weapon: 80 pulls. Actual pulls may be lower due to soft pity.</div>
-
-      <!-- Results -->
-      <div id="planner-result"></div>
     </div>
+    <div class="chain-footer">ℹ Pity carries over within the same banner type. 50/50 Guarantee is only applied to limited banners.</div>
   </section>
 
 
@@ -1129,7 +1108,7 @@ const I18N={
 function t(k){return (I18N[APP.lang]&&I18N[APP.lang][k])||I18N.en[k]||k;}
 
 function freshPL(){
-  return {charEnabled:false,charGoal:1,charPity:0,charGuaranteed:false,weapEnabled:false,weapGoal:1,weapPity:0,weapEpitomized:0,selBanner:null,timing:'end',banners:[]};
+  return {charEnabled:false,charGoal:1,charPity:0,charGuaranteed:false,weapEnabled:false,weapGoal:1,weapPity:0,weapEpitomized:0,selBanner:null,selCharBanner:null,selWeapBanner:null,timing:'end',banners:[],chainChar:{},chainWeap:{}};
 }
 function makeProfile(name='Main'){
   return {id:'p'+Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-4),name,entries:[],welkin:false,PL:freshPL()};
@@ -1177,22 +1156,6 @@ function applyProfileStateToUI(){
   if(dateInp && !dateInp.value) dateInp.value=new Date().toISOString().split('T')[0];
   const welkinBtn=document.getElementById('welkin-btn');
   if(welkinBtn) welkinBtn.classList.toggle('on', !!welkin);
-  const charSection=document.getElementById('char-section');
-  const charToggle=document.getElementById('char-toggle');
-  const weapSection=document.getElementById('weap-section');
-  const weapToggle=document.getElementById('weap-toggle');
-  if(charSection) charSection.classList.toggle('enabled', !!PL.charEnabled);
-  if(charToggle) charToggle.classList.toggle('on', !!PL.charEnabled);
-  if(weapSection) weapSection.classList.toggle('enabled', !!PL.weapEnabled);
-  if(weapToggle) weapToggle.classList.toggle('on', !!PL.weapEnabled);
-  const cg=document.getElementById('char-goal'); if(cg) cg.value=PL.charGoal;
-  const cp=document.getElementById('char-pity'); if(cp) cp.value=PL.charPity;
-  const wg=document.getElementById('weap-goal'); if(wg) wg.value=PL.weapGoal;
-  const wp=document.getElementById('weap-pity'); if(wp) wp.value=PL.weapPity;
-  if(typeof updateCharGuaranteeUI==='function') updateCharGuaranteeUI();
-  if(typeof updateWeapPathUI==='function') updateWeapPathUI();
-  if(typeof setTiming==='function') setTiming(PL.timing,true);
-  populatePlannerDropdown();
 }
 function renderProfileManager(){
   const sel=document.getElementById('profile-select');
@@ -1293,7 +1256,7 @@ async function switchProfile(id){
   render();
   const b=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;
   renderTimeline(b);
-  calcPlanner();
+  renderPlannerChain();
   renderProfileManager();
   setProfileStatus('Profile switched.');
 }
@@ -1324,7 +1287,7 @@ async function submitProfileEditor(){
     applyProfileStateToUI();
     render();
     renderTimeline(PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS);
-    calcPlanner();
+    renderPlannerChain();
     profileEditMode = null;
     renderProfileManager();
     setProfileStatus('Profile created.');
@@ -1352,7 +1315,7 @@ async function confirmDeleteProfile(){
   applyProfileStateToUI();
   render();
   renderTimeline(PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS);
-  calcPlanner();
+  renderPlannerChain();
   profileEditMode = null;
   renderProfileManager();
   setProfileStatus('Profile deleted.');
@@ -1419,7 +1382,7 @@ async function setPlannerRegion(region){
   await saveSettings(true);
   renderPlannerRegionUI();
   renderTimeline(PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS);
-  if(activePage==='planner'){populatePlannerDropdown();calcPlanner();}
+  if(activePage==='planner'){renderPlannerChain();}
     if(activePage==='timeline'){const b=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;renderTimeline(b);}
 }
 async function storageGetValue(key){
@@ -1473,7 +1436,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v178';
+const APP_VERSION = 'v179';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1607,7 +1570,7 @@ async function loadFromCloud(silent=false) {
     renderProfileManager();
     renderPlannerRegionUI();
     renderTimeline(PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS);
-    calcPlanner();
+    renderPlannerChain();
     APP.cloudVaultUpdatedAt = new Date().toISOString();
     await saveSettings();
     updateSyncUI();
@@ -1715,7 +1678,7 @@ async function importBackupFile(ev){
     updateImportUI();
     renderProfileManager();
     renderTimeline(PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS);
-    calcPlanner();
+    renderPlannerChain();
     setSettingsStatus(t('status_imported'));
     ev.target.value='';
   }catch(e){setSettingsStatus(t('status_failed'));}
@@ -1731,7 +1694,7 @@ async function clearLocalData(){
   renderProfileManager();
   updateImportUI();
   renderTimeline(STATIC_BANNERS);
-  calcPlanner();
+  renderPlannerChain();
   setSettingsStatus(t('status_cleared'));
 }
 async function load(){
@@ -1769,7 +1732,7 @@ async function load(){
   // Always clear cached banners so banners.json is the source of truth
   PL.banners=[];
   renderTimeline(STATIC_BANNERS);
-  calcPlanner();
+  renderPlannerChain();
   // Fetch latest banners from JSON (replaces static fallback above)
   fetchBanners();
 }
@@ -1789,7 +1752,7 @@ function goTo(pg){
   document.getElementById('page-'+pg).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===pg));
   if(pg==='stats')renderStats();
-  if(pg==='planner'){populatePlannerDropdown();calcPlanner();if(isMobile()){const b=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;renderTimeline(b);}}
+  if(pg==='planner'){renderPlannerChain();}
   if(pg==='timeline'){const b=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;renderTimeline(b);}
   if(pg==='settings'){updateSettingsControls();updateStorageUI();renderProfileManager();renderPlannerRegionUI();updateSyncUI();}
   if(pg==='cropper'){crInitIfNeeded();}
@@ -2248,7 +2211,7 @@ function startPlannerAutoRefresh(){
   stopPlannerAutoRefresh();
   plannerRefreshTimer=setInterval(()=>{
     renderTimeline(PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS);
-    if(activePage==='planner'){populatePlannerDropdown();calcPlanner();}
+    if(activePage==='planner'){renderPlannerChain();}
     if(activePage==='timeline'){const b=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;renderTimeline(b);}
   }, 60000);
 }
@@ -2503,13 +2466,13 @@ function toggleSection(type){
   tog.classList.toggle('on',enabled);
   if(type==='char')PL.charEnabled=enabled;
   else PL.weapEnabled=enabled;
-  savePL();calcPlanner();
+  saveChain();renderPlannerChain();
 }
 
 function toggleCharGuarantee(){
   PL.charGuaranteed=!PL.charGuaranteed;
   updateCharGuaranteeUI();
-  savePL();calcPlanner();
+  saveChain();renderPlannerChain();
 }
 function updateCharGuaranteeUI(){
   const row=document.getElementById('char-guarantee-row'),dot=document.getElementById('char-gdot'),lbl=document.getElementById('char-glabel');
@@ -2520,7 +2483,7 @@ function updateCharGuaranteeUI(){
 function toggleWeapPath(){
   PL.weapEpitomized=PL.weapEpitomized===0?1:0;
   updateWeapPathUI();
-  savePL();calcPlanner();
+  saveChain();renderPlannerChain();
 }
 function updateWeapPathUI(){
   const row=document.getElementById('weap-path-row'),dot=document.getElementById('weap-pdot'),lbl=document.getElementById('weap-plabel');
@@ -2532,7 +2495,7 @@ function setTiming(t,silent){
   PL.timing=t;
   document.getElementById('timing-end').classList.toggle('active',t==='end');
   document.getElementById('timing-start').classList.toggle('active',t==='start');
-  if(!silent){savePL();calcPlanner();}
+  if(!silent){saveChain();renderPlannerChain();}
 }
 function savePL(){
   PL.charGoal=parseInt(document.getElementById('char-goal').value)||1;
@@ -2582,7 +2545,7 @@ function setPlannerCharBanner(val){
     const matchIdx=all.findIndex((b,i)=>b.type==='weapon'&&`${b.version}|${b.phase}`===pair);
     if(matchIdx!==-1) PL.selWeapBanner=matchIdx;
   }
-  savePL(); populatePlannerDropdown(); calcPlanner();
+  savePL(); renderPlannerChain();
 }
 function setPlannerWeapBanner(val){
   PL.selWeapBanner=val===''?null:parseInt(val);
@@ -2593,7 +2556,7 @@ function setPlannerWeapBanner(val){
     const matchIdx=all.findIndex((b,i)=>b.type==='character'&&`${b.version}|${b.phase}`===pair);
     if(matchIdx!==-1) PL.selCharBanner=matchIdx;
   }
-  savePL(); populatePlannerDropdown(); calcPlanner();
+  savePL(); renderPlannerChain();
 }
 function populatePlannerDropdown(){
   const allBanners=getPlannerBanners();
@@ -2614,182 +2577,238 @@ function populatePlannerDropdown(){
   fillSel('char-banner-select','character',PL.selCharBanner);
   fillSel('weap-banner-select','weapon',PL.selWeapBanner);
 }
-function calcPlanner(){
-  savePL();
-  const out=document.getElementById('planner-result');
-  if(!PL.charEnabled&&!PL.weapEnabled){
-    out.innerHTML='<div class="msg" style="padding:12px 0 0;">Enable character and/or weapon on the left to build a combined goal.</div>';
-    return;
+// ── CHAIN PLANNER ────────────────────────────────────────────────────────────
+
+const ELEM_ICON={Pyro:'🔥',Hydro:'💧',Cryo:'❄️',Electro:'⚡',Anemo:'🌀',Geo:'✦',Dendro:'🌿',Unknown:'✦'};
+
+function getBannerKey(b){return `${b.version}|${b.phase}|${b.type}`;}
+
+function getChainState(type,key){
+  const chain=type==='character'?PL.chainChar:PL.chainWeap;
+  if(!chain[key]){
+    chain[key]=type==='character'
+      ?{goal:1,pity:0,guaranteed:false,obtained:0}
+      :{goal:1,pity:0,epitomized:0,obtained:0};
   }
-  if(!entries.length){
-    out.innerHTML='<div class="msg" style="padding:12px 0 0;">Add a few entries first so the planner can estimate your farming pace.</div>';
-    return;
-  }
-
-  // Block if enabled section has no target selected
-  if(PL.charEnabled && PL.selCharBanner===null){
-    out.innerHTML='<div class="msg" style="padding:12px 0 0;">Select a target banner for the character section.</div>';
-    return;
-  }
-  if(PL.weapEnabled && PL.selWeapBanner===null){
-    out.innerHTML='<div class="msg" style="padding:12px 0 0;">Select a target banner for the weapon section.</div>';
-    return;
-  }
-
-  let totalMin=0,totalMax=0;
-  const pieces=[];
-  if(PL.charEnabled){
-    const {min,max}=calcCharMinMax(PL.charGoal,PL.charPity,PL.charGuaranteed);
-    totalMin+=min; totalMax+=max;
-    pieces.push(`C${Math.max(0,PL.charGoal-1)}`);
-  }
-  if(PL.weapEnabled){
-    const {min,max}=calcWeapMinMax(PL.weapGoal,PL.weapPity,PL.weapEpitomized);
-    totalMin+=min; totalMax+=max;
-    pieces.push(`R${PL.weapGoal}`);
-  }
-
-  const last=entries[entries.length-1];
-  const curPulls=last.pulls;
-  const curPrimos=last.total;
-  const gains=getDG().filter(g=>g!==null);
-  const recent=gainsFrom(entries.slice(-15)).filter(g=>g!==null&&g>=0); // exclude spending days
-  // Soft-cap outliers: cap each day at 3× the median so single event spikes
-  // don't inflate the average, but sustained high-gain streaks self-correct naturally
-  const sorted=[...recent].sort((a,b)=>a-b);
-  const median=sorted.length?sorted[Math.floor(sorted.length/2)]:0;
-  const cap=Math.max(median*3, 160); // never cap below one pull's worth
-  const softCapped=recent.map(g=>Math.min(g,cap));
-  const avgPrimoDay=avg(softCapped.length?softCapped:gains)||0;
-  const pullsPerDay=avgPrimoDay/160;
-
-  const banners=getPlannerBanners();
-  const now=new Date();
-  const today=getRegionDayFloor(now,APP.plannerRegion);
-  const getBannerDeadline=(idx)=>{
-    if(idx===null||!banners[idx]) return null;
-    const b=banners[idx];
-    const targetDate=parseISODateLocal(PL.timing==='start'?b.startDate:b.endDate);
-    const dl=Math.max(0,Math.ceil((targetDate-today)/(864e5)));
-    const ds=`${PL.timing==='start'?'banner start':'banner end'} · ${PL.timing==='start'?fmtMonthDayWithRegion(b.startDate):fmtMonthDayWithRegion(b.endDate)}`;
-    const tn=Array.isArray(b.characters)?b.characters.join(' · '):b.characters;
-    return {dl,ds,tn,b};
-  };
-  const charDeadline=PL.charEnabled?getBannerDeadline(PL.selCharBanner):null;
-  const weapDeadline=PL.weapEnabled?getBannerDeadline(PL.selWeapBanner):null;
-  // Use the earlier deadline as the binding constraint
-  let daysLeft=null,deadlineStr='select target',targetName='',_deadlineBanner=null;
-  if(charDeadline&&weapDeadline){
-    const bind=charDeadline.dl<=weapDeadline.dl?charDeadline:weapDeadline;
-    daysLeft=bind.dl; deadlineStr=bind.ds; targetName=bind.tn; _deadlineBanner=bind.b;
-  } else if(charDeadline){
-    daysLeft=charDeadline.dl; deadlineStr=charDeadline.ds; targetName=charDeadline.tn; _deadlineBanner=charDeadline.b;
-  } else if(weapDeadline){
-    daysLeft=weapDeadline.dl; deadlineStr=weapDeadline.ds; targetName=weapDeadline.tn; _deadlineBanner=weapDeadline.b;
-  }
-
-  const projPulls=daysLeft!==null?Math.floor(curPulls + pullsPerDay*daysLeft):null;
-  const projPrimos=daysLeft!==null?Math.floor(curPrimos + avgPrimoDay*daysLeft):null;
-  const gapMin=projPulls!==null?projPulls-totalMin:null;
-  const gapMax=projPulls!==null?projPulls-totalMax:null;
-  const pullsStillNeededMin=Math.max(0,totalMin-curPulls);
-  const pullsStillNeededMax=Math.max(0,totalMax-curPulls);
-  const reqPullsDay=daysLeft&&daysLeft>0?pullsStillNeededMin/daysLeft:0;
-  const reqPrimosDay=reqPullsDay*160;
-  const reqPullsDayMax=daysLeft&&daysLeft>0?pullsStillNeededMax/daysLeft:0;
-  const reqPrimosDayMax=reqPullsDayMax*160;
-  const minProgress=projPulls!==null&&totalMin>0?Math.max(0,Math.min(100,projPulls/totalMin*100)):0;
-  const maxProgress=projPulls!==null&&totalMax>0?Math.max(0,Math.min(100,projPulls/totalMax*100)):0;
-
-  let grade='—',title='No target selected yet',sub=`Pick a banner bar above so the planner can compare your projected pulls against that date. Current region: ${getRegionDeadlineLabel()}.`,gradeColor='#907898',statusTone='plan-soft';
-  if(daysLeft!==null){
-    if(projPulls>=totalMax){
-      grade='S'; gradeColor='#f0d080'; statusTone='plan-good';
-      title='Worst-case covered';
-      sub=`Projected ${projPulls.toLocaleString()} pulls by ${deadlineStr}. Even the hard-pity worst case is covered with ${Math.max(0,gapMax).toLocaleString()} to spare.`;
-    } else if(projPulls>=totalMin){
-      grade='A'; gradeColor='#80f0a0'; statusTone='plan-good';
-      title='Minimum secured';
-      sub=`Projected ${projPulls.toLocaleString()} pulls by ${deadlineStr}. You reach the minimum goal, but full worst-case coverage still needs ${Math.max(0,totalMax-projPulls).toLocaleString()} more pulls.`;
-    } else if(reqPullsDay<=pullsPerDay*1.2){
-      grade='B'; gradeColor='#80c0f0'; statusTone='plan-warn';
-      title='Close, but pace needs to rise';
-      sub=`You project ${projPulls.toLocaleString()} pulls by ${deadlineStr}, which is ${Math.abs(gapMin).toLocaleString()} short of minimum. A small daily increase can close the gap.`;
-    } else if(pullsPerDay>0){
-      grade='C'; gradeColor='#f0b060'; statusTone='plan-warn';
-      title='Off pace for this target';
-      sub=`At your current average you only project ${projPulls.toLocaleString()} pulls by ${deadlineStr}, leaving you ${Math.abs(gapMin).toLocaleString()} short of minimum.`;
-    } else {
-      grade='D'; gradeColor='#f08080'; statusTone='plan-bad';
-      title='Not enough farming data';
-      sub='The planner cannot estimate a pace yet. Add more daily entries to build a projection.';
-    }
-  }
-
-  const charPityPct=PL.charEnabled?Math.round((PL.charPity/90)*100):0;
-  const weapPityPct=PL.weapEnabled?Math.round((PL.weapPity/80)*100):0;
-  const insightClass=gapMin!==null?(gapMin>=0?'plan-good':'plan-bad'):'plan-soft';
-  const insightText=gapMin===null
-    ? 'Target window not selected yet.'
-    : gapMin>=0
-      ? `You are on pace for the minimum target with ${gapMin.toLocaleString()} pulls to spare.`
-      : `You are ${Math.abs(gapMin).toLocaleString()} pulls short of the minimum target at your current pace.`;
-
-  out.innerHTML=`
-  <div class="plan-answer">
-    <div class="plan-top">
-      <div class="plan-grade" style="color:${gradeColor};">${grade}</div>
-      <div>
-        <div class="plan-kicker">${formatGoalHeadline(targetName)}</div>
-        <div class="plan-title ${statusTone}">${title}</div>
-        <div class="plan-sub">${sub}</div>
-      </div>
-      <div class="plan-chip">
-        <div class="plan-chip-val">${daysLeft!==null?daysLeft+'d':'—'}</div>
-        <div class="plan-chip-lbl">${daysLeft!==null?deadlineStr:'select target'}</div>
-        <div class="plan-chip-sub">${daysLeft!==null&&_deadlineBanner?formatCountdownParts(PL.timing==='start'?_deadlineBanner.startDate:_deadlineBanner.endDate, PL.timing).text:'—'}</div>
-      </div>
-    </div>
-
-    <div class="plan-section">
-      <div class="plan-section-title">Core totals</div>
-      <div class="plan-grid">
-        <div class="plan-mini"><div class="plan-mini-v" style="color:#80f0a0;">${totalMin}</div><div class="plan-mini-l">Minimum pulls</div><div class="plan-mini-s">Hard-pity best case for ${goalLabel()}.</div></div>
-        <div class="plan-mini"><div class="plan-mini-v" style="color:#f09060;">${totalMax}</div><div class="plan-mini-l">Worst-case pulls</div><div class="plan-mini-s">Losing 50/50s and full hard-pity assumptions.</div></div>
-        <div class="plan-mini"><div class="plan-mini-v" style="color:#80c0f0;">${curPulls.toLocaleString()}</div><div class="plan-mini-l">Have now</div><div class="plan-mini-s">${curPrimos.toLocaleString()} total primos currently saved.</div></div>
-        <div class="plan-mini"><div class="plan-mini-v" style="color:${gapMin!==null?(gapMin>=0?'#80f0a0':'#f08080'):'#c080f0'};">${projPulls!==null?projPulls.toLocaleString():'—'}</div><div class="plan-mini-l">Projected by target</div><div class="plan-mini-s">${projPrimos!==null?projPrimos.toLocaleString()+' primos projected.':'Select a banner above.'}</div></div>
-      </div>
-    </div>
-
-    <div class="plan-section">
-      <div class="plan-section-title">Daily requirements</div>
-      <div class="plan-rate-grid">
-        <div class="plan-rate"><div class="plan-rate-v ${reqPullsDay<=pullsPerDay?'plan-good':'plan-bad'}">${daysLeft!==null?reqPullsDay.toFixed(2):'—'}</div><div class="plan-rate-l">Min pulls/day</div><div class="plan-rate-s">Needed to reach the minimum outcome.</div></div>
-        <div class="plan-rate"><div class="plan-rate-v ${reqPullsDayMax<=pullsPerDay?'plan-good':'plan-bad'}">${daysLeft!==null?reqPullsDayMax.toFixed(2):'—'}</div><div class="plan-rate-l">Worst-case pulls/day</div><div class="plan-rate-s">Needed to fully cover the hard-pity worst case.</div></div>
-        <div class="plan-rate"><div class="plan-rate-v ${reqPrimosDay<=avgPrimoDay?'plan-good':'plan-bad'}">${daysLeft!==null?Math.ceil(reqPrimosDay).toLocaleString():'—'}</div><div class="plan-rate-l">Min primos/day</div><div class="plan-rate-s">Daily grind required for minimum coverage.</div></div>
-        <div class="plan-rate"><div class="plan-rate-v ${reqPrimosDayMax<=avgPrimoDay?'plan-good':'plan-bad'}">${daysLeft!==null?Math.ceil(reqPrimosDayMax).toLocaleString():'—'}</div><div class="plan-rate-l">Worst-case primos/day</div><div class="plan-rate-s">Daily grind to guarantee the harshest outcome.</div></div>
-      </div>
-    </div>
-
-    <div class="plan-section">
-      <div class="plan-section-title">Your pace and coverage</div>
-      <div class="plan-rate-grid">
-        <div class="plan-rate"><div class="plan-rate-v">${pullsPerDay.toFixed(2)}</div><div class="plan-rate-l">Your pulls/day</div><div class="plan-rate-s">Based on recent daily gains in your log.</div></div>
-        <div class="plan-rate"><div class="plan-rate-v">${Math.round(avgPrimoDay).toLocaleString()}</div><div class="plan-rate-l">Your primo average</div><div class="plan-rate-s">Current estimated farming pace.</div></div>
-        <div class="plan-rate"><div class="plan-rate-v ${gapMin!==null?(gapMin>=0?'plan-good':'plan-bad'):''}">${gapMin!==null?(gapMin>=0?'+':'−')+Math.abs(gapMin).toLocaleString():'—'}</div><div class="plan-rate-l">Min gap</div><div class="plan-rate-s">Projected pulls versus minimum requirement.</div></div>
-        <div class="plan-rate"><div class="plan-rate-v ${gapMax!==null?(gapMax>=0?'plan-good':'plan-bad'):''}">${gapMax!==null?(gapMax>=0?'+':'−')+Math.abs(gapMax).toLocaleString():'—'}</div><div class="plan-rate-l">Worst-case gap</div><div class="plan-rate-s">Projected pulls versus worst-case requirement.</div></div>
-      </div>
-    </div>
-
-    <div class="plan-insight">
-      <div>
-        <div class="plan-insight-main ${insightClass}">${insightText}</div>
-        <div class="plan-insight-sub">This planner assumes hard pity: character 90, weapon 80. Actual outcomes can be better if you win early.</div>
-      </div>
-      <div class="plan-insight-main" style="white-space:nowrap;">Setup: <span style="color:#f0d080;">${goalLabel()}</span></div>
-    </div>
-  </div>`;
+  return chain[key];
 }
+
+function getBannerStatusStr(b,state){
+  const now=new Date();
+  const start=getRegionBannerMoment(b.startDate,'start',APP.plannerRegion);
+  const end=getRegionBannerMoment(b.endDate,'end',APP.plannerRegion);
+  if(state.obtained>=state.goal) return 'complete';
+  if(now>end) return 'missed';
+  if(now>=start&&now<=end) return 'live';
+  return 'planning';
+}
+
+function setChainGoal(type,key,val){
+  const state=getChainState(type,key);
+  const v=parseInt(val)||1;
+  state.goal=v;
+  // Clamp obtained to new goal
+  if(state.obtained>v) state.obtained=v;
+  saveChain();renderPlannerChain();
+}
+function setChainPity(type,key,val){
+  const state=getChainState(type,key);
+  const max=type==='character'?89:79;
+  state.pity=Math.max(0,Math.min(max,parseInt(val)||0));
+  saveChain();renderChainSummaryOnly();
+}
+function setChainGuarantee(type,key,checked){
+  const state=getChainState(type,key);
+  if(type==='character') state.guaranteed=!!checked;
+  else state.epitomized=checked?1:0;
+  saveChain();renderChainSummaryOnly();
+}
+function toggleChainCopy(type,key,idx){
+  const state=getChainState(type,key);
+  // Toggle: clicking filled = unfill, clicking empty = fill up to idx+1
+  if(idx<state.obtained){
+    state.obtained=idx;
+  } else {
+    state.obtained=Math.min(state.goal,idx+1);
+  }
+  saveChain();renderPlannerChain();
+}
+function saveChain(){
+  save();
+}
+
+function calcChainSummary(type,banners){
+  const now=new Date();
+  let totalMin=0,totalMax=0;
+  banners.forEach(b=>{
+    const key=getBannerKey(b);
+    const state=getChainState(type,key);
+    const status=getBannerStatusStr(b,state);
+    if(status==='complete'||status==='missed') return;
+    const remaining=state.goal-state.obtained;
+    if(remaining<=0) return;
+    if(type==='character'){
+      const {min,max}=calcCharMinMax(remaining,state.pity,state.guaranteed);
+      totalMin+=min;totalMax+=max;
+    } else {
+      const {min,max}=calcWeapMinMax(remaining,state.pity,state.epitomized||0);
+      totalMin+=min;totalMax+=max;
+    }
+  });
+  const today=getRegionDayFloor(now,APP.plannerRegion);
+  let daysLeft=null,deadlineStr=null;
+  const active=banners.filter(b=>{
+    const s=getBannerStatusStr(b,getChainState(type,getBannerKey(b)));
+    return s==='live'||s==='planning';
+  });
+  if(active.length){
+    active.sort((a,b)=>new Date(a.endDate)-new Date(b.endDate));
+    const earliest=active[0];
+    const targetDate=parseISODateLocal(earliest.endDate);
+    daysLeft=Math.max(0,Math.ceil((targetDate-today)/864e5));
+    deadlineStr=fmtMonthDay(earliest.endDate);
+  }
+  const curPulls=entries.length?entries[entries.length-1].pulls:0;
+  const gains=getDG().filter(g=>g!==null&&g>=0);
+  const sorted=[...gains].sort((a,b)=>a-b);
+  const median=sorted.length?sorted[Math.floor(sorted.length/2)]:0;
+  const cap=Math.max(median*3,160);
+  const capped=gains.map(g=>Math.min(g,cap));
+  const avgPrimoDay=avg(capped.length?capped:gains)||0;
+  const pullsPerDay=avgPrimoDay/160;
+  const projPulls=daysLeft!==null?Math.floor(curPulls+pullsPerDay*daysLeft):null;
+  const gap=projPulls!==null?projPulls-totalMin:null;
+  return{totalMin,totalMax,projPulls,gap,daysLeft,deadlineStr};
+}
+
+function renderChainCard(b,type){
+  const key=getBannerKey(b);
+  const state=getChainState(type,key);
+  const status=getBannerStatusStr(b,state);
+  const primaryEl=(Array.isArray(b.elements)?b.elements[0]:b.elements)||'Unknown';
+  const el=primaryEl==='Unknown'?'Unknown':primaryEl;
+  const palette=getElementPalette(el,type,b.status==='speculative'?'speculative':'normal');
+  const names=(Array.isArray(b.characters)?b.characters:[b.characters]).join(' · ');
+  const isSpec=b.status==='speculative';
+  const chipHtml={
+    live:'<span class="chain-status-chip chip-live">● Live Now</span>',
+    planning:'<span class="chain-status-chip chip-planning">● Planning</span>',
+    missed:'<span class="chain-status-chip chip-missed">✕ Missed</span>',
+    complete:'<span class="chain-status-chip chip-complete">✓ Complete</span>'
+  }[status];
+  const charGoals=['C0','C1','C2','C3','C4','C5','C6'];
+  const weapGoals=['R1','R2','R3','R4','R5'];
+  const goals=type==='character'?charGoals:weapGoals;
+  const goalOpts=goals.map((l,i)=>`<option value="${i+1}"${state.goal===i+1?' selected':''}>${l}</option>`).join('');
+  const toggleChecked=type==='character'?state.guaranteed:!!state.epitomized;
+  const toggleTitle=type==='character'?'50/50 Guarantee':'Fate Point';
+  const icon=ELEM_ICON[el]||'✦';
+  const squares=Array.from({length:state.goal},(_,i)=>`<div class="chain-copy-sq${i<state.obtained?' filled':''}" onclick="toggleChainCopy('${type}','${key}',${i})" title="Copy ${i+1}"></div>`).join('');
+  const safeName=names.replace(/'/g,'&#39;');
+  return `<div class="chain-card status-${status}" data-key="${key}">
+  <div class="chain-accent" style="background:linear-gradient(180deg,${palette.c1},${palette.c2});"></div>
+  <div class="chain-card-body">
+    <div class="chain-card-top">
+      <div class="chain-card-info">
+        <div class="chain-card-icon" style="background:${palette.c2}28;border:1.5px solid ${palette.c2}55;">${icon}</div>
+        <div class="chain-card-text">
+          <div class="chain-card-name">${b.version} ${b.phase} · ${safeName}</div>
+          <div class="chain-card-sub">Version ${b.version} ${b.phase}${isSpec?' · speculative':''}</div>
+        </div>
+      </div>
+      ${chipHtml}
+    </div>
+    <div class="chain-card-form">
+      <div class="chain-field">
+        <div class="chain-field-label">Goal</div>
+        <select class="chain-select" onchange="setChainGoal('${type}','${key}',this.value)">${goalOpts}</select>
+      </div>
+      <div class="chain-field">
+        <div class="chain-field-label">Pity</div>
+        <input type="number" class="chain-num-inp" value="${state.pity}" min="0" max="${type==='character'?89:79}" oninput="setChainPity('${type}','${key}',this.value)" placeholder="0"/>
+      </div>
+      <div class="chain-field">
+        <div class="chain-field-label">${toggleTitle}</div>
+        <div class="chain-toggle-wrap"><input type="checkbox" class="chain-tog"${toggleChecked?' checked':''} onchange="setChainGuarantee('${type}','${key}',this.checked)"/></div>
+      </div>
+      <div class="chain-field">
+        <div class="chain-field-label">Copy (5★)</div>
+        <div class="chain-copies-wrap">${squares}</div>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+function renderChainSummaryEl(type,banners,el){
+  const {totalMin,projPulls,gap,daysLeft,deadlineStr}=calcChainSummary(type,banners);
+  if(!totalMin&&!projPulls){el.innerHTML='';return;}
+  const gapPos=gap!==null&&gap>=0;
+  const gapClass=gap===null?'':(gapPos?'pos':'neg');
+  const gapSign=gap===null?'—':(gap>=0?'+':'')+gap.toLocaleString();
+  const title=type==='character'?'Character Summary':'Weapon Summary';
+  el.innerHTML=`<div class="chain-summary">
+  <div class="chain-sum-title">${title}</div>
+  <div class="chain-sum-grid">
+    <div>
+      <div class="chain-sum-val">${totalMin.toLocaleString()} <span style="font-size:14px;color:#80c0f0;">✦</span></div>
+      <div class="chain-sum-lbl">Total Pulls Needed</div>
+    </div>
+    <div>
+      <div class="chain-sum-val">${projPulls!==null?projPulls.toLocaleString():'—'} <span style="font-size:14px;color:#80c0f0;">${projPulls!==null?'✦':''}</span></div>
+      <div class="chain-sum-lbl">Projected by Deadline</div>
+      <div class="chain-sum-sub">${deadlineStr?'By '+deadlineStr:'No active banners'}</div>
+    </div>
+    <div>
+      <div class="chain-sum-val ${gapClass}">${gapSign} <span style="font-size:14px;color:inherit;">✦</span></div>
+      <div class="chain-sum-lbl">Gap</div>
+      <div class="chain-sum-sub">${gap!==null?(gapPos?'On pace':'Short of target'):'—'}</div>
+    </div>
+  </div>
+</div>`;
+}
+
+function renderChainSummaryOnly(){
+  const allBanners=getPlannerBanners();
+  const charBanners=allBanners.filter(b=>b.type==='character');
+  const weapBanners=allBanners.filter(b=>b.type==='weapon');
+  const cs=document.getElementById('chain-char-summary');
+  const ws=document.getElementById('chain-weap-summary');
+  if(cs) renderChainSummaryEl('character',charBanners,cs);
+  if(ws) renderChainSummaryEl('weapon',weapBanners,ws);
+}
+
+function renderPlannerChain(){
+  const allBanners=getPlannerBanners();
+  const charBanners=allBanners.filter(b=>b.type==='character').sort((a,b)=>new Date(a.startDate)-new Date(b.startDate));
+  const weapBanners=allBanners.filter(b=>b.type==='weapon').sort((a,b)=>new Date(a.startDate)-new Date(b.startDate));
+  const cc=document.getElementById('chain-char-cards');
+  const wc=document.getElementById('chain-weap-cards');
+  const cs=document.getElementById('chain-char-summary');
+  const ws=document.getElementById('chain-weap-summary');
+  if(!cc||!wc) return;
+  if(!charBanners.length&&!weapBanners.length){
+    cc.innerHTML='<div class="msg">No banners loaded — tap Refresh on the Timeline tab.</div>';
+    wc.innerHTML='';return;
+  }
+  cc.innerHTML=charBanners.map(b=>renderChainCard(b,'character')).join('');
+  wc.innerHTML=weapBanners.map(b=>renderChainCard(b,'weapon')).join('');
+  if(cs) renderChainSummaryEl('character',charBanners,cs);
+  if(ws) renderChainSummaryEl('weapon',weapBanners,ws);
+}
+
+// ── OLD PLANNER (kept for reference, stubs only) ──────────────────────────────
+function calcPlanner(){renderPlannerChain();}
+function savePL(){save();}
+function populatePlannerDropdown(){}
+function toggleSection(){}
+function toggleCharGuarantee(){}
+function updateCharGuaranteeUI(){}
+function toggleWeapPath(){}
+function updateWeapPathUI(){}
+function setTiming(t,silent){PL.timing=t;if(!silent)save();}
+function setPlannerCharBanner(val){PL.selCharBanner=val===''?null:parseInt(val);save();}
+function setPlannerWeapBanner(val){PL.selWeapBanner=val===''?null:parseInt(val);save();}
 
 const BANNERS_URL = 'https://lupix11.github.io/primo-tracker/banners.json';
 
@@ -2805,6 +2824,7 @@ async function fetchBanners(){
     PL.banners = data;
     // Don't save banners to localStorage — always fetch fresh from JSON
     renderTimeline(PL.banners);
+    renderPlannerChain();
   }catch(e){
     // Fallback to built-in static banners (no network or bad JSON)
     PL.banners=[...STATIC_BANNERS];
