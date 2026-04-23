@@ -416,7 +416,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 
 
 .ptl-spec-note{opacity:0.82;filter:saturate(0.8);}
-.plan-answer{margin-top:12px;border:1px solid rgba(240,208,128,0.1);border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.015));overflow:hidden;}
+.plan-answer{margin-top:12px;border:1px solid rgba(240,208,128,0.1);border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.015));overflow:visible;}
 .plan-top{display:grid;grid-template-columns:88px 1fr 120px;gap:14px;align-items:center;padding:14px 16px;border-bottom:1px solid rgba(240,208,128,0.07);}
 .plan-grade{font-family:'Cinzel',serif;font-size:56px;line-height:1;text-align:center;}
 .plan-kicker{font-size:10px;color:#907898;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
@@ -438,7 +438,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .plan-rate-v{font-family:'Cinzel',serif;font-size:18px;line-height:1.1;}
 .plan-rate-l{font-size:9px;color:#907898;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
 .plan-rate-s{font-size:10px;color:#665c79;margin-top:4px;}
-.plan-insight{margin:10px 16px 0;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(240,208,128,0.06);display:flex;justify-content:space-between;gap:12px;align-items:center;}
+.plan-insight{margin:10px 16px 16px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(240,208,128,0.06);display:flex;justify-content:space-between;gap:12px;align-items:center;}
 .plan-progress-grid{padding:10px 16px 0;display:grid;gap:8px;}
 .plan-progress-card{background:rgba(255,255,255,0.02);border:1px solid rgba(240,208,128,0.06);border-radius:10px;padding:10px 12px;}
 .plan-progress-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:6px;}
@@ -1923,7 +1923,7 @@ function renderChart(){
       if(!vals.length)return null;
       return Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
     });
-    chartInst=new Chart(ctx,{type:'bar',plugins:[blPlugin],data:{labels,datasets:[{label:'Daily Gain',data:gains,backgroundColor:gains.map(g=>g===null?'transparent':g<0?'rgba(160,120,200,0.6)':g>baseline?'rgba(128,240,160,0.7)':g===baseline?'rgba(214,170,72,0.88)':'rgba(240,144,96,0.7)'),borderColor:gains.map(g=>g===null?'transparent':g<0?'#a078c8':g>baseline?'#80f0a0':g===baseline?'#c9922e':'#f09060'),borderWidth:1,borderRadius:3,order:2},{type:'line',label:'7-day average',data:moving,borderColor:'#80c0f0',backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:3,tension:0.3,spanGaps:true,order:1}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:0},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>entries[i[0].dataIndex]?.date||'',label:c=>{if(c.dataset.label==='7-day average')return '  7-day avg: '+c.parsed.y?.toLocaleString();const g=c.parsed.y;if(g===null)return'';const diff=g-baseline;if(diff===0)return '  Gained: '+g.toLocaleString()+'  (at baseline)';return '  Gained: '+g.toLocaleString()+(diff>0?'  (+'+diff+' above)':'  ('+diff+' below)');},}}},scales:{x:{...xSc,offset:true},y:{...ySc,beginAtZero:false,min:(()=>{const pos=gains.filter(g=>g!==null&&g>=0);const neg=gains.filter(g=>g!==null&&g<0);if(!neg.length)return 0;const floorNeg=Math.max(...pos.length?pos:[1000])*-1.5;return Math.max(floorNeg,-1500);})(),suggestedMax:Math.max(...gains.filter(g=>g!==null&&g>=0).concat([baseline*2]))*1.15}}}});
+    chartInst=new Chart(ctx,{type:'bar',plugins:[blPlugin],data:{labels,datasets:[{label:'Daily Gain',data:gains,backgroundColor:gains.map(g=>g===null?'transparent':g<0?'rgba(160,120,200,0.6)':g>baseline?'rgba(128,240,160,0.7)':g===baseline?'rgba(214,170,72,0.88)':'rgba(240,144,96,0.7)'),borderColor:gains.map(g=>g===null?'transparent':g<0?'#a078c8':g>baseline?'#80f0a0':g===baseline?'#c9922e':'#f09060'),borderWidth:1,borderRadius:3,order:2},{type:'line',label:'7-day average',data:moving,borderColor:'#80c0f0',backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:3,tension:0.3,spanGaps:false,order:1}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:0},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>entries[i[0].dataIndex]?.date||'',label:c=>{if(c.dataset.label==='7-day average')return '  7-day avg: '+c.parsed.y?.toLocaleString();const g=c.parsed.y;if(g===null)return'';const diff=g-baseline;if(diff===0)return '  Gained: '+g.toLocaleString()+'  (at baseline)';return '  Gained: '+g.toLocaleString()+(diff>0?'  (+'+diff+' above)':'  ('+diff+' below)');},}}},scales:{x:{...xSc,offset:true},y:{...ySc,beginAtZero:false,min:(()=>{const pos=gains.filter(g=>g!==null&&g>=0);const neg=gains.filter(g=>g!==null&&g<0);if(!neg.length)return 0;const floorNeg=Math.max(...pos.length?pos:[1000])*-1.5;return Math.max(floorNeg,-1500);})(),suggestedMax:Math.max(...gains.filter(g=>g!==null&&g>=0).concat([baseline*2]))*1.15}}}});
   }
 }
 function isMobile(){return window.innerWidth<=768;}
@@ -2320,7 +2320,7 @@ function renderTimeline(banners){
       const borderColor=isSel?'rgba(240,208,128,0.8)':(isLive?'rgba(128,240,160,0.3)':isEnded?'rgba(255,255,255,0.06)':'rgba(255,255,255,0.07)');
       const selOutline=isSel?'outline:2px solid #f0d080;outline-offset:-2px;':'';
       const REPO_BASE='https://lupix11.github.io/primo-tracker/';
-      const chars=Array.isArray(b.characters)?b.characters:[b.characters];
+      const chars=[...new Set(Array.isArray(b.characters)?b.characters:[b.characters])];
       // Build per-character mobile image URLs (works for character and weapon banners)
       const mobileImgs=chars.map(ch=>{
         const raw=(b.images&&b.images[ch]&&b.images[ch].mobile)||'';
