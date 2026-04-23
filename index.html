@@ -603,13 +603,36 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .chain-sum-lbl{font-size:9px;color:#907898;letter-spacing:0.9px;text-transform:uppercase;margin-top:4px;}
 .chain-sum-sub{font-size:9px;color:#6d627f;margin-top:2px;}
 .chain-footer{font-size:11px;color:#6d627f;text-align:center;padding:12px 4px 4px;display:flex;align-items:center;justify-content:center;gap:5px;}
+
+/* Chain: add button + picker */
+.chain-add-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:10px;border-radius:10px;border:1.5px dashed rgba(240,208,128,0.2);background:transparent;color:#605870;font-family:'Nunito',sans-serif;font-size:12px;cursor:pointer;transition:all 0.18s;}
+.chain-add-btn:hover{border-color:rgba(240,208,128,0.45);color:#c8a84b;background:rgba(240,208,128,0.04);}
+.chain-picker-wrap{position:relative;}
+.chain-picker-dropdown{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:40;background:#12141f;border:1px solid rgba(240,208,128,0.22);border-radius:10px;overflow:hidden;box-shadow:0 12px 32px rgba(0,0,0,0.45);}
+.chain-picker-item{display:flex;align-items:center;gap:9px;padding:9px 12px;cursor:pointer;transition:background 0.12s;border-bottom:1px solid rgba(255,255,255,0.03);}
+.chain-picker-item:last-child{border-bottom:none;}
+.chain-picker-item:hover{background:rgba(240,208,128,0.07);}
+.chain-picker-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.chain-picker-name{font-size:12px;color:#e8dfc8;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.chain-picker-meta{font-size:10px;color:#504060;flex-shrink:0;}
+.chain-picker-empty{padding:10px 12px;font-size:12px;color:#504060;text-align:center;}
+/* Card remove btn */
+.chain-card-remove{position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:#504060;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;z-index:5;line-height:1;}
+.chain-card-remove:hover{background:rgba(240,80,80,0.15);border-color:rgba(240,80,80,0.3);color:#f08080;}
+/* Chip active */
+.chip-active{background:rgba(128,192,240,0.12);border:1px solid rgba(128,192,240,0.32);color:#80c0f0;}
+/* Empty state */
+.chain-empty{padding:20px 12px;text-align:center;color:#504060;font-size:12px;line-height:1.6;}
+/* Summary min/max row */
+.chain-sum-grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;text-align:center;}
+@media(max-width:600px){.chain-sum-grid-4{grid-template-columns:1fr 1fr;}}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v179</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v180</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1108,7 +1131,7 @@ const I18N={
 function t(k){return (I18N[APP.lang]&&I18N[APP.lang][k])||I18N.en[k]||k;}
 
 function freshPL(){
-  return {charEnabled:false,charGoal:1,charPity:0,charGuaranteed:false,weapEnabled:false,weapGoal:1,weapPity:0,weapEpitomized:0,selBanner:null,selCharBanner:null,selWeapBanner:null,timing:'end',banners:[],chainChar:{},chainWeap:{}};
+  return {charEnabled:false,charGoal:1,charPity:0,charGuaranteed:false,weapEnabled:false,weapGoal:1,weapPity:0,weapEpitomized:0,selBanner:null,selCharBanner:null,selWeapBanner:null,timing:'end',banners:[],chainChar:{},chainWeap:{},chainCharOrder:[],chainWeapOrder:[]};
 }
 function makeProfile(name='Main'){
   return {id:'p'+Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-4),name,entries:[],welkin:false,PL:freshPL()};
@@ -1436,7 +1459,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v179';
+const APP_VERSION = 'v180';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2579,18 +2602,53 @@ function populatePlannerDropdown(){
 }
 // ── CHAIN PLANNER ────────────────────────────────────────────────────────────
 
-const ELEM_ICON={Pyro:'🔥',Hydro:'💧',Cryo:'❄️',Electro:'⚡',Anemo:'🌀',Geo:'✦',Dendro:'🌿',Unknown:'✦'};
+const ELEM_ICON={Pyro:'🔥',Hydro:'💧',Cryo:'❄️',Electro:'⚡',Anemo:'🌀',Geo:'🪨',Dendro:'🌿',Unknown:'✦'};
+let chainPickerOpen=null;
 
 function getBannerKey(b){return `${b.version}|${b.phase}|${b.type}`;}
 
+// PL.chainChar / PL.chainWeap: { [key]: stateObj }
+// PL.chainCharOrder / PL.chainWeapOrder: string[] of keys in display order
+function ensureChainOrders(){
+  if(!PL.chainCharOrder) PL.chainCharOrder=[];
+  if(!PL.chainWeapOrder) PL.chainWeapOrder=[];
+  if(!PL.chainChar) PL.chainChar={};
+  if(!PL.chainWeap) PL.chainWeap={};
+}
+
+function getChainOrder(type){
+  ensureChainOrders();
+  return type==='character'?PL.chainCharOrder:PL.chainWeapOrder;
+}
+function getChainStore(type){
+  ensureChainOrders();
+  return type==='character'?PL.chainChar:PL.chainWeap;
+}
 function getChainState(type,key){
-  const chain=type==='character'?PL.chainChar:PL.chainWeap;
-  if(!chain[key]){
-    chain[key]=type==='character'
+  const store=getChainStore(type);
+  if(!store[key]){
+    store[key]=type==='character'
       ?{goal:1,pity:0,guaranteed:false,obtained:0}
       :{goal:1,pity:0,epitomized:0,obtained:0};
   }
-  return chain[key];
+  return store[key];
+}
+
+function addBannerToChain(type,key){
+  ensureChainOrders();
+  const order=getChainOrder(type);
+  if(order.includes(key)) return;
+  order.push(key);
+  // init state
+  getChainState(type,key);
+  chainPickerOpen=null;
+  save();renderPlannerChain();
+}
+function removeBannerFromChain(type,key){
+  ensureChainOrders();
+  if(type==='character') PL.chainCharOrder=PL.chainCharOrder.filter(k=>k!==key);
+  else PL.chainWeapOrder=PL.chainWeapOrder.filter(k=>k!==key);
+  save();renderPlannerChain();
 }
 
 function getBannerStatusStr(b,state){
@@ -2598,6 +2656,7 @@ function getBannerStatusStr(b,state){
   const start=getRegionBannerMoment(b.startDate,'start',APP.plannerRegion);
   const end=getRegionBannerMoment(b.endDate,'end',APP.plannerRegion);
   if(state.obtained>=state.goal) return 'complete';
+  if(state.obtained>0) return 'active';
   if(now>end) return 'missed';
   if(now>=start&&now<=end) return 'live';
   return 'planning';
@@ -2607,40 +2666,39 @@ function setChainGoal(type,key,val){
   const state=getChainState(type,key);
   const v=parseInt(val)||1;
   state.goal=v;
-  // Clamp obtained to new goal
   if(state.obtained>v) state.obtained=v;
-  saveChain();renderPlannerChain();
+  save();renderPlannerChain();
 }
 function setChainPity(type,key,val){
   const state=getChainState(type,key);
   const max=type==='character'?89:79;
   state.pity=Math.max(0,Math.min(max,parseInt(val)||0));
-  saveChain();renderChainSummaryOnly();
+  save();renderChainSummaryOnly();
 }
 function setChainGuarantee(type,key,checked){
   const state=getChainState(type,key);
   if(type==='character') state.guaranteed=!!checked;
   else state.epitomized=checked?1:0;
-  saveChain();renderChainSummaryOnly();
+  save();renderChainSummaryOnly();
 }
 function toggleChainCopy(type,key,idx){
   const state=getChainState(type,key);
-  // Toggle: clicking filled = unfill, clicking empty = fill up to idx+1
-  if(idx<state.obtained){
-    state.obtained=idx;
-  } else {
-    state.obtained=Math.min(state.goal,idx+1);
-  }
-  saveChain();renderPlannerChain();
-}
-function saveChain(){
-  save();
+  if(idx<state.obtained) state.obtained=idx;
+  else state.obtained=Math.min(state.goal,idx+1);
+  save();renderPlannerChain();
 }
 
-function calcChainSummary(type,banners){
+function toggleChainPicker(type){
+  chainPickerOpen=chainPickerOpen===type?null:type;
+  renderPlannerChain();
+}
+function closeChainPicker(){chainPickerOpen=null;renderPlannerChain();}
+
+function calcChainSummary(type,orderedBanners){
+  ensureChainOrders();
   const now=new Date();
   let totalMin=0,totalMax=0;
-  banners.forEach(b=>{
+  orderedBanners.forEach(b=>{
     const key=getBannerKey(b);
     const state=getChainState(type,key);
     const status=getBannerStatusStr(b,state);
@@ -2657,9 +2715,9 @@ function calcChainSummary(type,banners){
   });
   const today=getRegionDayFloor(now,APP.plannerRegion);
   let daysLeft=null,deadlineStr=null;
-  const active=banners.filter(b=>{
+  const active=orderedBanners.filter(b=>{
     const s=getBannerStatusStr(b,getChainState(type,getBannerKey(b)));
-    return s==='live'||s==='planning';
+    return s==='live'||s==='planning'||s==='active';
   });
   if(active.length){
     active.sort((a,b)=>new Date(a.endDate)-new Date(b.endDate));
@@ -2677,8 +2735,9 @@ function calcChainSummary(type,banners){
   const avgPrimoDay=avg(capped.length?capped:gains)||0;
   const pullsPerDay=avgPrimoDay/160;
   const projPulls=daysLeft!==null?Math.floor(curPulls+pullsPerDay*daysLeft):null;
-  const gap=projPulls!==null?projPulls-totalMin:null;
-  return{totalMin,totalMax,projPulls,gap,daysLeft,deadlineStr};
+  const gapMin=projPulls!==null?projPulls-totalMin:null;
+  const gapMax=projPulls!==null?projPulls-totalMax:null;
+  return{totalMin,totalMax,projPulls,gapMin,gapMax,daysLeft,deadlineStr};
 }
 
 function renderChainCard(b,type){
@@ -2690,12 +2749,14 @@ function renderChainCard(b,type){
   const palette=getElementPalette(el,type,b.status==='speculative'?'speculative':'normal');
   const names=(Array.isArray(b.characters)?b.characters:[b.characters]).join(' · ');
   const isSpec=b.status==='speculative';
-  const chipHtml={
+  const chipMap={
     live:'<span class="chain-status-chip chip-live">● Live Now</span>',
     planning:'<span class="chain-status-chip chip-planning">● Planning</span>',
+    active:'<span class="chain-status-chip chip-active">↻ Active</span>',
     missed:'<span class="chain-status-chip chip-missed">✕ Missed</span>',
     complete:'<span class="chain-status-chip chip-complete">✓ Complete</span>'
-  }[status];
+  };
+  const chipHtml=chipMap[status]||chipMap.planning;
   const charGoals=['C0','C1','C2','C3','C4','C5','C6'];
   const weapGoals=['R1','R2','R3','R4','R5'];
   const goals=type==='character'?charGoals:weapGoals;
@@ -2703,9 +2764,20 @@ function renderChainCard(b,type){
   const toggleChecked=type==='character'?state.guaranteed:!!state.epitomized;
   const toggleTitle=type==='character'?'50/50 Guarantee':'Fate Point';
   const icon=ELEM_ICON[el]||'✦';
-  const squares=Array.from({length:state.goal},(_,i)=>`<div class="chain-copy-sq${i<state.obtained?' filled':''}" onclick="toggleChainCopy('${type}','${key}',${i})" title="Copy ${i+1}"></div>`).join('');
+  const safeKey=key.replace(/'/g,"\\'");
+  const squares=Array.from({length:state.goal},(_,i)=>
+    `<div class="chain-copy-sq${i<state.obtained?' filled':''}" onclick="toggleChainCopy('${type}','${safeKey}',${i})" title="Copy ${i+1}"></div>`
+  ).join('');
   const safeName=names.replace(/'/g,'&#39;');
+  // pull range for this banner
+  const remaining=Math.max(0,state.goal-state.obtained);
+  let minStr='—',maxStr='—';
+  if(remaining>0){
+    if(type==='character'){const r=calcCharMinMax(remaining,state.pity,state.guaranteed);minStr=r.min;maxStr=r.max;}
+    else{const r=calcWeapMinMax(remaining,state.pity,state.epitomized||0);minStr=r.min;maxStr=r.max;}
+  } else {minStr='0';maxStr='0';}
   return `<div class="chain-card status-${status}" data-key="${key}">
+  <button class="chain-card-remove" onclick="removeBannerFromChain('${type}','${safeKey}')" title="Remove">✕</button>
   <div class="chain-accent" style="background:linear-gradient(180deg,${palette.c1},${palette.c2});"></div>
   <div class="chain-card-body">
     <div class="chain-card-top">
@@ -2721,80 +2793,147 @@ function renderChainCard(b,type){
     <div class="chain-card-form">
       <div class="chain-field">
         <div class="chain-field-label">Goal</div>
-        <select class="chain-select" onchange="setChainGoal('${type}','${key}',this.value)">${goalOpts}</select>
+        <select class="chain-select" onchange="setChainGoal('${type}','${safeKey}',this.value)">${goalOpts}</select>
       </div>
       <div class="chain-field">
         <div class="chain-field-label">Pity</div>
-        <input type="number" class="chain-num-inp" value="${state.pity}" min="0" max="${type==='character'?89:79}" oninput="setChainPity('${type}','${key}',this.value)" placeholder="0"/>
+        <input type="number" class="chain-num-inp" value="${state.pity}" min="0" max="${type==='character'?89:79}" oninput="setChainPity('${type}','${safeKey}',this.value)" placeholder="0"/>
       </div>
       <div class="chain-field">
         <div class="chain-field-label">${toggleTitle}</div>
-        <div class="chain-toggle-wrap"><input type="checkbox" class="chain-tog"${toggleChecked?' checked':''} onchange="setChainGuarantee('${type}','${key}',this.checked)"/></div>
+        <div class="chain-toggle-wrap"><input type="checkbox" class="chain-tog"${toggleChecked?' checked':''} onchange="setChainGuarantee('${type}','${safeKey}',this.checked)"/></div>
       </div>
       <div class="chain-field">
         <div class="chain-field-label">Copy (5★)</div>
         <div class="chain-copies-wrap">${squares}</div>
       </div>
     </div>
+    <div style="display:flex;gap:12px;margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.04);">
+      <span style="font-size:10px;color:#6d627f;">Min <span style="color:#80f0a0;font-weight:700;">${minStr}</span> pulls</span>
+      <span style="font-size:10px;color:#6d627f;">Max <span style="color:#f09060;font-weight:700;">${maxStr}</span> pulls</span>
+    </div>
   </div>
 </div>`;
 }
 
-function renderChainSummaryEl(type,banners,el){
-  const {totalMin,projPulls,gap,daysLeft,deadlineStr}=calcChainSummary(type,banners);
-  if(!totalMin&&!projPulls){el.innerHTML='';return;}
-  const gapPos=gap!==null&&gap>=0;
-  const gapClass=gap===null?'':(gapPos?'pos':'neg');
-  const gapSign=gap===null?'—':(gap>=0?'+':'')+gap.toLocaleString();
+function renderChainPickerDropdown(type,allBanners){
+  const order=getChainOrder(type);
+  const available=allBanners
+    .filter(b=>b.type===type&&!order.includes(getBannerKey(b)))
+    .sort((a,b)=>new Date(a.startDate)-new Date(b.startDate));
+  if(!available.length) return `<div class="chain-picker-dropdown"><div class="chain-picker-empty">All banners already added.</div></div>`;
+  const items=available.map(b=>{
+    const key=getBannerKey(b);
+    const el=(Array.isArray(b.elements)?b.elements[0]:b.elements)||'Unknown';
+    const pal=getElementPalette(el,type,b.status==='speculative'?'speculative':'normal');
+    const names=(Array.isArray(b.characters)?b.characters:[b.characters]).join(' · ');
+    const safeKey=key.replace(/'/g,"\\'");
+    const statusDot=b.status==='live'?'#80f0a0':b.status==='speculative'?'#a080c0':'#f0d080';
+    return `<div class="chain-picker-item" onclick="addBannerToChain('${type}','${safeKey}')">
+      <div class="chain-picker-dot" style="background:${statusDot};"></div>
+      <span class="chain-picker-name">${b.version} ${b.phase} · ${names}</span>
+      <span class="chain-picker-meta">${fmtMonthDay(b.startDate)}</span>
+    </div>`;
+  }).join('');
+  return `<div class="chain-picker-dropdown">${items}</div>`;
+}
+
+function renderChainSummaryEl(type,orderedBanners,el){
+  if(!orderedBanners.length){el.innerHTML='';return;}
+  const {totalMin,totalMax,projPulls,gapMin,gapMax,daysLeft,deadlineStr}=calcChainSummary(type,orderedBanners);
+  if(!totalMin){el.innerHTML='';return;}
+  const gapMinPos=gapMin!==null&&gapMin>=0;
+  const gapMaxPos=gapMax!==null&&gapMax>=0;
+  const gapMinStr=gapMin===null?'—':(gapMin>=0?'+':'')+gapMin.toLocaleString();
+  const gapMaxStr=gapMax===null?'—':(gapMax>=0?'+':'')+gapMax.toLocaleString();
   const title=type==='character'?'Character Summary':'Weapon Summary';
   el.innerHTML=`<div class="chain-summary">
   <div class="chain-sum-title">${title}</div>
-  <div class="chain-sum-grid">
+  <div class="chain-sum-grid-4">
     <div>
-      <div class="chain-sum-val">${totalMin.toLocaleString()} <span style="font-size:14px;color:#80c0f0;">✦</span></div>
-      <div class="chain-sum-lbl">Total Pulls Needed</div>
+      <div class="chain-sum-val" style="color:#80f0a0;">${totalMin.toLocaleString()} <span style="font-size:12px;">✦</span></div>
+      <div class="chain-sum-lbl">Min Pulls</div>
+      <div class="chain-sum-sub">Best case</div>
     </div>
     <div>
-      <div class="chain-sum-val">${projPulls!==null?projPulls.toLocaleString():'—'} <span style="font-size:14px;color:#80c0f0;">${projPulls!==null?'✦':''}</span></div>
-      <div class="chain-sum-lbl">Projected by Deadline</div>
-      <div class="chain-sum-sub">${deadlineStr?'By '+deadlineStr:'No active banners'}</div>
+      <div class="chain-sum-val" style="color:#f09060;">${totalMax.toLocaleString()} <span style="font-size:12px;">✦</span></div>
+      <div class="chain-sum-lbl">Max Pulls</div>
+      <div class="chain-sum-sub">Worst case</div>
     </div>
     <div>
-      <div class="chain-sum-val ${gapClass}">${gapSign} <span style="font-size:14px;color:inherit;">✦</span></div>
-      <div class="chain-sum-lbl">Gap</div>
-      <div class="chain-sum-sub">${gap!==null?(gapPos?'On pace':'Short of target'):'—'}</div>
+      <div class="chain-sum-val">${projPulls!==null?projPulls.toLocaleString():'—'} <span style="font-size:12px;color:#80c0f0;">${projPulls!==null?'✦':''}</span></div>
+      <div class="chain-sum-lbl">Projected</div>
+      <div class="chain-sum-sub">${deadlineStr?'By '+deadlineStr:'No active'}</div>
+    </div>
+    <div>
+      <div class="chain-sum-val ${gapMinPos?'pos':'neg'}">${gapMinStr} <span style="font-size:12px;">✦</span></div>
+      <div class="chain-sum-lbl">Gap (min)</div>
+      <div class="chain-sum-sub">${gapMin!==null?(gapMinPos?'On pace':'Short'):'—'}</div>
     </div>
   </div>
 </div>`;
 }
 
 function renderChainSummaryOnly(){
+  ensureChainOrders();
   const allBanners=getPlannerBanners();
-  const charBanners=allBanners.filter(b=>b.type==='character');
-  const weapBanners=allBanners.filter(b=>b.type==='weapon');
+  const resolve=(type)=>{
+    const order=getChainOrder(type);
+    return order.map(k=>allBanners.find(b=>getBannerKey(b)===k)).filter(Boolean);
+  };
   const cs=document.getElementById('chain-char-summary');
   const ws=document.getElementById('chain-weap-summary');
-  if(cs) renderChainSummaryEl('character',charBanners,cs);
-  if(ws) renderChainSummaryEl('weapon',weapBanners,ws);
+  if(cs) renderChainSummaryEl('character',resolve('character'),cs);
+  if(ws) renderChainSummaryEl('weapon',resolve('weapon'),ws);
 }
 
 function renderPlannerChain(){
+  ensureChainOrders();
   const allBanners=getPlannerBanners();
-  const charBanners=allBanners.filter(b=>b.type==='character').sort((a,b)=>new Date(a.startDate)-new Date(b.startDate));
-  const weapBanners=allBanners.filter(b=>b.type==='weapon').sort((a,b)=>new Date(a.startDate)-new Date(b.startDate));
+  const resolve=(type)=>{
+    const order=getChainOrder(type);
+    return order.map(k=>allBanners.find(b=>getBannerKey(b)===k)).filter(Boolean);
+  };
   const cc=document.getElementById('chain-char-cards');
   const wc=document.getElementById('chain-weap-cards');
   const cs=document.getElementById('chain-char-summary');
   const ws=document.getElementById('chain-weap-summary');
   if(!cc||!wc) return;
-  if(!charBanners.length&&!weapBanners.length){
-    cc.innerHTML='<div class="msg">No banners loaded — tap Refresh on the Timeline tab.</div>';
-    wc.innerHTML='';return;
+
+  const renderCol=(type,container,summaryEl)=>{
+    const ordered=resolve(type);
+    let html='';
+    if(!ordered.length){
+      html=`<div class="chain-empty">No banners added yet.<br>Click <b>＋ Add banner</b> below to start planning.</div>`;
+    } else {
+      html=ordered.map(b=>renderChainCard(b,type)).join('');
+    }
+    // Add button + picker
+    const pickerOpen=chainPickerOpen===type;
+    const pickerHtml=pickerOpen?renderChainPickerDropdown(type,allBanners):'';
+    html+=`<div class="chain-picker-wrap">
+      <button class="chain-add-btn" onclick="toggleChainPicker('${type}')">
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.5;flex-shrink:0;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add banner
+      </button>
+      ${pickerHtml}
+    </div>`;
+    container.innerHTML=html;
+    if(summaryEl) renderChainSummaryEl(type,ordered,summaryEl);
+  };
+
+  renderCol('character',cc,cs);
+  renderCol('weapon',wc,ws);
+
+  // Close picker on outside click
+  if(chainPickerOpen){
+    setTimeout(()=>{
+      document.addEventListener('click',function handler(e){
+        if(!e.target.closest('.chain-picker-wrap')){chainPickerOpen=null;renderPlannerChain();}
+        document.removeEventListener('click',handler);
+      });
+    },0);
   }
-  cc.innerHTML=charBanners.map(b=>renderChainCard(b,'character')).join('');
-  wc.innerHTML=weapBanners.map(b=>renderChainCard(b,'weapon')).join('');
-  if(cs) renderChainSummaryEl('character',charBanners,cs);
-  if(ws) renderChainSummaryEl('weapon',weapBanners,ws);
 }
 
 // ── OLD PLANNER (kept for reference, stubs only) ──────────────────────────────
