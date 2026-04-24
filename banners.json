@@ -104,8 +104,8 @@
     ],
     "images": {
       "Fontaine Chronicled Wish": {
-        "desktop": "images/chronicled-wish/fontaine-chronicled-wish-characters-desktop.jpg",
-        "mobile": "images/chronicled-wish/fontaine-chronicled-wish-characters-mobile.jpg"
+        "desktop": "images/chronicled-wish/fontaine-chronicled-wish-desktop.jpg",
+        "mobile": "images/chronicled-wish/fontaine-chronicled-wish-mobile.jpg"
       }
     },
     "pool": [
@@ -157,8 +157,8 @@
     ],
     "images": {
       "Fontaine Chronicled Wish": {
-        "desktop": "images/chronicled-wish/fontaine-chronicled-wish-weapons-desktop.jpg",
-        "mobile": "images/chronicled-wish/fontaine-chronicled-wish-weapons-mobile.jpg"
+        "desktop": "images/chronicled-wish/fontaine-chronicled-wish-desktop.jpg",
+        "mobile": "images/chronicled-wish/fontaine-chronicled-wish-mobile.jpg"
       }
     },
     "pool": [
