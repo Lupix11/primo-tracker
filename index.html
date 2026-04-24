@@ -558,26 +558,29 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .chain-col-hdr{display:flex;align-items:center;gap:8px;padding:0 2px 8px;border-bottom:1px solid rgba(240,208,128,0.09);margin-bottom:2px;}
 .chain-col-icon{width:18px;height:18px;fill:none;stroke:#c8a84b;stroke-width:1.8;flex-shrink:0;}
 .chain-col-title{font-family:'Cinzel',serif;font-size:12px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;}
-.chain-card{position:relative;background:rgba(255,255,255,0.065);border:1px solid rgba(240,208,128,0.18);border-radius:12px;overflow:hidden;transition:transform 0.15s ease,box-shadow 0.18s ease,border-color 0.15s ease;}
-.chain-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,0.32),0 0 0 1px rgba(240,208,128,0.32);border-color:rgba(240,208,128,0.36);}
+.chain-card{position:relative;background:rgba(255,255,255,0.065);border:1px solid rgba(240,208,128,0.18);border-radius:12px;overflow:hidden;transition:transform 0.18s ease,box-shadow 0.2s ease,border-color 0.18s ease;background-image:linear-gradient(160deg,rgba(255,255,255,0.03) 0%,transparent 60%);}
+.chain-card:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,0.38),0 0 0 1.5px var(--el-glow,rgba(240,208,128,0.35)),0 0 20px var(--el-glow-soft,rgba(240,208,128,0.07));border-color:var(--el-glow,rgba(240,208,128,0.4));}
 .chain-card.status-complete{background:rgba(240,208,128,0.09);border-color:rgba(240,208,128,0.3);}
 .chain-card.status-complete .chain-card-body{opacity:0.85;}
-.chain-card.status-missed{opacity:0.52;filter:grayscale(0.3);}
+.chain-card.status-missed{opacity:0.52;filter:grayscale(0.35);}
 .chain-accent{position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:12px 0 0 12px;}
 .chain-card-body{padding:11px 14px 13px 16px;}
 .chain-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px;}
 .chain-card-info{display:flex;align-items:flex-start;gap:10px;flex:1;min-width:0;}
-.chain-card-icon{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;margin-top:1px;}
+.chain-card-icon{width:38px;height:38px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;overflow:hidden;}
+.chain-card-icon img{width:22px;height:22px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.6));}
 .chain-card-text{min-width:0;flex:1;}
 .chain-card-name{font-family:'Cinzel',serif;font-size:12px;color:#ede4d0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;}
 .chain-card-sub{font-size:10px;color:#a090b8;margin-top:2px;}
 .chain-card-top-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
-.chain-status-chip{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:0.4px;padding:3px 9px;border-radius:999px;flex-shrink:0;white-space:nowrap;line-height:1.5;}
-.chip-live{background:rgba(128,240,160,0.12);border:1px solid rgba(128,240,160,0.32);color:#80f0a0;animation:chip-pulse 2.4s ease-in-out infinite;}
-@keyframes chip-pulse{0%,100%{box-shadow:0 0 0 0 rgba(128,240,160,0);}50%{box-shadow:0 0 0 4px rgba(128,240,160,0.18);}}
+.chain-status-chip{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:0.4px;padding:3px 10px;border-radius:999px;flex-shrink:0;white-space:nowrap;line-height:1.5;}
+.chip-live{background:rgba(128,240,160,0.15);border:1px solid rgba(128,240,160,0.45);color:#80f0a0;}
+.chip-live::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:#80f0a0;box-shadow:0 0 6px #80f0a0;animation:live-dot 1.8s ease-in-out infinite;flex-shrink:0;}
+@keyframes live-dot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.65);}}
 .chip-planning{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#907898;}
+.chip-active{background:rgba(128,192,240,0.12);border:1px solid rgba(128,192,240,0.32);color:#80c0f0;}
 .chip-missed{background:rgba(240,80,80,0.09);border:1px solid rgba(240,80,80,0.22);color:#f08080;}
-.chip-complete{background:rgba(240,208,128,0.11);border:1px solid rgba(240,208,128,0.32);color:#f0d080;}
+.chip-complete{background:rgba(240,208,128,0.14);border:1px solid rgba(240,208,128,0.4);color:#f0d080;}
 .chain-card-form{display:grid;grid-template-columns:74px 84px 1fr 1fr;gap:8px;align-items:end;}
 @media(max-width:1100px){.chain-card-form{grid-template-columns:74px 84px 1fr 1fr;}}
 @media(max-width:768px){.chain-card-form{grid-template-columns:1fr 1fr 1fr 1fr;}}
@@ -591,10 +594,12 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .chain-tog:checked{background:#80f0a0;}
 .chain-tog::after{content:'';position:absolute;top:2px;left:2px;width:12px;height:12px;background:white;border-radius:50%;transition:left 0.15s;}
 .chain-tog:checked::after{left:16px;}
-.chain-copies-wrap{display:flex;align-items:center;gap:3px;flex-wrap:wrap;padding-top:4px;}
-.chain-copy-sq{width:16px;height:16px;border-radius:3px;border:1.5px solid rgba(240,208,128,0.25);cursor:pointer;transition:background 0.18s,border-color 0.18s,transform 0.1s;flex-shrink:0;background:rgba(255,255,255,0.03);}
-.chain-copy-sq.filled{background:#c8a84b;border-color:#f0d080;box-shadow:0 0 6px rgba(240,208,128,0.25);}
-.chain-copy-sq:hover{transform:scale(1.18);border-color:rgba(240,208,128,0.6);}
+.chain-copies-wrap{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding-top:4px;}
+.chain-copy-sq{width:20px;height:20px;border-radius:4px;border:1.5px solid rgba(240,208,128,0.28);cursor:pointer;flex-shrink:0;position:relative;overflow:hidden;transition:transform 0.12s,border-color 0.15s;}
+.chain-copy-sq::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#f0d080,#c8a84b);transform:scaleX(0);transform-origin:left;transition:transform 0.22s ease;}
+.chain-copy-sq.filled::after{transform:scaleX(1);}
+.chain-copy-sq.filled{border-color:#f0d080;box-shadow:0 0 8px rgba(240,208,128,0.3);}
+.chain-copy-sq:hover{transform:scale(1.2);border-color:rgba(240,208,128,0.7);}
 .chain-summary{background:rgba(255,255,255,0.025);border:1px solid rgba(240,208,128,0.09);border-radius:12px;padding:14px 16px;margin-top:4px;}
 .chain-sum-title{font-family:'Cinzel',serif;font-size:9px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:11px;}
 .chain-sum-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;}
@@ -604,6 +609,20 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .chain-sum-lbl{font-size:9px;color:#907898;letter-spacing:0.9px;text-transform:uppercase;margin-top:4px;}
 .chain-sum-sub{font-size:9px;color:#6d627f;margin-top:2px;}
 .chain-footer{font-size:11px;color:#6d627f;text-align:center;padding:12px 4px 4px;display:flex;align-items:center;justify-content:center;gap:5px;}
+/* Version dividers */
+.chain-version-divider{display:flex;align-items:center;gap:8px;padding:6px 2px 2px;opacity:0.65;}
+.chain-version-divider span{font-family:'Cinzel',serif;font-size:9px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;}
+.chain-version-divider::before,.chain-version-divider::after{content:'';flex:1;height:1px;background:rgba(240,208,128,0.12);}
+/* Inline pull/primo icons */
+.ico{width:14px;height:14px;vertical-align:middle;margin-left:1px;display:inline-block;object-fit:contain;}
+/* Progress bar */
+.chain-progress-wrap{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.05);}
+.chain-progress-label{display:flex;justify-content:space-between;font-size:9px;color:#907898;letter-spacing:0.7px;text-transform:uppercase;margin-bottom:5px;}
+.chain-progress-track{height:6px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden;}
+.chain-progress-fill{height:100%;border-radius:999px;transition:width 0.5s ease;}
+.fill-good{background:linear-gradient(90deg,#4ad88a,#80f0a0);}
+.fill-warn{background:linear-gradient(90deg,#f0a060,#f0c080);}
+.fill-over{background:linear-gradient(90deg,#f0d080,#ffe080);}
 
 /* Summaries side by side */
 .chain-summaries-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
@@ -649,7 +668,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v183</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v184</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1477,7 +1496,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v183';
+const APP_VERSION = 'v184';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2808,7 +2827,7 @@ function renderChainCard(b,type){
     iconHtml=`<img src="${wtSrc}" width="22" height="22" onerror="this.style.display='none';this.parentNode.innerHTML='⚔️'" alt="${wtSafe}">`;
   }
 
-  return `<div class="chain-card status-${status}" data-key="${key}">
+  return `<div class="chain-card status-${status}" data-key="${key}" style="--el-glow:${palette.c2}88;--el-glow-soft:${palette.c2}22;">
   <div class="chain-accent" style="background:linear-gradient(180deg,${palette.c1},${palette.c2});"></div>
   <div class="chain-card-body">
     <div class="chain-card-top">
@@ -2843,8 +2862,8 @@ function renderChainCard(b,type){
       </div>
     </div>
     <div style="display:flex;gap:16px;margin-top:8px;padding-top:7px;border-top:1px solid rgba(255,255,255,0.05);">
-      <span style="font-size:10px;color:#8070a0;">Min <span style="color:#80f0a0;font-weight:700;">${minStr}</span> pulls</span>
-      <span style="font-size:10px;color:#8070a0;">Max <span style="color:#f09060;font-weight:700;">${maxStr}</span> pulls</span>
+      <span style="font-size:10px;color:#8070a0;">Min <span style="color:#80f0a0;font-weight:700;">${minStr}</span>${FATE_ICO}</span>
+      <span style="font-size:10px;color:#8070a0;">Max <span style="color:#f09060;font-weight:700;">${maxStr}</span>${FATE_ICO}</span>
     </div>
   </div>
 </div>`;
@@ -2872,6 +2891,9 @@ function renderChainPickerDropdown(type,allBanners){
   return `<div class="chain-picker-dropdown">${items}</div>`;
 }
 
+const FATE_ICO=`<img src="https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png" class="ico" alt="fate">`;
+const PRIMO_ICO=`<img src="https://lupix11.github.io/primo-tracker/images/pulls/primogem.png" class="ico" alt="primo">`;
+
 function buildSummaryHtml(type,orderedBanners){
   if(!orderedBanners.length) return '';
   const {totalMin,totalMax,projPulls,gapMin,deadlineStr}=calcChainSummary(type,orderedBanners);
@@ -2883,22 +2905,22 @@ function buildSummaryHtml(type,orderedBanners){
   <div class="chain-sum-title">${title}</div>
   <div class="chain-sum-grid-4">
     <div>
-      <div class="chain-sum-val" style="color:#80f0a0;">${totalMin.toLocaleString()} <span style="font-size:12px;">✦</span></div>
+      <div class="chain-sum-val" style="color:#80f0a0;">${totalMin.toLocaleString()} ${FATE_ICO}</div>
       <div class="chain-sum-lbl">Total Pulls Needed</div>
       <div class="chain-sum-sub">Min (best case)</div>
     </div>
     <div>
-      <div class="chain-sum-val" style="color:#f09060;">${totalMax.toLocaleString()} <span style="font-size:12px;">✦</span></div>
+      <div class="chain-sum-val" style="color:#f09060;">${totalMax.toLocaleString()} ${FATE_ICO}</div>
       <div class="chain-sum-lbl">Worst Case</div>
       <div class="chain-sum-sub">Full hard pity, lose all 50/50s</div>
     </div>
     <div>
-      <div class="chain-sum-val" style="color:#e8dfc8;">${projPulls!==null?projPulls.toLocaleString():'—'} <span style="font-size:12px;color:#80c0f0;">${projPulls!==null?'✦':''}</span></div>
+      <div class="chain-sum-val" style="color:#e8dfc8;">${projPulls!==null?projPulls.toLocaleString():'—'} ${projPulls!==null?FATE_ICO:''}</div>
       <div class="chain-sum-lbl">Projected by Deadline</div>
       <div class="chain-sum-sub">${deadlineStr?'By '+deadlineStr:'No active banners'}</div>
     </div>
     <div>
-      <div class="chain-sum-val ${gapMinPos?'pos':'neg'}">${gapMinStr} <span style="font-size:12px;">✦</span></div>
+      <div class="chain-sum-val ${gapMinPos?'pos':'neg'}">${gapMinStr} ${FATE_ICO}</div>
       <div class="chain-sum-lbl">Gap</div>
       <div class="chain-sum-sub">${gapMin!==null?(gapMinPos?'On pace ✓':'Short of target'):'—'}</div>
     </div>
@@ -2932,22 +2954,39 @@ function buildCombinedHtml(charBanners,weapBanners){
   const neededDayMax=dl&&dl>0?Math.ceil(Math.max(0,totalMaxP-(curPulls*160))/dl):null;
   const paceOk=neededDayMin!==null&&avgDay>=neededDayMin;
   const cells=[
-    {val:curPulls.toLocaleString(),   lbl:'Current Pulls',  sub:curPrimos.toLocaleString()+' primos',         color:'#f0d080'},
-    {val:curPrimos.toLocaleString(),  lbl:'Current Primos', sub:'saved',                                      color:'#f0d080'},
-    {val:totalMin.toLocaleString(),   lbl:'Min Pulls',      sub:'Char + Weapon',                              color:'#80f0a0'},
-    {val:totalMax.toLocaleString(),   lbl:'Max Pulls',      sub:'Worst case',                                 color:'#f09060'},
-    {val:Math.round(avgDay).toLocaleString(), lbl:'Your Avg/Day', sub:'primos per day',                      color:paceOk?'#80f0a0':'#f08080'},
-    {val:neededDayMin!==null?neededDayMin.toLocaleString():'—', lbl:'Need/Day (min)', sub:neededDayMax!==null?'Worst: '+neededDayMax.toLocaleString()+'/d':'No deadline', color:paceOk?'#80f0a0':'#f08080'},
+    {val:curPulls.toLocaleString(),   ico:FATE_ICO,  lbl:'Current Pulls',  sub:curPrimos.toLocaleString()+' primos saved', color:'#f0d080'},
+    {val:curPrimos.toLocaleString(),  ico:PRIMO_ICO, lbl:'Current Primos', sub:'saved',                                    color:'#f0d080'},
+    {val:totalMin.toLocaleString(),   ico:FATE_ICO,  lbl:'Min Pulls',      sub:'Char + Weapon',                           color:'#80f0a0'},
+    {val:totalMax.toLocaleString(),   ico:FATE_ICO,  lbl:'Max Pulls',      sub:'Worst case',                              color:'#f09060'},
+    {val:Math.round(avgDay).toLocaleString(), ico:PRIMO_ICO, lbl:'Your Avg/Day', sub:'primos per day',                  color:paceOk?'#80f0a0':'#f08080'},
+    {val:neededDayMin!==null?neededDayMin.toLocaleString():'—', ico:neededDayMin!==null?PRIMO_ICO:'', lbl:'Need/Day (min)', sub:neededDayMax!==null?'Worst: '+neededDayMax.toLocaleString()+'/d':'No deadline', color:paceOk?'#80f0a0':'#f08080'},
   ];
+  // Progress bar: curPulls vs totalMin (capped at totalMax for scale)
+  const scale=totalMax||1;
+  const fillPct=Math.min(100,Math.round(curPulls/scale*100));
+  const minPct=Math.min(100,Math.round(totalMin/scale*100));
+  const fillClass=curPulls>=totalMax?'fill-over':curPulls>=totalMin?'fill-good':'fill-warn';
+  const progressHtml=`<div class="chain-progress-wrap">
+    <div class="chain-progress-label">
+      <span>Current pulls: ${curPulls.toLocaleString()}</span>
+      <span>Min: ${totalMin.toLocaleString()} &nbsp;|&nbsp; Max: ${totalMax.toLocaleString()}</span>
+    </div>
+    <div class="chain-progress-track" style="position:relative;">
+      <div class="chain-progress-fill ${fillClass}" style="width:${fillPct}%;"></div>
+      <div style="position:absolute;top:0;bottom:0;left:${minPct}%;width:1.5px;background:rgba(255,255,255,0.4);"></div>
+    </div>
+    <div style="font-size:9px;color:#5d5270;margin-top:4px;">White marker = minimum pulls needed</div>
+  </div>`;
   return `<div class="chain-combined">
   <div class="chain-combined-title">Combined Totals</div>
   <div class="chain-combined-grid">
     ${cells.map(c=>`<div>
-      <div class="chain-comb-val" style="color:${c.color};">${c.val}</div>
+      <div class="chain-comb-val" style="color:${c.color};">${c.val}${c.ico}</div>
       <div class="chain-comb-lbl">${c.lbl}</div>
       <div class="chain-comb-sub">${c.sub}</div>
     </div>`).join('')}
   </div>
+  ${progressHtml}
 </div>`;
 }
 
@@ -2983,7 +3022,16 @@ function renderPlannerChain(){
     if(!ordered.length){
       html=`<div class="chain-empty">No banners added yet.<br>Click <b>＋ Add banner</b> below to start planning.</div>`;
     } else {
-      html=ordered.map(b=>renderChainCard(b,type)).join('');
+      // Newest first
+      const sorted=[...ordered].sort((a,b)=>new Date(b.startDate)-new Date(a.startDate));
+      let lastVersion='';
+      sorted.forEach(b=>{
+        if(b.version!==lastVersion){
+          html+=`<div class="chain-version-divider"><span>Version ${b.version}</span></div>`;
+          lastVersion=b.version;
+        }
+        html+=renderChainCard(b,type);
+      });
     }
     const pickerOpen=chainPickerOpen===type;
     const pickerHtml=pickerOpen?renderChainPickerDropdown(type,allBanners):'';
