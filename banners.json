@@ -1,99 +1,322 @@
 [
   {
-    "phase": "Phase 1", "version": "6.5", "type": "character",
-    "characters": ["Linnea", "Chasca"], "elements": ["Geo", "Anemo"],
-    "images": 
-    {
-      "Linnea": { "desktop": "images/linnea/linnea-desktop.jpg", "mobile": "images/linnea/linnea-mobile.jpg" },
-      "Chasca": { "desktop": "images/chasca/chasca-desktop.jpg", "mobile": "images/chasca/chasca-mobile.jpg" }
+    "phase": "Phase 1",
+    "version": "6.5",
+    "type": "character",
+    "characters": [
+      "Linnea",
+      "Chasca"
+    ],
+    "elements": [
+      "Geo",
+      "Anemo"
+    ],
+    "images": {
+      "Linnea": {
+        "desktop": "images/linnea/linnea-desktop.jpg",
+        "mobile": "images/linnea/linnea-mobile.jpg"
+      },
+      "Chasca": {
+        "desktop": "images/chasca/chasca-desktop.jpg",
+        "mobile": "images/chasca/chasca-mobile.jpg"
+      }
     },
-    "startDate": "2026-04-08", "endDate": "2026-04-28", "status": "live"
+    "startDate": "2026-04-08",
+    "endDate": "2026-04-28",
+    "status": "live"
   },
   {
-    "phase": "Phase 1", "version": "6.5", "type": "weapon",
-    "characters": ["Golden Frostbound Oath", "Astral Vulture's Crimson Plumage"],
-    "elements": ["Geo", "Anemo"],
-    "weaponTypes": ["sword", "bow"],
-    "startDate": "2026-04-08", "endDate": "2026-04-28", "status": "live"
+    "phase": "Phase 1",
+    "version": "6.5",
+    "type": "weapon",
+    "characters": [
+      "Golden Frostbound Oath",
+      "Astral Vulture's Crimson Plumage"
+    ],
+    "elements": [
+      "Geo",
+      "Anemo"
+    ],
+    "weaponTypes": [
+      "sword",
+      "bow"
+    ],
+    "startDate": "2026-04-08",
+    "endDate": "2026-04-28",
+    "status": "live"
   },
   {
-    "phase": "Phase 2", "version": "6.5", "type": "character",
-    "characters": ["Nefer", "Lauma"], "elements": ["Dendro", "Dendro"],
-    "images": 
-    {
-      "Nefer": { "desktop": "images/nefer/nefer-desktop.jpg", "mobile": "images/nefer/nefer-mobile.jpg" },
-      "Lauma": { "desktop": "images/lauma/lauma-desktop.jpg", "mobile": "images/lauma/lauma-mobile.jpg" }
+    "phase": "Phase 2",
+    "version": "6.5",
+    "type": "character",
+    "characters": [
+      "Nefer",
+      "Lauma"
+    ],
+    "elements": [
+      "Dendro",
+      "Dendro"
+    ],
+    "images": {
+      "Nefer": {
+        "desktop": "images/nefer/nefer-desktop.jpg",
+        "mobile": "images/nefer/nefer-mobile.jpg"
+      },
+      "Lauma": {
+        "desktop": "images/lauma/lauma-desktop.jpg",
+        "mobile": "images/lauma/lauma-mobile.jpg"
+      }
     },
-    "startDate": "2026-04-28", "endDate": "2026-05-19", "status": "soon"
+    "startDate": "2026-04-28",
+    "endDate": "2026-05-19",
+    "status": "soon"
   },
   {
-    "phase": "Phase 2", "version": "6.5", "type": "weapon",
-    "characters": ["Reliquary of Truth", "Nightweaver's Looking Glass"],
-    "elements": ["Dendro", "Dendro"],
-    "weaponTypes": ["catalyst", "polearm"],
-    "startDate": "2026-04-28", "endDate": "2026-05-19", "status": "soon"
+    "phase": "Phase 2",
+    "version": "6.5",
+    "type": "weapon",
+    "characters": [
+      "Reliquary of Truth",
+      "Nightweaver's Looking Glass"
+    ],
+    "elements": [
+      "Dendro",
+      "Dendro"
+    ],
+    "weaponTypes": [
+      "catalyst",
+      "polearm"
+    ],
+    "startDate": "2026-04-28",
+    "endDate": "2026-05-19",
+    "status": "soon"
   },
   {
-    "phase": "Phase 1", "version": "6.6", "type": "character",
-    "characters": ["Nicole", "Lohen"], "elements": ["Pyro", "Cryo"],
-    "images": 
-    {
-      "Nicole": { "desktop": "images/nicole/nicole-desktop.jpg", "mobile": "images/nicole/nicole-mobile.jpg" },
-      "Lohen": { "desktop": "images/lohen/lohen-desktop.jpg", "mobile": "images/lohen/lohen-mobile.jpg" }
+    "phase": "Phase 2",
+    "version": "6.5",
+    "type": "chronicled",
+    "characters": [
+      "Emilie",
+      "Chlorinde",
+      "Navia",
+      "Lyney",
+      "Sigewinne"
+    ],
+    "elements": [
+      "Dendro",
+      "Electro",
+      "Geo",
+      "Pyro",
+      "Hydro"
+    ],
+    "pool": [
+      {
+        "name": "Emilie",
+        "element": "Dendro",
+        "weapon": "Lumidouce Elegy",
+        "weaponType": "polearm"
+      },
+      {
+        "name": "Chlorinde",
+        "element": "Electro",
+        "weapon": "Absolution",
+        "weaponType": "sword"
+      },
+      {
+        "name": "Navia",
+        "element": "Geo",
+        "weapon": "Verdict",
+        "weaponType": "claymore"
+      },
+      {
+        "name": "Lyney",
+        "element": "Pyro",
+        "weapon": "The First Great Magic",
+        "weaponType": "bow"
+      },
+      {
+        "name": "Sigewinne",
+        "element": "Hydro",
+        "weapon": "Silvershower Heartstrings",
+        "weaponType": "bow"
+      }
+    ],
+    "startDate": "2026-04-28",
+    "endDate": "2026-05-19",
+    "status": "soon"
+  },
+  {
+    "phase": "Phase 1",
+    "version": "6.6",
+    "type": "character",
+    "characters": [
+      "Nicole",
+      "Lohen"
+    ],
+    "elements": [
+      "Pyro",
+      "Cryo"
+    ],
+    "images": {
+      "Nicole": {
+        "desktop": "images/nicole/nicole-desktop.jpg",
+        "mobile": "images/nicole/nicole-mobile.jpg"
+      },
+      "Lohen": {
+        "desktop": "images/lohen/lohen-desktop.jpg",
+        "mobile": "images/lohen/lohen-mobile.jpg"
+      }
     },
-    "startDate": "2026-05-20", "endDate": "2026-06-09", "status": "speculative"
+    "startDate": "2026-05-20",
+    "endDate": "2026-06-09",
+    "status": "speculative"
   },
   {
-    "phase": "Phase 1", "version": "6.6", "type": "weapon",
-    "characters": ["Starcaller's Watch", "Lohen's weapon"],
-    "elements": ["Pyro", "Cryo"],
-    "weaponTypes": ["catalyst", "sword"],
-    "startDate": "2026-05-20", "endDate": "2026-06-09", "status": "speculative"
+    "phase": "Phase 1",
+    "version": "6.6",
+    "type": "weapon",
+    "characters": [
+      "Starcaller's Watch",
+      "Lohen's weapon"
+    ],
+    "elements": [
+      "Pyro",
+      "Cryo"
+    ],
+    "weaponTypes": [
+      "catalyst",
+      "sword"
+    ],
+    "startDate": "2026-05-20",
+    "endDate": "2026-06-09",
+    "status": "speculative"
   },
   {
-    "phase": "Phase 2", "version": "6.6", "type": "character",
-    "characters": ["Mavuika", "Durin"], "elements": ["Pyro", "Anemo"],
-    "images": 
-    {
-      "Mavuika": { "desktop": "images/mavuika/mavuika-desktop.jpg", "mobile": "images/mavuika/mavuika-mobile.jpg" },
-      "Durin": { "desktop": "images/durin/durin-desktop.jpg", "mobile": "images/durin/durin-mobile.jpg" }
+    "phase": "Phase 2",
+    "version": "6.6",
+    "type": "character",
+    "characters": [
+      "Mavuika",
+      "Durin"
+    ],
+    "elements": [
+      "Pyro",
+      "Anemo"
+    ],
+    "images": {
+      "Mavuika": {
+        "desktop": "images/mavuika/mavuika-desktop.jpg",
+        "mobile": "images/mavuika/mavuika-mobile.jpg"
+      },
+      "Durin": {
+        "desktop": "images/durin/durin-desktop.jpg",
+        "mobile": "images/durin/durin-mobile.jpg"
+      }
     },
-    "startDate": "2026-06-09", "endDate": "2026-06-30", "status": "speculative"
+    "startDate": "2026-06-09",
+    "endDate": "2026-06-30",
+    "status": "speculative"
   },
   {
-    "phase": "Phase 2", "version": "6.6", "type": "weapon",
-    "characters": ["A Thousand Blazing Suns", "Athame Artis"],
-    "elements": ["Pyro", "Pyro"],
-    "weaponTypes": ["claymore", "catalyst"],
-    "startDate": "2026-06-09", "endDate": "2026-06-30", "status": "speculative"
+    "phase": "Phase 2",
+    "version": "6.6",
+    "type": "weapon",
+    "characters": [
+      "A Thousand Blazing Suns",
+      "Athame Artis"
+    ],
+    "elements": [
+      "Pyro",
+      "Pyro"
+    ],
+    "weaponTypes": [
+      "claymore",
+      "catalyst"
+    ],
+    "startDate": "2026-06-09",
+    "endDate": "2026-06-30",
+    "status": "speculative"
   },
   {
-    "phase": "Phase 1", "version": "6.7", "type": "character",
-    "characters": ["Sandrone", "???"], "elements": ["Unknown", "Unknown"],
-    "images": 
-    {
-      "Sandrone": { "desktop": "images/sandrone/sandrone-desktop.jpg", "mobile": "images/sandrone/sandrone-mobile.jpg" },
-      "???": { "desktop": "images/sandrone/sandrone-desktop.jpg", "mobile": "images/sandrone/sandrone-mobile.jpg" }
+    "phase": "Phase 1",
+    "version": "6.7",
+    "type": "character",
+    "characters": [
+      "Sandrone",
+      "???"
+    ],
+    "elements": [
+      "Unknown",
+      "Unknown"
+    ],
+    "images": {
+      "Sandrone": {
+        "desktop": "images/sandrone/sandrone-desktop.jpg",
+        "mobile": "images/sandrone/sandrone-mobile.jpg"
+      },
+      "???": {
+        "desktop": "images/sandrone/sandrone-desktop.jpg",
+        "mobile": "images/sandrone/sandrone-mobile.jpg"
+      }
     },
-    "startDate": "2026-07-01", "endDate": "2026-07-21", "status": "speculative"
+    "startDate": "2026-07-01",
+    "endDate": "2026-07-21",
+    "status": "speculative"
   },
   {
-    "phase": "Phase 1", "version": "6.7", "type": "weapon",
-    "characters": ["Sandrone's weapon", "???"],
-    "elements": ["Unknown", "Unknown"],
-    "weaponTypes": ["catalyst", "unknown"],
-    "startDate": "2026-07-01", "endDate": "2026-07-21", "status": "speculative"
+    "phase": "Phase 1",
+    "version": "6.7",
+    "type": "weapon",
+    "characters": [
+      "Sandrone's weapon",
+      "???"
+    ],
+    "elements": [
+      "Unknown",
+      "Unknown"
+    ],
+    "weaponTypes": [
+      "catalyst",
+      "unknown"
+    ],
+    "startDate": "2026-07-01",
+    "endDate": "2026-07-21",
+    "status": "speculative"
   },
   {
-    "phase": "Phase 2", "version": "6.7", "type": "character",
-    "characters": ["???", "???"], "elements": ["Unknown", "Unknown"],
-    "startDate": "2026-07-21", "endDate": "2026-08-11", "status": "speculative"
+    "phase": "Phase 2",
+    "version": "6.7",
+    "type": "character",
+    "characters": [
+      "???",
+      "???"
+    ],
+    "elements": [
+      "Unknown",
+      "Unknown"
+    ],
+    "startDate": "2026-07-21",
+    "endDate": "2026-08-11",
+    "status": "speculative"
   },
   {
-    "phase": "Phase 2", "version": "6.7", "type": "weapon",
-    "characters": ["???", "???"],
-    "elements": ["Unknown", "Unknown"],
-    "weaponTypes": ["unknown", "unknown"],
-    "startDate": "2026-07-21", "endDate": "2026-08-11", "status": "speculative"
+    "phase": "Phase 2",
+    "version": "6.7",
+    "type": "weapon",
+    "characters": [
+      "???",
+      "???"
+    ],
+    "elements": [
+      "Unknown",
+      "Unknown"
+    ],
+    "weaponTypes": [
+      "unknown",
+      "unknown"
+    ],
+    "startDate": "2026-07-21",
+    "endDate": "2026-08-11",
+    "status": "speculative"
   }
 ]
