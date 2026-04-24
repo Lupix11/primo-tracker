@@ -684,7 +684,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v207</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v208</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -820,7 +820,11 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
         <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:none;stroke:#f0d080;stroke-width:1.8;flex-shrink:0;"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
         Pull Planner
       </div>
-      <div class="chain-page-sub">Plan your future pulls and track the primogems you need for your goals.</div>
+      <div class="chain-page-sub">Plan your future pulls and track the primogems you need for your goals. &nbsp;
+        <span style="font-size:11px;color:#a090c0;">Target:</span>
+        <button id="timing-end" onclick="setPlannerTiming('end')" style="font-size:11px;padding:2px 10px;border-radius:999px;border:1px solid rgba(240,208,128,0.25);background:rgba(240,208,128,0.12);color:#f0d080;cursor:pointer;margin-left:4px;font-family:'Nunito',sans-serif;transition:all 0.15s;">Banner End</button>
+        <button id="timing-start" onclick="setPlannerTiming('start')" style="font-size:11px;padding:2px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:#605870;cursor:pointer;margin-left:3px;font-family:'Nunito',sans-serif;transition:all 0.15s;">Banner Start</button>
+      </div>
     </div>
     <div class="chain-layout">
       <div class="chain-col">
@@ -1512,7 +1516,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v207';
+const APP_VERSION = 'v208';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2850,9 +2854,10 @@ function calcChainSummary(type,orderedBanners){
   if(active.length){
     active.sort((a,b)=>new Date(a.endDate)-new Date(b.endDate));
     const earliest=active[0];
-    const targetDate=parseISODateLocal(earliest.endDate);
+    const useStart=PL.timing==='start';
+    const targetDate=parseISODateLocal(useStart?earliest.startDate:earliest.endDate);
     daysLeft=Math.max(0,Math.ceil((targetDate-today)/864e5));
-    deadlineStr=fmtMonthDay(earliest.endDate);
+    deadlineStr=(useStart?'Start ':'End ')+fmtMonthDay(useStart?earliest.startDate:earliest.endDate);
   }
   const curPulls=entries.length?entries[entries.length-1].pulls:0;
   const gains=getDG().filter(g=>g!==null&&g>=0);
@@ -3103,10 +3108,35 @@ function buildCombinedHtml(charBanners,weapBanners){
   const avgDay=avg(capped.length?capped:gains)||0;
   const curPulls=entries.length?entries[entries.length-1].pulls:0;
   const curPrimos=entries.length?entries[entries.length-1].total:0;
-  const daysArr=[cStat.daysLeft,wStat.daysLeft].filter(d=>d!==null);
-  const dl=daysArr.length?Math.min(...daysArr):null;
-  const neededDayMin=dl&&dl>0?Math.ceil(Math.max(0,totalMinP-(curPulls*160))/dl):null;
-  const neededDayMax=dl&&dl>0?Math.ceil(Math.max(0,totalMaxP-(curPulls*160))/dl):null;
+  // Per-banner bottleneck: for each active banner find its own days-left and pulls-needed
+  // The binding rate is the MAX across all banners (whichever is most urgent)
+  const today2=getRegionDayFloor(new Date(),APP.plannerRegion);
+  const useStart=PL.timing==='start';
+  let bottleneckMin=0,bottleneckMax=0,bottleneckLabel='No deadline';
+  const allActive=[...charBanners,...weapBanners].filter(b=>{
+    const s=getBannerStatusStr(b,getChainState(b.type==='character'?'character':'weapon',getBannerKey(b)));
+    return s==='live'||s==='planning';
+  });
+  allActive.forEach(b=>{
+    const bType=b.type==='character'||b.type==='chronicled'?'character':'weapon';
+    const key=getBannerKey(b);
+    const state=getChainState(bType,key);
+    const remaining=Math.max(0,state.goal-state.obtained);
+    if(remaining<=0) return;
+    const dateStr=useStart?b.startDate:b.endDate;
+    const targetDate=parseISODateLocal(dateStr);
+    const dl=Math.max(1,Math.ceil((targetDate-today2)/864e5));
+    let bMin=0,bMax=0;
+    if(b.type==='chronicled'){const r=calcCharMinMax(remaining,state.pity,state.fatePoint||0);bMin=r.min;bMax=r.max;}
+    else if(bType==='character'){const r=calcCharMinMax(remaining,state.pity,state.guaranteed);bMin=r.min;bMax=r.max;}
+    else{const r=calcWeapMinMax(remaining,state.pity,state.epitomized||0);bMin=r.min;bMax=r.max;}
+    const stillNeededP=Math.max(0,bMin*160-(curPulls*160));
+    const rateMin=Math.ceil(stillNeededP/dl);
+    const rateMax=Math.ceil(Math.max(0,bMax*160-(curPulls*160))/dl);
+    if(rateMin>bottleneckMin){bottleneckMin=rateMin;bottleneckMax=rateMax;bottleneckLabel=fmtMonthDay(dateStr);}
+  });
+  const neededDayMin=allActive.length?bottleneckMin:null;
+  const neededDayMax=allActive.length?bottleneckMax:null;
   const paceOk=neededDayMin!==null&&avgDay>=neededDayMin;
   const cells=[
     {val:curPulls.toLocaleString(),   ico:FATE_ICO,  lbl:'Current Pulls',  sub:curPrimos.toLocaleString()+' primos saved', color:'#f0d080'},
@@ -3114,7 +3144,7 @@ function buildCombinedHtml(charBanners,weapBanners){
     {val:totalMin.toLocaleString(),   ico:FATE_ICO,  lbl:'Min Pulls',      sub:'Char + Weapon',                           color:'#80f0a0'},
     {val:totalMax.toLocaleString(),   ico:FATE_ICO,  lbl:'Max Pulls',      sub:'Worst case',                              color:'#f09060'},
     {val:Math.round(avgDay).toLocaleString(), ico:PRIMO_ICO, lbl:'Your Avg/Day', sub:'primos per day',                  color:paceOk?'#80f0a0':'#f08080'},
-    {val:neededDayMin!==null?neededDayMin.toLocaleString():'—', ico:neededDayMin!==null?PRIMO_ICO:'', lbl:'Need/Day (min)', sub:neededDayMax!==null?'Worst: '+neededDayMax.toLocaleString()+'/d':'No deadline', color:paceOk?'#80f0a0':'#f08080'},
+    {val:neededDayMin!==null?neededDayMin.toLocaleString():'—', ico:neededDayMin!==null?PRIMO_ICO:'', lbl:'Need/Day (bottleneck)', sub:neededDayMax!==null?'Worst: '+neededDayMax.toLocaleString()+'/d · by '+bottleneckLabel:'No active banners', color:paceOk?'#80f0a0':'#f08080'},
   ];
   // Progress bar: curPulls vs totalMin (capped at totalMax for scale)
   const scale=totalMax||1;
@@ -3238,7 +3268,16 @@ function toggleCharGuarantee(){}
 function updateCharGuaranteeUI(){}
 function toggleWeapPath(){}
 function updateWeapPathUI(){}
-function setTiming(t,silent){PL.timing=t;if(!silent)save();}
+function setPlannerTiming(t){
+  PL.timing=t;save();
+  const eb=document.getElementById('timing-end'),sb=document.getElementById('timing-start');
+  const on='font-size:11px;padding:2px 10px;border-radius:999px;border:1px solid rgba(240,208,128,0.25);background:rgba(240,208,128,0.12);color:#f0d080;cursor:pointer;margin-left:4px;font-family:\'Nunito\',sans-serif;transition:all 0.15s;';
+  const off='font-size:11px;padding:2px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:#605870;cursor:pointer;margin-left:3px;font-family:\'Nunito\',sans-serif;transition:all 0.15s;';
+  if(eb) eb.style.cssText=t==='end'?on:off;
+  if(sb) sb.style.cssText=t==='start'?on:off;
+  renderChainSummaryOnly();
+}
+function setTiming(t,silent){PL.timing=t;if(!silent){save();setPlannerTiming(t);}}
 function setPlannerCharBanner(val){PL.selCharBanner=val===''?null:parseInt(val);save();}
 function setPlannerWeapBanner(val){PL.selWeapBanner=val===''?null:parseInt(val);save();}
 
