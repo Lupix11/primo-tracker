@@ -372,7 +372,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .msg{font-size:12px;color:#907898;padding:16px;text-align:center;}
 
 /* Planner redesign */
-.mobile-only{display:none;}.ptl-shell{margin-top:4px;border:1px solid rgba(240,208,128,0.08);border-radius:10px;background:rgba(255,255,255,0.02);overflow:hidden;}
+.mobile-only{display:none;}.ptl-shell{margin-top:4px;border:1px solid rgba(240,208,128,0.1);border-radius:10px;background:rgba(4,6,12,0.7);overflow:hidden;}
 .ptl-scroll{overflow-x:auto;overflow-y:hidden;padding-bottom:10px;scrollbar-gutter:stable both-edges;scroll-behavior:auto;}
 .ptl-scroll::-webkit-scrollbar{height:8px;}
 .ptl-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,0.03);border-radius:8px;}
@@ -389,7 +389,9 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-days{height:24px;}
 .ptl-day{position:absolute;top:2px;bottom:0;border-left:1px solid rgba(255,255,255,0.06);font-size:10px;color:#7f7593;padding-left:4px;}
 .ptl-day.today{color:#f0d080;border-left-color:rgba(240,208,128,0.55);}
-.ptl-today-line{position:absolute;top:0;bottom:0;width:2px;background:rgba(240,200,80,0.95);box-shadow:0 0 8px 2px rgba(240,208,128,0.45),0 0 20px rgba(240,208,128,0.2);z-index:3;}
+.ptl-today-line{position:absolute;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent 0%,rgba(240,208,128,0.5) 15%,rgba(240,208,128,0.95) 40%,rgba(240,208,128,0.95) 60%,rgba(240,208,128,0.5) 85%,transparent 100%);box-shadow:0 0 6px rgba(240,208,128,0.3);z-index:3;}
+.ptl-today-star{position:absolute;top:-10px;transform:translateX(-50%);font-size:14px;z-index:5;line-height:1;filter:drop-shadow(0 0 4px rgba(240,208,128,0.8));}
+.ptl-today-circle{position:absolute;bottom:-8px;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:#f0d080;box-shadow:0 0 6px rgba(240,208,128,0.7);z-index:5;}
 .ptl-today-pill{position:absolute;top:6px;transform:translateX(-50%);font-size:10px;color:#0e1219;background:#f0d080;padding:2px 7px;border-radius:12px;z-index:4;font-weight:700;}
 .ptl-row{display:grid;grid-template-columns:120px 1fr;min-height:36px;border-top:1px solid rgba(255,255,255,0.03);}
 .ptl-row:first-child{border-top:none;}
@@ -414,8 +416,10 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-gridline{position:absolute;top:0;bottom:0;border-left:1px solid rgba(255,255,255,0.045);}
 .ptl-bar{height:36px;border-radius:999px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;font-size:11px;color:#10131c;cursor:pointer;z-index:2;transition:transform 0.12s ease, box-shadow 0.16s ease, outline-color 0.16s ease, opacity 0.16s ease;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12);border:none;overflow:hidden;}
 .ptl-bar:hover{transform:translateY(-1px);}
-.ptl-bar.live{background:linear-gradient(90deg,#bcebd0,#80f0a0);}
-.ptl-bar.soon{background:linear-gradient(90deg,#f3df9e,#f0d080);}
+.ptl-bar.live{background:linear-gradient(90deg,#bcebd0,#80f0a0);animation:bar-live-pulse 2.4s ease-in-out infinite;}
+@keyframes bar-live-pulse{0%,100%{box-shadow:0 0 0 0 rgba(128,240,160,0);}50%{box-shadow:0 0 10px 2px rgba(128,240,160,0.35);}}
+.ptl-bar.soon{background:linear-gradient(90deg,#f3df9e,#f0d080);animation:bar-soon-pulse 2.8s ease-in-out infinite;}
+@keyframes bar-soon-pulse{0%,100%{box-shadow:0 0 0 0 rgba(240,208,128,0);}50%{box-shadow:0 0 10px 2px rgba(240,208,128,0.3);}}
 .ptl-bar.spec{background:linear-gradient(90deg,#c1a5e2,#a080c0);color:#14111b;}
 .ptl-bar.weapon.live,.ptl-bar.weapon.soon{background:linear-gradient(90deg,#f6d493,#f0b050);}
 .ptl-bar.weapon.spec{background:linear-gradient(90deg,#c4abd8,#9f86c0);}
@@ -702,7 +706,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v219</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v220</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -832,16 +836,9 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
     <div class="card">
       <div class="tl-header">
         <div class="card-title">Banner Timeline</div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div class="ptl-zoom-btns">
-            <button class="ptl-zoom-btn" onclick="setTLZoom('7d')">7d</button>
-            <button class="ptl-zoom-btn" onclick="setTLZoom('30d')">30d</button>
-            <button class="ptl-zoom-btn active" onclick="setTLZoom('all')">All</button>
-          </div>
-          <button class="fetch-btn" id="fetch-btn" onclick="fetchBanners()">
+<button class="fetch-btn" id="fetch-btn" onclick="fetchBanners()">
             <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>Refresh
           </button>
-        </div>
       </div>
       <div id="timeline-list"><div class="msg">Click Refresh to load banners ✦</div></div>
     </div>
@@ -1549,7 +1546,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v219';
+const APP_VERSION = 'v220';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2601,7 +2598,7 @@ function renderTimeline(banners){
       </div>
       <div class="ptl-row-track" style="width:${timelineWidth}px;min-height:${track.height}px;">
         ${gridLines}
-        <div class="ptl-today-line" style="left:${todayX}px;"></div>
+        <div class="ptl-today-line" style="left:${todayX}px;"><div class="ptl-today-star" style="left:0;">✦</div><div class="ptl-today-circle" style="left:0;"></div></div>
         ${track.bars}
       </div>
     </div>`;
@@ -2618,7 +2615,7 @@ function renderTimeline(banners){
           </div>
           <div class="ptl-head-track" style="width:${timelineWidth}px;">
             <div class="ptl-months">${months.join('')}</div>
-            <div class="ptl-days">${days.join('')}<div class="ptl-today-line" style="left:${todayX}px;"></div><div class="ptl-today-pill" style="left:${todayX}px;">Today</div></div>
+            <div class="ptl-days">${days.join('')}<div class="ptl-today-line" style="left:${todayX}px;"><div class="ptl-today-star" style="left:0;">✦</div><div class="ptl-today-circle" style="left:0;"></div></div><div class="ptl-today-pill" style="left:${todayX}px;">Today</div></div>
           </div>
         </div>
         ${rows}
