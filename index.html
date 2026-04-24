@@ -19,7 +19,7 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
 .sidebar-logo{font-family:'Cinzel',serif;font-size:13px;color:#f0d080;letter-spacing:3px;text-align:center;padding:22px 16px 18px;border-bottom:1px solid rgba(240,208,128,0.1);margin-bottom:8px;}
 .nav-item{display:flex;align-items:center;gap:11px;padding:11px 20px;cursor:pointer;background:transparent;border:none;border-left:3px solid transparent;color:#605870;font-family:'Nunito',sans-serif;font-size:13px;text-align:left;width:100%;transition:all 0.18s;white-space:nowrap;border-radius:0 8px 8px 0;margin:1px 8px 1px 0;width:calc(100% - 8px);}
 .nav-item:hover{color:#c8a84b;background:rgba(240,208,128,0.05);}
-.nav-item.active{color:#f0d080 !important;background:rgba(240,208,128,0.09);border-left-color:#f0d080;box-shadow:inset 0 0 20px rgba(240,208,128,0.04);}
+.nav-item.active{color:#f0d080 !important;background:linear-gradient(90deg,rgba(240,208,128,0.1),rgba(240,208,128,0.03));border-left-color:#f0d080;}
 .nav-item svg{width:17px;height:17px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.8;}
 .nav-label{font-size:12px;}
 .main{margin-left:190px;flex:1;min-width:0;}
@@ -389,7 +389,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-days{height:24px;}
 .ptl-day{position:absolute;top:2px;bottom:0;border-left:1px solid rgba(255,255,255,0.06);font-size:10px;color:#7f7593;padding-left:4px;}
 .ptl-day.today{color:#f0d080;border-left-color:rgba(240,208,128,0.55);}
-.ptl-today-line{position:absolute;top:0;bottom:0;width:2px;background:rgba(214,170,72,0.88);box-shadow:0 0 12px rgba(240,208,128,0.16);z-index:3;}
+.ptl-today-line{position:absolute;top:0;bottom:0;width:2px;background:rgba(240,200,80,0.95);box-shadow:0 0 8px 2px rgba(240,208,128,0.45),0 0 20px rgba(240,208,128,0.2);z-index:3;}
 .ptl-today-pill{position:absolute;top:6px;transform:translateX(-50%);font-size:10px;color:#0e1219;background:#f0d080;padding:2px 7px;border-radius:12px;z-index:4;font-weight:700;}
 .ptl-row{display:grid;grid-template-columns:120px 1fr;min-height:36px;border-top:1px solid rgba(255,255,255,0.03);}
 .ptl-row:first-child{border-top:none;}
@@ -635,10 +635,10 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .chain-sum-val.pos{color:#80f0a0;}
 .chain-sum-lbl{font-size:9px;color:#907898;letter-spacing:0.9px;text-transform:uppercase;margin-top:4px;}
 .chain-sum-sub{font-size:9px;color:#6d627f;margin-top:2px;}
-.ptl-tooltip{position:absolute;background:rgba(12,14,22,0.97);border:1px solid rgba(240,208,128,0.22);border-radius:10px;padding:10px 13px;pointer-events:none;z-index:99;min-width:180px;box-shadow:0 8px 24px rgba(0,0,0,0.5);}
-.ptl-tooltip-name{font-family:'Cinzel',serif;font-size:12px;color:#f0d080;margin-bottom:6px;}
-.ptl-tooltip-row{font-size:11px;color:#a090c0;display:flex;align-items:center;gap:6px;margin-bottom:3px;}
-.ptl-tooltip-dur{font-size:11px;color:#e8dfc8;margin-top:5px;padding-top:5px;border-top:1px solid rgba(255,255,255,0.06);}
+.ptl-tooltip{position:fixed;background:rgba(10,12,20,0.97);border:1px solid rgba(240,208,128,0.2);border-radius:8px;padding:8px 11px;pointer-events:none;z-index:9999;min-width:160px;box-shadow:0 6px 20px rgba(0,0,0,0.6);}
+.ptl-tooltip-name{font-family:'Cinzel',serif;font-size:11px;color:#f0d080;margin-bottom:4px;}
+.ptl-tooltip-row{font-size:10px;color:#a090c0;margin-bottom:2px;}
+.ptl-tooltip-dur{font-size:10px;color:#e8dfc8;margin-top:4px;padding-top:4px;border-top:1px solid rgba(255,255,255,0.06);}
 .ptl-zoom-btns{display:flex;gap:5px;}
 .ptl-zoom-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(240,208,128,0.15);border-radius:6px;color:#907898;font-family:'Nunito',sans-serif;font-size:11px;padding:3px 10px;cursor:pointer;transition:all 0.15s;}
 .ptl-zoom-btn:hover,.ptl-zoom-btn.active{background:rgba(240,208,128,0.12);border-color:rgba(240,208,128,0.35);color:#f0d080;}
@@ -702,7 +702,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v218</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v219</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1549,7 +1549,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v218';
+const APP_VERSION = 'v219';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2570,7 +2570,7 @@ function renderTimeline(banners){
         ? `<img class="ptl-bar-img" src="${imgUrl}" alt="" loading="lazy" onerror="this.style.display='none';"/>`
         : '';
       return `<div style="position:absolute;left:${startOffset+3}px;top:${top}px;display:flex;align-items:center;z-index:${zIdx};">
-        <button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="width:${barWidth}px;height:${barHeight}px;background:linear-gradient(90deg,${palette.c1},${palette.c2});color:${palette.fg};position:relative;" data-bidx="${b._index}" onmouseenter="showTLTooltip(event,'${b.displayName.replace(/'/g,"\\'")}','${b.startDate}','${b.endDate}')" onmouseleave="hideTLTooltip()">
+        <button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="width:${barWidth}px;height:${barHeight}px;background:linear-gradient(90deg,${palette.c1},${palette.c2});color:${palette.fg};position:relative;" data-bidx="${b._index}" onmousemove="moveTip(event)" onmouseenter="showTLTooltip(event,'${b.displayName.replace(/'/g,"\\'")}','${b.startDate}','${b.endDate}')" onmouseleave="hideTLTooltip()">
           ${imgHtml}
           <span class="ptl-bar-label">${b.displayName}</span>
         </button>
@@ -3416,15 +3416,24 @@ function setPlannerWeapBanner(val){PL.selWeapBanner=val===''?null:parseInt(val);
 let tlZoom='all';
 function setTLZoom(z){
   tlZoom=z;
-  document.querySelectorAll('.ptl-zoom-btn').forEach(b=>b.classList.toggle('active',b.textContent===z||(z==='all'&&b.textContent==='All')));
-  const svg=document.querySelector('#timeline-list svg');
-  if(!svg) return;
-  const today=new Date();
-  const days=z==='7d'?7:z==='30d'?30:null;
-  if(!days){svg.style.transform='';return;}
-  // Find today position and scroll there
-  const tl=document.getElementById('timeline-list');
-  if(tl) tl.scrollLeft=Math.max(0,(tl.scrollLeft||0));
+  document.querySelectorAll('.ptl-zoom-btn').forEach(b=>b.classList.toggle('active',b.textContent===z||(z==='all'&&b.textContent==='All')||(z==='all'&&b.textContent==='All')));
+  const el=document.getElementById('timeline-list');
+  if(!el) return;
+  const DAY_W=18;
+  if(z==='all'){el.scrollLeft=0;return;}
+  const days=z==='7d'?7:30;
+  // Scroll so today is near left edge
+  const today=getRegionDayFloor(new Date(),APP.plannerRegion||'America');
+  // Get min date from rendered banners
+  const bars=el.querySelectorAll('[data-bidx]');
+  if(!bars.length){el.scrollLeft=0;return;}
+  // Scroll to today - 2 days offset
+  const allBanners=getPlannerBanners();
+  if(!allBanners.length) return;
+  const dates=allBanners.map(b=>new Date(b.startDate));
+  const minDate=new Date(Math.min(...dates));
+  const todayOffset=diffDays(today,minDate)*DAY_W;
+  el.scrollLeft=Math.max(0,todayOffset-2*DAY_W);
 }
 
 // ── TIMELINE TOOLTIP ──
@@ -3432,14 +3441,12 @@ let _tlTip=null;
 function showTLTooltip(e,name,start,end){
   hideTLTooltip();
   const dur=Math.ceil((new Date(end)-new Date(start))/864e5);
-  const tip=document.createElement('div');
-  tip.className='ptl-tooltip';
-  tip.innerHTML=`<div class="ptl-tooltip-name">${name}</div>
-    <div class="ptl-tooltip-row">📅 ${fmtMonthDay(start)} → ${fmtMonthDay(end)}</div>
-    <div class="ptl-tooltip-dur">Duration: ${dur} days</div>`;
-  tip.style.cssText=`position:fixed;left:${Math.min(e.clientX+12,window.innerWidth-210)}px;top:${Math.min(e.clientY-10,window.innerHeight-100)}px;`;
+  const tip=document.createElement('div');tip.className='ptl-tooltip';tip.id='ptl-tip';
+  tip.innerHTML=`<div class="ptl-tooltip-name">${name}</div><div class="ptl-tooltip-row">${fmtMonthDay(start)} → ${fmtMonthDay(end)}</div><div class="ptl-tooltip-dur">Duration: ${dur} days</div>`;
   document.body.appendChild(tip);_tlTip=tip;
+  moveTip(e);
 }
+function moveTip(e){if(!_tlTip)return;_tlTip.style.left=Math.min(e.clientX+14,window.innerWidth-175)+'px';_tlTip.style.top=Math.min(e.clientY-8,window.innerHeight-90)+'px';}
 function hideTLTooltip(){if(_tlTip){_tlTip.remove();_tlTip=null;}}
 
 const BANNERS_URL = 'https://lupix11.github.io/primo-tracker/banners.json';
