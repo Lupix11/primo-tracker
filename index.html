@@ -236,7 +236,7 @@ input[type=range].v-slider::-moz-range-track{width:2px;background:rgba(255,255,2
 input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:#c8a84b;border:none;}
 /* Stats */
 .s-sect{margin-bottom:14px;}
-.s-sect-title{font-size:9px;color:#907898;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid rgba(240,208,128,0.06);}
+.s-sect-title{font-family:'Cinzel',serif;font-size:10px;color:#c8a84b;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:9px;padding-bottom:6px;border-bottom:1px solid rgba(240,208,128,0.1);display:flex;align-items:center;gap:6px;}.s-sect-title::before{content:'✦';font-size:9px;color:#f0d080;opacity:0.65;}
 .s-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
 .s-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
 .sbox{background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.07);border-radius:9px;padding:12px 12px;text-align:center;min-height:78px;}
@@ -695,7 +695,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v214</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v215</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1527,7 +1527,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v214';
+const APP_VERSION = 'v215';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2109,7 +2109,7 @@ function renderStats(){
     <div class="stats-hero">
       <div class="stats-hero-main">
         <div>
-          <div class="stats-hero-kicker" data-i18n="stats_selected_range_overview">Selected range overview</div>
+          <div class="stats-hero-kicker" data-i18n="stats_selected_range_overview" style="font-family:'Cinzel',serif;color:#c8a84b;letter-spacing:1.5px;display:flex;align-items:center;gap:5px;"><span style="font-size:9px;color:#f0d080;opacity:0.65;">✦</span>Average Daily Gain</div>
           <div class="stats-hero-value" id="avg-display">${curAvg!=null?curAvg.toLocaleString():'—'}</div>
           <div class="stats-hero-label" data-i18n="stats_average_daily_gain">Average daily gain</div>
           <div class="stats-hero-note">How many primogems you gained per tracked day during the selected range.</div>
@@ -2128,7 +2128,7 @@ function renderStats(){
         </div>
       </div>
     </div>
-    <div class="stats-section">
+    <div class="stats-section" style="background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;padding:14px 16px;background-image:linear-gradient(160deg,rgba(255,255,255,0.025) 0%,transparent 60%);">
       <div class="s-sect-title" data-i18n="stats_snapshot">Snapshot</div>
       <div class="stats-grid-3">
         <div class="stats-metric"><div class="stats-metric-value">${primoGained.toLocaleString()}</div><div class="stats-metric-label">Primos gained</div><div class="stats-metric-sub">Growth during the selected range.</div></div>
@@ -2136,7 +2136,7 @@ function renderStats(){
         <div class="stats-metric"><div class="stats-metric-value">${last.total.toLocaleString()}</div><div class="stats-metric-label">Current primos</div><div class="stats-metric-sub">Latest total in your tracker.</div></div>
       </div>
     </div>
-    <div class="stats-section">
+    <div class="stats-section" style="background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;padding:14px 16px;background-image:linear-gradient(160deg,rgba(255,255,255,0.025) 0%,transparent 60%);">
       <div class="s-sect-title" data-i18n="stats_consistency">Consistency</div>
       <div class="stats-grid-3">
         <div class="stats-metric big"><div class="stats-metric-value inline" style="color:#80f0a0;">${daysAbove}<span class="unit">/ ${daysTotal}</span></div><div class="stats-metric-label">Days above baseline</div><div class="stats-metric-sub">${abovePct}% beat the ${baseline}/day baseline.</div></div>
@@ -2147,7 +2147,7 @@ function renderStats(){
         <div class="stats-metric big"><div class="stats-metric-value inline" style="color:${paceUp?'#80f0a0':'#f09060'};">${paceVal!==null?`${paceUp?'↑':'↓'} ${Math.abs(paceVal).toLocaleString()}`:'—'}<span class="unit">/day vs avg</span></div><div class="stats-metric-label">7-day pace</div><div class="stats-metric-sub">${verdict}</div></div>
       </div>
     </div>
-    <div class="stats-section" style="margin-bottom:0;">
+    <div class="stats-section" style="margin-bottom:0;background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;padding:14px 16px;background-image:linear-gradient(160deg,rgba(255,255,255,0.025) 0%,transparent 60%);">
       <div class="s-sect-title" data-i18n="stats_extremes">Extremes</div>
       <div class="stats-grid-2">
         <div class="stats-metric"><div class="stats-metric-value" style="color:#80f0a0;">${bestG>-Infinity?'+'+bestG.toLocaleString():'—'}</div><div class="stats-metric-label">Best day</div><div class="stats-metric-sub">Recorded on ${bestD?fmtDate(bestD):'—'}.</div></div>
