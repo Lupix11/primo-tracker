@@ -679,7 +679,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v192</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v193</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1507,7 +1507,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v192';
+const APP_VERSION = 'v193';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2320,7 +2320,7 @@ function renderTimeline(banners){
     _startMoment:getRegionBannerMoment(b.startDate,'start',APP.plannerRegion),
     _endMoment:getRegionBannerMoment(b.endDate,'end',APP.plannerRegion),
     _groupKey:[b.phase,b.version,b.type,b.startDate,b.endDate].join('|')
-  })).sort((a,b)=>a._start-b._start||a.type.localeCompare(b.type)||a._index-b._index);
+  })).sort((a,b)=>a._start-b._start||a._index-b._index||a._itemIndex-b._itemIndex);
 
   const parsed=[];
   baseParsed.forEach(b=>{
