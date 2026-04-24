@@ -187,8 +187,9 @@ textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid r
 .tile-val{font-family:'Cinzel',serif;font-size:20px;color:#f0d080;font-weight:600;line-height:1.1;}
 .tile-lbl{font-size:9px;color:#907898;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
 .tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px;}
-.tab{font-family:'Nunito',sans-serif;font-size:12px;padding:5px 13px;border-radius:20px;cursor:pointer;border:1px solid rgba(240,208,128,0.13) !important;color:#605870 !important;background:transparent;transition:all 0.18s;}
-.tab.active{background:rgba(240,208,128,0.18) !important;border-color:rgba(240,208,128,0.46) !important;color:#f0d080 !important;font-weight:700;box-shadow:0 0 0 1px rgba(240,208,128,0.08) inset;}
+.tab{font-family:'Nunito',sans-serif;font-size:12px;padding:5px 13px;border-radius:20px;cursor:pointer;border:1px solid rgba(240,208,128,0.13) !important;color:#605870 !important;background:transparent;transition:all 0.2s;}
+.tab.active{background:rgba(240,208,128,0.18) !important;border-color:rgba(240,208,128,0.5) !important;color:#f0d080 !important;font-weight:700;box-shadow:0 0 10px rgba(240,208,128,0.2),0 0 0 1px rgba(240,208,128,0.1) inset;text-shadow:0 0 8px rgba(240,208,128,0.4);}
+.tab:hover:not(.active){border-color:rgba(240,208,128,0.25) !important;color:#a090c0 !important;}
 .legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:9px;align-items:center;}
 .li{display:flex;align-items:center;gap:5px;font-size:11px;color:#907898;}
 .ls{width:20px;height:3px;border-radius:2px;flex-shrink:0;}
@@ -199,7 +200,7 @@ textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid r
 .hint-txt{font-size:10px;color:#504060;font-style:italic;}
 .log-wrap{display:flex;gap:9px;align-items:stretch;}
 .log-outer{flex:1;min-width:0;}
-.log-col-hdr{display:grid;grid-template-columns:0.85fr 1fr 0.75fr 1.1fr 0.75fr 1fr 18px;align-items:center;height:32px;padding:0 12px;border-bottom:1px solid rgba(240,208,128,0.11);color:#c8a84b;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.9px;}
+.log-col-hdr{display:grid;grid-template-columns:0.85fr 1fr 0.75fr 1.1fr 0.75fr 1fr 40px;align-items:center;height:32px;padding:0 12px;border-bottom:1px solid rgba(240,208,128,0.11);color:#c8a84b;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.9px;}
 .log-vp{overflow:hidden;position:relative;}
 .log-vp::after{content:'';position:absolute;left:0;right:0;bottom:0;height:18px;z-index:2;pointer-events:none;background:linear-gradient(to top,rgba(14,18,25,0.6),transparent);}
 .log-strip{will-change:transform;transition:transform 0.18s cubic-bezier(0.25,0.8,0.25,1);}
@@ -683,7 +684,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v198</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v199</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1511,7 +1512,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v198';
+const APP_VERSION = 'v199';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1937,6 +1938,7 @@ function renderChart(){
   chartInst=null;
   const ctx=chartCanvas.getContext('2d');
   const blPlugin={id:'bl',afterDraw(chart){if(activeMetric!=='gain')return;const{ctx:c,chartArea,scales}=chart;if(!scales.y||!chartArea)return;const y=scales.y.getPixelForValue(baseline);c.save();c.strokeStyle='rgba(240,208,128,0.72)';c.lineWidth=2;c.setLineDash([6,4]);c.beginPath();c.moveTo(chartArea.left,y);c.lineTo(chartArea.right,y);c.stroke();c.setLineDash([]);c.restore();}};
+  const glowPlugin={id:'lineGlow',beforeDatasetDraw(chart,args){const ds=args.meta.dataset;if(!ds)return;const lbl=chart.data.datasets[args.index]?.label;if(lbl!=='Raw Primogems')return;const ctx=chart.ctx;ctx.save();ctx.shadowColor='rgba(240,208,128,0.55)';ctx.shadowBlur=10;}};
   const xSc={grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#907898',font:{size:10,family:'Nunito'},autoSkip:true,maxTicksLimit:12,maxRotation:45}};
   const ySc={grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#907898',font:{size:10,family:'Nunito'},callback:v=>v?.toLocaleString()}};
   const tt={backgroundColor:'rgba(10,13,20,0.96)',borderColor:'rgba(240,208,128,0.28)',borderWidth:1,titleColor:'#c8a84b',bodyColor:'#e8dfc8'};
@@ -1944,7 +1946,7 @@ function renderChart(){
     document.getElementById('legend').innerHTML=`<span class="li"><span class="ls" style="background:#80c0f0;"></span>Total Primogems</span><span class="li"><span class="ls" style="background:repeating-linear-gradient(90deg,#f0d080 0,#f0d080 5px,transparent 5px,transparent 9px);"></span>Raw Primogems</span>`;
     const yC=document.createElement('canvas');yC.width=10;yC.height=10;const yX=yC.getContext('2d');yX.strokeStyle='rgba(240,208,128,0.2)';yX.lineWidth=2;yX.beginPath();yX.moveTo(0,10);yX.lineTo(10,0);yX.stroke();yX.beginPath();yX.moveTo(-2,2);yX.lineTo(2,-2);yX.stroke();yX.beginPath();yX.moveTo(8,12);yX.lineTo(12,8);yX.stroke();
     const yPat=ctx.createPattern(yC,'repeat');const bG=ctx.createLinearGradient(0,0,0,250);bG.addColorStop(0,'rgba(128,192,240,0.22)');bG.addColorStop(1,'rgba(128,192,240,0.01)');
-    chartInst=new Chart(ctx,{type:'line',data:{labels,datasets:[{label:'Total Primogems',data:entries.map(e=>e.total),borderColor:'#80c0f0',backgroundColor:bG,borderWidth:2,pointBackgroundColor:'#80c0f0',pointRadius:3,pointHoverRadius:5,fill:true,tension:0.3,spanGaps:false,order:2},{label:'Raw Primogems',data:entries.map(e=>e.primo),borderColor:'#f0d080',backgroundColor:yPat,borderWidth:2,pointBackgroundColor:'#f0d080',pointRadius:3,pointHoverRadius:5,fill:true,tension:0.3,spanGaps:false,borderDash:[5,3],order:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>entries[i[0].dataIndex]?.date||'',label:c=>'  '+c.dataset.label+': '+(c.parsed.y!=null?c.parsed.y.toLocaleString():'—')}}},scales:{x:xSc,y:{...ySc,beginAtZero:false}}}});
+    chartInst=new Chart(ctx,{type:'line',plugins:[glowPlugin],data:{labels,datasets:[{label:'Total Primogems',data:entries.map(e=>e.total),borderColor:'#80c0f0',backgroundColor:bG,borderWidth:2,pointBackgroundColor:'#80c0f0',pointRadius:3,pointHoverRadius:5,fill:true,tension:0.3,spanGaps:false,order:2},{label:'Raw Primogems',data:entries.map(e=>e.primo),borderColor:'#f0d080',backgroundColor:yPat,borderWidth:2.5,pointBackgroundColor:'#f0d080',pointRadius:3,pointHoverRadius:5,fill:true,tension:0.3,spanGaps:false,borderDash:[5,3],order:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>entries[i[0].dataIndex]?.date||'',label:c=>'  '+c.dataset.label+': '+(c.parsed.y!=null?c.parsed.y.toLocaleString():'—')}}},scales:{x:xSc,y:{...ySc,beginAtZero:false}}}});
   } else if(activeMetric==='pulls'){
     document.getElementById('legend').innerHTML=`<span class="li"><span class="ls" style="background:#c080f0;"></span>Total Pulls</span>`;
     const pG=ctx.createLinearGradient(0,0,0,250);pG.addColorStop(0,'rgba(192,128,240,0.22)');pG.addColorStop(1,'rgba(192,128,240,0.01)');
