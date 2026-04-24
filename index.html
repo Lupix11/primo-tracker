@@ -679,7 +679,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v195</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v196</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1507,7 +1507,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v195';
+const APP_VERSION = 'v196';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2489,7 +2489,9 @@ function renderTimeline(banners){
   ];
 
   const rows=groups.map(group=>{
-    const items=parsed.filter(b=>b.type===group.key||(b.type==='chronicled'&&(group.key==='character'||group.key==='weapon')));
+    const items=parsed.filter(b=>b.type===group.key||
+      (b.type==='chronicled'&&(b.subtype||'character')==='character'&&group.key==='character')||
+      (b.type==='chronicled'&&b.subtype==='weapon'&&group.key==='weapon'));
     const track=buildTrack(items);
     return `<div class="ptl-row">
       <div class="ptl-info">
@@ -2660,7 +2662,7 @@ let chainPickerOpen=null;
 
 function getBannerKey(b){
   if(b._virtual) return b._charKey;
-  if(b.type==='chronicled') return `${b.version}|${b.phase}|chronicled`;
+  if(b.type==='chronicled') return `${b.version}|${b.phase}|chronicled|${b.subtype||'char'}`;
   if(b.type==='character'){
     const char=Array.isArray(b.characters)?b.characters[0]:b.characters;
     return `${b.version}|${b.phase}|character|${char}`;
@@ -2823,7 +2825,7 @@ function calcChainSummary(type,orderedBanners){
     const remaining=state.goal-state.obtained;
     if(remaining<=0) return;
     if(b.type==='chronicled'){
-      const {min,max}=calcWeapMinMax(remaining,state.pity,state.fatePoint||0);
+      const {min,max}=calcCharMinMax(remaining,state.pity,state.fatePoint||0);
       totalMin+=min;totalMax+=max;
     } else if(type==='character'){
       const {min,max}=calcCharMinMax(remaining,state.pity,state.guaranteed);
@@ -2920,11 +2922,11 @@ function renderChainCard(b,type){
       const elSrc=`${BASE_URL}images/elements/element_${el.toLowerCase()}.svg`;
       iconHtml=`<img src="${elSrc}" width="22" height="22" onerror="this.style.display='none'" alt="${el}">`;
     }
-    const pityMax=80;
+    const pityMax=90;
     const pityPct=Math.min(100,Math.round((state.pity/pityMax)*100));
     const remaining=Math.max(0,state.goal-state.obtained);
     let minStr='0',maxStr='0';
-    if(remaining>0){const r=calcWeapMinMax(remaining,state.pity,state.fatePoint||0);minStr=r.min;maxStr=r.max;}
+    if(remaining>0){const r=calcCharMinMax(remaining,state.pity,state.fatePoint||0);minStr=r.min;maxStr=r.max;}
     const squares=Array.from({length:state.goal},(_,i)=>
       `<div class="chain-copy-sq${i<state.obtained?' filled':''}" onclick="toggleChainCopy('${type}','${safeKey}',${i});this.classList.add('pop');setTimeout(()=>this.classList.remove('pop'),250);" title="Copy ${i+1}"></div>`
     ).join('');
@@ -2937,7 +2939,7 @@ function renderChainCard(b,type){
         <div class="chain-card-icon" style="background:rgba(155,114,207,0.2);border:1.5px solid rgba(155,114,207,0.5);">${iconHtml}</div>
         <div class="chain-card-text">
           <div class="chain-card-name">${b.version} Chronicled Wish${isSpec?' · speculative':''}</div>
-          <div class="chain-card-sub">Version ${b.version} · Chronicled Wish · 80 pity · 1 fate point</div>
+          <div class="chain-card-sub">Version ${b.version} · Chronicled Wish · 90 pity · 1 fate point</div>
         </div>
       </div>
       <div class="chain-card-top-right">${chipHtml}<button class="chain-card-remove" onclick="animRemove('${type}','${safeKey}')" title="Remove">✕</button></div>
@@ -2948,7 +2950,7 @@ function renderChainCard(b,type){
     </div>
     <div class="chain-card-form">
       <div class="chain-field"><div class="chain-field-label">Goal</div><select class="chain-select" onchange="setChainGoal('${type}','${safeKey}',this.value)">${goalOpts}</select></div>
-      <div class="chain-field"><div class="chain-field-label">Pity</div><input type="number" class="chain-num-inp" value="${state.pity}" min="0" max="79" oninput="setChainPity('${type}','${safeKey}',this.value)" placeholder="0"/></div>
+      <div class="chain-field"><div class="chain-field-label">Pity</div><input type="number" class="chain-num-inp" value="${state.pity}" min="0" max="89" oninput="setChainPity('${type}','${safeKey}',this.value)" placeholder="0"/></div>
       <div class="chain-field"><div class="chain-field-label">Fate Point</div><div class="chain-toggle-wrap"><input type="checkbox" class="chain-tog"${(state.fatePoint||0)>=1?' checked':''} onchange="setChronFatePoint('${type}','${safeKey}',this.checked)"/></div></div>
       <div class="chain-field"><div class="chain-field-label">Copy (5★)</div><div class="chain-copies-wrap">${squares}</div></div>
     </div>
@@ -3015,17 +3017,18 @@ function renderChainCard(b,type){
 
 function renderChainPickerDropdown(type,allBanners){
   const order=getChainOrder(type);
-  const chronicled=allBanners.filter(b=>b.type==='chronicled');
+  const chronicledChar=allBanners.filter(b=>b.type==='chronicled'&&(b.subtype||'character')==='character');
+  const chronicledWeap=allBanners.filter(b=>b.type==='chronicled'&&b.subtype==='weapon');
   const pool=type==='character'
-    ?[...getCharVirtuals(allBanners),...chronicled]
-    :[...allBanners.filter(b=>b.type==='weapon'),...chronicled];
+    ?[...getCharVirtuals(allBanners),...chronicledChar]
+    :[...allBanners.filter(b=>b.type==='weapon'),...chronicledWeap];
   const available=pool.filter(b=>!order.includes(getBannerKey(b))).sort((a,b)=>new Date(a.startDate)-new Date(b.startDate));
   if(!available.length) return `<div class="chain-picker-dropdown"><div class="chain-picker-empty">All banners already added.</div></div>`;
   const items=available.map(b=>{
     const key=getBannerKey(b);
     const el=b.type==='chronicled'?'Hydro':(Array.isArray(b.elements)?b.elements[0]:b.elements)||'Unknown';
     const pal=getElementPalette(el,b.type,b.status==='speculative'?'speculative':'normal');
-    const names=b.type==='chronicled'?`${b.version} Chronicled Wish`:(Array.isArray(b.characters)?b.characters:[b.characters]).join(' · ');
+    const names=b.type==='chronicled'?'Fontaine Chronicled Wish':(Array.isArray(b.characters)?b.characters:[b.characters]).join(' · ');
     const safeKey=key.replace(/'/g,"\\'");
     const statusDot=b.type==='chronicled'?'#9b72cf':b.status==='live'?'#80f0a0':b.status==='speculative'?'#a080c0':'#f0d080';
     return `<div class="chain-picker-item" onclick="addBannerToChain('${type}','${safeKey}')">
