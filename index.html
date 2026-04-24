@@ -199,12 +199,12 @@ textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid r
 .log-header-left{display:flex;align-items:baseline;gap:7px;}
 .hint-txt{font-size:10px;color:#504060;font-style:italic;}
 .log-wrap{position:relative;}
-.log-outer{width:100%;padding-right:22px;box-sizing:border-box;}
-.log-col-hdr{display:grid;grid-template-columns:0.85fr 1fr 0.75fr 1.1fr 0.75fr 1fr 27px;align-items:center;height:32px;padding:0 12px;border-bottom:1px solid rgba(240,208,128,0.11);color:#c8a84b;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.9px;}
+.log-outer{width:100%;padding-right:0;box-sizing:border-box;}
+.log-col-hdr{display:grid;grid-template-columns:0.85fr 1fr 0.75fr 1.1fr 0.75fr 1fr 27px;align-items:center;height:32px;padding:0 34px 0 12px;border-bottom:1px solid rgba(240,208,128,0.11);color:#c8a84b;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.9px;}
 .log-vp{overflow:hidden;position:relative;}
 .log-vp::after{content:'';position:absolute;left:0;right:0;bottom:0;height:18px;z-index:2;pointer-events:none;background:linear-gradient(to top,rgba(14,18,25,0.6),transparent);}
 .log-strip{will-change:transform;transition:transform 0.18s cubic-bezier(0.25,0.8,0.25,1);}
-.log-row{display:grid;grid-template-columns:0.85fr 1fr 0.75fr 1.1fr 0.75fr 1fr 27px;align-items:center;height:44px;padding:0 12px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:15px;color:#ddd6cb;cursor:pointer;transition:background 0.13s;user-select:none;}
+.log-row{display:grid;grid-template-columns:0.85fr 1fr 0.75fr 1.1fr 0.75fr 1fr 27px;align-items:center;height:44px;padding:0 34px 0 12px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:15px;color:#ddd6cb;cursor:pointer;transition:background 0.13s;user-select:none;}
 .log-row:hover{background:rgba(255,255,255,0.025);}
 .log-row.expanded{background:rgba(240,208,128,0.04);border-bottom:none;}
 .log-expand{overflow:hidden;}
@@ -219,8 +219,8 @@ textarea.expand-note{width:100%;background:rgba(255,255,255,0.05);border:1px sol
 .expand-actions .spacer{flex:1;}
 .note-dot{width:5px;height:5px;border-radius:50%;background:#c8a84b;display:inline-block;margin-left:3px;vertical-align:middle;opacity:0.7;}
 .gain-pos{color:#80f0a0;}.gain-neg{color:#f08080;}.gain-base{color:#605870;}
-.v-col{position:absolute;right:0;top:0;bottom:0;width:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-top:32px;}
-input[type=range].v-slider{appearance:none;-webkit-appearance:none;writing-mode:vertical-lr;direction:rtl;width:18px;height:210px;background:transparent;cursor:pointer;}
+.v-col{position:absolute;right:7px;top:0;bottom:0;width:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-top:32px;z-index:3;}
+input[type=range].v-slider{appearance:none;-webkit-appearance:none;writing-mode:vertical-lr;direction:rtl;width:12px;height:210px;background:transparent;cursor:pointer;}
 input[type=range].v-slider::-webkit-slider-runnable-track{width:2px;background:rgba(255,255,255,0.09);border-radius:2px;}
 input[type=range].v-slider::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#c8a84b;margin-left:-5.5px;cursor:pointer;}
 input[type=range].v-slider::-moz-range-track{width:2px;background:rgba(255,255,255,0.09);border-radius:2px;}
@@ -684,7 +684,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v211</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v212</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1516,7 +1516,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v211';
+const APP_VERSION = 'v212';
 
 let gdToken = null;
 let gdTokenClient = null;
