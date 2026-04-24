@@ -695,7 +695,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v216</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v217</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -753,7 +753,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
       </div>
       <div class="qa-wrap">
         <button class="qa-add-btn" onclick="this.style.animation='none';void this.offsetWidth;this.style.animation='btn-pop 0.22s ease';addEntry()">Add ＋</button>
-        <div class="qa-field"><div class="qa-label">Date</div><input type="date" id="inp-date" class="qa-input"/></div>
+        <div class="qa-field"><div class="qa-label">Date</div><input type="text" id="inp-date" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this)"/></div>
         <div class="qa-field"><div class="qa-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/primogem.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Primogems</div><input type="number" id="inp-primo" class="qa-input" placeholder="21784" min="0" oninput="calcPreview()"/></div>
         <div class="qa-field"><div class="qa-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Intertwined Fates</div><input type="number" id="inp-fates" class="qa-input" placeholder="17" min="0" oninput="calcPreview()"/></div>
       </div>
@@ -1535,7 +1535,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v216';
+const APP_VERSION = 'v217';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1814,7 +1814,7 @@ async function load(){
     PROFILES = ensureProfilesContainer(null);
     loadActiveProfileIntoGlobals();
   }
-  document.getElementById('inp-date').value=new Date().toISOString().split('T')[0];
+  const _t=new Date();document.getElementById('inp-date').value=`${String(_t.getDate()).padStart(2,'0')}/${String(_t.getMonth()+1).padStart(2,'0')}/${_t.getFullYear()}`;
   updateImportUI();
   updateSettingsControls();
   applyLanguage();
@@ -1892,7 +1892,7 @@ function calcPreview(){
   else{prev.textContent='—';prev.style.opacity='0';}
 }
 function addEntry(){
-  const date=document.getElementById('inp-date').value,primo=parseInt(document.getElementById('inp-primo').value),fates=parseInt(document.getElementById('inp-fates').value),notes=document.getElementById('inp-note').value.trim(),err=document.getElementById('err');
+  const date=parseDMY(document.getElementById('inp-date').value),primo=parseInt(document.getElementById('inp-primo').value),fates=parseInt(document.getElementById('inp-fates').value),notes=document.getElementById('inp-note').value.trim(),err=document.getElementById('err');
   if(!date){err.textContent='Pick a date.';err.style.display='block';return;}
   if(isNaN(primo)&&isNaN(fates)){err.textContent='Enter Primogems and/or Fates.';err.style.display='block';return;}
   const p=isNaN(primo)?0:primo,f=isNaN(fates)?0:fates;
@@ -1907,7 +1907,7 @@ function addEntry(){
   ['inp-primo','inp-fates'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('inp-note').value='';document.getElementById('qa-preview').style.opacity='0';
   const nw=document.getElementById('note-wrap');if(nw.classList.contains('open')){nw.classList.remove('open');document.getElementById('note-toggle-txt').textContent='Add a note';}
-  const next=new Date(date);next.setDate(next.getDate()+1);document.getElementById('inp-date').value=next.toISOString().split('T')[0];
+  const next=new Date(date);next.setDate(next.getDate()+1);document.getElementById('inp-date').value=`${String(next.getDate()).padStart(2,'0')}/${String(next.getMonth()+1).padStart(2,'0')}/${next.getFullYear()}`;
   expandedDate=null;save();render();
 }
 function upsert(entry){
@@ -2098,12 +2098,13 @@ function renderStats(){
   // Apply date range filter
   const fi=document.getElementById('stats-from'),ti=document.getElementById('stats-to');
   let rangeEntries=entries;
-  if(fi&&ti&&fi.value&&ti.value){
-    rangeEntries=entries.filter(e=>e.date>=fi.value&&e.date<=ti.value);
+  const fromISO=fi?parseDMY(fi.value):null,toISO=ti?parseDMY(ti.value):null;
+  if(fromISO&&toISO){
+    rangeEntries=entries.filter(e=>e.date>=fromISO&&e.date<=toISO);
     if(!rangeEntries.length) rangeEntries=entries;
   } else if(fi&&ti&&entries.length){
     // Init inputs on first render
-    fi.value=entries[0].date; ti.value=entries[entries.length-1].date;
+    const toDMY2=s=>{const[y,m,d]=s.split('-');return`${d}/${m}/${y}`;};fi.value=toDMY2(entries[0].date);ti.value=toDMY2(entries[entries.length-1].date);
   }
   const gains=getDG(rangeEntries),baseline=getBaseline(),validGains=gains.filter(g=>g!==null);
   const first=rangeEntries[0],last=rangeEntries[rangeEntries.length-1];
@@ -2123,23 +2124,15 @@ function renderStats(){
   const lowestClass=worstG<0?'lowest-neg':'lowest-pos';
   const verdict = paceVal===null ? 'Not enough recent data yet.' : paceUp ? 'Recent gains are running above your selected-range average.' : 'Recent gains are running below your selected-range average.';
   el.innerHTML=`
-    <div class="card" style="margin-bottom:12px;padding:14px 18px;">
-      <div class="card-title" style="margin-bottom:12px;">Date Range</div>
-      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-        <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:140px;">
-          <div style="font-size:9px;color:#907898;text-transform:uppercase;letter-spacing:0.8px;">From</div>
-          <input type="date" id="stats-from" class="qa-input" style="width:100%;" onchange="applyStatsDateRange()"/>
-        </div>
-        <div style="color:#504060;font-size:16px;margin-top:14px;">→</div>
-        <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:140px;">
-          <div style="font-size:9px;color:#907898;text-transform:uppercase;letter-spacing:0.8px;">To</div>
-          <input type="date" id="stats-to" class="qa-input" style="width:100%;" onchange="applyStatsDateRange()"/>
-        </div>
-        <div style="display:flex;gap:6px;margin-top:14px;">
-          <button class="avg-pill ${statsAvgRange==='7d'?'active':''}" onclick="setStatsAvg('7d')">7d</button>
-          <button class="avg-pill ${statsAvgRange==='30d'?'active':''}" onclick="setStatsAvg('30d')">30d</button>
-          <button class="avg-pill ${statsAvgRange==='all'?'active':''}" onclick="setStatsAvg('all')">All</button>
-        </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+      <span style="font-size:10px;color:#907898;letter-spacing:0.8px;text-transform:uppercase;">Range:</span>
+      <input type="text" id="stats-from" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);applyStatsDateRange()" style="width:110px;padding:4px 8px;font-size:12px;"/>
+      <span style="color:#504060;font-size:12px;">→</span>
+      <input type="text" id="stats-to" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);applyStatsDateRange()" style="width:110px;padding:4px 8px;font-size:12px;"/>
+      <div style="display:flex;gap:5px;">
+        <button class="avg-pill ${statsAvgRange==='7d'?'active':''}" onclick="setStatsAvg('7d')">7d</button>
+        <button class="avg-pill ${statsAvgRange==='30d'?'active':''}" onclick="setStatsAvg('30d')">30d</button>
+        <button class="avg-pill ${statsAvgRange==='all'?'active':''}" onclick="setStatsAvg('all')">All</button>
       </div>
     </div>
     <div class="stats-hero">
@@ -2205,6 +2198,25 @@ function renderHistogram(validGains){
   const tt={backgroundColor:'rgba(10,13,20,0.96)',borderColor:'rgba(240,208,128,0.28)',borderWidth:1,titleColor:'#c8a84b',bodyColor:'#e8dfc8'};
   histInst=new Chart(ctx,{type:'bar',data:{labels:buckets.map(b=>b.label),datasets:[{label:'Days',data:counts,backgroundColor:buckets.map(b=>b.color),borderColor:buckets.map(b=>b.border),borderWidth:1,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:c=>`  ${c.parsed.y} day${c.parsed.y===1?'':'s'} (${Math.round(c.parsed.y/total*100)}%)`}}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#907898',font:{size:11,family:'Nunito'}}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#907898',font:{size:11,family:'Nunito'},stepSize:1,precision:0},beginAtZero:true}}}});
 }
+function fmtDateInput(el){
+  let v=el.value.replace(/\D/g,'');
+  if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2);
+  if(v.length>5) v=v.slice(0,5)+'/'+v.slice(5,9);
+  el.value=v;
+}
+function parseDMY(s){
+  // Accepts dd/mm/yyyy or yyyy-mm-dd
+  if(!s) return null;
+  if(s.includes('-')&&s.length===10){const[y,m,d]=s.split('-');return`${y}-${m}-${d}`;}
+  const p=s.split('/');
+  if(p.length===3&&p[2].length===4) return`${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`;
+  return null;
+}
+function getInpDate(){
+  const el=document.getElementById('inp-date');
+  if(!el) return null;
+  return parseDMY(el.value);
+}
 function applyStatsDateRange(){
   renderStats();
 }
@@ -2213,10 +2225,12 @@ function setStatsAvg(r){
   // Set date inputs based on pill selection
   if(entries.length){
     const last=entries[entries.length-1].date;
-    const from=r==='7d'?entries[Math.max(0,entries.length-8)].date:r==='30d'?entries[Math.max(0,entries.length-31)].date:entries[0].date;
-    const fi=document.getElementById('stats-from'),ti=document.getElementById('stats-to');
-    if(fi) fi.value=from;
-    if(ti) ti.value=last;
+    const fromISO2=r==='7d'?entries[Math.max(0,entries.length-8)].date:r==='30d'?entries[Math.max(0,entries.length-31)].date:entries[0].date;
+    const toISO2=last;
+    const toDMY=s=>{const[y,m,d]=s.split('-');return`${d}/${m}/${y}`;};
+    const fi2=document.getElementById('stats-from'),ti2=document.getElementById('stats-to');
+    if(fi2) fi2.value=toDMY(fromISO2);
+    if(ti2) ti2.value=toDMY(toISO2);
   }
   statsAvgRange=r;
   const gains=getDG(),a7=avg(gainsFrom(entries.slice(-8)).filter(g=>g!==null&&g>=0)),a30=avg(gainsFrom(entries.slice(-31)).filter(g=>g!==null&&g>=0)),aAll=avg(gains.filter(g=>g!==null&&g>=0));
