@@ -144,7 +144,7 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
 .qa-title-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
 .qa-wrap{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;}
 .qa-add-btn{background:linear-gradient(135deg,#c8a84b,#f0d080);border:none;border-radius:9px;color:#1a1200;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;padding:9px 18px;cursor:pointer;white-space:nowrap;flex-shrink:0;align-self:flex-end;transition:opacity 0.2s;}
-.qa-add-btn:hover{opacity:0.85;}.qa-add-btn:active{transform:scale(0.97);}
+.qa-add-btn:hover{opacity:0.85;}.qa-add-btn:active{animation:btn-pop 0.22s ease;}
 .qa-field{display:flex;flex-direction:column;gap:3px;flex:1;min-width:100px;}
 .qa-label{font-size:11px;color:#a090c0;letter-spacing:0.3px;}
 .qa-input{background:rgba(255,255,255,0.06);border:1px solid rgba(240,208,128,0.16);border-radius:8px;color:#e8dfc8;font-family:'Nunito',sans-serif;font-size:14px;padding:8px 11px;outline:none;transition:border-color 0.2s;width:100%;}
@@ -153,8 +153,11 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(0.7);}
 .qa-preview{font-size:12px;color:#c8a84b;min-height:17px;margin-top:5px;opacity:0;transition:opacity 0.2s;}
 .note-toggle{font-size:11px;color:#907880;cursor:pointer;margin-top:7px;display:inline-flex;align-items:center;gap:5px;user-select:none;}
 .note-toggle:hover{color:#c8a84b;}
+@keyframes slide-down{from{opacity:0;transform:translateY(-5px);}to{opacity:1;transform:translateY(0);}}
+@keyframes expand-in{from{opacity:0;transform:translateY(-4px);max-height:0;}to{opacity:1;transform:translateY(0);max-height:300px;}}
+@keyframes btn-pop{0%{transform:scale(1);}40%{transform:scale(0.93);}70%{transform:scale(1.04);}100%{transform:scale(1);}}
 .note-wrap{display:none;margin-top:7px;}
-.note-wrap.open{display:block;}
+.note-wrap.open{display:block;animation:slide-down 0.2s ease;}
 textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(240,208,128,0.16);border-radius:8px;color:#e8dfc8;font-family:'Nunito',sans-serif;font-size:13px;padding:8px 11px;outline:none;resize:vertical;min-height:56px;}
 .import-icon-btn{background:transparent;border:1px solid rgba(240,208,128,0.18);border-radius:7px;color:#907880;font-family:'Nunito',sans-serif;font-size:11px;padding:5px 9px;cursor:pointer;display:flex;align-items:center;gap:4px;transition:all 0.2s;}
 .import-icon-btn:hover{color:#c8a84b;border-color:rgba(240,208,128,0.35);}
@@ -165,7 +168,7 @@ textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid r
 .import-mode-note b{color:#f0d080;}
 .err{color:#f08080;font-size:12px;margin-top:5px;display:none;}
 .import-panel{display:none;margin-top:12px;padding-top:12px;border-top:1px solid rgba(240,208,128,0.08);}
-.import-panel.open{display:block;}
+.import-panel.open{display:block;animation:slide-down 0.2s ease;}
 .import-instructions{font-size:12px;color:#a090c0;line-height:1.6;margin-bottom:9px;}
 .import-instructions b{color:#e8dfc8;}
 .paste-area{width:100%;min-height:70px;background:rgba(255,255,255,0.03);border:1px dashed rgba(240,208,128,0.25);border-radius:8px;color:#e8dfc8;font-family:'Nunito',sans-serif;font-size:13px;padding:9px 11px;outline:none;resize:vertical;}
@@ -213,7 +216,7 @@ textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid r
 .log-row:hover{background:rgba(255,255,255,0.025);}
 .log-row.expanded{background:rgba(240,208,128,0.04);border-bottom:none;}
 .log-expand{overflow:hidden;}
-.log-expand-inner{padding:11px 9px;border-bottom:1px solid rgba(255,255,255,0.035);}
+.log-expand-inner{padding:11px 9px;border-bottom:1px solid rgba(255,255,255,0.035);animation:expand-in 0.22s ease;}
 .expand-fields{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:5px;}
 .ef-label{font-size:10px;color:#a090c0;margin-bottom:2px;}
 .ef-input{background:rgba(255,255,255,0.06);border:1px solid rgba(240,208,128,0.18);border-radius:7px;color:#e8dfc8;font-family:'Nunito',sans-serif;font-size:13px;padding:6px 9px;outline:none;width:100%;}
@@ -689,7 +692,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v212</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v213</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1521,7 +1524,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v212';
+const APP_VERSION = 'v213';
 
 let gdToken = null;
 let gdTokenClient = null;
