@@ -558,9 +558,10 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .chain-col-hdr{display:flex;align-items:center;gap:8px;padding:0 2px 8px;border-bottom:1px solid rgba(240,208,128,0.09);margin-bottom:2px;}
 .chain-col-icon{width:18px;height:18px;fill:none;stroke:#c8a84b;stroke-width:1.8;flex-shrink:0;}
 .chain-col-title{font-family:'Cinzel',serif;font-size:12px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;}
-@keyframes card-in{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+@keyframes card-in{from{opacity:0;transform:translateY(-12px);}to{opacity:1;transform:translateY(0);}}
+.chain-card-entering{animation:card-in 0.32s ease;}
 @keyframes card-out{to{opacity:0;transform:translateY(-6px) scale(0.97);max-height:0;margin:0;padding:0;overflow:hidden;}}
-.chain-card{animation:card-in 0.22s ease;position:relative;margin-top:6px;background:rgba(255,255,255,0.065);border:1px solid rgba(240,208,128,0.18);border-radius:12px;overflow:hidden;transition:transform 0.18s ease,box-shadow 0.2s ease,border-color 0.18s ease;background-image:linear-gradient(160deg,rgba(255,255,255,0.03) 0%,transparent 60%);}
+.chain-card{position:relative;margin-top:6px;background:rgba(255,255,255,0.065);border:1px solid rgba(240,208,128,0.18);border-radius:12px;overflow:hidden;transition:transform 0.18s ease,box-shadow 0.2s ease,border-color 0.18s ease;background-image:linear-gradient(160deg,rgba(255,255,255,0.03) 0%,transparent 60%);}
 .chain-card:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,0.38),0 0 0 1.5px var(--el-glow,rgba(240,208,128,0.35)),0 0 20px var(--el-glow-soft,rgba(240,208,128,0.07));border-color:var(--el-glow,rgba(240,208,128,0.4));}
 .chain-card.status-complete{background:rgba(240,208,128,0.09);border-color:rgba(240,208,128,0.3);}
 .chain-card.status-complete .chain-card-body{opacity:0.85;}
@@ -675,7 +676,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v187</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v188</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1503,7 +1504,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v187';
+const APP_VERSION = 'v188';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2672,7 +2673,7 @@ function getCharVirtuals(allBanners){
 
 function animRemove(type,key){
   const el=document.querySelector(`.chain-card[data-key="${key.replace(/"/g,'&quot;')}"]`);
-  if(el){el.style.animation='card-out 0.25s ease forwards';setTimeout(()=>removeBannerFromChain(type,key),240);}
+  if(el){el.style.animation='card-out 0.32s ease forwards';setTimeout(()=>removeBannerFromChain(type,key),310);}
   else removeBannerFromChain(type,key);
 }
 
@@ -2708,10 +2709,15 @@ function addBannerToChain(type,key){
   const order=getChainOrder(type);
   if(order.includes(key)) return;
   order.push(key);
-  // init state
   getChainState(type,key);
   chainPickerOpen=null;
-  save();renderPlannerChain();
+  save();
+  renderPlannerChain();
+  // Only animate the newly added card
+  requestAnimationFrame(()=>{
+    const el=document.querySelector(`.chain-card[data-key="${key.replace(/"/g,'&quot;')}"]`);
+    if(el) el.classList.add('chain-card-entering');
+  });
 }
 function removeBannerFromChain(type,key){
   ensureChainOrders();
@@ -2752,7 +2758,7 @@ function setChainGuarantee(type,key,checked){
 function setChainWeaponTarget(key,idx){
   const state=getChainState('weapon',key);
   state.targetWeaponIdx=parseInt(idx)||0;
-  save();
+  save();renderPlannerChain();
 }
 function toggleChainCopy(type,key,idx){
   const state=getChainState(type,key);
@@ -2858,7 +2864,7 @@ function renderChainCard(b,type){
     const elSrc=`${BASE_URL}images/elements/element_${elName}.svg`;
     iconHtml=`<img src="${elSrc}" width="22" height="22" onerror="this.style.display='none';this.parentNode.innerHTML='${ELEM_ICON[el]||'✦'}'" alt="${el}">`;
   } else {
-    const wt=(Array.isArray(b.weaponTypes)?b.weaponTypes[0]:b.weaponType)||'sword';
+    const wt=(Array.isArray(b.weaponTypes)?b.weaponTypes[state.targetWeaponIdx||0]:b.weaponType)||'sword';
     const wtSafe=(wt==='unknown'||!wt)?'sword':wt;
     const wtSrc=`${BASE_URL}images/weapons/${wtSafe}.png`;
     iconHtml=`<img src="${wtSrc}" width="22" height="22" onerror="this.style.display='none';this.parentNode.innerHTML='⚔️'" alt="${wtSafe}">`;
@@ -3094,7 +3100,8 @@ function renderPlannerChain(){
   if(row){
     const cHtml=buildSummaryHtml('character',charB);
     const wHtml=buildSummaryHtml('weapon',weapB);
-    row.innerHTML=cHtml+wHtml;
+    // Always render both columns so weapon stays on the right
+    row.innerHTML=`<div>${cHtml}</div><div>${wHtml}</div>`;
     row.style.display=(cHtml||wHtml)?'grid':'none';
   }
   if(combined) combined.innerHTML=buildCombinedHtml(charB,weapB);
