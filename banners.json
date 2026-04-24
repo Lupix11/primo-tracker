@@ -103,7 +103,13 @@
     ],
     "startDate": "2026-04-28",
     "endDate": "2026-05-19",
-    "status": "soon"
+    "status": "soon",
+    "images": {
+      "Chronicled Wish": {
+        "desktop": "images/chronicled-wish/fontaine-chronicled-wish-desktop.jpg",
+        "mobile": "images/chronicled-wish/fontaine-chronicled-wish-mobile.jpg"
+      }
+    }
   },
   {
     "phase": "Phase 1",
