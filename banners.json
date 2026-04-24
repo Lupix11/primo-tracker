@@ -96,50 +96,10 @@
     "version": "6.5",
     "type": "chronicled",
     "characters": [
-      "Emilie",
-      "Chlorinde",
-      "Navia",
-      "Lyney",
-      "Sigewinne"
+      "Fontaine Chronicled Wish"
     ],
     "elements": [
-      "Dendro",
-      "Electro",
-      "Geo",
-      "Pyro",
       "Hydro"
-    ],
-    "pool": [
-      {
-        "name": "Emilie",
-        "element": "Dendro",
-        "weapon": "Lumidouce Elegy",
-        "weaponType": "polearm"
-      },
-      {
-        "name": "Chlorinde",
-        "element": "Electro",
-        "weapon": "Absolution",
-        "weaponType": "sword"
-      },
-      {
-        "name": "Navia",
-        "element": "Geo",
-        "weapon": "Verdict",
-        "weaponType": "claymore"
-      },
-      {
-        "name": "Lyney",
-        "element": "Pyro",
-        "weapon": "The First Great Magic",
-        "weaponType": "bow"
-      },
-      {
-        "name": "Sigewinne",
-        "element": "Hydro",
-        "weapon": "Silvershower Heartstrings",
-        "weaponType": "bow"
-      }
     ],
     "startDate": "2026-04-28",
     "endDate": "2026-05-19",
