@@ -372,13 +372,13 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .msg{font-size:12px;color:#907898;padding:16px;text-align:center;}
 
 /* Planner redesign */
-.mobile-only{display:none;}.ptl-shell{margin-top:4px;border:1px solid rgba(240,208,128,0.1);border-radius:10px;background:rgba(4,6,12,0.7);overflow:hidden;}
+.mobile-only{display:none;}.ptl-shell{margin-top:4px;border:none;border-radius:0;background:transparent;overflow:hidden;}
 .ptl-scroll{overflow-x:auto;overflow-y:hidden;padding-bottom:10px;scrollbar-gutter:stable both-edges;scroll-behavior:auto;}
 .ptl-scroll::-webkit-scrollbar{height:8px;}
 .ptl-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,0.03);border-radius:8px;}
 .ptl-scroll::-webkit-scrollbar-thumb{background:rgba(240,208,128,0.28);border-radius:8px;}
 .ptl-canvas{min-width:1120px;}
-.ptl-head{display:grid;grid-template-columns:120px 1fr;border-bottom:1px solid rgba(240,208,128,0.08);background:linear-gradient(90deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));}
+.ptl-head{display:grid;grid-template-columns:120px 1fr;border-bottom:1px solid rgba(240,208,128,0.08);background:transparent;}
 .ptl-head-left{padding:10px 10px 8px;border-right:1px solid rgba(240,208,128,0.06);display:flex;align-items:center;justify-content:center;}
 .ptl-eyebrow{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#c8a84b;font-weight:700;text-align:center;padding-top:4px;}
 .ptl-title{font-size:12px;color:#e8dfc8;}
@@ -389,9 +389,9 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-days{height:24px;}
 .ptl-day{position:absolute;top:2px;bottom:0;border-left:1px solid rgba(255,255,255,0.06);font-size:10px;color:#7f7593;padding-left:4px;}
 .ptl-day.today{color:#f0d080;border-left-color:rgba(240,208,128,0.55);}
-.ptl-today-line{position:absolute;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent 0%,rgba(240,208,128,0.5) 15%,rgba(240,208,128,0.95) 40%,rgba(240,208,128,0.95) 60%,rgba(240,208,128,0.5) 85%,transparent 100%);box-shadow:0 0 6px rgba(240,208,128,0.3);z-index:3;}
-.ptl-today-star{position:absolute;top:-10px;transform:translateX(-50%);font-size:14px;z-index:5;line-height:1;filter:drop-shadow(0 0 4px rgba(240,208,128,0.8));}
-.ptl-today-circle{position:absolute;bottom:-8px;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:#f0d080;box-shadow:0 0 6px rgba(240,208,128,0.7);z-index:5;}
+.ptl-today-line{position:absolute;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent 0%,rgba(240,208,128,0.4) 10%,rgba(240,208,128,0.92) 35%,rgba(240,208,128,0.92) 65%,rgba(240,208,128,0.4) 90%,transparent 100%);box-shadow:0 0 5px rgba(240,208,128,0.25);z-index:10;pointer-events:none;}
+.ptl-today-line::before{content:'✦';position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:13px;color:#f0d080;filter:drop-shadow(0 0 5px rgba(240,208,128,0.9));line-height:1;user-select:none;}
+.ptl-today-line::after{content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:9px;height:9px;border-radius:50%;background:#f0d080;box-shadow:0 0 7px rgba(240,208,128,0.8);}
 .ptl-today-pill{position:absolute;top:6px;transform:translateX(-50%);font-size:10px;color:#0e1219;background:#f0d080;padding:2px 7px;border-radius:12px;z-index:4;font-weight:700;}
 .ptl-row{display:grid;grid-template-columns:120px 1fr;min-height:36px;border-top:1px solid rgba(255,255,255,0.03);}
 .ptl-row:first-child{border-top:none;}
@@ -414,7 +414,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-track-sub{font-size:10px;color:#7f7593;line-height:1.3;}
 .ptl-row-track{position:relative;min-height:32px;}
 .ptl-gridline{position:absolute;top:0;bottom:0;border-left:1px solid rgba(255,255,255,0.045);}
-.ptl-bar{height:36px;border-radius:999px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;font-size:11px;color:#10131c;cursor:pointer;z-index:2;transition:transform 0.12s ease, box-shadow 0.16s ease, outline-color 0.16s ease, opacity 0.16s ease;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12);border:none;overflow:hidden;}
+.ptl-bar{height:36px;border-radius:999px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;font-size:11px;color:#10131c;cursor:pointer;z-index:2;position:relative;transition:transform 0.12s ease, box-shadow 0.16s ease, outline-color 0.16s ease, opacity 0.16s ease;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12);border:none;overflow:hidden;}
 .ptl-bar:hover{transform:translateY(-1px);}
 .ptl-bar.live{background:linear-gradient(90deg,#bcebd0,#80f0a0);animation:bar-live-pulse 2.4s ease-in-out infinite;}
 @keyframes bar-live-pulse{0%,100%{box-shadow:0 0 0 0 rgba(128,240,160,0);}50%{box-shadow:0 0 10px 2px rgba(128,240,160,0.35);}}
@@ -706,7 +706,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v220</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v221</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -833,7 +833,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 
   <!-- PLANNER -->
   <section id="page-timeline" class="page">
-    <div class="card">
+    <div style="background:transparent;border:none;padding:0;">
       <div class="tl-header">
         <div class="card-title">Banner Timeline</div>
 <button class="fetch-btn" id="fetch-btn" onclick="fetchBanners()">
@@ -1546,7 +1546,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v220';
+const APP_VERSION = 'v221';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2598,7 +2598,7 @@ function renderTimeline(banners){
       </div>
       <div class="ptl-row-track" style="width:${timelineWidth}px;min-height:${track.height}px;">
         ${gridLines}
-        <div class="ptl-today-line" style="left:${todayX}px;"><div class="ptl-today-star" style="left:0;">✦</div><div class="ptl-today-circle" style="left:0;"></div></div>
+        <div class="ptl-today-line" style="left:${todayX}px;"></div>
         ${track.bars}
       </div>
     </div>`;
@@ -2615,7 +2615,7 @@ function renderTimeline(banners){
           </div>
           <div class="ptl-head-track" style="width:${timelineWidth}px;">
             <div class="ptl-months">${months.join('')}</div>
-            <div class="ptl-days">${days.join('')}<div class="ptl-today-line" style="left:${todayX}px;"><div class="ptl-today-star" style="left:0;">✦</div><div class="ptl-today-circle" style="left:0;"></div></div><div class="ptl-today-pill" style="left:${todayX}px;">Today</div></div>
+            <div class="ptl-days">${days.join('')}<div class="ptl-today-line" style="left:${todayX}px;"></div><div class="ptl-today-pill" style="left:${todayX}px;">Today</div></div>
           </div>
         </div>
         ${rows}
