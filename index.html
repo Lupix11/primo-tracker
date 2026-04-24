@@ -372,7 +372,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .msg{font-size:12px;color:#907898;padding:16px;text-align:center;}
 
 /* Planner redesign */
-.mobile-only{display:none;}.ptl-shell{margin-top:4px;border:none;border-radius:0;background:transparent;overflow:hidden;}
+.mobile-only{display:none;}.ptl-shell{margin-top:4px;border:none;border-radius:0;background:transparent;overflow:hidden;}.page-timeline-wrap{background:transparent!important;border:none!important;}.page-timeline-wrap::before{display:none!important;}
 .ptl-scroll{overflow-x:auto;overflow-y:hidden;padding-bottom:10px;scrollbar-gutter:stable both-edges;scroll-behavior:auto;}
 .ptl-scroll::-webkit-scrollbar{height:8px;}
 .ptl-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,0.03);border-radius:8px;}
@@ -389,7 +389,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-days{height:24px;}
 .ptl-day{position:absolute;top:2px;bottom:0;border-left:1px solid rgba(255,255,255,0.06);font-size:10px;color:#7f7593;padding-left:4px;}
 .ptl-day.today{color:#f0d080;border-left-color:rgba(240,208,128,0.55);}
-.ptl-today-line{position:absolute;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent 0%,rgba(240,208,128,0.4) 10%,rgba(240,208,128,0.92) 35%,rgba(240,208,128,0.92) 65%,rgba(240,208,128,0.4) 90%,transparent 100%);box-shadow:0 0 5px rgba(240,208,128,0.25);z-index:10;pointer-events:none;}
+.ptl-today-line{position:absolute;top:0;bottom:0;width:2px;background:rgba(240,200,80,0.85);box-shadow:0 0 6px rgba(240,208,128,0.4);z-index:10;pointer-events:none;}
 .ptl-today-line::before{content:'✦';position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:13px;color:#f0d080;filter:drop-shadow(0 0 5px rgba(240,208,128,0.9));line-height:1;user-select:none;}
 .ptl-today-line::after{content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:9px;height:9px;border-radius:50%;background:#f0d080;box-shadow:0 0 7px rgba(240,208,128,0.8);}
 .ptl-today-dot{position:absolute;width:8px;height:8px;border-radius:50%;background:#f0d080;box-shadow:0 0 6px rgba(240,208,128,0.8);transform:translateX(-50%);z-index:11;pointer-events:none;}
@@ -418,9 +418,9 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-bar{height:36px;border-radius:999px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;font-size:11px;color:#10131c;cursor:pointer;z-index:2;position:relative;transition:transform 0.12s ease, box-shadow 0.16s ease, outline-color 0.16s ease, opacity 0.16s ease;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12);border:none;overflow:hidden;}
 .ptl-bar:hover{transform:translateY(-1px);}
 .ptl-bar.live{background:linear-gradient(90deg,#bcebd0,#80f0a0);animation:bar-live-pulse 2.4s ease-in-out infinite;}
-@keyframes bar-live-pulse{0%,100%{box-shadow:0 0 6px rgba(128,240,160,0.4),0 0 0 1.5px rgba(128,240,160,0.5);}50%{box-shadow:0 0 14px 3px rgba(128,240,160,0.6),0 0 0 1.5px rgba(128,240,160,0.8);}}
+@keyframes bar-live-pulse{0%,100%{box-shadow:0 0 4px rgba(128,240,160,0.2),0 0 0 1px rgba(128,240,160,0.35);}50%{box-shadow:0 0 8px rgba(128,240,160,0.35),0 0 0 1px rgba(128,240,160,0.55);}}
 .ptl-bar.soon{background:linear-gradient(90deg,#f3df9e,#f0d080);animation:bar-soon-pulse 2.8s ease-in-out infinite;}
-@keyframes bar-soon-pulse{0%,100%{box-shadow:0 0 6px rgba(240,208,128,0.35),0 0 0 1.5px rgba(240,208,128,0.45);}50%{box-shadow:0 0 14px 3px rgba(240,208,128,0.55),0 0 0 1.5px rgba(240,208,128,0.7);}}
+@keyframes bar-soon-pulse{0%,100%{box-shadow:0 0 4px rgba(240,208,128,0.18),0 0 0 1px rgba(240,208,128,0.3);}50%{box-shadow:0 0 8px rgba(240,208,128,0.3),0 0 0 1px rgba(240,208,128,0.5);}}
 .ptl-bar.spec{background:linear-gradient(90deg,#c1a5e2,#a080c0);color:#14111b;}
 .ptl-bar.weapon.live,.ptl-bar.weapon.soon{background:linear-gradient(90deg,#f6d493,#f0b050);}
 .ptl-bar.weapon.spec{background:linear-gradient(90deg,#c4abd8,#9f86c0);}
@@ -707,7 +707,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v222</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v223</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -834,7 +834,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 
   <!-- PLANNER -->
   <section id="page-timeline" class="page">
-    <div style="background:transparent;border:none;padding:0;box-shadow:none;">
+    <div class="page-timeline-wrap">
       <div class="tl-header">
         <div class="card-title">Banner Timeline</div>
 <button class="fetch-btn" id="fetch-btn" onclick="fetchBanners()">
@@ -1547,7 +1547,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v222';
+const APP_VERSION = 'v223';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2567,10 +2567,10 @@ function renderTimeline(banners){
       const imgHtml = imgUrl && barWidth > 120
         ? `<img class="ptl-bar-img" src="${imgUrl}" alt="" loading="lazy" onerror="this.style.display='none';"/>`
         : '';
-      const todayDot=isLive?`<div class="ptl-today-dot" style="left:${todayX}px;top:${top+barHeight/2-4}px;"></div>`:''; return `${todayDot}<div style="position:absolute;left:${startOffset+3}px;top:${top}px;display:flex;align-items:center;z-index:${zIdx};">
+      const todayDot=isLive?`<div class="ptl-today-dot" style="left:${todayX}px;top:${top+barHeight/2-4}px;"></div>`:'';const statusDot=isLive?'<span style="width:8px;height:8px;border-radius:50%;background:#80f0a0;box-shadow:0 0 5px #80f0a0;flex-shrink:0;margin-right:5px;display:inline-block;animation:bar-live-pulse 2.4s ease-in-out infinite;"></span>':(!isPast&&!isSpec?'<span style="width:8px;height:8px;border-radius:50%;background:#f0d080;box-shadow:0 0 5px #f0d080;flex-shrink:0;margin-right:5px;display:inline-block;animation:bar-soon-pulse 2.8s ease-in-out infinite;"></span>':'<span style="width:8px;flex-shrink:0;margin-right:5px;display:inline-block;"></span>'); return `${todayDot}<div style="position:absolute;left:${startOffset+3}px;top:${top}px;display:flex;align-items:center;z-index:${zIdx};">${statusDot}
         <button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="width:${barWidth}px;height:${barHeight}px;background:linear-gradient(90deg,${palette.c1},${palette.c2});color:${palette.fg};position:relative;" data-bidx="${b._index}" onmousemove="moveTip(event)" onmouseenter="showTLTooltip(event,'${b.displayName.replace(/'/g,"\\'")}','${b.startDate}','${b.endDate}')" onmouseleave="hideTLTooltip()">
           ${imgHtml}
-          ${isLive?'<span style="width:7px;height:7px;border-radius:50%;background:#80f0a0;box-shadow:0 0 5px #80f0a0;flex-shrink:0;margin-right:4px;display:inline-block;vertical-align:middle;animation:bar-live-pulse 2.4s ease-in-out infinite;"></span>':(!isPast&&!isSpec?'<span style="width:7px;height:7px;border-radius:50%;background:#f0d080;box-shadow:0 0 5px #f0d080;flex-shrink:0;margin-right:4px;display:inline-block;vertical-align:middle;animation:bar-soon-pulse 2.8s ease-in-out infinite;"></span>':'')} <span class="ptl-bar-label">${b.displayName}</span>
+          <span class="ptl-bar-label">${b.displayName}</span>
         </button>
         <span style="margin-left:6px;font-size:10px;font-weight:600;color:#c8b88a;white-space:nowrap;background:rgba(255,255,255,0.07);border:1px solid rgba(240,208,128,0.15);border-radius:999px;padding:1px 8px;">${isSel?'✓ ':''}${shortStatus}</span>
       </div>`;
