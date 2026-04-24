@@ -679,7 +679,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v194</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v195</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1507,7 +1507,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v194';
+const APP_VERSION = 'v195';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2660,6 +2660,7 @@ let chainPickerOpen=null;
 
 function getBannerKey(b){
   if(b._virtual) return b._charKey;
+  if(b.type==='chronicled') return `${b.version}|${b.phase}|chronicled`;
   if(b.type==='character'){
     const char=Array.isArray(b.characters)?b.characters[0]:b.characters;
     return `${b.version}|${b.phase}|character|${char}`;
@@ -2722,7 +2723,9 @@ function getChainState(type,key){
   if(!store[key]){
     store[key]=type==='character'
       ?{goal:1,pity:0,guaranteed:false,obtained:0}
-      :{goal:1,pity:0,epitomized:0,obtained:0,targetWeaponIdx:0};
+      :(key.endsWith('|chronicled')
+        ?{goal:1,pity:0,fatePoint:0,obtained:0,targetIdx:0}
+        :{goal:1,pity:0,epitomized:0,obtained:0,targetWeaponIdx:0});
   }
   return store[key];
 }
@@ -2778,6 +2781,18 @@ function setChainGuarantee(type,key,checked){
   else state.epitomized=checked?1:0;
   save();renderChainSummaryOnly();
 }
+function setChronTarget(type,key,idx){
+  const state=getChainState(type,key);
+  state.targetIdx=parseInt(idx)||0;
+  state.goal=1; // reset goal when target changes
+  state.obtained=0;
+  save();renderPlannerChain();
+}
+function setChronFatePoint(type,key,checked){
+  const state=getChainState(type,key);
+  state.fatePoint=checked?1:0;
+  save();renderChainSummaryOnly();
+}
 function setChainWeaponTarget(key,idx){
   const state=getChainState('weapon',key);
   state.targetWeaponIdx=parseInt(idx)||0;
@@ -2807,7 +2822,10 @@ function calcChainSummary(type,orderedBanners){
     if(status==='complete'||status==='missed') return;
     const remaining=state.goal-state.obtained;
     if(remaining<=0) return;
-    if(type==='character'){
+    if(b.type==='chronicled'){
+      const {min,max}=calcWeapMinMax(remaining,state.pity,state.fatePoint||0);
+      totalMin+=min;totalMax+=max;
+    } else if(type==='character'){
       const {min,max}=calcCharMinMax(remaining,state.pity,state.guaranteed);
       totalMin+=min;totalMax+=max;
     } else {
@@ -2879,7 +2897,72 @@ function renderChainCard(b,type){
     if(type==='character'){const r=calcCharMinMax(remaining,state.pity,state.guaranteed);minStr=r.min;maxStr=r.max;}
     else{const r=calcWeapMinMax(remaining,state.pity,state.epitomized||0);minStr=r.min;maxStr=r.max;}
   } else {minStr='0';maxStr='0';}
-  // Icon: element SVG for character, weapon PNG for weapon
+  // ── CHRONICLED WISH special card ──
+  if(b.type==='chronicled'){
+    const pool=b.pool||[];
+    const safeKey=key.replace(/'/g,"\\'");
+    const targetIdx=state.targetIdx||0;
+    const target=pool[targetIdx]||pool[0]||{name:'?',element:'Hydro',weaponType:'sword',isWeapon:false};
+    const el=target.element||'Hydro';
+    const palette=getElementPalette(el,'chronicled',b.status==='speculative'?'speculative':'normal');
+    const isSpec=b.status==='speculative';
+    const status=getBannerStatusStr(b,state);
+    const chipMap={live:'<span class="chain-status-chip chip-live">Live Now</span>',planning:'<span class="chain-status-chip chip-planning">● Planning</span>',missed:'<span class="chain-status-chip chip-missed">✕ Missed</span>',complete:'<span class="chain-status-chip chip-complete">✓ Complete</span>'};
+    const chipHtml=chipMap[status]||chipMap.planning;
+    const goals=target.isWeapon?['R1','R2','R3','R4','R5']:['C0','C1','C2','C3','C4','C5','C6'];
+    const goalOpts=goals.map((l,i)=>`<option value="${i+1}"${state.goal===i+1?' selected':''}>${l}</option>`).join('');
+    const BASE_URL='https://lupix11.github.io/primo-tracker/';
+    let iconHtml;
+    if(target.isWeapon){
+      const wtSrc=`${BASE_URL}images/weapons/${target.weaponType||'sword'}.png`;
+      iconHtml=`<img src="${wtSrc}" width="22" height="22" onerror="this.style.display='none'" alt="${target.weaponType}">`;
+    } else {
+      const elSrc=`${BASE_URL}images/elements/element_${el.toLowerCase()}.svg`;
+      iconHtml=`<img src="${elSrc}" width="22" height="22" onerror="this.style.display='none'" alt="${el}">`;
+    }
+    const pityMax=80;
+    const pityPct=Math.min(100,Math.round((state.pity/pityMax)*100));
+    const remaining=Math.max(0,state.goal-state.obtained);
+    let minStr='0',maxStr='0';
+    if(remaining>0){const r=calcWeapMinMax(remaining,state.pity,state.fatePoint||0);minStr=r.min;maxStr=r.max;}
+    const squares=Array.from({length:state.goal},(_,i)=>
+      `<div class="chain-copy-sq${i<state.obtained?' filled':''}" onclick="toggleChainCopy('${type}','${safeKey}',${i});this.classList.add('pop');setTimeout(()=>this.classList.remove('pop'),250);" title="Copy ${i+1}"></div>`
+    ).join('');
+    const poolOpts=pool.map((p,i)=>`<option value="${i}"${targetIdx===i?' selected':''}>${p.isWeapon?'⚔ ':'✦ '}${p.name}</option>`).join('');
+    return `<div class="chain-card status-${status}" data-key="${key}" style="--el-glow:${palette.c2}88;--el-glow-soft:${palette.c2}22;">
+  <div class="chain-accent" style="background:linear-gradient(180deg,#9b72cf,#6a4fa3);"></div>
+  <div class="chain-card-body">
+    <div class="chain-card-top">
+      <div class="chain-card-info">
+        <div class="chain-card-icon" style="background:rgba(155,114,207,0.2);border:1.5px solid rgba(155,114,207,0.5);">${iconHtml}</div>
+        <div class="chain-card-text">
+          <div class="chain-card-name">${b.version} Chronicled Wish${isSpec?' · speculative':''}</div>
+          <div class="chain-card-sub">Version ${b.version} · Chronicled Wish · 80 pity · 1 fate point</div>
+        </div>
+      </div>
+      <div class="chain-card-top-right">${chipHtml}<button class="chain-card-remove" onclick="animRemove('${type}','${safeKey}')" title="Remove">✕</button></div>
+    </div>
+    <div class="chain-field" style="margin-bottom:8px;">
+      <div class="chain-field-label">Target</div>
+      <select class="chain-select" onchange="setChronTarget('${type}','${safeKey}',this.value)">${poolOpts}</select>
+    </div>
+    <div class="chain-card-form">
+      <div class="chain-field"><div class="chain-field-label">Goal</div><select class="chain-select" onchange="setChainGoal('${type}','${safeKey}',this.value)">${goalOpts}</select></div>
+      <div class="chain-field"><div class="chain-field-label">Pity</div><input type="number" class="chain-num-inp" value="${state.pity}" min="0" max="79" oninput="setChainPity('${type}','${safeKey}',this.value)" placeholder="0"/></div>
+      <div class="chain-field"><div class="chain-field-label">Fate Point</div><div class="chain-toggle-wrap"><input type="checkbox" class="chain-tog"${(state.fatePoint||0)>=1?' checked':''} onchange="setChronFatePoint('${type}','${safeKey}',this.checked)"/></div></div>
+      <div class="chain-field"><div class="chain-field-label">Copy (5★)</div><div class="chain-copies-wrap">${squares}</div></div>
+    </div>
+    <div style="display:flex;gap:16px;margin-top:8px;padding-top:7px;border-top:1px solid rgba(255,255,255,0.05);">
+      <span style="font-size:10px;color:#8070a0;">Min <span style="color:#80f0a0;font-weight:700;">${minStr}</span>${FATE_ICO}</span>
+      <span style="font-size:10px;color:#8070a0;">Max <span style="color:#f09060;font-weight:700;">${maxStr}</span>${FATE_ICO}</span>
+    </div>
+    <div class="chain-pity-bar-wrap">
+      <div style="font-size:9px;color:#5d5270;margin-bottom:3px;">Pity ${state.pity}/${pityMax}</div>
+      <div class="chain-pity-bar-track"><div class="chain-pity-bar-fill" style="width:${pityPct}%;background:linear-gradient(90deg,#9b72cf,#c8a4f0);"></div></div>
+    </div>
+  </div>
+</div>`;
+  }
   const BASE_URL='https://lupix11.github.io/primo-tracker/';
   let iconHtml;
   if(type==='character'){
@@ -2932,16 +3015,19 @@ function renderChainCard(b,type){
 
 function renderChainPickerDropdown(type,allBanners){
   const order=getChainOrder(type);
-  const pool=type==='character'?getCharVirtuals(allBanners):allBanners.filter(b=>b.type==='weapon');
+  const chronicled=allBanners.filter(b=>b.type==='chronicled');
+  const pool=type==='character'
+    ?[...getCharVirtuals(allBanners),...chronicled]
+    :[...allBanners.filter(b=>b.type==='weapon'),...chronicled];
   const available=pool.filter(b=>!order.includes(getBannerKey(b))).sort((a,b)=>new Date(a.startDate)-new Date(b.startDate));
   if(!available.length) return `<div class="chain-picker-dropdown"><div class="chain-picker-empty">All banners already added.</div></div>`;
   const items=available.map(b=>{
     const key=getBannerKey(b);
-    const el=(Array.isArray(b.elements)?b.elements[0]:b.elements)||'Unknown';
-    const pal=getElementPalette(el,type,b.status==='speculative'?'speculative':'normal');
-    const names=(Array.isArray(b.characters)?b.characters:[b.characters]).join(' · ');
+    const el=b.type==='chronicled'?'Hydro':(Array.isArray(b.elements)?b.elements[0]:b.elements)||'Unknown';
+    const pal=getElementPalette(el,b.type,b.status==='speculative'?'speculative':'normal');
+    const names=b.type==='chronicled'?`${b.version} Chronicled Wish`:(Array.isArray(b.characters)?b.characters:[b.characters]).join(' · ');
     const safeKey=key.replace(/'/g,"\\'");
-    const statusDot=b.status==='live'?'#80f0a0':b.status==='speculative'?'#a080c0':'#f0d080';
+    const statusDot=b.type==='chronicled'?'#9b72cf':b.status==='live'?'#80f0a0':b.status==='speculative'?'#a080c0':'#f0d080';
     return `<div class="chain-picker-item" onclick="addBannerToChain('${type}','${safeKey}')">
       <div class="chain-picker-dot" style="background:${statusDot};"></div>
       <span class="chain-picker-name">${b.version} ${b.phase} · ${names}</span>
@@ -3057,11 +3143,8 @@ function renderChainSummaryOnly(){
   ensureChainOrders();
   const allBanners=getPlannerBanners();
   const virtuals=getCharVirtuals(allBanners);
-  const resolve=(type)=>{
-    const order=getChainOrder(type);
-    if(type==='character') return order.map(k=>virtuals.find(v=>getBannerKey(v)===k)).filter(Boolean);
-    return order.map(k=>allBanners.find(b=>getBannerKey(b)===k)).filter(Boolean);
-  };
+  const resolveKey=(k)=>virtuals.find(v=>getBannerKey(v)===k)||allBanners.find(b=>getBannerKey(b)===k)||null;
+  const resolve=(type)=>getChainOrder(type).map(resolveKey).filter(Boolean);
   const charB=resolve('character');
   const weapB=resolve('weapon');
   const row=document.getElementById('chain-summaries-row');
@@ -3074,11 +3157,8 @@ function renderPlannerChain(){
   ensureChainOrders();
   const allBanners=getPlannerBanners();
   const virtuals=getCharVirtuals(allBanners);
-  const resolve=(type)=>{
-    const order=getChainOrder(type);
-    if(type==='character') return order.map(k=>virtuals.find(v=>getBannerKey(v)===k)).filter(Boolean);
-    return order.map(k=>allBanners.find(b=>getBannerKey(b)===k)).filter(Boolean);
-  };
+  const resolveKey=(k)=>virtuals.find(v=>getBannerKey(v)===k)||allBanners.find(b=>getBannerKey(b)===k)||null;
+  const resolve=(type)=>getChainOrder(type).map(resolveKey).filter(Boolean);
   const cc=document.getElementById('chain-char-cards');
   const wc=document.getElementById('chain-weap-cards');
   if(!cc||!wc) return;
