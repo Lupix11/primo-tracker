@@ -618,8 +618,10 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .chain-comb-lbl{font-size:9px;color:#907898;letter-spacing:0.8px;text-transform:uppercase;}
 .chain-comb-sub{font-size:9px;color:#5d5270;margin-top:2px;}
 .chain-comb-divider{width:1px;background:rgba(255,255,255,0.05);margin:0 4px;}
-/* Card image */
-.chain-card-img{position:absolute;top:0;right:0;bottom:0;width:55%;pointer-events:none;background-size:cover;background-position:center top;mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,0.5) 35%,rgba(0,0,0,0.85) 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,0.5) 35%,rgba(0,0,0,0.85) 100%);border-radius:0 12px 12px 0;}
+/* Card icon - real element/weapon image */
+.chain-card-icon{width:38px;height:38px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;overflow:hidden;}
+.chain-card-icon img{width:22px;height:22px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.6));}
+/* Remove card-img - no more bleeding artwork */
 .chain-add-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:10px;border-radius:10px;border:1.5px dashed rgba(240,208,128,0.2);background:transparent;color:#605870;font-family:'Nunito',sans-serif;font-size:12px;cursor:pointer;transition:all 0.18s;}
 .chain-add-btn:hover{border-color:rgba(240,208,128,0.45);color:#c8a84b;background:rgba(240,208,128,0.04);}
 .chain-picker-wrap{position:relative;}
@@ -647,7 +649,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v182</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v183</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1475,7 +1477,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v182';
+const APP_VERSION = 'v183';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2792,24 +2794,26 @@ function renderChainCard(b,type){
     if(type==='character'){const r=calcCharMinMax(remaining,state.pity,state.guaranteed);minStr=r.min;maxStr=r.max;}
     else{const r=calcWeapMinMax(remaining,state.pity,state.epitomized||0);minStr=r.min;maxStr=r.max;}
   } else {minStr='0';maxStr='0';}
-  // Banner image — use first character's desktop image if available
+  // Icon: element SVG for character, weapon PNG for weapon
   const BASE_URL='https://lupix11.github.io/primo-tracker/';
-  let imgHtml='';
-  if(b.images){
-    const firstChar=Array.isArray(b.characters)?b.characters[0]:b.characters;
-    const imgData=b.images[firstChar];
-    if(imgData&&imgData.desktop){
-      const imgUrl=BASE_URL+imgData.desktop;
-      imgHtml=`<div class="chain-card-img" style="background-image:url('${imgUrl}');"></div>`;
-    }
+  let iconHtml;
+  if(type==='character'){
+    const elName=el.toLowerCase();
+    const elSrc=`${BASE_URL}images/elements/element_${elName}.svg`;
+    iconHtml=`<img src="${elSrc}" width="22" height="22" onerror="this.style.display='none';this.parentNode.innerHTML='${ELEM_ICON[el]||'✦'}'" alt="${el}">`;
+  } else {
+    const wt=(Array.isArray(b.weaponTypes)?b.weaponTypes[0]:b.weaponType)||'sword';
+    const wtSafe=(wt==='unknown'||!wt)?'sword':wt;
+    const wtSrc=`${BASE_URL}images/weapons/${wtSafe}.png`;
+    iconHtml=`<img src="${wtSrc}" width="22" height="22" onerror="this.style.display='none';this.parentNode.innerHTML='⚔️'" alt="${wtSafe}">`;
   }
+
   return `<div class="chain-card status-${status}" data-key="${key}">
-  ${imgHtml}
   <div class="chain-accent" style="background:linear-gradient(180deg,${palette.c1},${palette.c2});"></div>
   <div class="chain-card-body">
     <div class="chain-card-top">
       <div class="chain-card-info">
-        <div class="chain-card-icon" style="background:${palette.c2}28;border:1.5px solid ${palette.c2}55;">${icon}</div>
+        <div class="chain-card-icon" style="background:${palette.c2}28;border:1.5px solid ${palette.c2}55;">${iconHtml}</div>
         <div class="chain-card-text">
           <div class="chain-card-name">${b.version} ${b.phase} · ${safeName}</div>
           <div class="chain-card-sub">Version ${b.version} ${b.phase}${isSpec?' · speculative':''}</div>
@@ -2921,45 +2925,28 @@ function buildCombinedHtml(charBanners,weapBanners){
   const capped=gains.map(g=>Math.min(g,cap));
   const avgDay=avg(capped.length?capped:gains)||0;
   const curPulls=entries.length?entries[entries.length-1].pulls:0;
-  // Days left = min of active deadlines
-  const daysLeft=[cStat.daysLeft,wStat.daysLeft].filter(d=>d!==null);
-  const dl=daysLeft.length?Math.min(...daysLeft):null;
+  const curPrimos=entries.length?entries[entries.length-1].total:0;
+  const daysArr=[cStat.daysLeft,wStat.daysLeft].filter(d=>d!==null);
+  const dl=daysArr.length?Math.min(...daysArr):null;
   const neededDayMin=dl&&dl>0?Math.ceil(Math.max(0,totalMinP-(curPulls*160))/dl):null;
   const neededDayMax=dl&&dl>0?Math.ceil(Math.max(0,totalMaxP-(curPulls*160))/dl):null;
-  const avgColor=avgDay>=neededDayMin?'#80f0a0':'#f08080';
+  const paceOk=neededDayMin!==null&&avgDay>=neededDayMin;
+  const cells=[
+    {val:curPulls.toLocaleString(),   lbl:'Current Pulls',  sub:curPrimos.toLocaleString()+' primos',         color:'#f0d080'},
+    {val:curPrimos.toLocaleString(),  lbl:'Current Primos', sub:'saved',                                      color:'#f0d080'},
+    {val:totalMin.toLocaleString(),   lbl:'Min Pulls',      sub:'Char + Weapon',                              color:'#80f0a0'},
+    {val:totalMax.toLocaleString(),   lbl:'Max Pulls',      sub:'Worst case',                                 color:'#f09060'},
+    {val:Math.round(avgDay).toLocaleString(), lbl:'Your Avg/Day', sub:'primos per day',                      color:paceOk?'#80f0a0':'#f08080'},
+    {val:neededDayMin!==null?neededDayMin.toLocaleString():'—', lbl:'Need/Day (min)', sub:neededDayMax!==null?'Worst: '+neededDayMax.toLocaleString()+'/d':'No deadline', color:paceOk?'#80f0a0':'#f08080'},
+  ];
   return `<div class="chain-combined">
   <div class="chain-combined-title">Combined Totals</div>
   <div class="chain-combined-grid">
-    <div>
-      <div class="chain-comb-val" style="color:#80f0a0;">${totalMin.toLocaleString()}</div>
-      <div class="chain-comb-lbl">Min Pulls</div>
-      <div class="chain-comb-sub">Char + Weapon</div>
-    </div>
-    <div>
-      <div class="chain-comb-val" style="color:#f09060;">${totalMax.toLocaleString()}</div>
-      <div class="chain-comb-lbl">Max Pulls</div>
-      <div class="chain-comb-sub">Worst case</div>
-    </div>
-    <div>
-      <div class="chain-comb-val" style="color:#80d0ff;">${totalMinP.toLocaleString()}</div>
-      <div class="chain-comb-lbl">Min Primos</div>
-      <div class="chain-comb-sub">${totalMinP.toLocaleString()} primogems</div>
-    </div>
-    <div>
-      <div class="chain-comb-val" style="color:#f09060;">${totalMaxP.toLocaleString()}</div>
-      <div class="chain-comb-lbl">Max Primos</div>
-      <div class="chain-comb-sub">Worst case</div>
-    </div>
-    <div>
-      <div class="chain-comb-val" style="color:${avgColor};">${Math.round(avgDay).toLocaleString()}</div>
-      <div class="chain-comb-lbl">Your Avg/Day</div>
-      <div class="chain-comb-sub">Primos earned daily</div>
-    </div>
-    <div>
-      <div class="chain-comb-val" style="color:${neededDayMin!==null&&avgDay>=neededDayMin?'#80f0a0':'#f08080'};">${neededDayMin!==null?neededDayMin.toLocaleString():'—'}</div>
-      <div class="chain-comb-lbl">Need/Day (min)</div>
-      <div class="chain-comb-sub">${neededDayMax!==null?'Worst: '+neededDayMax.toLocaleString()+'/day':'No deadline'}</div>
-    </div>
+    ${cells.map(c=>`<div>
+      <div class="chain-comb-val" style="color:${c.color};">${c.val}</div>
+      <div class="chain-comb-lbl">${c.lbl}</div>
+      <div class="chain-comb-sub">${c.sub}</div>
+    </div>`).join('')}
   </div>
 </div>`;
 }
