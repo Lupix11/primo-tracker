@@ -558,7 +558,9 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .chain-col-hdr{display:flex;align-items:center;gap:8px;padding:0 2px 8px;border-bottom:1px solid rgba(240,208,128,0.09);margin-bottom:2px;}
 .chain-col-icon{width:18px;height:18px;fill:none;stroke:#c8a84b;stroke-width:1.8;flex-shrink:0;}
 .chain-col-title{font-family:'Cinzel',serif;font-size:12px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;}
-.chain-card{position:relative;margin-top:6px;background:rgba(255,255,255,0.065);border:1px solid rgba(240,208,128,0.18);border-radius:12px;overflow:hidden;transition:transform 0.18s ease,box-shadow 0.2s ease,border-color 0.18s ease;background-image:linear-gradient(160deg,rgba(255,255,255,0.03) 0%,transparent 60%);}
+@keyframes card-in{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+@keyframes card-out{to{opacity:0;transform:translateY(-6px) scale(0.97);max-height:0;margin:0;padding:0;overflow:hidden;}}
+.chain-card{animation:card-in 0.22s ease;position:relative;margin-top:6px;background:rgba(255,255,255,0.065);border:1px solid rgba(240,208,128,0.18);border-radius:12px;overflow:hidden;transition:transform 0.18s ease,box-shadow 0.2s ease,border-color 0.18s ease;background-image:linear-gradient(160deg,rgba(255,255,255,0.03) 0%,transparent 60%);}
 .chain-card:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,0.38),0 0 0 1.5px var(--el-glow,rgba(240,208,128,0.35)),0 0 20px var(--el-glow-soft,rgba(240,208,128,0.07));border-color:var(--el-glow,rgba(240,208,128,0.4));}
 .chain-card.status-complete{background:rgba(240,208,128,0.09);border-color:rgba(240,208,128,0.3);}
 .chain-card.status-complete .chain-card-body{opacity:0.85;}
@@ -673,7 +675,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v186</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v187</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1501,7 +1503,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v186';
+const APP_VERSION = 'v187';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2647,7 +2649,32 @@ function populatePlannerDropdown(){
 const ELEM_ICON={Pyro:'🔥',Hydro:'💧',Cryo:'❄️',Electro:'⚡',Anemo:'🌀',Geo:'🪨',Dendro:'🌿',Unknown:'✦'};
 let chainPickerOpen=null;
 
-function getBannerKey(b){return `${b.version}|${b.phase}|${b.type}`;}
+function getBannerKey(b){
+  if(b._virtual) return b._charKey;
+  if(b.type==='character'){
+    const char=Array.isArray(b.characters)?b.characters[0]:b.characters;
+    return `${b.version}|${b.phase}|character|${char}`;
+  }
+  return `${b.version}|${b.phase}|weapon`;
+}
+
+function getCharVirtuals(allBanners){
+  const out=[];
+  allBanners.filter(b=>b.type==='character').forEach(b=>{
+    const chars=Array.isArray(b.characters)?b.characters:[b.characters];
+    const els=Array.isArray(b.elements)?b.elements:[b.elements];
+    chars.forEach((char,i)=>{
+      out.push({...b,characters:[char],elements:[els[i]||els[0]||'Unknown'],_virtual:true,_charKey:`${b.version}|${b.phase}|character|${char}`});
+    });
+  });
+  return out;
+}
+
+function animRemove(type,key){
+  const el=document.querySelector(`.chain-card[data-key="${key.replace(/"/g,'&quot;')}"]`);
+  if(el){el.style.animation='card-out 0.25s ease forwards';setTimeout(()=>removeBannerFromChain(type,key),240);}
+  else removeBannerFromChain(type,key);
+}
 
 // PL.chainChar / PL.chainWeap: { [key]: stateObj }
 // PL.chainCharOrder / PL.chainWeapOrder: string[] of keys in display order
@@ -2671,7 +2698,7 @@ function getChainState(type,key){
   if(!store[key]){
     store[key]=type==='character'
       ?{goal:1,pity:0,guaranteed:false,obtained:0}
-      :{goal:1,pity:0,epitomized:0,obtained:0};
+      :{goal:1,pity:0,epitomized:0,obtained:0,targetWeaponIdx:0};
   }
   return store[key];
 }
@@ -2721,6 +2748,11 @@ function setChainGuarantee(type,key,checked){
   if(type==='character') state.guaranteed=!!checked;
   else state.epitomized=checked?1:0;
   save();renderChainSummaryOnly();
+}
+function setChainWeaponTarget(key,idx){
+  const state=getChainState('weapon',key);
+  state.targetWeaponIdx=parseInt(idx)||0;
+  save();
 }
 function toggleChainCopy(type,key,idx){
   const state=getChainState(type,key);
@@ -2832,6 +2864,8 @@ function renderChainCard(b,type){
     iconHtml=`<img src="${wtSrc}" width="22" height="22" onerror="this.style.display='none';this.parentNode.innerHTML='⚔️'" alt="${wtSafe}">`;
   }
 
+  const weapTargetHtml=type==='weapon'&&Array.isArray(b.characters)&&b.characters.length>1?`<div class="chain-field" style="grid-column:1/-1;margin-bottom:4px;"><div class="chain-field-label">Target Weapon</div><select class="chain-select" onchange="setChainWeaponTarget('${safeKey}',this.value)">${b.characters.map((w,i)=>`<option value="${i}"${(state.targetWeaponIdx||0)===i?' selected':''}>${w}</option>`).join('')}</select></div>`:'';
+
   return `<div class="chain-card status-${status}" data-key="${key}" style="--el-glow:${palette.c2}88;--el-glow-soft:${palette.c2}22;">
   <div class="chain-accent" style="background:linear-gradient(180deg,${palette.c1},${palette.c2});"></div>
   <div class="chain-card-body">
@@ -2845,26 +2879,15 @@ function renderChainCard(b,type){
       </div>
       <div class="chain-card-top-right">
         ${chipHtml}
-        <button class="chain-card-remove" onclick="removeBannerFromChain('${type}','${safeKey}')" title="Remove">✕</button>
+        <button class="chain-card-remove" onclick="animRemove('${type}','${safeKey}')" title="Remove">✕</button>
       </div>
     </div>
     <div class="chain-card-form">
-      <div class="chain-field">
-        <div class="chain-field-label">Goal</div>
-        <select class="chain-select" onchange="setChainGoal('${type}','${safeKey}',this.value)">${goalOpts}</select>
-      </div>
-      <div class="chain-field">
-        <div class="chain-field-label">Pity</div>
-        <input type="number" class="chain-num-inp" value="${state.pity}" min="0" max="${type==='character'?89:79}" oninput="setChainPity('${type}','${safeKey}',this.value)" placeholder="0"/>
-      </div>
-      <div class="chain-field">
-        <div class="chain-field-label">${toggleTitle}</div>
-        <div class="chain-toggle-wrap"><input type="checkbox" class="chain-tog"${toggleChecked?' checked':''} onchange="setChainGuarantee('${type}','${safeKey}',this.checked)"/></div>
-      </div>
-      <div class="chain-field">
-        <div class="chain-field-label">Copy (5★)</div>
-        <div class="chain-copies-wrap">${squares}</div>
-      </div>
+      ${weapTargetHtml}
+      <div class="chain-field"><div class="chain-field-label">Goal</div><select class="chain-select" onchange="setChainGoal('${type}','${safeKey}',this.value)">${goalOpts}</select></div>
+      <div class="chain-field"><div class="chain-field-label">Pity</div><input type="number" class="chain-num-inp" value="${state.pity}" min="0" max="${type==='character'?89:79}" oninput="setChainPity('${type}','${safeKey}',this.value)" placeholder="0"/></div>
+      <div class="chain-field"><div class="chain-field-label">${toggleTitle}</div><div class="chain-toggle-wrap"><input type="checkbox" class="chain-tog"${toggleChecked?' checked':''} onchange="setChainGuarantee('${type}','${safeKey}',this.checked)"/></div></div>
+      <div class="chain-field"><div class="chain-field-label">Copy (5★)</div><div class="chain-copies-wrap">${squares}</div></div>
     </div>
     <div style="display:flex;gap:16px;margin-top:8px;padding-top:7px;border-top:1px solid rgba(255,255,255,0.05);">
       <span style="font-size:10px;color:#8070a0;">Min <span style="color:#80f0a0;font-weight:700;">${minStr}</span>${FATE_ICO}</span>
@@ -2880,9 +2903,8 @@ function renderChainCard(b,type){
 
 function renderChainPickerDropdown(type,allBanners){
   const order=getChainOrder(type);
-  const available=allBanners
-    .filter(b=>b.type===type&&!order.includes(getBannerKey(b)))
-    .sort((a,b)=>new Date(a.startDate)-new Date(b.startDate));
+  const pool=type==='character'?getCharVirtuals(allBanners):allBanners.filter(b=>b.type==='weapon');
+  const available=pool.filter(b=>!order.includes(getBannerKey(b))).sort((a,b)=>new Date(a.startDate)-new Date(b.startDate));
   if(!available.length) return `<div class="chain-picker-dropdown"><div class="chain-picker-empty">All banners already added.</div></div>`;
   const items=available.map(b=>{
     const key=getBannerKey(b);
@@ -3005,7 +3027,12 @@ function renderChainSummaryEl(type,orderedBanners,el){
 function renderChainSummaryOnly(){
   ensureChainOrders();
   const allBanners=getPlannerBanners();
-  const resolve=(type)=>getChainOrder(type).map(k=>allBanners.find(b=>getBannerKey(b)===k)).filter(Boolean);
+  const virtuals=getCharVirtuals(allBanners);
+  const resolve=(type)=>{
+    const order=getChainOrder(type);
+    if(type==='character') return order.map(k=>virtuals.find(v=>getBannerKey(v)===k)).filter(Boolean);
+    return order.map(k=>allBanners.find(b=>getBannerKey(b)===k)).filter(Boolean);
+  };
   const charB=resolve('character');
   const weapB=resolve('weapon');
   const row=document.getElementById('chain-summaries-row');
@@ -3017,8 +3044,10 @@ function renderChainSummaryOnly(){
 function renderPlannerChain(){
   ensureChainOrders();
   const allBanners=getPlannerBanners();
+  const virtuals=getCharVirtuals(allBanners);
   const resolve=(type)=>{
     const order=getChainOrder(type);
+    if(type==='character') return order.map(k=>virtuals.find(v=>getBannerKey(v)===k)).filter(Boolean);
     return order.map(k=>allBanners.find(b=>getBannerKey(b)===k)).filter(Boolean);
   };
   const cc=document.getElementById('chain-char-cards');
