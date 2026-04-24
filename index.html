@@ -605,7 +605,21 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .chain-sum-sub{font-size:9px;color:#6d627f;margin-top:2px;}
 .chain-footer{font-size:11px;color:#6d627f;text-align:center;padding:12px 4px 4px;display:flex;align-items:center;justify-content:center;gap:5px;}
 
-/* Chain: add button + picker */
+/* Summaries side by side */
+.chain-summaries-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+@media(max-width:900px){.chain-summaries-row{grid-template-columns:1fr;}}
+/* Combined totals */
+.chain-combined{background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.12);border-radius:12px;padding:16px 20px;margin-top:10px;}
+.chain-combined-title{font-family:'Cinzel',serif;font-size:9px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
+.chain-combined-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;text-align:center;}
+@media(max-width:900px){.chain-combined-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:500px){.chain-combined-grid{grid-template-columns:repeat(2,1fr);}}
+.chain-comb-val{font-family:'Cinzel',serif;font-size:17px;color:#e8dfc8;line-height:1;margin-bottom:4px;}
+.chain-comb-lbl{font-size:9px;color:#907898;letter-spacing:0.8px;text-transform:uppercase;}
+.chain-comb-sub{font-size:9px;color:#5d5270;margin-top:2px;}
+.chain-comb-divider{width:1px;background:rgba(255,255,255,0.05);margin:0 4px;}
+/* Card image */
+.chain-card-img{position:absolute;top:0;right:0;bottom:0;width:55%;pointer-events:none;background-size:cover;background-position:center top;mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,0.5) 35%,rgba(0,0,0,0.85) 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,0.5) 35%,rgba(0,0,0,0.85) 100%);border-radius:0 12px 12px 0;}
 .chain-add-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:10px;border-radius:10px;border:1.5px dashed rgba(240,208,128,0.2);background:transparent;color:#605870;font-family:'Nunito',sans-serif;font-size:12px;cursor:pointer;transition:all 0.18s;}
 .chain-add-btn:hover{border-color:rgba(240,208,128,0.45);color:#c8a84b;background:rgba(240,208,128,0.04);}
 .chain-picker-wrap{position:relative;}
@@ -633,7 +647,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v181</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v182</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -778,7 +792,6 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
           <span class="chain-col-title">Character</span>
         </div>
         <div id="chain-char-cards"><div class="msg">Loading banners…</div></div>
-        <div id="chain-char-summary"></div>
       </div>
       <div class="chain-col">
         <div class="chain-col-hdr">
@@ -786,9 +799,11 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
           <span class="chain-col-title">Weapon</span>
         </div>
         <div id="chain-weap-cards"><div class="msg">Loading banners…</div></div>
-        <div id="chain-weap-summary"></div>
       </div>
     </div>
+    <!-- Summaries row + combined -->
+    <div class="chain-summaries-row" id="chain-summaries-row"></div>
+    <div id="chain-combined"></div>
     <div class="chain-footer">ℹ Pity carries over within the same banner type. 50/50 Guarantee is only applied to limited banners.</div>
   </section>
 
@@ -1460,7 +1475,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v181';
+const APP_VERSION = 'v182';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2777,7 +2792,19 @@ function renderChainCard(b,type){
     if(type==='character'){const r=calcCharMinMax(remaining,state.pity,state.guaranteed);minStr=r.min;maxStr=r.max;}
     else{const r=calcWeapMinMax(remaining,state.pity,state.epitomized||0);minStr=r.min;maxStr=r.max;}
   } else {minStr='0';maxStr='0';}
+  // Banner image — use first character's desktop image if available
+  const BASE_URL='https://lupix11.github.io/primo-tracker/';
+  let imgHtml='';
+  if(b.images){
+    const firstChar=Array.isArray(b.characters)?b.characters[0]:b.characters;
+    const imgData=b.images[firstChar];
+    if(imgData&&imgData.desktop){
+      const imgUrl=BASE_URL+imgData.desktop;
+      imgHtml=`<div class="chain-card-img" style="background-image:url('${imgUrl}');"></div>`;
+    }
+  }
   return `<div class="chain-card status-${status}" data-key="${key}">
+  ${imgHtml}
   <div class="chain-accent" style="background:linear-gradient(180deg,${palette.c1},${palette.c2});"></div>
   <div class="chain-card-body">
     <div class="chain-card-top">
@@ -2841,16 +2868,14 @@ function renderChainPickerDropdown(type,allBanners){
   return `<div class="chain-picker-dropdown">${items}</div>`;
 }
 
-function renderChainSummaryEl(type,orderedBanners,el){
-  if(!orderedBanners.length){el.innerHTML='';return;}
-  const {totalMin,totalMax,projPulls,gapMin,gapMax,daysLeft,deadlineStr}=calcChainSummary(type,orderedBanners);
-  if(!totalMin){el.innerHTML='';return;}
+function buildSummaryHtml(type,orderedBanners){
+  if(!orderedBanners.length) return '';
+  const {totalMin,totalMax,projPulls,gapMin,deadlineStr}=calcChainSummary(type,orderedBanners);
+  if(!totalMin) return '';
   const gapMinPos=gapMin!==null&&gapMin>=0;
-  const gapMaxPos=gapMax!==null&&gapMax>=0;
   const gapMinStr=gapMin===null?'—':(gapMin>=0?'+':'')+gapMin.toLocaleString();
-  const gapMaxStr=gapMax===null?'—':(gapMax>=0?'+':'')+gapMax.toLocaleString();
   const title=type==='character'?'Character Summary':'Weapon Summary';
-  el.innerHTML=`<div class="chain-summary">
+  return `<div class="chain-summary">
   <div class="chain-sum-title">${title}</div>
   <div class="chain-sum-grid-4">
     <div>
@@ -2861,7 +2886,7 @@ function renderChainSummaryEl(type,orderedBanners,el){
     <div>
       <div class="chain-sum-val" style="color:#f09060;">${totalMax.toLocaleString()} <span style="font-size:12px;">✦</span></div>
       <div class="chain-sum-lbl">Worst Case</div>
-      <div class="chain-sum-sub">Hard pity, lose all 50/50s</div>
+      <div class="chain-sum-sub">Full hard pity, lose all 50/50s</div>
     </div>
     <div>
       <div class="chain-sum-val" style="color:#e8dfc8;">${projPulls!==null?projPulls.toLocaleString():'—'} <span style="font-size:12px;color:#80c0f0;">${projPulls!==null?'✦':''}</span></div>
@@ -2877,17 +2902,81 @@ function renderChainSummaryEl(type,orderedBanners,el){
 </div>`;
 }
 
+function buildCombinedHtml(charBanners,weapBanners){
+  const hasChar=charBanners.length>0;
+  const hasWeap=weapBanners.length>0;
+  if(!hasChar&&!hasWeap) return '';
+  const cStat=hasChar?calcChainSummary('character',charBanners):{totalMin:0,totalMax:0,projPulls:null,gapMin:null,daysLeft:null};
+  const wStat=hasWeap?calcChainSummary('weapon',weapBanners):{totalMin:0,totalMax:0,projPulls:null,gapMin:null,daysLeft:null};
+  const totalMin=cStat.totalMin+wStat.totalMin;
+  const totalMax=cStat.totalMax+wStat.totalMax;
+  if(!totalMin&&!totalMax) return '';
+  const totalMinP=totalMin*160;
+  const totalMaxP=totalMax*160;
+  // Pace
+  const gains=getDG().filter(g=>g!==null&&g>=0);
+  const sorted=[...gains].sort((a,b)=>a-b);
+  const median=sorted.length?sorted[Math.floor(sorted.length/2)]:0;
+  const cap=Math.max(median*3,160);
+  const capped=gains.map(g=>Math.min(g,cap));
+  const avgDay=avg(capped.length?capped:gains)||0;
+  const curPulls=entries.length?entries[entries.length-1].pulls:0;
+  // Days left = min of active deadlines
+  const daysLeft=[cStat.daysLeft,wStat.daysLeft].filter(d=>d!==null);
+  const dl=daysLeft.length?Math.min(...daysLeft):null;
+  const neededDayMin=dl&&dl>0?Math.ceil(Math.max(0,totalMinP-(curPulls*160))/dl):null;
+  const neededDayMax=dl&&dl>0?Math.ceil(Math.max(0,totalMaxP-(curPulls*160))/dl):null;
+  const avgColor=avgDay>=neededDayMin?'#80f0a0':'#f08080';
+  return `<div class="chain-combined">
+  <div class="chain-combined-title">Combined Totals</div>
+  <div class="chain-combined-grid">
+    <div>
+      <div class="chain-comb-val" style="color:#80f0a0;">${totalMin.toLocaleString()}</div>
+      <div class="chain-comb-lbl">Min Pulls</div>
+      <div class="chain-comb-sub">Char + Weapon</div>
+    </div>
+    <div>
+      <div class="chain-comb-val" style="color:#f09060;">${totalMax.toLocaleString()}</div>
+      <div class="chain-comb-lbl">Max Pulls</div>
+      <div class="chain-comb-sub">Worst case</div>
+    </div>
+    <div>
+      <div class="chain-comb-val" style="color:#80d0ff;">${totalMinP.toLocaleString()}</div>
+      <div class="chain-comb-lbl">Min Primos</div>
+      <div class="chain-comb-sub">${totalMinP.toLocaleString()} primogems</div>
+    </div>
+    <div>
+      <div class="chain-comb-val" style="color:#f09060;">${totalMaxP.toLocaleString()}</div>
+      <div class="chain-comb-lbl">Max Primos</div>
+      <div class="chain-comb-sub">Worst case</div>
+    </div>
+    <div>
+      <div class="chain-comb-val" style="color:${avgColor};">${Math.round(avgDay).toLocaleString()}</div>
+      <div class="chain-comb-lbl">Your Avg/Day</div>
+      <div class="chain-comb-sub">Primos earned daily</div>
+    </div>
+    <div>
+      <div class="chain-comb-val" style="color:${neededDayMin!==null&&avgDay>=neededDayMin?'#80f0a0':'#f08080'};">${neededDayMin!==null?neededDayMin.toLocaleString():'—'}</div>
+      <div class="chain-comb-lbl">Need/Day (min)</div>
+      <div class="chain-comb-sub">${neededDayMax!==null?'Worst: '+neededDayMax.toLocaleString()+'/day':'No deadline'}</div>
+    </div>
+  </div>
+</div>`;
+}
+
+function renderChainSummaryEl(type,orderedBanners,el){
+  if(el) el.innerHTML=buildSummaryHtml(type,orderedBanners);
+}
 function renderChainSummaryOnly(){
   ensureChainOrders();
   const allBanners=getPlannerBanners();
-  const resolve=(type)=>{
-    const order=getChainOrder(type);
-    return order.map(k=>allBanners.find(b=>getBannerKey(b)===k)).filter(Boolean);
-  };
-  const cs=document.getElementById('chain-char-summary');
-  const ws=document.getElementById('chain-weap-summary');
-  if(cs) renderChainSummaryEl('character',resolve('character'),cs);
-  if(ws) renderChainSummaryEl('weapon',resolve('weapon'),ws);
+  const resolve=(type)=>getChainOrder(type).map(k=>allBanners.find(b=>getBannerKey(b)===k)).filter(Boolean);
+  const charB=resolve('character');
+  const weapB=resolve('weapon');
+  const row=document.getElementById('chain-summaries-row');
+  const combined=document.getElementById('chain-combined');
+  if(row) row.innerHTML=buildSummaryHtml('character',charB)+buildSummaryHtml('weapon',weapB);
+  if(combined) combined.innerHTML=buildCombinedHtml(charB,weapB);
 }
 
 function renderPlannerChain(){
@@ -2899,11 +2988,9 @@ function renderPlannerChain(){
   };
   const cc=document.getElementById('chain-char-cards');
   const wc=document.getElementById('chain-weap-cards');
-  const cs=document.getElementById('chain-char-summary');
-  const ws=document.getElementById('chain-weap-summary');
   if(!cc||!wc) return;
 
-  const renderCol=(type,container,summaryEl)=>{
+  const renderCol=(type,container)=>{
     const ordered=resolve(type);
     let html='';
     if(!ordered.length){
@@ -2911,7 +2998,6 @@ function renderPlannerChain(){
     } else {
       html=ordered.map(b=>renderChainCard(b,type)).join('');
     }
-    // Add button + picker
     const pickerOpen=chainPickerOpen===type;
     const pickerHtml=pickerOpen?renderChainPickerDropdown(type,allBanners):'';
     html+=`<div class="chain-picker-wrap">
@@ -2922,11 +3008,23 @@ function renderPlannerChain(){
       ${pickerHtml}
     </div>`;
     container.innerHTML=html;
-    if(summaryEl) renderChainSummaryEl(type,ordered,summaryEl);
   };
 
-  renderCol('character',cc,cs);
-  renderCol('weapon',wc,ws);
+  renderCol('character',cc);
+  renderCol('weapon',wc);
+
+  // Render summaries row + combined below
+  const row=document.getElementById('chain-summaries-row');
+  const combined=document.getElementById('chain-combined');
+  const charB=resolve('character');
+  const weapB=resolve('weapon');
+  if(row){
+    const cHtml=buildSummaryHtml('character',charB);
+    const wHtml=buildSummaryHtml('weapon',weapB);
+    row.innerHTML=cHtml+wHtml;
+    row.style.display=(cHtml||wHtml)?'grid':'none';
+  }
+  if(combined) combined.innerHTML=buildCombinedHtml(charB,weapB);
 
   // Close picker on outside click
   if(chainPickerOpen){
