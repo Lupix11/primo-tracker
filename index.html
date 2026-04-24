@@ -695,7 +695,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v215</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v216</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -743,6 +743,10 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 
   <!-- DASHBOARD -->
   <section id="page-dashboard" class="page active">
+    <div class="chain-page-hdr">
+      <div class="chain-page-title"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:#f0d080;stroke-width:1.8;flex-shrink:0;"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
+      <div class="chain-page-sub">Track your daily primogem count and farming progress.</div>
+    </div>
     <div class="card">
       <div class="qa-title-row"><div class="card-title" data-i18n="dash_quick_add">Quick Add</div>
         <button class="import-icon-btn" id="import-toggle-btn" onclick="toggleImport()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Import</button>
@@ -805,6 +809,10 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 
   <!-- STATS -->
   <section id="page-stats" class="page">
+    <div class="chain-page-hdr">
+      <div class="chain-page-title"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:#f0d080;stroke-width:1.8;flex-shrink:0;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Stats</div>
+      <div class="chain-page-sub">Analyze your farming pace, consistency, and daily gain trends.</div>
+    </div>
     <div class="card" id="stats-hist-card" style="display:none;">
       <div class="card-title" style="margin-bottom:12px;">Daily Gain Distribution</div>
       <div class="hist-wrap"><canvas id="hist-chart" role="img"></canvas></div>
@@ -1527,7 +1535,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v215';
+const APP_VERSION = 'v216';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1865,7 +1873,7 @@ function getBaseline(){return welkin?150:60;}
 function parseNum(s){if(!s&&s!==0)return NaN;return parseInt(String(s).replace(/,/g,'').trim(),10);}
 function fmtDate(d){const[y,m,day]=d.split('-');return`${day}/${m}`;}
 function gainsFrom(a){return a.map((e,i)=>i===0?null:e.total-a[i-1].total);}
-function getDG(){return gainsFrom(entries);}
+function getDG(arr){return gainsFrom(arr||entries);}
 function avg(a){const f=a.filter(g=>g!==null);return f.length?Math.round(f.reduce((a,b)=>a+b,0)/f.length):null;}
 
 function toggleWelkin(){welkin=!welkin;document.getElementById('welkin-btn').classList.toggle('on',welkin);save();renderTiles();renderChart();}
@@ -2087,9 +2095,19 @@ function renderStats(){
   const histCard=document.getElementById('stats-hist-card'),el=document.getElementById('stats-content');
   if(!entries.length){histCard.style.display='none';el.innerHTML='<div class="msg">Add some entries to see your stats.</div>';return;}
   histCard.style.display='block';
-  const gains=getDG(),baseline=getBaseline(),validGains=gains.filter(g=>g!==null);
-  const first=entries[0],last=entries[entries.length-1];
-  const aAll=avg(gains.filter(g=>g!==null&&g>=0)),a7=avg(gainsFrom(entries.slice(-8)).filter(g=>g!==null&&g>=0)),a30=avg(gainsFrom(entries.slice(-31)).filter(g=>g!==null&&g>=0));
+  // Apply date range filter
+  const fi=document.getElementById('stats-from'),ti=document.getElementById('stats-to');
+  let rangeEntries=entries;
+  if(fi&&ti&&fi.value&&ti.value){
+    rangeEntries=entries.filter(e=>e.date>=fi.value&&e.date<=ti.value);
+    if(!rangeEntries.length) rangeEntries=entries;
+  } else if(fi&&ti&&entries.length){
+    // Init inputs on first render
+    fi.value=entries[0].date; ti.value=entries[entries.length-1].date;
+  }
+  const gains=getDG(rangeEntries),baseline=getBaseline(),validGains=gains.filter(g=>g!==null);
+  const first=rangeEntries[0],last=rangeEntries[rangeEntries.length-1];
+  const aAll=avg(gains.filter(g=>g!==null&&g>=0)),a7=avg(gainsFrom(rangeEntries.slice(-8)).filter(g=>g!==null&&g>=0)),a30=avg(gainsFrom(rangeEntries.slice(-31)).filter(g=>g!==null&&g>=0));
   const curAvg=statsAvgRange==='7d'?a7:statsAvgRange==='30d'?a30:aAll;
   const paceVal=a7!=null&&curAvg!=null?a7-curAvg:null,paceUp=paceVal!==null&&paceVal>=0;
   const daysAbove=validGains.filter(g=>g>baseline).length;
@@ -2101,11 +2119,29 @@ function renderStats(){
   const belowPct=daysTotal?Math.round(daysBelow/daysTotal*100):0;
   const primoGained=last.total-first.total,pullsGained=last.pulls-first.pulls;
   let bestG=-Infinity,worstG=Infinity,bestD='',worstD='';
-  gains.forEach((g,i)=>{if(g===null)return;if(g>bestG){bestG=g;bestD=entries[i]?.date;}if(g<worstG){worstG=g;worstD=entries[i]?.date;}});
+  gains.forEach((g,i)=>{if(g===null)return;if(g>bestG){bestG=g;bestD=rangeEntries[i]?.date;}if(g<worstG){worstG=g;worstD=rangeEntries[i]?.date;}});
   const lowestClass=worstG<0?'lowest-neg':'lowest-pos';
   const verdict = paceVal===null ? 'Not enough recent data yet.' : paceUp ? 'Recent gains are running above your selected-range average.' : 'Recent gains are running below your selected-range average.';
   el.innerHTML=`
-    <div class="stats-controls"><button class="avg-pill ${statsAvgRange==='7d'?'active':''}" onclick="setStatsAvg('7d')">7d</button><button class="avg-pill ${statsAvgRange==='30d'?'active':''}" onclick="setStatsAvg('30d')">30d</button><button class="avg-pill ${statsAvgRange==='all'?'active':''}" onclick="setStatsAvg('all')">All</button></div>
+    <div class="card" style="margin-bottom:12px;padding:14px 18px;">
+      <div class="card-title" style="margin-bottom:12px;">Date Range</div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:140px;">
+          <div style="font-size:9px;color:#907898;text-transform:uppercase;letter-spacing:0.8px;">From</div>
+          <input type="date" id="stats-from" class="qa-input" style="width:100%;" onchange="applyStatsDateRange()"/>
+        </div>
+        <div style="color:#504060;font-size:16px;margin-top:14px;">→</div>
+        <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:140px;">
+          <div style="font-size:9px;color:#907898;text-transform:uppercase;letter-spacing:0.8px;">To</div>
+          <input type="date" id="stats-to" class="qa-input" style="width:100%;" onchange="applyStatsDateRange()"/>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:14px;">
+          <button class="avg-pill ${statsAvgRange==='7d'?'active':''}" onclick="setStatsAvg('7d')">7d</button>
+          <button class="avg-pill ${statsAvgRange==='30d'?'active':''}" onclick="setStatsAvg('30d')">30d</button>
+          <button class="avg-pill ${statsAvgRange==='all'?'active':''}" onclick="setStatsAvg('all')">All</button>
+        </div>
+      </div>
+    </div>
     <div class="stats-hero">
       <div class="stats-hero-main">
         <div>
@@ -2169,7 +2205,19 @@ function renderHistogram(validGains){
   const tt={backgroundColor:'rgba(10,13,20,0.96)',borderColor:'rgba(240,208,128,0.28)',borderWidth:1,titleColor:'#c8a84b',bodyColor:'#e8dfc8'};
   histInst=new Chart(ctx,{type:'bar',data:{labels:buckets.map(b=>b.label),datasets:[{label:'Days',data:counts,backgroundColor:buckets.map(b=>b.color),borderColor:buckets.map(b=>b.border),borderWidth:1,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:c=>`  ${c.parsed.y} day${c.parsed.y===1?'':'s'} (${Math.round(c.parsed.y/total*100)}%)`}}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#907898',font:{size:11,family:'Nunito'}}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#907898',font:{size:11,family:'Nunito'},stepSize:1,precision:0},beginAtZero:true}}}});
 }
+function applyStatsDateRange(){
+  renderStats();
+}
 function setStatsAvg(r){
+  statsAvgRange=r;
+  // Set date inputs based on pill selection
+  if(entries.length){
+    const last=entries[entries.length-1].date;
+    const from=r==='7d'?entries[Math.max(0,entries.length-8)].date:r==='30d'?entries[Math.max(0,entries.length-31)].date:entries[0].date;
+    const fi=document.getElementById('stats-from'),ti=document.getElementById('stats-to');
+    if(fi) fi.value=from;
+    if(ti) ti.value=last;
+  }
   statsAvgRange=r;
   const gains=getDG(),a7=avg(gainsFrom(entries.slice(-8)).filter(g=>g!==null&&g>=0)),a30=avg(gainsFrom(entries.slice(-31)).filter(g=>g!==null&&g>=0)),aAll=avg(gains.filter(g=>g!==null&&g>=0));
   const val=r==='7d'?a7:r==='30d'?a30:aAll;
