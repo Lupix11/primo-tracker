@@ -188,7 +188,7 @@ textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid r
 .tile-lbl{font-size:9px;color:#907898;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
 .tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px;}
 .tab{font-family:'Nunito',sans-serif;font-size:12px;padding:5px 13px;border-radius:20px;cursor:pointer;border:1px solid rgba(240,208,128,0.13) !important;color:#605870 !important;background:transparent;transition:all 0.2s;}
-.tab.active{background:rgba(240,208,128,0.18) !important;border-color:rgba(240,208,128,0.5) !important;color:#f0d080 !important;font-weight:700;box-shadow:0 0 10px rgba(240,208,128,0.2),0 0 0 1px rgba(240,208,128,0.1) inset;text-shadow:0 0 8px rgba(240,208,128,0.4);}
+.tab.active{background:rgba(240,208,128,0.18) !important;border-color:rgba(240,208,128,0.5) !important;color:#f0d080 !important;font-weight:700;box-shadow:0 0 6px rgba(240,208,128,0.12);}
 .tab:hover:not(.active){border-color:rgba(240,208,128,0.25) !important;color:#a090c0 !important;}
 .legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:9px;align-items:center;}
 .li{display:flex;align-items:center;gap:5px;font-size:11px;color:#907898;}
@@ -684,7 +684,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v199</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v200</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1512,7 +1512,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v199';
+const APP_VERSION = 'v200';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1938,7 +1938,7 @@ function renderChart(){
   chartInst=null;
   const ctx=chartCanvas.getContext('2d');
   const blPlugin={id:'bl',afterDraw(chart){if(activeMetric!=='gain')return;const{ctx:c,chartArea,scales}=chart;if(!scales.y||!chartArea)return;const y=scales.y.getPixelForValue(baseline);c.save();c.strokeStyle='rgba(240,208,128,0.72)';c.lineWidth=2;c.setLineDash([6,4]);c.beginPath();c.moveTo(chartArea.left,y);c.lineTo(chartArea.right,y);c.stroke();c.setLineDash([]);c.restore();}};
-  const glowPlugin={id:'lineGlow',beforeDatasetDraw(chart,args){const ds=args.meta.dataset;if(!ds)return;const lbl=chart.data.datasets[args.index]?.label;if(lbl!=='Raw Primogems')return;const ctx=chart.ctx;ctx.save();ctx.shadowColor='rgba(240,208,128,0.55)';ctx.shadowBlur=10;}};
+  const glowPlugin={id:'lineGlow',beforeDatasetDraw(chart,args){const ds=args.meta.dataset;if(!ds)return;const lbl=chart.data.datasets[args.index]?.label;if(lbl!=='Raw Primogems')return;const ctx=chart.ctx;ctx.save();ctx.shadowColor='rgba(240,208,128,0.3)';ctx.shadowBlur=4;}};
   const xSc={grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#907898',font:{size:10,family:'Nunito'},autoSkip:true,maxTicksLimit:12,maxRotation:45}};
   const ySc={grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#907898',font:{size:10,family:'Nunito'},callback:v=>v?.toLocaleString()}};
   const tt={backgroundColor:'rgba(10,13,20,0.96)',borderColor:'rgba(240,208,128,0.28)',borderWidth:1,titleColor:'#c8a84b',bodyColor:'#e8dfc8'};
