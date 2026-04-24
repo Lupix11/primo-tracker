@@ -109,7 +109,69 @@
         "desktop": "images/chronicled-wish/fontaine-chronicled-wish-desktop.jpg",
         "mobile": "images/chronicled-wish/fontaine-chronicled-wish-mobile.jpg"
       }
-    }
+    },
+    "pool": [
+      {
+        "name": "Emilie",
+        "element": "Dendro",
+        "weaponType": "polearm",
+        "isWeapon": false
+      },
+      {
+        "name": "Chlorinde",
+        "element": "Electro",
+        "weaponType": "sword",
+        "isWeapon": false
+      },
+      {
+        "name": "Navia",
+        "element": "Geo",
+        "weaponType": "claymore",
+        "isWeapon": false
+      },
+      {
+        "name": "Lyney",
+        "element": "Pyro",
+        "weaponType": "bow",
+        "isWeapon": false
+      },
+      {
+        "name": "Sigewinne",
+        "element": "Hydro",
+        "weaponType": "bow",
+        "isWeapon": false
+      },
+      {
+        "name": "Lumidouce Elegy",
+        "element": "Dendro",
+        "weaponType": "polearm",
+        "isWeapon": true
+      },
+      {
+        "name": "Absolution",
+        "element": "Electro",
+        "weaponType": "sword",
+        "isWeapon": true
+      },
+      {
+        "name": "Verdict",
+        "element": "Geo",
+        "weaponType": "claymore",
+        "isWeapon": true
+      },
+      {
+        "name": "The First Great Magic",
+        "element": "Pyro",
+        "weaponType": "bow",
+        "isWeapon": true
+      },
+      {
+        "name": "Silvershower Heartstrings",
+        "element": "Hydro",
+        "weaponType": "bow",
+        "isWeapon": true
+      }
+    ]
   },
   {
     "phase": "Phase 1",
