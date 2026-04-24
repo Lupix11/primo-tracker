@@ -403,6 +403,9 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-bar.spec{background:linear-gradient(90deg,#c1a5e2,#a080c0);color:#14111b;}
 .ptl-bar.weapon.live,.ptl-bar.weapon.soon{background:linear-gradient(90deg,#f6d493,#f0b050);}
 .ptl-bar.weapon.spec{background:linear-gradient(90deg,#c4abd8,#9f86c0);}
+.ptl-bar.chronicled.live{background:linear-gradient(90deg,#7ee8f5,#4db8d4);}
+.ptl-bar.chronicled.soon{background:linear-gradient(90deg,#a0d8ef,#5aadcc);}
+.ptl-bar.chronicled.spec{background:linear-gradient(90deg,#b0c8d8,#7fa8c0);}
 .ptl-bar.selected{outline:2px solid rgba(240,208,128,0.96);box-shadow:0 0 0 4px rgba(240,208,128,0.16), 0 10px 24px rgba(0,0,0,0.22);z-index:5;transform:translateY(-1px);} 
 .ptl-bar.dimmed{opacity:0.72;}
 .ptl-bar-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;position:relative;z-index:2;}
@@ -676,7 +679,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v189</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v190</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1504,7 +1507,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v189';
+const APP_VERSION = 'v190';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2349,7 +2352,7 @@ function renderTimeline(banners){
       const isSoon=now<startMoment;
       const statusLabel=isEnded?'Ended':isLive?formatCountdownParts(b.endDate,'end').text:'Starts '+formatCountdownParts(b.startDate,'start').text;
       const statusColor=isEnded?'#907898':isLive?'#80f0a0':'#f0d080';
-      const typeLabel=b.type==='weapon'?'⚔ Weapon':'✦ Character';
+      const typeLabel=b.type==='weapon'?'⚔ Weapon':b.type==='chronicled'?'✦ Chronicled':'✦ Character';
       const names=(Array.isArray(b.characters)?b.characters:[b.characters]).join(' · ');
       const palette=b.color
         ? {c1:blendHex(b.color,'#ffffff',0.45),c2:b.color}
@@ -2477,7 +2480,8 @@ function renderTimeline(banners){
 
   const groups=[
     {key:'character', label:'Character banners', sub:'Featured character rows.'},
-    {key:'weapon', label:'Weapon banners', sub:'Featured weapon rows.'}
+    {key:'weapon', label:'Weapon banners', sub:'Featured weapon rows.'},
+    {key:'chronicled', label:'Chronicled Wish', sub:'Pick any limited 5★ from the pool.'}
   ];
 
   const rows=groups.map(group=>{
@@ -2485,7 +2489,7 @@ function renderTimeline(banners){
     const track=buildTrack(items);
     return `<div class="ptl-row">
       <div class="ptl-info">
-        <span class="ptl-dot2 ${group.key==='weapon'?'soon':'live'}"></span>
+        <span class="ptl-dot2 ${group.key==='weapon'?'soon':group.key==='chronicled'?'live':'live'}"></span>
         <div class="ptl-meta-wrap">
           <div class="ptl-track-label">${group.label}</div>
           <div class="ptl-track-sub">${group.sub}</div>
