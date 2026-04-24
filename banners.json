@@ -95,19 +95,17 @@
     "phase": "Phase 2",
     "version": "6.5",
     "type": "chronicled",
+    "subtype": "character",
     "characters": [
       "Fontaine Chronicled Wish"
     ],
     "elements": [
       "Hydro"
     ],
-    "startDate": "2026-04-28",
-    "endDate": "2026-05-19",
-    "status": "soon",
     "images": {
-      "Chronicled Wish": {
-        "desktop": "images/chronicled-wish/fontaine-chronicled-wish-desktop.jpg",
-        "mobile": "images/chronicled-wish/fontaine-chronicled-wish-mobile.jpg"
+      "Fontaine Chronicled Wish": {
+        "desktop": "images/chronicled-wish/fontaine-chronicled-wish-characters-desktop.jpg",
+        "mobile": "images/chronicled-wish/fontaine-chronicled-wish-characters-mobile.jpg"
       }
     },
     "pool": [
@@ -140,7 +138,30 @@
         "element": "Hydro",
         "weaponType": "bow",
         "isWeapon": false
-      },
+      }
+    ],
+    "startDate": "2026-04-28",
+    "endDate": "2026-05-19",
+    "status": "soon"
+  },
+  {
+    "phase": "Phase 2",
+    "version": "6.5",
+    "type": "chronicled",
+    "subtype": "weapon",
+    "characters": [
+      "Fontaine Chronicled Wish"
+    ],
+    "elements": [
+      "Hydro"
+    ],
+    "images": {
+      "Fontaine Chronicled Wish": {
+        "desktop": "images/chronicled-wish/fontaine-chronicled-wish-weapons-desktop.jpg",
+        "mobile": "images/chronicled-wish/fontaine-chronicled-wish-weapons-mobile.jpg"
+      }
+    },
+    "pool": [
       {
         "name": "Lumidouce Elegy",
         "element": "Dendro",
@@ -171,7 +192,10 @@
         "weaponType": "bow",
         "isWeapon": true
       }
-    ]
+    ],
+    "startDate": "2026-04-28",
+    "endDate": "2026-05-19",
+    "status": "soon"
   },
   {
     "phase": "Phase 1",
