@@ -179,8 +179,12 @@ textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid r
 .welkin-dot{width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex-shrink:0;}
 .welkin-toggle.on .welkin-dot{background:#80d0f0;}
 .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:13px;}
-.tile{background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.09);border-radius:10px;height:76px;display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:column;padding:0 8px;}
-.tile-val{font-family:'Cinzel',serif;font-size:17px;color:#f0d080;font-weight:600;line-height:1.1;}
+.tile{background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.09);border-top:1px solid rgba(240,208,128,0.22);border-radius:10px;height:76px;display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:row;gap:12px;padding:0 16px;cursor:default;transition:transform 0.16s ease,box-shadow 0.18s ease,border-color 0.16s ease;position:relative;overflow:hidden;}
+.tile::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(240,208,128,0.35),transparent);pointer-events:none;}
+.tile:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3),0 0 0 1px rgba(240,208,128,0.22);border-color:rgba(240,208,128,0.28);}
+.tile-icon{width:38px;height:38px;flex-shrink:0;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5));}
+.tile-text{display:flex;flex-direction:column;align-items:flex-start;}
+.tile-val{font-family:'Cinzel',serif;font-size:20px;color:#f0d080;font-weight:600;line-height:1.1;}
 .tile-lbl{font-size:9px;color:#907898;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
 .tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px;}
 .tab{font-family:'Nunito',sans-serif;font-size:12px;padding:5px 13px;border-radius:20px;cursor:pointer;border:1px solid rgba(240,208,128,0.13) !important;color:#605870 !important;background:transparent;transition:all 0.18s;}
@@ -679,7 +683,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v197</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v198</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -734,8 +738,8 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
       <div class="qa-wrap">
         <button class="qa-add-btn" onclick="addEntry()">Add ＋</button>
         <div class="qa-field"><div class="qa-label">Date</div><input type="date" id="inp-date" class="qa-input"/></div>
-        <div class="qa-field"><div class="qa-label">💎 Primogems</div><input type="number" id="inp-primo" class="qa-input" placeholder="21784" min="0" oninput="calcPreview()"/></div>
-        <div class="qa-field"><div class="qa-label">✨ Intertwined Fates</div><input type="number" id="inp-fates" class="qa-input" placeholder="17" min="0" oninput="calcPreview()"/></div>
+        <div class="qa-field"><div class="qa-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/primogem.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Primogems</div><input type="number" id="inp-primo" class="qa-input" placeholder="21784" min="0" oninput="calcPreview()"/></div>
+        <div class="qa-field"><div class="qa-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Intertwined Fates</div><input type="number" id="inp-fates" class="qa-input" placeholder="17" min="0" oninput="calcPreview()"/></div>
       </div>
       <div class="qa-preview" id="qa-preview">—</div>
       <span class="note-toggle" onclick="toggleNoteInput()">📝 <span id="note-toggle-txt">Add a note</span></span>
@@ -752,10 +756,10 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
     <div class="card">
       <div class="ov-header"><div class="card-title" data-i18n="dash_overview">Overview</div><div class="welkin-toggle" id="welkin-btn" onclick="toggleWelkin()"><span class="welkin-dot"></span>Welkin</div></div>
       <div class="tiles">
-        <div class="tile"><div class="tile-val" id="s-primo">—</div><div class="tile-lbl">Primogems</div></div>
-        <div class="tile"><div class="tile-val" id="s-fates">—</div><div class="tile-lbl">Fates</div></div>
-        <div class="tile"><div class="tile-val" id="s-total">—</div><div class="tile-lbl">Total Primos</div></div>
-        <div class="tile"><div class="tile-val" id="s-pulls">—</div><div class="tile-lbl">Total Pulls</div></div>
+        <div class="tile"><img class="tile-icon" src="https://lupix11.github.io/primo-tracker/images/pulls/primogem.png" alt="primo"><div class="tile-text"><div class="tile-val" id="s-primo">—</div><div class="tile-lbl">Primogems</div></div></div>
+        <div class="tile"><img class="tile-icon" src="https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png" alt="fate"><div class="tile-text"><div class="tile-val" id="s-fates">—</div><div class="tile-lbl">Fates</div></div></div>
+        <div class="tile"><img class="tile-icon" src="https://lupix11.github.io/primo-tracker/images/pulls/primogem.png" alt="primo"><div class="tile-text"><div class="tile-val" id="s-total">—</div><div class="tile-lbl">Total Primos</div></div></div>
+        <div class="tile"><img class="tile-icon" src="https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png" alt="fate"><div class="tile-text"><div class="tile-val" id="s-pulls">—</div><div class="tile-lbl">Total Pulls</div></div></div>
       </div>
       <div class="tabs">
         <button class="tab active" onclick="switchTab(this,'primos')" data-i18n="term_primogems">Primogems</button>
@@ -776,7 +780,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
       </div>
       <div class="log-wrap log-desktop-only">
         <div class="log-outer">
-          <div class="log-col-hdr"><span>Date</span><span>💎 Primos</span><span>✨ Fates</span><span>Total Primos</span><span>Pulls</span><span>Daily Gain</span><span></span></div>
+          <div class="log-col-hdr"><span>Date</span><span><img src="https://lupix11.github.io/primo-tracker/images/pulls/primogem.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Primos</span><span><img src="https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Fates</span><span>Total Primos</span><span>Pulls</span><span>Daily Gain</span><span></span></div>
           <div class="log-vp" id="log-vp"><div class="log-strip" id="log-strip"></div></div>
         </div>
         <div class="v-col"><input type="range" class="v-slider" id="log-slider" min="0" value="0" step="1" oninput="onSlider()"/></div>
@@ -1507,7 +1511,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v197';
+const APP_VERSION = 'v198';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1998,7 +2002,7 @@ function renderLog(){
         strip.appendChild(row);
         const exp=document.createElement('div');exp.className='log-expand';exp.dataset.date=e.date;
         exp.style.cssText='overflow:hidden;'+(isExp?'':'height:0px;');
-        exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label">💎 Primogems</div><input class="ef-input" type="number" id="mep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label">✨ Fates</div><input class="ef-input" type="number" id="mef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="mepv-${e.date}"></div><textarea class="expand-note" id="men-${e.date}" placeholder="Notes...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
+        exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/primogem.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Primogems</div><input class="ef-input" type="number" id="mep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Fates</div><input class="ef-input" type="number" id="mef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="mepv-${e.date}"></div><textarea class="expand-note" id="men-${e.date}" placeholder="Notes...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
         strip.appendChild(exp);
       });
       if(mScrollHint) mScrollHint.textContent=total>8?'↕ scroll for older entries':'';
@@ -2025,7 +2029,7 @@ function renderLog(){
     strip.appendChild(row);
     const exp=document.createElement('div');exp.className='log-expand';exp.dataset.date=e.date;
     exp.style.cssText='overflow:hidden;height:0px;';
-    exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label">💎 Primogems</div><input class="ef-input" type="number" id="ep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label">✨ Intertwined Fates</div><input class="ef-input" type="number" id="ef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="epv-${e.date}"></div><textarea class="expand-note" id="en-${e.date}" placeholder="Notes for ${fmtDate(e.date)}...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
+    exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/primogem.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Primogems</div><input class="ef-input" type="number" id="ep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Intertwined Fates</div><input class="ef-input" type="number" id="ef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="epv-${e.date}"></div><textarea class="expand-note" id="en-${e.date}" placeholder="Notes for ${fmtDate(e.date)}...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
     strip.appendChild(exp);
   });
   let expandH=0;
