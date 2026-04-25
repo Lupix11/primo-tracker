@@ -239,7 +239,7 @@ textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid r
 .hint-txt{font-size:10px;color:#504060;font-style:italic;}
 .log-wrap{position:relative;}
 .log-outer{width:100%;padding-right:22px;box-sizing:border-box;}
-.log-col-hdr{display:grid;grid-template-columns:0.85fr 1fr 0.75fr 1.1fr 0.75fr 1fr 27px;align-items:center;height:32px;padding:0 12px;border-bottom:1px solid rgba(240,208,128,0.11);color:#c8a84b;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.9px;}
+.log-col-hdr{display:grid;grid-template-columns:0.85fr 1fr 0.75fr 1.1fr 0.75fr 1fr;align-items:center;height:32px;padding:0 12px;border-bottom:1px solid rgba(240,208,128,0.11);color:#c8a84b;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.9px;}
 .log-vp{overflow:hidden;position:relative;}
 .log-vp::after{content:'';position:absolute;left:0;right:0;bottom:0;height:18px;z-index:2;pointer-events:none;background:linear-gradient(to top,rgba(14,18,25,0.6),transparent);}
 .log-strip{will-change:transform;transition:transform 0.18s cubic-bezier(0.25,0.8,0.25,1);}
@@ -753,7 +753,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v252</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v253</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -914,10 +914,11 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
         <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:none;stroke:#f0d080;stroke-width:1.8;flex-shrink:0;"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
         Pull Planner
       </div>
-      <div class="chain-page-sub">Plan your future pulls and track the primogems you need for your goals. &nbsp;
-        <span style="font-size:11px;color:#a090c0;">Target:</span>
-        <button id="timing-end" onclick="setPlannerTiming('end')" style="font-size:11px;padding:2px 10px;border-radius:999px;border:1px solid rgba(240,208,128,0.25);background:rgba(240,208,128,0.12);color:#f0d080;cursor:pointer;margin-left:4px;font-family:'Nunito',sans-serif;transition:all 0.15s;">Banner End</button>
-        <button id="timing-start" onclick="setPlannerTiming('start')" style="font-size:11px;padding:2px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:#605870;cursor:pointer;margin-left:3px;font-family:'Nunito',sans-serif;transition:all 0.15s;">Banner Start</button>
+      <div class="chain-page-sub">Plan your future pulls and track the primogems you need for your goals.</div>
+      <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
+        <span style="font-size:11px;color:#a090c0;">Target deadline:</span>
+        <button id="timing-end" onclick="setPlannerTiming('end')" style="font-size:11px;padding:2px 10px;border-radius:999px;border:1px solid rgba(240,208,128,0.25);background:rgba(240,208,128,0.12);color:#f0d080;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;">Banner End</button>
+        <button id="timing-start" onclick="setPlannerTiming('start')" style="font-size:11px;padding:2px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:#605870;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;">Banner Start</button>
       </div>
     </div>
     <div class="chain-layout">
@@ -1610,7 +1611,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v252';
+const APP_VERSION = 'v253';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1921,6 +1922,7 @@ async function save(){
 }
 
 function goTo(pg){
+  document.querySelectorAll('.nav-item').forEach(b=>b.blur());
   activePage=pg;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+pg).classList.add('active');
@@ -2610,7 +2612,7 @@ function renderTimeline(banners){
       const imgHtml = imgUrl && barWidth > 120
         ? `<img class="ptl-bar-img" src="${imgUrl}" alt="" loading="lazy" onerror="this.style.display='none';"/>`
         : '';
-      const statusDot=isLive?'<span class="bdot bdot-live"></span>':(!isPast&&!isSpec?'<span class="bdot bdot-soon"></span>':''); return `<div style="position:absolute;left:${startOffset+3}px;top:${top}px;display:flex;align-items:center;z-index:${zIdx};">${statusDot}
+      const statusDot=isLive?'<span class="bdot bdot-live" style="margin-left:1px;"></span>':(!isPast&&!isSpec?'<span class="bdot bdot-soon" style="margin-left:1px;"></span>':''); return `<div style="position:absolute;left:${startOffset+3}px;top:${top}px;display:flex;align-items:center;z-index:${zIdx};">${statusDot}
         <button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="width:${barWidth}px;height:${barHeight}px;background:linear-gradient(90deg,${palette.c2},${palette.c1});color:${palette.fg};position:relative;" data-bidx="${b._index}" onmousemove="moveTip(event)" onmouseenter="showTLTooltip(event,'${b.displayName.replace(/'/g,"\\'")}','${b.startDate}','${b.endDate}')" onmouseleave="hideTLTooltip()">
           ${imgHtml}
           <span class="ptl-bar-label">${b.displayName}</span>
@@ -3242,7 +3244,7 @@ function buildSummaryHtml(type,orderedBanners){
     </div>`;
   }).join('');
 
-  return `<div class="chain-summary">
+  return `<div class="chain-summary card" style="padding:14px 16px;margin-bottom:10px;">
   <div class="chain-sum-title">${title}</div>
   <div class="chain-sum-grid-4" style="margin-bottom:12px;">
     <div>
