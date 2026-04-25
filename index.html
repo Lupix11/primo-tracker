@@ -389,22 +389,22 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-days{height:24px;}
 .ptl-day{position:absolute;top:2px;bottom:0;border-left:1px solid rgba(255,255,255,0.06);font-size:10px;color:#7f7593;padding-left:4px;}
 .ptl-day.today{color:#f0d080;border-left-color:rgba(240,208,128,0.55);}
-.ptl-today-line{position:absolute;top:0;bottom:0;width:0;transform:translateX(-50%);z-index:10;pointer-events:none;}
-.ptl-today-line::before{content:"";position:absolute;left:0;top:0;width:2px;height:100%;background:#f0d080;transform:translateX(-50%);z-index:3;}
-.ptl-today-line::after{content:"";position:absolute;left:0;top:0;width:12px;height:100%;background:radial-gradient(ellipse at center,rgba(240,208,128,0.3),rgba(240,208,128,0.1),transparent);transform:translateX(-50%);filter:blur(4px);z-index:2;}
+.ptl-today-line{position:absolute;top:0;bottom:0;width:2px;background:#f0d080;box-shadow:0 0 3px rgba(240,208,128,0.4);z-index:10;pointer-events:none;}
+.ptl-today-line::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:18px;transform:translateX(-50%);background:linear-gradient(to right,transparent,rgba(240,208,128,0.28),transparent);filter:blur(5px);z-index:-1;}
+.ptl-today-line::after{content:"";position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:#f0d080;box-shadow:0 0 8px rgba(240,208,128,0.8);}
+.ptl-today-top-dot{position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:#f0d080;box-shadow:0 0 8px rgba(240,208,128,0.8);z-index:11;pointer-events:none;}
 
 
 .ptl-today-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:#f0d080;box-shadow:0 0 0 2px rgba(240,208,128,0.35);transform:translate(-50%,-50%);z-index:11;pointer-events:none;animation:dot-pulse 2s ease-in-out infinite;}@keyframes dot-pulse{0%,100%{box-shadow:0 0 0 2px rgba(240,208,128,0.35);}50%{box-shadow:0 0 0 4px rgba(240,208,128,0.6),0 0 6px rgba(240,208,128,0.4);}}
-.bdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-right:6px;display:inline-block;position:relative;vertical-align:middle;}
-.bdot::before{content:"";position:absolute;inset:-4px;border-radius:50%;filter:blur(3px);z-index:1;}
-.bdot-live{background:#80f0a0;box-shadow:0 0 6px rgba(128,240,160,0.7);animation:live-dot-pulse 2s infinite;}
-.bdot-live::before{background:radial-gradient(rgba(128,240,160,0.5),transparent 70%);animation:live-dot-pulse 2s infinite;}
-.bdot-soon{background:#f0d080;box-shadow:0 0 5px rgba(240,208,128,0.5);animation:soon-dot-pulse 2.4s infinite;}
-.bdot-soon::before{background:radial-gradient(rgba(240,208,128,0.4),transparent 70%);}
-.bdot-empty{background:transparent;opacity:0;}
-@keyframes live-dot-pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.35);opacity:0.5;}}
-@keyframes soon-dot-pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.25);opacity:0.6;}}
-.ptl-today-pill{position:absolute;top:6px;transform:translateX(-50%);font-size:10px;color:#0e1219;background:#f0d080;padding:2px 7px;border-radius:12px;z-index:4;font-weight:700;}
+.bdot{width:14px;height:14px;border-radius:50%;flex-shrink:0;margin-right:6px;display:inline-block;position:relative;vertical-align:middle;}
+.bdot::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:50%;z-index:2;}
+.bdot-live{border:2px solid #80f0a0;box-shadow:0 0 10px rgba(128,240,160,0.6);animation:live-dot-pulse 2s infinite;}
+.bdot-live::after{background:#80f0a0;box-shadow:0 0 4px rgba(128,240,160,0.8);}
+.bdot-soon{border:2px solid #f0d080;box-shadow:0 0 8px rgba(240,208,128,0.45);}
+.bdot-soon::after{background:#f0d080;}
+.bdot-empty{opacity:0;border:none;}
+@keyframes live-dot-pulse{0%,100%{box-shadow:0 0 8px rgba(128,240,160,0.5);}50%{box-shadow:0 0 14px rgba(128,240,160,0.8);}}
+.ptl-today-pill{position:absolute;top:6px;transform:translateX(-50%);font-size:10px;color:#0e1219;background:#f0d080;padding:2px 7px;border-radius:12px;z-index:4;font-weight:700;box-shadow:0 0 10px rgba(240,208,128,0.55),0 0 20px rgba(240,208,128,0.2);}
 .ptl-row{display:grid;grid-template-columns:120px 1fr;min-height:36px;border-top:1px solid rgba(255,255,255,0.03);}
 .ptl-row:first-child{border-top:none;}
 .ptl-row.is-selected .ptl-name2{color:#f0d080;}
@@ -428,8 +428,8 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-gridline{position:absolute;top:0;bottom:0;border-left:1px solid rgba(255,255,255,0.045);}
 .ptl-bar{height:36px;border-radius:999px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;font-size:11px;color:#10131c;cursor:pointer;z-index:2;position:relative;transition:transform 0.12s ease, box-shadow 0.16s ease, outline-color 0.16s ease, opacity 0.16s ease;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12);border:none;overflow:hidden;}
 .ptl-bar:hover{transform:translateY(-1px);}
-.ptl-bar.live{background:linear-gradient(90deg,#bcebd0,#80f0a0);animation:bar-live-pulse 2.4s ease-in-out infinite;}
-@keyframes bar-live-pulse{0%,100%{box-shadow:0 0 4px rgba(128,240,160,0.2),0 0 0 1px rgba(128,240,160,0.35);}50%{box-shadow:0 0 8px rgba(128,240,160,0.35),0 0 0 1px rgba(128,240,160,0.55);}}
+.ptl-bar.live{background:linear-gradient(90deg,#bcebd0,#80f0a0);animation:bar-live-pulse 2.4s ease-in-out infinite;outline:1px solid rgba(240,208,128,0.65);filter:brightness(1.1) saturate(1.1);}
+@keyframes bar-live-pulse{0%,100%{box-shadow:0 0 14px rgba(240,208,128,0.3),0 0 6px rgba(128,240,160,0.4);}50%{box-shadow:0 0 22px rgba(240,208,128,0.45),0 0 14px rgba(128,240,160,0.6);}}
 .ptl-bar.soon{background:linear-gradient(90deg,#f3df9e,#f0d080);animation:bar-soon-pulse 2.8s ease-in-out infinite;}
 @keyframes bar-soon-pulse{0%,100%{box-shadow:0 0 4px rgba(240,208,128,0.18),0 0 0 1px rgba(240,208,128,0.3);}50%{box-shadow:0 0 8px rgba(240,208,128,0.3),0 0 0 1px rgba(240,208,128,0.5);}}
 .ptl-bar.spec{background:linear-gradient(90deg,#c1a5e2,#a080c0);color:#14111b;}
@@ -718,7 +718,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v225</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v226</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1558,7 +1558,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v225';
+const APP_VERSION = 'v226';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2610,7 +2610,7 @@ function renderTimeline(banners){
       </div>
       <div class="ptl-row-track" style="width:${timelineWidth}px;min-height:${track.height}px;">
         ${gridLines}
-        <div class="ptl-today-line" style="left:${todayX}px;"></div><div style="position:absolute;left:${todayX}px;top:-14px;transform:translateX(-50%);font-size:13px;color:#f0d080;filter:drop-shadow(0 0 5px rgba(240,208,128,0.8));z-index:11;pointer-events:none;user-select:none;line-height:1;">✦</div><div style="position:absolute;left:${todayX}px;bottom:-6px;transform:translateX(-50%);width:9px;height:9px;border-radius:50%;background:#f0d080;box-shadow:0 0 7px rgba(240,208,128,0.8);z-index:11;pointer-events:none;"></div>
+        <div class="ptl-today-line" style="left:${todayX}px;"><div class="ptl-today-top-dot"></div></div>
         ${track.bars}
       </div>
     </div>`;
@@ -2627,7 +2627,7 @@ function renderTimeline(banners){
           </div>
           <div class="ptl-head-track" style="width:${timelineWidth}px;">
             <div class="ptl-months">${months.join('')}</div>
-            <div class="ptl-days">${days.join('')}<div class="ptl-today-line" style="left:${todayX}px;"></div><div style="position:absolute;left:${todayX}px;top:-14px;transform:translateX(-50%);font-size:13px;color:#f0d080;filter:drop-shadow(0 0 5px rgba(240,208,128,0.8));z-index:11;pointer-events:none;user-select:none;line-height:1;">✦</div><div style="position:absolute;left:${todayX}px;bottom:-6px;transform:translateX(-50%);width:9px;height:9px;border-radius:50%;background:#f0d080;box-shadow:0 0 7px rgba(240,208,128,0.8);z-index:11;pointer-events:none;"></div><div class="ptl-today-pill" style="left:${todayX}px;transform:translateX(-50%);">Today</div></div>
+            <div class="ptl-days">${days.join('')}<div class="ptl-today-line" style="left:${todayX}px;"><div class="ptl-today-top-dot"></div></div><div class="ptl-today-pill" style="left:${todayX}px;transform:translateX(-50%);">Today</div></div>
           </div>
         </div>
         ${rows}
