@@ -723,7 +723,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v241</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v242</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -844,6 +844,19 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
     <div class="card" id="stats-hist-card" style="display:none;">
       <div class="card-title" style="margin-bottom:12px;">Daily Gain Distribution</div>
       <div class="hist-wrap"><canvas id="hist-chart" role="img"></canvas></div>
+    </div>
+    <div class="card" style="padding:10px 16px;">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span style="font-size:10px;color:#907898;letter-spacing:0.8px;text-transform:uppercase;margin-left:3px;">Range:</span>
+        <input type="text" id="stats-from" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);if(this.value.length===10){statsAvgRange='custom';document.querySelectorAll('.avg-pill').forEach(p=>p.classList.remove('active'));applyStatsDateRange();}" style="width:110px;padding:4px 8px;font-size:12px;"/>
+        <span style="color:#504060;font-size:12px;">→</span>
+        <input type="text" id="stats-to" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);if(this.value.length===10){statsAvgRange='custom';document.querySelectorAll('.avg-pill').forEach(p=>p.classList.remove('active'));applyStatsDateRange();}" style="width:110px;padding:4px 8px;font-size:12px;"/>
+        <div style="display:flex;gap:5px;margin-left:auto;">
+          <button class="tab ${statsAvgRange==='7d'?'active':''}" onclick="setStatsAvg('7d')">7d</button>
+          <button class="tab ${statsAvgRange==='30d'?'active':''}" onclick="setStatsAvg('30d')">30d</button>
+          <button class="tab ${statsAvgRange==='all'?'active':''}" onclick="setStatsAvg('all')">All</button>
+        </div>
+      </div>
     </div>
     <div class="card"><div id="stats-content"><div class="msg">Add some entries to see your stats.</div></div></div>
   </section>
@@ -1563,7 +1576,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v241';
+const APP_VERSION = 'v242';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2152,17 +2165,7 @@ function renderStats(){
   const lowestClass=worstG<0?'lowest-neg':'lowest-pos';
   const verdict = paceVal===null ? 'Not enough recent data yet.' : paceUp ? 'Recent gains are running above your selected-range average.' : 'Recent gains are running below your selected-range average.';
   el.innerHTML=`
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
-      <span style="font-size:10px;color:#907898;letter-spacing:0.8px;text-transform:uppercase;margin-left:3px;">Range:</span>
-      <input type="text" id="stats-from" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);if(this.value.length===10)applyStatsDateRange();" style="width:110px;padding:4px 8px;font-size:12px;"/>
-      <span style="color:#504060;font-size:12px;">→</span>
-      <input type="text" id="stats-to" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);if(this.value.length===10)applyStatsDateRange();" style="width:110px;padding:4px 8px;font-size:12px;"/>
-      <div style="display:flex;gap:5px;margin-left:auto;">
-        <button class="avg-pill ${statsAvgRange==='7d'?'active':''}" onclick="setStatsAvg('7d')">7d</button>
-        <button class="avg-pill ${statsAvgRange==='30d'?'active':''}" onclick="setStatsAvg('30d')">30d</button>
-        <button class="avg-pill ${statsAvgRange==='all'?'active':''}" onclick="setStatsAvg('all')">All</button>
-      </div>
-    </div>
+
     <div class="stats-hero">
       <div class="stats-hero-main">
         <div>
@@ -2256,6 +2259,10 @@ function setStatsAvg(r){
     if(fi2) fi2.value=toDMY(fromISO2);
     if(ti2) ti2.value=toDMY(last);
   }
+  document.querySelectorAll('.avg-pill,.tab').forEach(p=>{
+    const t=p.textContent.trim().toLowerCase();
+    p.classList.toggle('active',t===r||(r==='all'&&t==='all'));
+  });
   renderStats();
 }
 function swapMobileStatsChip(){
