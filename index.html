@@ -723,7 +723,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v238</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v239</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1563,7 +1563,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v238';
+const APP_VERSION = 'v239';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2153,11 +2153,11 @@ function renderStats(){
   const verdict = paceVal===null ? 'Not enough recent data yet.' : paceUp ? 'Recent gains are running above your selected-range average.' : 'Recent gains are running below your selected-range average.';
   el.innerHTML=`
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
-      <span style="font-size:10px;color:#907898;letter-spacing:0.8px;text-transform:uppercase;">Range:</span>
+      <span style="font-size:10px;color:#907898;letter-spacing:0.8px;text-transform:uppercase;margin-left:2px;">Range:</span>
       <input type="text" id="stats-from" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);applyStatsDateRange()" style="width:110px;padding:4px 8px;font-size:12px;"/>
       <span style="color:#504060;font-size:12px;">→</span>
       <input type="text" id="stats-to" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);applyStatsDateRange()" style="width:110px;padding:4px 8px;font-size:12px;"/>
-      <div style="display:flex;gap:5px;">
+      <div style="display:flex;gap:5px;margin-left:auto;">
         <button class="avg-pill ${statsAvgRange==='7d'?'active':''}" onclick="setStatsAvg('7d')">7d</button>
         <button class="avg-pill ${statsAvgRange==='30d'?'active':''}" onclick="setStatsAvg('30d')">30d</button>
         <button class="avg-pill ${statsAvgRange==='all'?'active':''}" onclick="setStatsAvg('all')">All</button>
@@ -2188,9 +2188,9 @@ function renderStats(){
     <div class="stats-section" style="background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;padding:14px 16px;background-image:linear-gradient(160deg,rgba(255,255,255,0.025) 0%,transparent 60%);">
       <div class="s-sect-title" data-i18n="stats_snapshot">Snapshot</div>
       <div class="stats-grid-3">
-        <div class="stats-metric"><div class="stats-metric-row"><div class="stat-icon gold"><img src="https://lupix11.github.io/primo-tracker/images/pulls/primogem.png" width="18" height="18"></div><div class="stats-metric-body"><div class="stats-metric-value">${primoGained.toLocaleString()}</div><div class="stats-metric-label">Primos gained</div><div class="stats-metric-sub">Growth during the selected range.</div></div></div></div>
-        <div class="stats-metric"><div class="stats-metric-row"><div class="stat-icon gold"><img src="https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png" width="18" height="18"></div><div class="stats-metric-body"><div class="stats-metric-value">${pullsGained.toLocaleString()}</div><div class="stats-metric-label">Pulls gained</div><div class="stats-metric-sub">Converted from the total primo gain.</div></div></div></div>
-        <div class="stats-metric"><div class="stats-metric-row"><div class="stat-icon gold"><img src="https://lupix11.github.io/primo-tracker/images/pulls/primogem.png" width="18" height="18"></div><div class="stats-metric-body"><div class="stats-metric-value">${last.total.toLocaleString()}</div><div class="stats-metric-label">Current primos</div><div class="stats-metric-sub">Latest total in your tracker.</div></div></div></div>
+        <div class="stats-metric"><div class="stats-metric-row"><img src="https://lupix11.github.io/primo-tracker/images/pulls/primogem.png" width="28" height="28" style="flex-shrink:0;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.5));"><div class="stats-metric-body"><div class="stats-metric-value">${primoGained.toLocaleString()}</div><div class="stats-metric-label">Primos gained</div><div class="stats-metric-sub">Growth during the selected range.</div></div></div></div>
+        <div class="stats-metric"><div class="stats-metric-row"><img src="https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png" width="28" height="28" style="flex-shrink:0;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.5));"><div class="stats-metric-body"><div class="stats-metric-value">${pullsGained.toLocaleString()}</div><div class="stats-metric-label">Pulls gained</div><div class="stats-metric-sub">Converted from the total primo gain.</div></div></div></div>
+        <div class="stats-metric"><div class="stats-metric-row"><img src="https://lupix11.github.io/primo-tracker/images/pulls/primogem.png" width="28" height="28" style="flex-shrink:0;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.5));"><div class="stats-metric-body"><div class="stats-metric-value">${last.total.toLocaleString()}</div><div class="stats-metric-label">Current primos</div><div class="stats-metric-sub">Latest total in your tracker.</div></div></div></div>
       </div>
     </div>
     <div class="stats-section" style="background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;padding:14px 16px;background-image:linear-gradient(160deg,rgba(255,255,255,0.025) 0%,transparent 60%);">
@@ -2245,9 +2245,7 @@ function getInpDate(){
   if(!el) return null;
   return parseDMY(el.value);
 }
-function applyStatsDateRange(){
-  renderStats();
-}
+function applyStatsDateRange(){renderStats();}
 function setStatsAvg(r){
   statsAvgRange=r;
   // Set date inputs based on pill selection
