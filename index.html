@@ -95,7 +95,9 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   .stats-chip{overflow:hidden;min-width:0;}
   .stats-hero-value{font-size:28px;display:flex;align-items:center;gap:8px;}
   .stats-grid-3{grid-template-columns:1fr!important;}
-  .stats-metric{overflow:hidden!important;}
+  .stats-metric{overflow:hidden!important;width:100%!important;box-sizing:border-box!important;}
+  .stats-section{margin-bottom:10px!important;}
+  .stats-grid-3,.stats-grid-2{width:100%!important;}
   .stats-metric-row{overflow:hidden!important;}
   .stats-metric-row img[width="48"]{width:26px!important;height:26px!important;}
   .stat-icon{width:26px!important;height:26px!important;font-size:12px!important;flex-shrink:0!important;}
@@ -752,7 +754,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v247</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v248</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1609,7 +1611,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v247';
+const APP_VERSION = 'v248';
 
 let gdToken = null;
 let gdTokenClient = null;
