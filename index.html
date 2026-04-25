@@ -397,9 +397,9 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-today-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:#f0d080;box-shadow:0 0 0 2px rgba(240,208,128,0.35);transform:translate(-50%,-50%);z-index:11;pointer-events:none;animation:dot-pulse 2s ease-in-out infinite;}@keyframes dot-pulse{0%,100%{box-shadow:0 0 0 2px rgba(240,208,128,0.35);}50%{box-shadow:0 0 0 4px rgba(240,208,128,0.6),0 0 6px rgba(240,208,128,0.4);}}
 .bdot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-right:6px;display:inline-block;position:relative;vertical-align:middle;}
 .bdot::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:4px;height:4px;border-radius:50%;z-index:2;}
-.bdot-live{border:1.5px solid #80f0a0;box-shadow:0 0 6px rgba(128,240,160,0.45);animation:live-dot-pulse 2.4s ease-in-out infinite;}
+.bdot-live{border:1.5px solid #80f0a0;box-shadow:0 0 5px rgba(128,240,160,0.17);animation:live-dot-pulse 2.4s ease-in-out infinite;}
 .bdot-live::after{background:#80f0a0;}
-.bdot-soon{border:1.5px solid #f0d080;box-shadow:0 0 6px rgba(240,208,128,0.38);animation:soon-dot-pulse 2.4s ease-in-out infinite;}@keyframes soon-dot-pulse{0%,100%{box-shadow:0 0 5px rgba(240,208,128,0.35);}50%{box-shadow:0 0 10px rgba(240,208,128,0.65);}}
+.bdot-soon{border:1.5px solid #f0d080;box-shadow:0 0 5px rgba(240,208,128,0.17);animation:soon-dot-pulse 2.4s ease-in-out infinite;}@keyframes soon-dot-pulse{0%,100%{box-shadow:0 0 5px rgba(240,208,128,0.17);}50%{box-shadow:0 0 8px rgba(240,208,128,0.17);}}
 .bdot-soon::after{background:#f0d080;}
 .bdot-empty{opacity:0;border:none;}
 @keyframes live-dot-pulse{0%,100%{box-shadow:0 0 5px rgba(128,240,160,0.4);}50%{box-shadow:0 0 10px rgba(128,240,160,0.7);}}
@@ -428,15 +428,15 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-bar{height:36px;border-radius:999px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;font-size:11px;color:#10131c;cursor:pointer;z-index:2;position:relative;transition:transform 0.12s ease, box-shadow 0.16s ease, outline-color 0.16s ease, opacity 0.16s ease;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12);border:none;overflow:hidden;}
 .ptl-bar:hover{transform:translateY(-1px);}
 .ptl-bar.live{background:linear-gradient(90deg,#80f0a0,#bcebd0);animation:bar-live-pulse 2.4s ease-in-out infinite;outline:1px solid rgba(128,240,160,0.4);filter:brightness(1.06) saturate(1.05);}
-@keyframes bar-live-pulse{0%,100%{box-shadow:0 0 7px rgba(128,240,160,0.32);}50%{box-shadow:0 0 14px rgba(128,240,160,0.58);}}
-.ptl-bar.soon{background:linear-gradient(90deg,#f0d080,#f3df9e);animation:bar-soon-pulse 2.4s ease-in-out infinite;outline:1px solid rgba(240,208,128,0.35);}@keyframes bar-soon-pulse{0%,100%{box-shadow:0 0 7px rgba(240,208,128,0.28);}50%{box-shadow:0 0 14px rgba(240,208,128,0.52);}}
+@keyframes bar-live-pulse{0%,100%{box-shadow:0 0 6px rgba(128,240,160,0.17);}50%{box-shadow:0 0 10px rgba(128,240,160,0.17);}}
+.ptl-bar.soon{background:linear-gradient(90deg,#f0d080,#f3df9e);animation:bar-soon-pulse 2.4s ease-in-out infinite;outline:1px solid rgba(240,208,128,0.35);}@keyframes bar-soon-pulse{0%,100%{box-shadow:0 0 6px rgba(240,208,128,0.17);}50%{box-shadow:0 0 10px rgba(240,208,128,0.17);}}
 
-.ptl-bar.spec{background:linear-gradient(90deg,#a080c0,#c1a5e2);color:#14111b;}
+
 .ptl-bar.weapon.live,.ptl-bar.weapon.soon{background:linear-gradient(90deg,#f0b050,#f6d493);}
-.ptl-bar.weapon.spec{background:linear-gradient(90deg,#9f86c0,#c4abd8);}
+
 .ptl-bar.chronicled.live{background:linear-gradient(90deg,#4db8d4,#7ee8f5);}
 .ptl-bar.chronicled.soon{background:linear-gradient(90deg,#5aadcc,#a0d8ef);}
-.ptl-bar.chronicled.spec{background:linear-gradient(90deg,#7fa8c0,#b0c8d8);}
+
 .ptl-bar.selected{outline:2px solid rgba(240,208,128,0.96);box-shadow:0 0 0 4px rgba(240,208,128,0.16), 0 10px 24px rgba(0,0,0,0.22);z-index:5;transform:translateY(-1px);} 
 .ptl-bar.dimmed{opacity:0.72;}
 .ptl-bar-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;position:relative;z-index:2;}
@@ -717,7 +717,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v233</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v234</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1557,7 +1557,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v233';
+const APP_VERSION = 'v234';
 
 let gdToken = null;
 let gdTokenClient = null;
