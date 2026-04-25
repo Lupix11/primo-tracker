@@ -148,9 +148,9 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   .gs-tag{display:none;}
   .hp-note{display:none;}
   /* Stats hero overlap fix */
-  .stats-hero{display:block;}
+  .stats-hero{display:flex;flex-direction:column;gap:8px;}
   .stats-hero-main{display:none!important;}
-  .stats-hero-side{display:grid;grid-template-columns:1fr 1fr;min-width:0;width:100%;max-width:100%;overflow:hidden;}
+  .stats-hero-side{display:grid;grid-template-columns:1fr 1fr;min-width:0;width:100%;}
   #stats-range-row{flex-wrap:wrap;gap:6px;}
   #stats-range-row .tab{padding:3px 10px;font-size:11px;}
 }
@@ -752,7 +752,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v247</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v246</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -878,7 +878,8 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
       <div class="card-title" style="margin-bottom:12px;">Daily Gain Distribution</div>
       <div class="hist-wrap"><canvas id="hist-chart" role="img"></canvas></div>
     </div>
-    <div id="stats-range-row" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+    <div class="card" style="padding:10px 16px;">
+      <div id="stats-range-row" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
         <span style="font-size:10px;color:#907898;letter-spacing:0.8px;text-transform:uppercase;margin-left:3px;">Range:</span>
         <input type="text" id="stats-from" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);if(this.value.length===10){statsAvgRange='custom';document.querySelectorAll('.avg-pill').forEach(p=>p.classList.remove('active'));applyStatsDateRange();}" style="width:110px;padding:4px 8px;font-size:12px;"/>
         <span style="color:#504060;font-size:12px;">→</span>
@@ -888,20 +889,21 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
           <button class="tab ${statsAvgRange==='30d'?'active':''}" onclick="setStatsAvg('30d')">30d</button>
           <button class="tab ${statsAvgRange==='all'?'active':''}" onclick="setStatsAvg('all')">All</button>
         </div>
+      </div>
     </div>
     <div class="card"><div id="stats-content"><div class="msg">Add some entries to see your stats.</div></div></div>
   </section>
 
   <!-- PLANNER -->
-  <section id="page-timeline" class="page" style="overflow:hidden;height:calc(100vh - 72px);display:flex;flex-direction:column;padding-bottom:0;">
+  <section id="page-timeline" class="page">
     <div class="chain-page-hdr">
       <div class="chain-page-title"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:#f0d080;stroke-width:1.8;flex-shrink:0;"><line x1="3" y1="12" x2="21" y2="12"/><polyline points="8 6 3 12 8 18"/><polyline points="16 6 21 12 16 18"/></svg>Banner Timeline
         <button class="fetch-btn" id="fetch-btn" onclick="fetchBanners()" style="margin-left:12px;font-family:'Nunito',sans-serif;font-size:11px;"><svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>Refresh</button>
       </div>
       <div class="chain-page-sub">Track upcoming and active Genshin Impact banners across versions.</div>
     </div>
-    <div class="card" style="padding:14px 16px;flex:1;overflow:hidden;display:flex;flex-direction:column;">
-      <div id="timeline-list" style="flex:1;overflow:hidden;"><div class="msg">Click Refresh to load banners ✦</div></div>
+    <div class="card" style="padding:14px 16px;">
+      <div id="timeline-list"><div class="msg">Click Refresh to load banners ✦</div></div>
     </div>
   </section>
 
@@ -1607,7 +1609,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v247';
+const APP_VERSION = 'v246';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2195,12 +2197,7 @@ function renderStats(){
   gains.forEach((g,i)=>{if(g===null)return;if(g>bestG){bestG=g;bestD=rangeEntries[i]?.date;}if(g<worstG){worstG=g;worstD=rangeEntries[i]?.date;}});
   const lowestClass=worstG<0?'lowest-neg':'lowest-pos';
   const verdict = paceVal===null ? 'Not enough recent data yet.' : paceUp ? 'Recent gains are running above your selected-range average.' : 'Recent gains are running below your selected-range average.';
-  const mobileAvgHtml=`<div class="mobile-only" style="background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.18);border-top:1px solid rgba(240,208,128,0.3);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;">
-    <img src="https://lupix11.github.io/primo-tracker/images/pulls/primogem.png" width="28" height="28" style="filter:drop-shadow(0 1px 4px rgba(0,0,0,0.5));flex-shrink:0;">
-    <div><div style="font-size:22px;color:#f0d080;font-family:'Cinzel',serif;font-weight:600;">${curAvg!=null?curAvg.toLocaleString():'—'}</div><div style="font-size:9px;color:#907898;text-transform:uppercase;letter-spacing:1px;margin-top:1px;">Avg daily gain</div></div>
-    <div style="margin-left:auto;text-align:right;"><div style="font-size:18px;color:${paceUp?'#80f0a0':'#f09060'};">${paceVal!=null?(paceUp?'+':'')+paceVal.toLocaleString():'—'}</div><div style="font-size:9px;color:#907898;text-transform:uppercase;letter-spacing:1px;margin-top:1px;">7-day pace</div></div>
-  </div>`;
-  el.innerHTML=mobileAvgHtml+`
+  el.innerHTML=`
 
     <div class="stats-hero">
       <div class="stats-hero-main">
