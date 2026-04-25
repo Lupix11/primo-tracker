@@ -306,10 +306,6 @@
         "desktop": "images/sandrone/sandrone-desktop.jpg",
         "mobile": "images/sandrone/sandrone-mobile.jpg"
       },
-      "???": {
-        "desktop": "images/sandrone/sandrone-desktop.jpg",
-        "mobile": "images/sandrone/sandrone-mobile.jpg"
-      }
     },
     "startDate": "2026-07-01",
     "endDate": "2026-07-21",
