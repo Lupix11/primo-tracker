@@ -389,22 +389,21 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-days{height:24px;}
 .ptl-day{position:absolute;top:2px;bottom:0;border-left:1px solid rgba(255,255,255,0.06);font-size:10px;color:#7f7593;padding-left:4px;}
 .ptl-day.today{color:#f0d080;border-left-color:rgba(240,208,128,0.55);}
-.ptl-today-line{position:absolute;top:0;bottom:0;width:2px;background:#f0d080;box-shadow:0 0 3px rgba(240,208,128,0.4);z-index:10;pointer-events:none;}
-.ptl-today-line::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:18px;transform:translateX(-50%);background:linear-gradient(to right,transparent,rgba(240,208,128,0.28),transparent);filter:blur(5px);z-index:-1;}
-.ptl-today-line::after{content:"";position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:#f0d080;box-shadow:0 0 8px rgba(240,208,128,0.8);}
-.ptl-today-top-dot{position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:#f0d080;box-shadow:0 0 8px rgba(240,208,128,0.8);z-index:11;pointer-events:none;}
+.ptl-today-line{position:absolute;top:0;bottom:0;width:2px;background:#f0d080;box-shadow:0 0 4px rgba(240,208,128,0.18);z-index:10;pointer-events:none;}
+.ptl-today-line::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:14px;transform:translateX(-50%);background:linear-gradient(to right,transparent,rgba(240,208,128,0.08),transparent);filter:blur(4px);z-index:-1;}
+.ptl-today-line::after{content:"";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:50%;background:#f0d080;box-shadow:0 0 4px rgba(240,208,128,0.4);}
 
 
 .ptl-today-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:#f0d080;box-shadow:0 0 0 2px rgba(240,208,128,0.35);transform:translate(-50%,-50%);z-index:11;pointer-events:none;animation:dot-pulse 2s ease-in-out infinite;}@keyframes dot-pulse{0%,100%{box-shadow:0 0 0 2px rgba(240,208,128,0.35);}50%{box-shadow:0 0 0 4px rgba(240,208,128,0.6),0 0 6px rgba(240,208,128,0.4);}}
-.bdot{width:14px;height:14px;border-radius:50%;flex-shrink:0;margin-right:6px;display:inline-block;position:relative;vertical-align:middle;}
-.bdot::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:50%;z-index:2;}
-.bdot-live{border:2px solid #80f0a0;box-shadow:0 0 10px rgba(128,240,160,0.6);animation:live-dot-pulse 2s infinite;}
-.bdot-live::after{background:#80f0a0;box-shadow:0 0 4px rgba(128,240,160,0.8);}
-.bdot-soon{border:2px solid #f0d080;box-shadow:0 0 8px rgba(240,208,128,0.45);}
+.bdot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-right:6px;display:inline-block;position:relative;vertical-align:middle;}
+.bdot::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:4px;height:4px;border-radius:50%;z-index:2;}
+.bdot-live{border:1.5px solid #80f0a0;box-shadow:0 0 5px rgba(128,240,160,0.3);animation:live-dot-pulse 2.2s infinite;}
+.bdot-live::after{background:#80f0a0;}
+.bdot-soon{border:1.5px solid #f0d080;box-shadow:0 0 4px rgba(240,208,128,0.2);}
 .bdot-soon::after{background:#f0d080;}
 .bdot-empty{opacity:0;border:none;}
-@keyframes live-dot-pulse{0%,100%{box-shadow:0 0 8px rgba(128,240,160,0.5);}50%{box-shadow:0 0 14px rgba(128,240,160,0.8);}}
-.ptl-today-pill{position:absolute;top:6px;transform:translateX(-50%);font-size:10px;color:#0e1219;background:#f0d080;padding:2px 7px;border-radius:12px;z-index:4;font-weight:700;box-shadow:0 0 10px rgba(240,208,128,0.55),0 0 20px rgba(240,208,128,0.2);}
+@keyframes live-dot-pulse{0%,100%{box-shadow:0 0 4px rgba(128,240,160,0.25);}50%{box-shadow:0 0 7px rgba(128,240,160,0.45);}}
+.ptl-today-pill{position:absolute;top:6px;transform:translateX(-50%);font-size:10px;color:#0e1219;background:#f0d080;padding:2px 7px;border-radius:12px;z-index:4;font-weight:700;box-shadow:0 0 5px rgba(240,208,128,0.25);}
 .ptl-row{display:grid;grid-template-columns:120px 1fr;min-height:36px;border-top:1px solid rgba(255,255,255,0.03);}
 .ptl-row:first-child{border-top:none;}
 .ptl-row.is-selected .ptl-name2{color:#f0d080;}
@@ -428,10 +427,10 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .ptl-gridline{position:absolute;top:0;bottom:0;border-left:1px solid rgba(255,255,255,0.045);}
 .ptl-bar{height:36px;border-radius:999px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;font-size:11px;color:#10131c;cursor:pointer;z-index:2;position:relative;transition:transform 0.12s ease, box-shadow 0.16s ease, outline-color 0.16s ease, opacity 0.16s ease;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12);border:none;overflow:hidden;}
 .ptl-bar:hover{transform:translateY(-1px);}
-.ptl-bar.live{background:linear-gradient(90deg,#bcebd0,#80f0a0);animation:bar-live-pulse 2.4s ease-in-out infinite;outline:1px solid rgba(240,208,128,0.65);filter:brightness(1.1) saturate(1.1);}
-@keyframes bar-live-pulse{0%,100%{box-shadow:0 0 14px rgba(240,208,128,0.3),0 0 6px rgba(128,240,160,0.4);}50%{box-shadow:0 0 22px rgba(240,208,128,0.45),0 0 14px rgba(128,240,160,0.6);}}
+.ptl-bar.live{background:linear-gradient(90deg,#bcebd0,#80f0a0);animation:bar-live-pulse 2.4s ease-in-out infinite;outline:1px solid rgba(128,240,160,0.4);filter:brightness(1.06) saturate(1.05);}
+@keyframes bar-live-pulse{0%,100%{box-shadow:0 0 5px rgba(128,240,160,0.2);}50%{box-shadow:0 0 10px rgba(128,240,160,0.38);}}
 .ptl-bar.soon{background:linear-gradient(90deg,#f3df9e,#f0d080);animation:bar-soon-pulse 2.8s ease-in-out infinite;}
-@keyframes bar-soon-pulse{0%,100%{box-shadow:0 0 4px rgba(240,208,128,0.18),0 0 0 1px rgba(240,208,128,0.3);}50%{box-shadow:0 0 8px rgba(240,208,128,0.3),0 0 0 1px rgba(240,208,128,0.5);}}
+@keyframes bar-soon-pulse{0%,100%{box-shadow:0 0 4px rgba(240,208,128,0.12);}50%{box-shadow:0 0 7px rgba(240,208,128,0.25);}}
 .ptl-bar.spec{background:linear-gradient(90deg,#c1a5e2,#a080c0);color:#14111b;}
 .ptl-bar.weapon.live,.ptl-bar.weapon.soon{background:linear-gradient(90deg,#f6d493,#f0b050);}
 .ptl-bar.weapon.spec{background:linear-gradient(90deg,#c4abd8,#9f86c0);}
@@ -718,7 +717,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v226</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v227</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1558,7 +1557,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v226';
+const APP_VERSION = 'v227';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2610,7 +2609,7 @@ function renderTimeline(banners){
       </div>
       <div class="ptl-row-track" style="width:${timelineWidth}px;min-height:${track.height}px;">
         ${gridLines}
-        <div class="ptl-today-line" style="left:${todayX}px;"><div class="ptl-today-top-dot"></div></div>
+        <div class="ptl-today-line" style="left:${todayX}px;"></div>
         ${track.bars}
       </div>
     </div>`;
@@ -2627,7 +2626,7 @@ function renderTimeline(banners){
           </div>
           <div class="ptl-head-track" style="width:${timelineWidth}px;">
             <div class="ptl-months">${months.join('')}</div>
-            <div class="ptl-days">${days.join('')}<div class="ptl-today-line" style="left:${todayX}px;"><div class="ptl-today-top-dot"></div></div><div class="ptl-today-pill" style="left:${todayX}px;transform:translateX(-50%);">Today</div></div>
+            <div class="ptl-days">${days.join('')}<div class="ptl-today-line" style="left:${todayX}px;"></div><div class="ptl-today-pill" style="left:${todayX}px;transform:translateX(-50%);">Today</div></div>
           </div>
         </div>
         ${rows}
