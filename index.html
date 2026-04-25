@@ -29,7 +29,7 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
 .page.active{display:block;}
 .bottomnav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;z-index:50;background:rgba(10,12,18,0.97);backdrop-filter:blur(16px);border-top:1px solid rgba(240,208,128,0.09);justify-content:space-around;align-items:stretch;padding-bottom:env(safe-area-inset-bottom);}
 .bottomnav .nav-item{flex:1;flex-direction:column;justify-content:center;gap:2px;padding:5px 0;font-size:9px;align-items:center;border-left:none;border-top:2px solid transparent;}
-.bottomnav .nav-item.active{border-left:none;border-top-color:#f0d080;background:rgba(240,208,128,0.04);}
+.bottomnav .nav-item.active{border-left:none!important;border-top:2px solid #f0d080!important;border-radius:0!important;background:rgba(240,208,128,0.04);}
 .bottomnav .nav-item svg{width:19px;height:19px;}
 @media(max-width:900px) and (min-width:769px){
   .sidebar{width:58px;}
@@ -239,11 +239,11 @@ textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid r
 .hint-txt{font-size:10px;color:#504060;font-style:italic;}
 .log-wrap{position:relative;}
 .log-outer{width:100%;padding-right:22px;box-sizing:border-box;}
-.log-col-hdr{display:grid;grid-template-columns:0.85fr 1fr 0.75fr 1.1fr 0.75fr 1fr;align-items:center;height:32px;padding:0 12px;border-bottom:1px solid rgba(240,208,128,0.11);color:#c8a84b;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.9px;}
+.log-col-hdr{display:grid;grid-template-columns:0.85fr 1fr 0.75fr 1.1fr 0.75fr 1fr 80px;align-items:center;height:32px;padding:0 12px;border-bottom:1px solid rgba(240,208,128,0.11);color:#c8a84b;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.9px;}
 .log-vp{overflow:hidden;position:relative;}
 .log-vp::after{content:'';position:absolute;left:0;right:0;bottom:0;height:18px;z-index:2;pointer-events:none;background:linear-gradient(to top,rgba(14,18,25,0.6),transparent);}
 .log-strip{will-change:transform;transition:transform 0.18s cubic-bezier(0.25,0.8,0.25,1);}
-.log-row{display:grid;grid-template-columns:0.85fr 1fr 0.75fr 1.1fr 0.75fr 1fr 27px;align-items:center;height:44px;padding:0 12px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:15px;color:#ddd6cb;cursor:pointer;transition:background 0.13s;user-select:none;}
+.log-row{display:grid;grid-template-columns:0.85fr 1fr 0.75fr 1.1fr 0.75fr 1fr 80px;align-items:center;height:44px;padding:0 12px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:16px;color:#ddd6cb;cursor:pointer;transition:background 0.13s;user-select:none;}
 .log-row:hover{background:rgba(255,255,255,0.025);}
 .log-row.expanded{background:rgba(240,208,128,0.04);border-bottom:none;}
 .log-expand{overflow:hidden;}
@@ -678,7 +678,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .chain-pity-bar-wrap{margin-top:8px;}
 .chain-pity-bar-track{height:3px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden;}
 .chain-pity-bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#c8a84b,#f0d080);transition:width 0.3s ease;}
-.chain-summary{background:rgba(255,255,255,0.025);border:1px solid rgba(240,208,128,0.09);border-radius:12px;padding:14px 16px;margin-top:4px;}
+.chain-summary{margin-top:4px;}
 .chain-sum-title{font-family:'Cinzel',serif;font-size:9px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:11px;}
 .chain-sum-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;}
 .chain-sum-val{font-family:'Cinzel',serif;font-size:20px;color:#f0d080;line-height:1;display:flex;align-items:center;justify-content:center;gap:4px;}
@@ -713,7 +713,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .chain-summaries-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
 @media(max-width:900px){.chain-summaries-row{grid-template-columns:1fr;}}
 /* Combined totals */
-.chain-combined{background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.12);border-radius:12px;padding:16px 20px;margin-top:10px;}
+.chain-combined{margin-top:10px;}
 .chain-combined-title{font-family:'Cinzel',serif;font-size:9px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
 .chain-combined-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;text-align:center;}
 @media(max-width:900px){.chain-combined-grid{grid-template-columns:repeat(3,1fr);}}
@@ -753,7 +753,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v253</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v254</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1611,22 +1611,23 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v253';
+const APP_VERSION = 'v254';
 
 let gdToken = null;
 let gdTokenClient = null;
 let autoSyncTimer = null;
 let gdSilentReauth = false;
 
-function scheduleAutoSync() {
+function scheduleAutoSync(immediate=false) {
   if (!APP.syncConnected || !gdToken) return;
+  if(immediate){syncNow(true);return;}
   clearTimeout(autoSyncTimer);
   const el = document.getElementById('autosync-status');
-  if (el) el.textContent = 'Auto-sync in 20s…';
+  if (el) el.textContent = 'Auto-sync in 5s…';
   autoSyncTimer = setTimeout(async () => {
-    await syncNow(true); // true = silent mode
+    await syncNow(true);
     if (el) el.textContent = 'Auto-synced at ' + new Date().toLocaleTimeString();
-  }, 20000);
+  }, 5000);
 }
 
 function initGoogleAuth() {
@@ -2612,7 +2613,7 @@ function renderTimeline(banners){
       const imgHtml = imgUrl && barWidth > 120
         ? `<img class="ptl-bar-img" src="${imgUrl}" alt="" loading="lazy" onerror="this.style.display='none';"/>`
         : '';
-      const statusDot=isLive?'<span class="bdot bdot-live" style="margin-left:1px;"></span>':(!isPast&&!isSpec?'<span class="bdot bdot-soon" style="margin-left:1px;"></span>':''); return `<div style="position:absolute;left:${startOffset+3}px;top:${top}px;display:flex;align-items:center;z-index:${zIdx};">${statusDot}
+      const statusDot=isLive?'<span class="bdot bdot-live" style="margin-left:2px;"></span>':(!isPast&&!isSpec?'<span class="bdot bdot-soon" style="margin-left:2px;"></span>':''); return `<div style="position:absolute;left:${startOffset+3}px;top:${top}px;display:flex;align-items:center;z-index:${zIdx};">${statusDot}
         <button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="width:${barWidth}px;height:${barHeight}px;background:linear-gradient(90deg,${palette.c2},${palette.c1});color:${palette.fg};position:relative;" data-bidx="${b._index}" onmousemove="moveTip(event)" onmouseenter="showTLTooltip(event,'${b.displayName.replace(/'/g,"\\'")}','${b.startDate}','${b.endDate}')" onmouseleave="hideTLTooltip()">
           ${imgHtml}
           <span class="ptl-bar-label">${b.displayName}</span>
