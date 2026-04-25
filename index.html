@@ -61,12 +61,12 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   .qa-title-row{margin-bottom:10px;}
 
   /* Overview tiles — 2x2 grid */
-  .tiles{grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:11px;}
-  .tile{height:auto;min-height:64px;padding:8px 10px;flex-direction:row;gap:8px;}
-  .tile-icon{width:28px;height:28px;}
-  .tile-val{font-size:16px;}
-  .tile-lbl{font-size:8px;white-space:normal;}
-  .tile-text{align-items:flex-start;}
+  .tiles{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px;width:100%;}
+  .tile{height:60px!important;padding:0 8px!important;flex-direction:row!important;gap:8px!important;overflow:hidden!important;min-width:0!important;}
+  .tile-icon{width:24px!important;height:24px!important;flex-shrink:0!important;}
+  .tile-val{font-size:14px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+  .tile-lbl{font-size:7px!important;letter-spacing:0.3px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+  .tile-text{min-width:0!important;align-items:flex-start!important;}
 
   /* Chart */
   .chart-wrap{height:200px;}
@@ -93,7 +93,11 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   .stats-hero-side{grid-template-columns:1fr 1fr;min-width:0;}
   .stats-hero-main{flex-direction:column;align-items:flex-start;}
   .stats-hero-value{font-size:28px;display:flex;align-items:center;gap:8px;}
-  .stats-grid-3{grid-template-columns:1fr;}
+  .stats-grid-3{grid-template-columns:1fr!important;}
+  .stats-metric{overflow:hidden!important;}
+  .stats-metric-row{overflow:hidden!important;}
+  .stats-metric-row img[width="48"]{width:26px!important;height:26px!important;}
+  .stat-icon{width:26px!important;height:26px!important;font-size:12px!important;flex-shrink:0!important;}
   .stats-grid-2{grid-template-columns:1fr 1fr;}
   .stats-controls{justify-content:flex-start;}
   .stat-icon{width:28px;height:28px;font-size:13px;}
@@ -107,7 +111,13 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   .plan-top{grid-template-columns:1fr;}
   .plan-grade{font-size:42px;text-align:left;}
   .plan-insight{flex-direction:column;align-items:flex-start;}
-  .chain-card{overflow:hidden;}
+  .chain-card{overflow:hidden!important;max-width:calc(100vw - 20px)!important;box-sizing:border-box!important;}
+  .chain-card-body{overflow:hidden!important;}
+  .chain-col{max-width:100%!important;overflow:hidden!important;}
+  .chain-card-form{grid-template-columns:1fr 1fr!important;}
+  .chain-copies-wrap{flex-wrap:wrap!important;}
+  .chain-card-name{max-width:calc(100vw - 150px)!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;}
+  #page-planner{overflow-x:hidden!important;}
   .chain-card-form{grid-template-columns:1fr 1fr;gap:8px;}
   .chain-copies-wrap{flex-wrap:wrap;gap:4px;}
   .chain-copy-sq{width:22px;height:22px;}
@@ -288,7 +298,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .stats-controls{display:flex;justify-content:flex-end;gap:6px;margin-bottom:12px;}
 .stats-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .stats-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
-.stats-metric{background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;transition:transform 0.16s,box-shadow 0.18s;background-image:linear-gradient(160deg,rgba(255,255,255,0.025) 0%,transparent 60%);padding:10px 12px;min-height:80px;}
+.stats-metric{background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;overflow:hidden;transition:transform 0.16s,box-shadow 0.18s;background-image:linear-gradient(160deg,rgba(255,255,255,0.025) 0%,transparent 60%);padding:10px 12px;min-height:80px;}
 .stats-metric.big{min-height:88px;}
 .stats-metric-value{font-family:'Cinzel',serif;font-size:26px;color:#f0d080;line-height:1.05;}
 .stats-metric-value.inline{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;}
@@ -741,7 +751,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v243</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v244</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1602,7 +1612,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v243';
+const APP_VERSION = 'v244';
 
 let gdToken = null;
 let gdTokenClient = null;
