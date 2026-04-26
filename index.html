@@ -238,6 +238,21 @@ textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid r
 .ld span{width:20px;height:2px;display:block;background:repeating-linear-gradient(90deg,rgba(255,246,216,1) 0,rgba(255,246,216,1) 5px,transparent 5px,transparent 9px);}
 .chart-wrap{position:relative;height:250px;}
 .log-header-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;}
+.log2-header{display:flex;justify-content:space-between;align-items:baseline;padding:13px 18px 11px;border-bottom:1px solid rgba(240,208,128,0.1);}
+.log2-title{font-family:'Cinzel',serif;font-size:12px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;}
+.log2-title::before{content:'✦ ';font-size:10px;color:#f0d080;opacity:0.7;}
+.log2-col-hdr{display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr;align-items:center;padding:0 18px;height:30px;background:rgba(0,0,0,0.15);border-bottom:1px solid rgba(240,208,128,0.08);color:#6a5f7a;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.8px;text-transform:uppercase;}
+.log2-row{display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr;align-items:center;padding:0 18px;height:44px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:14px;color:#ddd6cb;transition:background 0.12s;}
+.log2-row:hover{background:rgba(240,208,128,0.04);}
+.log2-row:last-child{border-bottom:none;}
+.log2-date{color:#c8a84b;font-size:13px;}
+.log2-gain-pos{color:#80f0a0;}
+.log2-gain-neg{color:#f08080;}
+.log2-gain-base{color:#504060;}
+#log-body{overflow-y:auto;max-height:264px;}
+#log-body::-webkit-scrollbar{width:4px;}
+#log-body::-webkit-scrollbar-track{background:transparent;}
+#log-body::-webkit-scrollbar-thumb{background:rgba(240,208,128,0.2);border-radius:4px;}
 .log-header-left{display:flex;align-items:baseline;gap:7px;}
 .hint-txt{font-size:10px;color:#504060;font-style:italic;}
 .log-wrap{display:flex;align-items:stretch;gap:0;}
@@ -764,7 +779,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
   <div class="sidebar-logo">
     <div class="sidebar-logo-star">✦</div>
     <div class="sidebar-logo-name">Primos</div>
-    <div class="sidebar-logo-ver">v265</div>
+    <div class="sidebar-logo-ver">v266</div>
   </div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
@@ -858,6 +873,27 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
       </div>
       <div class="legend" id="legend"></div>
       <div class="chart-wrap"><canvas id="chart" role="img"></canvas></div>
+    </div>
+
+    <div class="card" id="log-card" style="padding:0;">
+      <div class="log2-header">
+        <div style="display:flex;align-items:baseline;gap:8px;">
+          <span class="log2-title">Log</span>
+          <span id="log-count" style="font-size:11px;color:#a090c0;"></span>
+        </div>
+        <span id="log-pos" style="font-size:11px;color:#a090c0;"></span>
+      </div>
+      <div id="log-table-wrap">
+        <div class="log2-col-hdr">
+          <span>Date</span>
+          <span><img src="https://lupix11.github.io/primo-tracker/images/pulls/primogem.png" style="width:12px;height:12px;vertical-align:middle;margin-right:3px;">Primos</span>
+          <span><img src="https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png" style="width:12px;height:12px;vertical-align:middle;margin-right:3px;">Fates</span>
+          <span>Total Primos</span>
+          <span>Pulls</span>
+          <span>Daily Gain</span>
+        </div>
+        <div id="log-body"></div>
+      </div>
     </div>
   </section>
 
@@ -1608,7 +1644,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v265';
+const APP_VERSION = 'v266';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2073,106 +2109,37 @@ function renderChart(){
 }
 function isMobile(){return window.innerWidth<=768;}
 function renderLog(){
-  // Explicitly show/hide based on screen width — beats any CSS specificity
-  const mob = isMobile();
-  document.querySelectorAll('.log-mobile-only').forEach(el => el.style.display = mob ? '' : 'none');
-  document.querySelectorAll('.log-desktop-only').forEach(el => el.style.display = mob ? 'none' : '');
-  const rev=[...entries].reverse(),total=rev.length,gains=getDG(),baseline=getBaseline();
-  document.getElementById('log-count').textContent=total?`${total} entr${total===1?'y':'ies'}`:'';
-  // scroll hint removed — log-pos header already shows range
-
-  // ── MOBILE LIST ──────────────────────────────────────────────────────────
-  const mobileList=document.getElementById('log-mobile-list');
-  const mScrollHint=document.getElementById('m-scroll-hint');
-  if(mobileList){
-    mobileList.innerHTML='';
-    if(!total){
-      mobileList.innerHTML='<div style="padding:16px;color:#907898;">No entries yet!</div>';
-    } else {
-      mobileList.innerHTML=`<div class="log-mobile-wrap"><div class="log-mobile-outer"><div class="log-mobile-vp"><div class="log-mobile-strip" id="m-log-strip"></div></div></div></div>`;
-      const strip=document.getElementById('m-log-strip');
-      rev.forEach(e=>{
-        const oi=entries.findIndex(x=>x.date===e.date),g=gains[oi];
-        let gh='<span class="gain-base">—</span>';
-        if(g!==null&&g!==undefined){const cls=g>=baseline?'gain-pos':'gain-neg';gh=`<span class="${cls}">${g>=0?'+':''}${g.toLocaleString()}</span>`;}
-        const nd=e.notes?'<span class="note-dot"></span>':'',isExp=expandedDate===e.date;
-        const row=document.createElement('div');
-        row.className='log-mobile-row'+(isExp?' expanded':'');
-        row.innerHTML=`<span style="color:#c8a84b;font-size:13px;min-width:48px;">${fmtDate(e.date)}${nd}</span><span style="flex:1;text-align:center;font-size:14px;">${e.primo!=null?e.primo.toLocaleString():'—'}</span><span style="font-size:14px;min-width:60px;text-align:right;">${gh}</span>`;
-        row.addEventListener('click',()=>toggleRowExpand(e.date));
-        strip.appendChild(row);
-        const exp=document.createElement('div');exp.className='log-expand';exp.dataset.date=e.date;
-        exp.style.cssText='overflow:hidden;'+(isExp?'':'height:0px;');
-        exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/primogem.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Primogems</div><input class="ef-input" type="number" id="mep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Fates</div><input class="ef-input" type="number" id="mef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="mepv-${e.date}"></div><textarea class="expand-note" id="men-${e.date}" placeholder="Notes...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
-        strip.appendChild(exp);
-      });
-      if(mScrollHint) mScrollHint.textContent=total>8?'↕ scroll for older entries':'';
-    }
-  }
-
-  // ── DESKTOP VIRTUAL SCROLL ───────────────────────────────────────────────
-  const vp=document.getElementById('log-vp'),strip=document.getElementById('log-strip');
-  const vCol=document.querySelector('.v-col');
-  strip.innerHTML='';
+  const body=document.getElementById('log-body');
+  const countEl=document.getElementById('log-count');
+  const posEl=document.getElementById('log-pos');
+  if(!body) return;
+  const total=entries.length;
+  if(countEl) countEl.textContent=total?`${total} entr${total===1?'y':'ies'}`:'';
+  if(posEl) posEl.textContent='';
   if(!total){
-    const e=document.createElement('div');e.className='log-row';e.style.cursor='default';
-    e.innerHTML='<span style="grid-column:1/-1;color:#907898;">No entries yet!</span>';
-    strip.appendChild(e);vp.style.height=ROW_H+'px';
-    if(vCol)vCol.style.display='none';
-    document.getElementById('log-slider').max=0;document.getElementById('log-pos').textContent='';return;
+    body.innerHTML='<div style="padding:16px 18px;color:#6a5f7a;font-size:13px;">No entries yet.</div>';
+    return;
   }
-  rev.forEach(e=>{
+  const gains=getDG(),baseline=getBaseline();
+  const rev=[...entries].reverse();
+  body.innerHTML=rev.map(e=>{
     const oi=entries.findIndex(x=>x.date===e.date),g=gains[oi];
-    let gh='<span class="gain-base">—</span>';
-    if(g!==null&&g!==undefined){const cls=g>=baseline?'gain-pos':'gain-neg';gh=`<span class="${cls}">${g>=0?'+':''}${g.toLocaleString()}</span>`;}
-    const nd=e.notes?'<span class="note-dot"></span>':'',isExp=expandedDate===e.date;
-    const row=document.createElement('div');row.className='log-row'+(isExp?' expanded':'');
-    row.innerHTML=`<span>${fmtDate(e.date)}${nd}</span><span>${e.primo!=null?e.primo.toLocaleString():'—'}</span><span>${e.fates!=null?e.fates.toLocaleString():'—'}</span><span>${e.total.toLocaleString()}</span><span>${e.pulls.toLocaleString()}</span><span>${gh}</span><span style="display:flex;align-items:center;gap:4px;justify-content:flex-end;"><button onclick="toggleRowExpand('${e.date}');event.stopPropagation();" style="background:none;border:none;cursor:pointer;color:#6d5a7e;font-size:13px;padding:2px 4px;border-radius:4px;transition:color 0.15s;" onmouseover="this.style.color='#c8a84b'" onmouseout="this.style.color='#8070a0'" title="Edit">✎</button><button onclick="deleteEntry('${e.date}',event)" style="background:none;border:none;cursor:pointer;color:#6d5a7e;font-size:13px;padding:2px 4px;border-radius:4px;transition:color 0.15s;" onmouseover="this.style.color='#f08080'" onmouseout="this.style.color='#8070a0'" title="Delete">✕</button></span>`;
-    row.addEventListener('click',()=>toggleRowExpand(e.date));
-    strip.appendChild(row);
-    // Only render expand panel for the currently expanded entry (avoids 0px div accumulation)
-    if(isExp){
-      const exp=document.createElement('div');exp.className='log-expand';exp.dataset.date=e.date;
-      exp.style.cssText='overflow:hidden;';
-      exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/primogem.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Primogems</div><input class="ef-input" type="number" id="ep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Intertwined Fates</div><input class="ef-input" type="number" id="ef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="epv-${e.date}"></div><textarea class="expand-note" id="en-${e.date}" placeholder="Notes for ${fmtDate(e.date)}...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
-      strip.appendChild(exp);
+    let gainHtml='<span class="log2-gain-base">—</span>';
+    if(g!==null&&g!==undefined){
+      const cls=g>baseline?'log2-gain-pos':g<baseline?'log2-gain-neg':'log2-gain-base';
+      gainHtml=`<span class="${cls}">${g>=0?'+':''}${g.toLocaleString()}</span>`;
     }
-  });
-  let expandH=0;
-  if(expandedDate){const op=strip.querySelector(`.log-expand[data-date="${expandedDate}"]`);if(op){expandH=op.offsetHeight;}}
-  const visRows=Math.min(total,PAGE_SIZE);
-  vp.style.height=(visRows*ROW_H+expandH)+'px';
-  const needsScroll=total>PAGE_SIZE;
-  if(vCol)vCol.style.display=needsScroll?'':'none';
-  const s=document.getElementById('log-slider'),maxO=Math.max(0,total-PAGE_SIZE);
-  s.max=maxO;offset=Math.min(offset,maxO);s.value=maxO-offset;applySlider(offset);
+    return `<div class="log2-row">
+      <span class="log2-date">${fmtDate(e.date)}</span>
+      <span>${e.primo!=null?e.primo.toLocaleString():'—'}</span>
+      <span>${e.fates!=null?e.fates.toLocaleString():'—'}</span>
+      <span>${e.total.toLocaleString()}</span>
+      <span>${e.pulls.toLocaleString()}</span>
+      <span>${gainHtml}</span>
+    </div>`;
+  }).join('');
 }
-function applySlider(o){
-  document.getElementById('log-strip').style.transform=`translateY(-${o*ROW_H}px)`;
-  const total=entries.length,end=Math.min(o+PAGE_SIZE,total);
-  document.getElementById('log-pos').textContent=total>PAGE_SIZE?`${o+1}–${end} of ${total}`:'';
-}
-function onSlider(){
-  const s=document.getElementById('log-slider'),newO=(parseInt(s.max)||0)-parseInt(s.value);
-  if(newO!==offset)expandedDate=null;
-  offset=newO;applySlider(offset);
-  if(expandedDate===null)renderLog();
-}
-function applyMSlider(o,rowH){
-  const strip=document.getElementById('m-log-strip');
-  if(strip) strip.style.transform=`translateY(-${o*rowH}px)`;
-}
-function onMSlider(){
-  const MOB_ROW_H=48,s=document.getElementById('m-log-slider');
-  if(!s) return;
-  const newO=(parseInt(s.max)||0)-parseInt(s.value);
-  if(newO!==offset) expandedDate=null;
-  offset=newO;
-  applyMSlider(offset,MOB_ROW_H);
-  const total=entries.length,MOB_PAGE=8,el=document.getElementById('m-scroll-hint');
-  if(el) el.textContent=total>MOB_PAGE?`${Math.min(offset+1,total)}–${Math.min(offset+MOB_PAGE,total)} of ${total}`:'';
-  if(expandedDate===null) renderLog();
-}
+
 
 function renderStats(){
   const histCard=document.getElementById('stats-hist-card'),el=document.getElementById('stats-content');
