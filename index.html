@@ -241,8 +241,8 @@ textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid r
 .log2-header{display:flex;justify-content:space-between;align-items:baseline;padding:13px 18px 11px;border-bottom:1px solid rgba(240,208,128,0.1);}
 .log2-title{font-family:'Cinzel',serif;font-size:12px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;}
 .log2-title::before{content:'✦ ';font-size:10px;color:#f0d080;opacity:0.7;}
-.log2-col-hdr{display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr;align-items:center;padding:0 18px;height:30px;background:rgba(0,0,0,0.15);border-bottom:1px solid rgba(240,208,128,0.08);color:#6a5f7a;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.8px;text-transform:uppercase;}
-.log2-row{display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr;align-items:center;padding:0 18px;height:44px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:14px;color:#ddd6cb;transition:background 0.12s;}
+.log2-col-hdr{display:grid;grid-template-columns:repeat(6,1fr);align-items:center;padding:0 22px;height:30px;background:rgba(0,0,0,0.15);border-bottom:1px solid rgba(240,208,128,0.08);color:#6a5f7a;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.8px;text-transform:uppercase;}
+.log2-row{display:grid;grid-template-columns:repeat(6,1fr);align-items:center;padding:0 22px;height:44px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:14px;color:#ddd6cb;transition:background 0.12s;}
 .log2-row:hover{background:rgba(240,208,128,0.04);}
 .log2-row:last-child{border-bottom:none;}
 .log2-date{color:#c8a84b;font-size:13px;}
@@ -779,7 +779,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
   <div class="sidebar-logo">
     <div class="sidebar-logo-star">✦</div>
     <div class="sidebar-logo-name">Primos</div>
-    <div class="sidebar-logo-ver">v266</div>
+    <div class="sidebar-logo-ver">v267</div>
   </div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
@@ -1644,7 +1644,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v266';
+const APP_VERSION = 'v267';
 
 let gdToken = null;
 let gdTokenClient = null;
