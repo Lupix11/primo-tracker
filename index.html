@@ -763,7 +763,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:12px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v290</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:12px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v291</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1004,7 +1004,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
             </div>
             <div class="set-status" id="profile-status"> </div>
             </div>
-            <div class="set-card" style="margin-top:5px;">
+            <div class="set-card" style="margin-top:10px;">
             <div class="set-title">Planner region</div>
             <div class="set-row">
               <div class="set-copy">
@@ -1025,7 +1025,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
               </div>
             </div>
             </div>
-            <div class="set-card" style="margin-top:5px;">
+            <div class="set-card" style="margin-top:10px;">
             <div class="set-title" data-i18n="settings_data_title">Data persistence</div>
             <div class="set-row">
               <div class="set-copy">
@@ -1067,9 +1067,10 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
           </div>
       </div>
       <div class="settings-stack">
-        <div class="set-card" style="height:fit-content;">
+        <div class="card">
+            <div class="set-card">
           <div class="set-title">Cloud sync</div>
-          <div class="sync-card">
+          <div class="sync-card" style="border:none;padding:0;background:transparent;">
             <div class="sync-row">
               <div class="sync-copy">
                 <div class="sync-label">Google Account</div>
@@ -1128,6 +1129,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
             <div class="sync-setup">⚠ App is in test mode — only Google accounts added under <b>Google Auth Platform → Público → Usuarios de prueba</b> can sign in.</div>
             <div style="font-size:11px;color:#504060;margin-top:6px;text-align:right;" id="autosync-status"></div>
           </div>
+            </div>
         </div>
 
       </div>
@@ -1624,7 +1626,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v290';
+const APP_VERSION = 'v291';
 
 let gdToken = null;
 let gdTokenClient = null;
