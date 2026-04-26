@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
+<title>Primo Tracker</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -762,7 +763,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-star">✦</div><div class="sidebar-logo-name">Primos</div><div class="sidebar-logo-ver">v284</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-star">✦</div><div class="sidebar-logo-name">Primos</div><div class="sidebar-logo-ver">v285</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -959,9 +960,6 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 
   <section id="page-settings" class="page">
     <div class="settings-ph">
-      <div class="settings-ph-icon">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-.33-1A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1-.33H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1-.33A1.65 1.65 0 0 0 4.6 8a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 .33 1A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 8c0 .39.14.76.4 1 .26.25.62.4 1 .33H21a2 2 0 1 1 0 4h-.09c-.38-.07-.74.08-1 .33-.26.24-.4.61-.4 1z"/></svg>
-      </div>
       <div>
         <div class="settings-ph-title">Settings</div>
         <div class="settings-ph-sub">Manage your profiles, preferences, and data across all devices.</div>
@@ -969,6 +967,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
     </div>
     <div class="settings-grid">
       <div class="settings-stack">
+          <div class="card">
           <div class="set-card">
             <div class="set-title">Profiles</div>
             <div class="set-row">
@@ -1005,7 +1004,9 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
             </div>
             <div class="set-status" id="profile-status"> </div>
           </div>
-<div class="set-card">
+          </div>
+          <div class="card">
+          <div class="set-card">
             <div class="set-title">Planner region</div>
             <div class="set-row">
               <div class="set-copy">
@@ -1026,7 +1027,9 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
               </div>
             </div>
           </div>
-<div class="set-card">
+          </div>
+          <div class="card">
+          <div class="set-card">
             <div class="set-title" data-i18n="settings_data_title">Data persistence</div>
             <div class="set-row">
               <div class="set-copy">
@@ -1064,6 +1067,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
               <button class="set-btn danger" onclick="clearLocalData()" data-i18n="settings_clear">Clear data</button>
             </div>
             <div class="set-status" id="settings-status"> </div>
+          </div>
           </div>
       </div>
       <div class="settings-stack">
@@ -1624,7 +1628,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v284';
+const APP_VERSION = 'v285';
 
 let gdToken = null;
 let gdTokenClient = null;
