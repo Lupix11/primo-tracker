@@ -241,11 +241,11 @@ textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid r
 .hint-txt{font-size:10px;color:#504060;font-style:italic;}
 .log-wrap{display:flex;align-items:stretch;gap:0;}
 .log-outer{flex:1;min-width:0;overflow:hidden;}
-.log-col-hdr{display:grid;grid-template-columns:80px repeat(5,1fr);align-items:center;height:32px;padding:0 0 0 16px;border-bottom:1px solid rgba(240,208,128,0.11);color:#c8a84b;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.9px;}
+.log-col-hdr{display:grid;grid-template-columns:80px 140px repeat(4,1fr);align-items:center;height:32px;padding:0 0 0 16px;border-bottom:1px solid rgba(240,208,128,0.11);color:#c8a84b;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.9px;}
 .log-vp{overflow:hidden;position:relative;}
 .log-vp::after{content:'';position:absolute;left:0;right:0;bottom:0;height:18px;z-index:2;pointer-events:none;background:linear-gradient(to top,rgba(14,18,25,0.6),transparent);}
 .log-strip{will-change:transform;transition:transform 0.18s cubic-bezier(0.25,0.8,0.25,1);}
-.log-row{display:grid;grid-template-columns:80px repeat(5,1fr);align-items:center;height:44px;padding:0 0 0 16px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:15px;color:#ddd6cb;cursor:pointer;transition:background 0.13s;user-select:none;}
+.log-row{display:grid;grid-template-columns:80px 140px repeat(4,1fr);align-items:center;height:44px;padding:0 0 0 16px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:15px;color:#ddd6cb;cursor:pointer;transition:background 0.13s;user-select:none;}
 .log-row:hover{background:rgba(255,255,255,0.025);}
 .log-row.expanded{background:rgba(240,208,128,0.04);border-bottom:none;}
 .log-expand{overflow:hidden;}
@@ -759,7 +759,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v265</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v266</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -863,14 +863,14 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
       </div>
       <div class="log-wrap log-desktop-only">
         <div class="log-outer">
-          <div class="log-col-hdr log-desktop-only"><span>Date</span><span><img src="https://lupix11.github.io/primo-tracker/images/pulls/primogem.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Primos</span><span><img src="https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Fates</span><span>Total Primos</span><span>Pulls</span><span>Daily Gain</span></div>
+          <div class="log-col-hdr log-desktop-only"><span>Date</span><span><img src="https://lupix11.github.io/primo-tracker/images/pulls/primogem.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Primos</span><span><img src="https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Fates</span><span><img src="https://lupix11.github.io/primo-tracker/images/pulls/primogem.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Total Primos</span><span><img src="https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Pulls</span><span>Daily Gain</span></div>
           <div class="log-vp" id="log-vp"><div class="log-strip" id="log-strip"></div></div>
         </div>
         <div class="v-col"><input type="range" class="v-slider" id="log-slider" min="0" value="0" step="1" oninput="onSlider()"/></div>
       </div>
       <div id="log-mobile-list" class="log-mobile-only"></div>
       <div style="min-height:15px;margin-top:4px;text-align:center;" class="log-mobile-only"><span class="hint-txt" id="m-scroll-hint" style="font-style:normal;font-size:10px;color:#504060;"></span></div>
-      <div style="min-height:15px;margin-top:4px;text-align:center;display:flex;justify-content:center;gap:12px;" class="log-desktop-only"><span class="hint-txt" style="font-style:normal;">· click a row to edit</span><span class="hint-txt" id="scroll-hint" style="font-style:normal;font-size:10px;color:#504060;"></span></div>
+      <div style="min-height:15px;margin-top:4px;text-align:center;" class="log-desktop-only"><span class="hint-txt" id="scroll-hint" style="font-style:normal;font-size:10px;color:#504060;"></span></div>
     </div>
   </section>
 
@@ -1616,7 +1616,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v265';
+const APP_VERSION = 'v266';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2087,7 +2087,7 @@ function renderLog(){
   document.querySelectorAll('.log-desktop-only').forEach(el => el.style.display = mob ? 'none' : '');
   const rev=[...entries].reverse(),total=rev.length,gains=getDG(),baseline=getBaseline();
   document.getElementById('log-count').textContent=total?`${total} entr${total===1?'y':'ies'}`:'';
-  document.getElementById('scroll-hint').textContent=total>PAGE_SIZE?'scroll for older entries':'';
+  document.getElementById('scroll-hint').textContent=total>PAGE_SIZE?'click a row to edit · scroll for older entries':'click a row to edit';
 
   // ── MOBILE LIST ──────────────────────────────────────────────────────────
   const mobileList=document.getElementById('log-mobile-list');
@@ -2106,7 +2106,7 @@ function renderLog(){
         const nd=e.notes?'<span class="note-dot"></span>':'',isExp=expandedDate===e.date;
         const row=document.createElement('div');
         row.className='log-mobile-row'+(isExp?' expanded':'');
-        row.innerHTML=`<span style="color:#c8a84b;font-size:13px;min-width:48px;">${fmtDate(e.date)}${nd}</span><span style="flex:1;text-align:center;font-size:14px;">${e.primo!=null?e.primo.toLocaleString():'—'}</span><span style="font-size:14px;min-width:60px;text-align:right;">${gh}</span>`;
+        row.innerHTML=`<div style="display:flex;flex-direction:column;min-width:48px;"><span style="font-size:9px;color:#6a5f7a;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:1px;">Date</span><span style="color:#c8a84b;font-size:13px;">${fmtDate(e.date)}${nd}</span></div><span style="flex:1;text-align:center;font-size:14px;">${e.primo!=null?e.primo.toLocaleString():'—'}</span><div style="display:flex;flex-direction:column;align-items:flex-end;min-width:60px;"><span style="font-size:9px;color:#6a5f7a;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:1px;">Daily Gain</span><span>${gh}</span></div>`;
         row.addEventListener('click',()=>toggleRowExpand(e.date));
         strip.appendChild(row);
         const exp=document.createElement('div');exp.className='log-expand';exp.dataset.date=e.date;
@@ -2154,9 +2154,8 @@ function applySlider(o){
 }
 function onSlider(){
   const s=document.getElementById('log-slider'),newO=(parseInt(s.max)||0)-parseInt(s.value);
-  if(newO!==offset)expandedDate=null;
   offset=newO;applySlider(offset);
-  if(expandedDate===null)renderLog();
+  renderLog();
 }
 function applyMSlider(o,rowH){
   const strip=document.getElementById('m-log-strip');
@@ -2166,12 +2165,11 @@ function onMSlider(){
   const MOB_ROW_H=48,s=document.getElementById('m-log-slider');
   if(!s) return;
   const newO=(parseInt(s.max)||0)-parseInt(s.value);
-  if(newO!==offset) expandedDate=null;
   offset=newO;
   applyMSlider(offset,MOB_ROW_H);
   const total=entries.length,MOB_PAGE=8,el=document.getElementById('m-scroll-hint');
   if(el) el.textContent=total>MOB_PAGE?`${Math.min(offset+1,total)}–${Math.min(offset+MOB_PAGE,total)} of ${total}`:'';
-  if(expandedDate===null) renderLog();
+  renderLog();
 }
 
 function renderStats(){
