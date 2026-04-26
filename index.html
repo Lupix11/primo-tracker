@@ -779,7 +779,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
   <div class="sidebar-logo">
     <div class="sidebar-logo-star">✦</div>
     <div class="sidebar-logo-name">Primos</div>
-    <div class="sidebar-logo-ver">v271</div>
+    <div class="sidebar-logo-ver">v272</div>
   </div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
@@ -1607,8 +1607,7 @@ async function storageSetValue(key,val){
     if(window.storage&&typeof window.storage.set==='function'){await window.storage.set(key,val);}
   }catch(e){}
   try{
-    if(key!==SETTINGS_KEY && APP.persistLocal===false){localStorage.removeItem(key);}
-    else localStorage.setItem(key,val);
+    localStorage.setItem(key,val);  // always persist locally
   }catch(e){}
 }
 async function storageRemoveValue(key){
@@ -1644,7 +1643,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v271';
+const APP_VERSION = 'v272';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2122,7 +2121,8 @@ function renderChart(){
       if(moving[i]!==null) lastMoving=moving[i];
       else if(gains[i]!==null&&gains[i]<0&&lastMoving!==null) moving[i]=lastMoving;
     }
-    chartInst=new Chart(ctx,{type:'bar',plugins:[blPlugin],data:{labels,datasets:[{label:'Daily Gain',data:gains,backgroundColor:gains.map(g=>g===null?'transparent':g<0?'rgba(160,120,200,0.6)':g>baseline?'rgba(128,240,160,0.7)':g===baseline?'rgba(214,170,72,0.88)':'rgba(240,144,96,0.7)'),borderColor:gains.map(g=>g===null?'transparent':g<0?'#a078c8':g>baseline?'#80f0a0':g===baseline?'#c9922e':'#f09060'),borderWidth:1,borderRadius:3,order:2},{type:'line',label:'7-day average',data:moving,borderColor:'#80c0f0',backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:3,tension:0.3,spanGaps:true,order:1}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:0},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>entries[i[0].dataIndex]?.date||'',label:c=>{if(c.dataset.label==='7-day average')return '  7-day avg: '+c.parsed.y?.toLocaleString();const g=c.parsed.y;if(g===null)return'';const diff=g-baseline;if(diff===0)return '  Gained: '+g.toLocaleString()+'  (at baseline)';return '  Gained: '+g.toLocaleString()+(diff>0?'  (+'+diff+' above)':'  ('+diff+' below)');},}}},scales:{x:{...xSc,offset:true},y:{...ySc,beginAtZero:false,min:(()=>{const pos=gains.filter(g=>g!==null&&g>=0);const neg=gains.filter(g=>g!==null&&g<0);if(!neg.length)return 0;const floorNeg=Math.max(...pos.length?pos:[1000])*-1.5;return Math.max(floorNeg,-1500);})(),suggestedMax:(()=>{const pos=gains.filter(g=>g!==null&&g>=0);if(!pos.length)return baseline*2;const sorted=pos.slice().sort((a,b)=>a-b);const med=sorted[Math.floor(sorted.length/2)]||0;const cap=Math.max(med*3,baseline*3);return Math.min(Math.max(...pos),cap)*1.15;})()}}}});
+    const yMax=(()=>{const pos=gains.filter(g=>g!==null&&g>=0);if(!pos.length)return baseline*2;const sorted=pos.slice().sort((a,b)=>a-b);const p75=sorted[Math.floor(sorted.length*0.75)]||0;return Math.max(p75*2,baseline*4);})();const clippedGains=gains.map(g=>g===null?null:Math.min(g,yMax));
+chartInst=new Chart(ctx,{type:'bar',plugins:[blPlugin],data:{labels,datasets:[{label:'Daily Gain',data:clippedGains,backgroundColor:gains.map(g=>g===null?'transparent':g<0?'rgba(160,120,200,0.6)':g>baseline?'rgba(128,240,160,0.7)':g===baseline?'rgba(214,170,72,0.88)':'rgba(240,144,96,0.7)'),borderColor:gains.map(g=>g===null?'transparent':g<0?'#a078c8':g>baseline?'#80f0a0':g===baseline?'#c9922e':'#f09060'),borderWidth:1,borderRadius:3,order:2},{type:'line',label:'7-day average',data:moving,borderColor:'#80c0f0',backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:3,tension:0.3,spanGaps:true,order:1}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:0},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>entries[i[0].dataIndex]?.date||'',label:c=>{if(c.dataset.label==='7-day average')return '  7-day avg: '+c.parsed.y?.toLocaleString();const g=c.parsed.y;if(g===null)return'';const diff=g-baseline;if(diff===0)return '  Gained: '+g.toLocaleString()+'  (at baseline)';return '  Gained: '+g.toLocaleString()+(diff>0?'  (+'+diff+' above)':'  ('+diff+' below)');},}}},scales:{x:{...xSc,offset:true},y:{...ySc,beginAtZero:false,min:(()=>{const pos=gains.filter(g=>g!==null&&g>=0);const neg=gains.filter(g=>g!==null&&g<0);if(!neg.length)return 0;const floorNeg=Math.max(...pos.length?pos:[1000])*-1.5;return Math.max(floorNeg,-1500);})(),max:(()=>{const pos=gains.filter(g=>g!==null&&g>=0);if(!pos.length)return baseline*2;const sorted=pos.slice().sort((a,b)=>a-b);const p75=sorted[Math.floor(sorted.length*0.75)]||0;return Math.max(p75*2,baseline*4);})()}}}});
   }
 }
 function isMobile(){return window.innerWidth<=768;}
