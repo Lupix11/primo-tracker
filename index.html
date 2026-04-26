@@ -764,7 +764,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
   <div class="sidebar-logo">
     <div class="sidebar-logo-star">✦</div>
     <div class="sidebar-logo-name">Primos</div>
-    <div class="sidebar-logo-ver">v264</div>
+    <div class="sidebar-logo-ver">v265</div>
   </div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
@@ -858,25 +858,6 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
       </div>
       <div class="legend" id="legend"></div>
       <div class="chart-wrap"><canvas id="chart" role="img"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="log-header-row">
-        <div class="log-header-left">
-          <span style="font-family:'Cinzel',serif;font-size:12px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;" data-i18n="dash_log">Log</span>
-          <span id="log-count" style="font-size:11px;color:#a090c0;"></span>
-          <span class="hint-txt">· click a row to edit</span>
-        </div>
-        <span id="log-pos" style="font-size:11px;color:#a090c0;"></span>
-      </div>
-      <div class="log-wrap log-desktop-only">
-        <div class="log-outer">
-          <div class="log-col-hdr log-desktop-only"><span>Date</span><span><img src="https://lupix11.github.io/primo-tracker/images/pulls/primogem.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Primos</span><span><img src="https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Fates</span><span>Total Primos</span><span>Pulls</span><span>Daily Gain</span><span></span></div>
-          <div class="log-vp" id="log-vp"><div class="log-strip" id="log-strip"></div></div>
-        </div>
-        <div class="v-col"><input type="range" class="v-slider" id="log-slider" min="0" value="0" step="1" oninput="onSlider()"/></div>
-      </div>
-      <div id="log-mobile-list" class="log-mobile-only"></div>
-      <div style="height:auto;min-height:0;margin-top:2px;text-align:center;" class="log-mobile-only"><span class="hint-txt" id="m-scroll-hint" style="font-style:normal;font-size:10px;color:#504060;"></span></div>
     </div>
   </section>
 
@@ -1627,7 +1608,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v264';
+const APP_VERSION = 'v265';
 
 let gdToken = null;
 let gdTokenClient = null;
