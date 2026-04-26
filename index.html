@@ -241,6 +241,7 @@ textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid r
 .log-header-left{display:flex;align-items:baseline;gap:7px;}
 .hint-txt{font-size:10px;color:#504060;font-style:italic;}
 .log-wrap{display:flex;align-items:stretch;gap:0;}
+#page-dashboard .card:last-child{padding-bottom:8px;}
 .log-outer{flex:1;min-width:0;overflow:hidden;}
 .log-col-hdr{display:grid;grid-template-columns:70px 1.1fr 0.65fr 1.1fr 0.65fr 1fr 80px;align-items:center;height:32px;padding:0 0 0 16px;border-bottom:1px solid rgba(240,208,128,0.11);color:#c8a84b;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.9px;}
 .log-vp{overflow:hidden;position:relative;}
@@ -763,7 +764,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
   <div class="sidebar-logo">
     <div class="sidebar-logo-star">✦</div>
     <div class="sidebar-logo-name">Primos</div>
-    <div class="sidebar-logo-ver">v263</div>
+    <div class="sidebar-logo-ver">v264</div>
   </div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
@@ -876,7 +877,6 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
       </div>
       <div id="log-mobile-list" class="log-mobile-only"></div>
       <div style="height:auto;min-height:0;margin-top:2px;text-align:center;" class="log-mobile-only"><span class="hint-txt" id="m-scroll-hint" style="font-style:normal;font-size:10px;color:#504060;"></span></div>
-      <div style="height:auto;min-height:0;margin-top:2px;text-align:center;" class="log-desktop-only"><span class="hint-txt" id="scroll-hint" style="font-style:normal;font-size:10px;color:#504060;"></span></div>
     </div>
   </section>
 
@@ -1627,7 +1627,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v263';
+const APP_VERSION = 'v264';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2098,7 +2098,7 @@ function renderLog(){
   document.querySelectorAll('.log-desktop-only').forEach(el => el.style.display = mob ? 'none' : '');
   const rev=[...entries].reverse(),total=rev.length,gains=getDG(),baseline=getBaseline();
   document.getElementById('log-count').textContent=total?`${total} entr${total===1?'y':'ies'}`:'';
-  document.getElementById('scroll-hint').textContent=total>PAGE_SIZE?'scroll for older entries':'';
+  // scroll hint removed — log-pos header already shows range
 
   // ── MOBILE LIST ──────────────────────────────────────────────────────────
   const mobileList=document.getElementById('log-mobile-list');
