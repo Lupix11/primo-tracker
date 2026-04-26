@@ -28,7 +28,8 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
 .page.active{display:block;animation:page-in 0.2s ease;}
 .page.active{display:block;}
 .bottomnav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;z-index:50;background:rgba(10,12,18,0.97);backdrop-filter:blur(16px);border-top:1px solid rgba(240,208,128,0.09);justify-content:space-around;align-items:stretch;padding-bottom:env(safe-area-inset-bottom);}
-.bottomnav .nav-item{flex:1;flex-direction:column;justify-content:center;gap:2px;padding:5px 0;font-size:9px;align-items:center;border-left:none;border-top:2px solid transparent;-webkit-tap-highlight-color:transparent;outline:none;}
+.bottomnav .nav-item{flex:1;flex-direction:column;justify-content:center;gap:2px;padding:5px 0;font-size:9px;align-items:center;border-left:none;border-top:2px solid transparent;-webkit-tap-highlight-color:transparent !important;outline:none;touch-action:manipulation;user-select:none;background:transparent !important;}
+.bottomnav .nav-item:active,.bottomnav .nav-item:focus{background:transparent !important;outline:none;}
 .bottomnav .nav-item.active{border-left:none!important;border-top:2px solid #f0d080!important;border-radius:0!important;color:#f0d080!important;}
 .bottomnav .nav-item:focus,.bottomnav .nav-item:active{outline:none;background:transparent;color:inherit;-webkit-tap-highlight-color:transparent;}
 .bottomnav .nav-item svg{width:19px;height:19px;}
@@ -760,7 +761,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v282</div></div>
+  <div class="sidebar-logo">✦ Primos<div style="font-size:9px;color:#504060;letter-spacing:1px;margin-top:3px;font-family:'Nunito',sans-serif;">v283</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1617,7 +1618,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v282';
+const APP_VERSION = 'v283';
 
 let gdToken = null;
 let gdTokenClient = null;
