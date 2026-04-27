@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <title>Primo Tracker</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="screen-orientation" content="portrait"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -160,8 +161,7 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
 
   #stats-range-row{flex-wrap:wrap;gap:6px;}
   #stats-range-row .tab{padding:3px 10px;font-size:11px;}
-  #stats-range-row{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;}
-  #stats-range-row>div:last-child{justify-self:end;}
+  #stats-range-row{flex-wrap:nowrap;}
 @media (orientation:landscape) and (max-width:900px){body{display:none;}}
 }
   .settings-grid{grid-template-columns:1fr;}
@@ -766,7 +766,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v341</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v342</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -902,9 +902,9 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
     <div class="card" style="padding:10px 16px;">
       <div id="stats-range-row" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
         <span style="font-size:10px;color:#907898;letter-spacing:0.8px;text-transform:uppercase;margin-left:3px;">Range:</span>
-        <input type="text" id="stats-from" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);if(this.value.length===10){statsAvgRange='custom';document.querySelectorAll('.avg-pill').forEach(p=>p.classList.remove('active'));applyStatsDateRange();}" style="width:110px;padding:4px 8px;font-size:12px;"/>
+        <input type="text" id="stats-from" class="qa-input" placeholder="dd/mm" maxlength="5" oninput="if(this.value.length===5){statsAvgRange='custom';document.querySelectorAll('.avg-pill').forEach(p=>p.classList.remove('active'));applyStatsDateRange();}" style="width:70px;padding:4px 8px;font-size:12px;"/>
         <span style="color:#504060;font-size:12px;">→</span>
-        <input type="text" id="stats-to" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);if(this.value.length===10){statsAvgRange='custom';document.querySelectorAll('.avg-pill').forEach(p=>p.classList.remove('active'));applyStatsDateRange();}" style="width:110px;padding:4px 8px;font-size:12px;"/>
+        <input type="text" id="stats-to" class="qa-input" placeholder="dd/mm" maxlength="5" oninput="if(this.value.length===5){statsAvgRange='custom';document.querySelectorAll('.avg-pill').forEach(p=>p.classList.remove('active'));applyStatsDateRange();}" style="width:70px;padding:4px 8px;font-size:12px;"/>
         <div style="display:flex;gap:5px;margin-left:auto;">
           <button class="tab ${statsAvgRange==='7d'?'active':''}" onclick="setStatsAvg('7d')">7d</button>
           <button class="tab ${statsAvgRange==='30d'?'active':''}" onclick="setStatsAvg('30d')">30d</button>
@@ -1637,7 +1637,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v341';
+const APP_VERSION = 'v342';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2395,8 +2395,8 @@ function setStatsAvg(r){
     const fromISO2=r==='7d'?entries[Math.max(0,entries.length-8)].date:r==='30d'?entries[Math.max(0,entries.length-31)].date:entries[0].date;
     const toDMY=s=>{const[y,m,d]=s.split('-');return`${d}/${m}/${y}`;};
     const fi2=document.getElementById('stats-from'),ti2=document.getElementById('stats-to');
-    if(fi2) fi2.value=toDMY(fromISO2);
-    if(ti2) ti2.value=toDMY(last);
+    if(fi2) fi2.value=toDMYShort(fromISO2);
+    if(ti2) ti2.value=toDMYShort(last);
   }
   document.querySelectorAll('.avg-pill,.tab').forEach(p=>{
     const t=p.textContent.trim().toLowerCase();
