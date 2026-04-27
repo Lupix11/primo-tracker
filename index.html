@@ -745,7 +745,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v320</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v319</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1237,7 +1237,7 @@ const PLANNER_EXTRA_BANNERS=[
 function getPlannerBanners(){return [...(PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS),...PLANNER_EXTRA_BANNERS];}
 const PAGES=['dashboard','stats','timeline','planner','settings'];
 const CROPPER_KEY='primo-cropper-settings-v1';
-let entries=[],chartInst=null,histInst=null,activeMetric='primos',welkin=false,activePage='dashboard',statsAvgRange='all',chartGranularity='daily';
+let entries=[],chartInst=null,histInst=null,activeMetric='primos',welkin=false,offset=0,expandedDate=null,activePage='dashboard',statsAvgRange='all',chartGranularity='daily';
 let APP={lang:'en',persistLocal:true,syncConnected:false,syncLastAt:'',syncProvider:'google_drive',localVaultUpdatedAt:'',cloudVaultUpdatedAt:'',syncMode:'manual',plannerRegion:'America',syncUserEmail:'',syncUserName:'',gdFileId:''};
 let PROFILES={activeId:'main',items:[]};
 let profileEditMode=null;
@@ -1615,7 +1615,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v320';
+const APP_VERSION = 'v319';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2003,6 +2003,58 @@ function upsert(entry){
   const idx=entries.findIndex(e=>e.date===entry.date);
   if(idx>=0){if(!entry.notes&&entries[idx].notes)entry.notes=entries[idx].notes;entries[idx]=entry;}else entries.push(entry);
   entries.sort((a,b)=>a.date.localeCompare(b.date));
+}
+
+function expandPreviewCalc(d){
+  const p=document.getElementById('ep-'+d)||document.getElementById('mep-'+d);
+  const f=document.getElementById('ef-'+d)||document.getElementById('mef-'+d);
+  const pv=document.getElementById('epv-'+d)||document.getElementById('mepv-'+d);
+  if(!pv)return;
+  const primo=parseInt(p?.value)||0,fates=parseInt(f?.value)||0;
+  const total=primo+fates*160;
+  const pulls=Math.floor(total/160);
+  pv.innerHTML=`<span style="color:#a090c0;font-size:11px;">→ ${total.toLocaleString()} total · ${pulls} pulls</span>`;
+}
+function saveRowEdit(d,ev){
+  ev.stopPropagation();
+  const p=document.getElementById('ep-'+d)||document.getElementById('mep-'+d);
+  const f=document.getElementById('ef-'+d)||document.getElementById('mef-'+d);
+  const n=document.getElementById('en-'+d)||document.getElementById('men-'+d);
+  const idx=entries.findIndex(e=>e.date===d);
+  if(idx<0)return;
+  if(p&&p.value!=='')entries[idx].primo=parseInt(p.value)||0;
+  if(f&&f.value!=='')entries[idx].fates=parseInt(f.value)||0;
+  if(n)entries[idx].notes=n.value.trim()||undefined;
+  recalcTotals();save();expandedDate=null;render();
+}
+function closeExpand(ev){ev.stopPropagation();expandedDate=null;renderLog();}
+function toggleRowExpand(d){if(expandedDate===d){closeExpand({stopPropagation:()=>{}});}else{expandedDate=d;renderLog();}}
+function setupWheel(){
+  const vp=document.getElementById('log-vp');
+  if(!vp)return;
+  vp.addEventListener('wheel',function(e){
+    e.preventDefault();
+    const s=document.getElementById('log-slider'),max=parseInt(s?.max)||0;
+    const newO=Math.max(0,Math.min(max,offset+(e.deltaY>0?1:-1)));
+    offset=newO;if(s)s.value=max-offset;applySlider(offset);
+  },{passive:false});
+}
+function applySlider(o){
+  const strip=document.getElementById('log-strip');
+  if(strip) strip.style.transform=`translateY(-${o*ROW_H}px)`;
+}
+function applyMSlider(o,rowH){
+  const strip=document.getElementById('m-log-strip');
+  if(strip) strip.style.transform=`translateY(-${o*rowH}px)`;
+}
+function onMSlider(){
+  const MOB_ROW_H=48,s=document.getElementById('m-log-slider');
+  if(!s)return;
+  const newO=(parseInt(s.max)||0)-parseInt(s.value);
+  offset=newO;
+  applyMSlider(offset,MOB_ROW_H);
+  const total=entries.length,MOB_PAGE=8,el=document.getElementById('m-scroll-hint');
+  if(el)el.textContent=total>MOB_PAGE?`${Math.min(offset+1,total)}–${Math.min(offset+MOB_PAGE,total)} of ${total}`:'';
 }
 
 function renderTiles(){
