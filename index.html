@@ -291,7 +291,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .pace-sub{font-size:10px;margin-top:5px;}
 .hist-wrap{position:relative;height:110px;}
 .stats-hero{display:grid;grid-template-columns:minmax(0,1.2fr) auto;gap:8px;align-items:stretch;margin-bottom:6px;}
-.stats-hero-main{background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.22);border-radius:12px;padding:14px 16px;background-image:linear-gradient(160deg,rgba(255,255,255,0.025) 0%,transparent 60%);display:flex;align-items:flex-end;justify-content:space-between;gap:14px;}
+.stats-hero-main{background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.22);border-radius:12px;overflow:hidden;padding:14px 16px;background-image:linear-gradient(160deg,rgba(255,255,255,0.025) 0%,transparent 60%);display:flex;align-items:flex-end;justify-content:space-between;gap:14px;}
 .stats-hero-kicker{font-size:9px;color:#907898;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
 .stats-hero-value{font-family:'Cinzel',serif;font-size:40px;color:#f0d080;line-height:1;}
 .stats-hero-label{font-size:10px;color:#907898;letter-spacing:1px;text-transform:uppercase;margin-top:6px;}
@@ -763,7 +763,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:12px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v296</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:12px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v297</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1626,7 +1626,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v296';
+const APP_VERSION = 'v297';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2093,7 +2093,7 @@ function renderChart(){
       else if(gains[i]!==null&&gains[i]<0&&lastMoving!==null&&lastMoving<=gainCap) moving[i]=lastMoving;
     }
     const displayGains=gains.map(g=>g===null?null:g>=0?Math.min(g,gainCap):Math.max(g,-gainCap));
-    chartInst=new Chart(ctx,{type:'bar',plugins:[blPlugin],data:{labels,datasets:[{label:'Daily Gain',data:displayGains,maxBarThickness:isMobile()?6:20,backgroundColor:gains.map(g=>g===null?'transparent':g<0?'rgba(160,120,200,0.6)':g>baseline?'rgba(128,240,160,0.7)':g===baseline?'rgba(214,170,72,0.88)':'rgba(240,144,96,0.7)'),borderColor:gains.map(g=>g===null?'transparent':g<0?'#a078c8':g>baseline?'#80f0a0':g===baseline?'#c9922e':'#f09060'),borderWidth:1,borderRadius:3,order:2},{type:'line',label:'7-day average',data:moving,borderColor:'#80c0f0',backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:3,tension:0.3,spanGaps:true,order:1}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:0},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>entries[i[0].dataIndex]?.date||'',label:c=>{if(c.dataset.label==='7-day average')return '  7-day avg: '+c.parsed.y?.toLocaleString();const g=gains[c.dataIndex];if(g===null)return'';const diff=g-baseline;if(diff===0)return '  Gained: '+g.toLocaleString()+'  (at baseline)';return '  Gained: '+g.toLocaleString()+(diff>0?'  (+'+diff+' above)':'  ('+diff+' below)');},}}},scales:{x:{...xSc,offset:true},y:{...ySc,beginAtZero:false,min:(()=>{const neg=gains.filter(g=>g!==null&&g<0);if(!neg.length)return 0;return Math.max(Math.min(...neg),-gainCap)*1.1;})(),max:gainCap*1.1,grid:{...ySc.grid,color:ctx=>{if(ctx.tick&&ctx.tick.value===0)return 'rgba(255,255,255,0.35)';return ySc.grid?.color||'rgba(255,255,255,0.04)';}},ticks:{...ySc.ticks}}}}});
+    chartInst=new Chart(ctx,{type:'bar',plugins:[blPlugin],data:{labels,datasets:[{label:'Daily Gain',data:displayGains,maxBarThickness:isMobile()?6:20,backgroundColor:gains.map(g=>g===null?'transparent':g<0?'rgba(160,120,200,0.6)':g>baseline?'rgba(128,240,160,0.7)':g===baseline?'rgba(214,170,72,0.88)':'rgba(240,144,96,0.7)'),borderColor:gains.map(g=>g===null?'transparent':g<0?'#a078c8':g>baseline?'#80f0a0':g===baseline?'#c9922e':'#f09060'),borderWidth:1,borderRadius:3,order:2},{type:'line',label:'7-day average',data:moving,borderColor:'#80c0f0',backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:3,tension:0.3,spanGaps:true,order:1}]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:0},plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>entries[i[0].dataIndex]?.date||'',label:c=>{if(c.dataset.label==='7-day average')return '  7-day avg: '+c.parsed.y?.toLocaleString();const g=gains[c.dataIndex];if(g===null)return'';const diff=g-baseline;if(diff===0)return '  Gained: '+g.toLocaleString()+'  (at baseline)';return '  Gained: '+g.toLocaleString()+(diff>0?'  (+'+diff+' above)':'  ('+diff+' below)');},}}},scales:{x:{...xSc,offset:true},y:{...ySc,beginAtZero:false,min:(()=>{const neg=gains.filter(g=>g!==null&&g<0);if(!neg.length)return 0;return Math.max(Math.min(...neg),-gainCap)*1.1;})(),max:gainCap*1.1,grid:{...ySc.grid,color:ctx=>{if(ctx.tick&&ctx.tick.value===0)return 'rgba(255,255,255,0.65)';return ySc.grid?.color||'rgba(255,255,255,0.04)';}},ticks:{...ySc.ticks}}}}});
   }
 }
 function isMobile(){return window.innerWidth<=768;}
