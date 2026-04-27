@@ -769,7 +769,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v350</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v351</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -923,7 +923,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
           <button class="tab stats-range-btn ${statsAvgRange==='30d'?'active':''}" onclick="setStatsAvgMobile('30d')">30d</button>
           <button class="tab stats-range-btn ${statsAvgRange==='all'?'active':''}" onclick="setStatsAvgMobile('all')">All</button>
         </div>
-        <div id="stats-custom-dates" style="display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;">
+        <div id="stats-custom-dates" style="display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px;">
           <input type="text" id="stats-from-m" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);if(this.value.length===10){document.getElementById('stats-from').value=this.value;statsAvgRange='custom';applyStatsDateRange();}" style="flex:1;padding:6px 8px;font-size:12px;"/>
           <span style="color:#504060;font-size:12px;">→</span>
           <input type="text" id="stats-to-m" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);if(this.value.length===10){document.getElementById('stats-to').value=this.value;statsAvgRange='custom';applyStatsDateRange();}" style="flex:1;padding:6px 8px;font-size:12px;"/>
@@ -1655,7 +1655,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v350';
+const APP_VERSION = 'v351';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2359,7 +2359,7 @@ function renderStats(){
         <div class="stats-metric big"><div class="stats-metric-row"><div class="stat-icon neutral" style="font-size:14px;">—</div><div class="stats-metric-body"><div class="stats-metric-value inline" style="color:#c9922e;">${daysAt}<span class="unit">/ ${daysTotal}</span></div><div class="stats-metric-label">Days at baseline</div><div class="stats-metric-sub">${atPct}% landed exactly on ${baseline}/day.</div></div></div></div>
         <div class="stats-metric big"><div class="stats-metric-row"><div class="stat-icon red">↓</div><div class="stats-metric-body"><div class="stats-metric-value inline" style="color:#f09060;">${daysBelow}<span class="unit">/ ${daysTotal}</span></div><div class="stats-metric-label">Days below baseline</div><div class="stats-metric-sub">${belowPct}% finished under ${baseline}/day.</div></div></div></div>
       </div>
-      <div style="margin-top:8px;">
+      <div style="margin-top:6px;">
 
       </div>
     </div>
