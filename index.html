@@ -763,7 +763,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v335</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v336</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1634,7 +1634,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v335';
+const APP_VERSION = 'v336';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1949,7 +1949,7 @@ function goTo(pg){
   document.querySelectorAll('.nav-item').forEach(b=>b.blur());
   activePage=pg;
   if(pg==='dashboard'){chartGranularity='daily';document.querySelectorAll('#granularity-tabs .tab').forEach(t=>t.classList.toggle('active',t.textContent.toLowerCase()==='daily'));}
-  if(pg==='stats'){statsAvgRange='all';}
+  if(pg==='stats'){statsAvgRange='all';setTimeout(()=>applyStatsDateRange(),0);}
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+pg).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n=>{
@@ -2338,7 +2338,7 @@ function renderStats(){
         <div class="stats-metric big"><div class="stats-metric-row"><div class="stat-icon red">↓</div><div class="stats-metric-body"><div class="stats-metric-value inline" style="color:#f09060;">${daysBelow}<span class="unit">/ ${daysTotal}</span></div><div class="stats-metric-label">Days below baseline</div><div class="stats-metric-sub">${belowPct}% finished under ${baseline}/day.</div></div></div></div>
       </div>
       <div style="margin-top:8px;">
-        <div class="stats-metric big"><div class="stats-metric-row"><div class="stat-icon ${paceUp?'green':'red'}">${paceUp?'↑':'↓'}</div><div class="stats-metric-body"><div class="stats-metric-value inline" style="color:${paceUp?'#80f0a0':'#f09060'};">${paceVal!==null?`${paceUp?'↑':'↓'} ${Math.abs(paceVal).toLocaleString()}`:'—'}<span class="unit">/day vs avg</span></div><div class="stats-metric-label">7-day pace</div><div class="stats-metric-sub">${verdict}</div></div></div></div>
+
       </div>
     </div>
     <div class="stats-section" style="margin-bottom:0;">
