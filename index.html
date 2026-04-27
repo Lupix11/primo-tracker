@@ -763,7 +763,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v333</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v334</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1634,7 +1634,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v333';
+const APP_VERSION = 'v334';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2282,7 +2282,7 @@ function renderStats(){
   const first=rangeEntries[0],last=rangeEntries[rangeEntries.length-1];
   const aAll=avg(gains.filter(g=>g!==null&&g>=0)),a7=avg(gainsFrom(rangeEntries).filter(g=>g!==null&&g>=0).slice(-7)),a30=avg(gainsFrom(rangeEntries.slice(-31)).filter(g=>g!==null&&g>=0));
   const curAvg=statsAvgRange==='7d'?a7:statsAvgRange==='30d'?a30:aAll;
-  const paceVal=a7!=null&&curAvg!=null?a7-curAvg:null,paceUp=paceVal!==null&&paceVal>=0;
+  const paceVal=a7!=null&&aAll!=null?a7-aAll:null,paceUp=paceVal!==null&&paceVal>=0;
   const daysAbove=validGains.filter(g=>g>baseline).length;
   const daysAt=validGains.filter(g=>g===baseline).length;
   const daysBelow=validGains.filter(g=>g<baseline).length;
