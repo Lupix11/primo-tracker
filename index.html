@@ -141,14 +141,14 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   .log-desktop-only{display:none !important;}
   .log-mobile-only{display:block !important;}
   /* Mobile log rows */
-  
+  .log-mobile-row{display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;}
   .log-mobile-row:hover{background:rgba(255,255,255,0.025);}
   .log-mobile-row.expanded{background:rgba(240,208,128,0.04);border-bottom:none;}
   /* Mobile log: native touch scroll */
-  
-  
-  
-  
+  .log-mobile-wrap{display:block;}
+  .log-mobile-outer{width:100%;}
+  .log-mobile-vp{overflow-y:auto;max-height:420px;-webkit-overflow-scrolling:touch;}
+  .log-mobile-strip{}
   #log-pos{display:none;}
   /* Planner — hide tags and hard pity note */
   .gs-tag{display:none;}
@@ -240,29 +240,32 @@ textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid r
 .ls{width:20px;height:3px;border-radius:2px;flex-shrink:0;}
 .ld span{width:20px;height:2px;display:block;background:repeating-linear-gradient(90deg,rgba(255,246,216,1) 0,rgba(255,246,216,1) 5px,transparent 5px,transparent 9px);}
 .chart-wrap{position:relative;height:250px;}
+.log-header-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;}
+.log-header-left{display:flex;align-items:baseline;gap:7px;}
 .hint-txt{font-size:10px;color:#504060;font-style:italic;}
-.log2-header{display:flex;justify-content:space-between;align-items:baseline;padding:13px 18px 11px;border-bottom:1px solid rgba(240,208,128,0.1);}
-.log2-title{font-family:'Cinzel',serif;font-size:12px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;}
-.log2-title::before{content:'✦ ';font-size:10px;color:#f0d080;opacity:0.7;}
-.log2-col-hdr{display:grid;grid-template-columns:repeat(6,1fr);align-items:center;padding:0 22px 0 22px;height:30px;background:rgba(0,0,0,0.15);border-bottom:1px solid rgba(240,208,128,0.08);color:#6a5f7a;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.8px;text-transform:uppercase;}
-.log2-row{display:grid;grid-template-columns:repeat(6,1fr);align-items:center;padding:0 28px 0 22px;height:44px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:14px;color:#ddd6cb;transition:background 0.12s;}
-.log2-row:hover{background:rgba(240,208,128,0.04);}
-.log2-row:last-child{border-bottom:none;}
-.log2-date{color:#c8a84b;font-size:13px;}
-.log2-gain-pos{color:#80f0a0;}
-.log2-gain-neg{color:#f08080;}
-.log2-gain-base{color:#504060;}
-#log-body{overflow-y:scroll;max-height:264px;scrollbar-gutter:stable;}
-#log-body::-webkit-scrollbar{width:4px;}
-#log-body::-webkit-scrollbar-track{background:transparent;}
-#log-body::-webkit-scrollbar-thumb{background:rgba(240,208,128,0.2);border-radius:4px;}
+.log-wrap{display:flex;align-items:stretch;gap:0;}
+.log-outer{flex:1;min-width:0;overflow:hidden;}
+.log-col-hdr{display:grid;grid-template-columns:repeat(6,1fr);align-items:center;height:32px;padding:0 0 0 16px;border-bottom:1px solid rgba(240,208,128,0.11);color:#c8a84b;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.9px;}
+.log-vp{overflow:hidden;position:relative;}
 .log-vp::after{content:'';position:absolute;left:0;right:0;bottom:0;height:18px;z-index:2;pointer-events:none;background:linear-gradient(to top,rgba(14,18,25,0.6),transparent);}
+.log-strip{will-change:transform;transition:transform 0.18s cubic-bezier(0.25,0.8,0.25,1);}
+.log-row{display:grid;grid-template-columns:repeat(6,1fr);align-items:center;height:44px;padding:0 0 0 16px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:15px;color:#ddd6cb;cursor:pointer;transition:background 0.13s;user-select:none;}
 .log-row:hover{background:rgba(255,255,255,0.025);}
+.log-row.expanded{background:rgba(240,208,128,0.04);border-bottom:none;}
+.log-expand{overflow:hidden;}
+.log-expand-inner{padding:11px 9px;border-bottom:1px solid rgba(255,255,255,0.035);animation:expand-in 0.22s ease;}
+.expand-fields{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:5px;}
+.ef-label{font-size:10px;color:#a090c0;margin-bottom:2px;}
+.ef-input{background:rgba(255,255,255,0.06);border:1px solid rgba(240,208,128,0.18);border-radius:7px;color:#e8dfc8;font-family:'Nunito',sans-serif;font-size:13px;padding:6px 9px;outline:none;width:100%;}
 .ef-input:focus{border-color:rgba(240,208,128,0.48);}
-textarea
+.expand-preview{font-size:11px;color:#c8a84b;margin-bottom:5px;min-height:15px;}
+textarea.expand-note{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(240,208,128,0.16);border-radius:7px;color:#e8dfc8;font-family:'Nunito',sans-serif;font-size:12px;padding:6px 9px;outline:none;resize:none;height:42px;margin-bottom:8px;display:block;}
+.expand-actions{display:flex;gap:7px;align-items:center;}
 .expand-actions .spacer{flex:1;}
+.note-dot{width:5px;height:5px;border-radius:50%;background:#c8a84b;display:inline-block;margin-left:3px;vertical-align:middle;opacity:0.7;}
 .gain-pos{color:#80f0a0;}.gain-neg{color:#f08080;}.gain-base{color:#605870;}
-input[type=range]
+.v-col{width:18px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-top:32px;}
+input[type=range].v-slider{appearance:none;-webkit-appearance:none;writing-mode:vertical-lr;direction:rtl;width:18px;height:210px;background:transparent;cursor:pointer;}
 input[type=range].v-slider::-webkit-slider-runnable-track{width:2px;background:rgba(255,255,255,0.09);border-radius:2px;}
 input[type=range].v-slider::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#c8a84b;margin-left:-5.5px;cursor:pointer;}
 input[type=range].v-slider::-moz-range-track{width:2px;background:rgba(255,255,255,0.09);border-radius:2px;}
@@ -760,7 +763,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v321</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v319</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1630,7 +1633,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v321';
+const APP_VERSION = 'v319';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1919,7 +1922,7 @@ async function load(){
   renderPlannerRegionUI();
   initGoogleAuth();
   updateSyncUI();
-  setupSwipe();render();
+  setupWheel();setupSwipe();render();
   window.addEventListener('resize',()=>{
     const b=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;
     renderTimeline(b);
@@ -2019,57 +2022,68 @@ function upsert(entry){
   if(idx>=0){if(!entry.notes&&entries[idx].notes)entry.notes=entries[idx].notes;entries[idx]=entry;}else entries.push(entry);
   entries.sort((a,b)=>a.date.localeCompare(b.date));
 }
-
 function expandPreviewCalc(d){
-  const p=document.getElementById('ep-'+d)||document.getElementById('mep-'+d);
-  const f=document.getElementById('ef-'+d)||document.getElementById('mef-'+d);
-  const pv=document.getElementById('epv-'+d)||document.getElementById('mepv-'+d);
-  if(!pv)return;
-  const primo=parseInt(p?.value)||0,fates=parseInt(f?.value)||0;
-  const total=primo+fates*160;
-  const pulls=Math.floor(total/160);
-  pv.innerHTML=`<span style="color:#a090c0;font-size:11px;">→ ${total.toLocaleString()} total · ${pulls} pulls</span>`;
+  const pi=document.getElementById('ep-'+d),fi=document.getElementById('ef-'+d),pv=document.getElementById('epv-'+d);
+  if(!pi||!fi||!pv)return;
+  const p=parseInt(pi.value),f=parseInt(fi.value),hasP=!isNaN(p),hasF=!isNaN(f);
+  pv.textContent=(hasP||hasF)?`= ${((hasP?p:0)+(hasF?f*160:0)).toLocaleString()} primos · ${((hasP?Math.floor(p/160):0)+(hasF?f:0)).toLocaleString()} pulls`:'';
 }
+function deleteEntry(d,ev){ev.stopPropagation();entries=entries.filter(e=>e.date!==d);if(expandedDate===d)expandedDate=null;save();render();}
 function saveRowEdit(d,ev){
   ev.stopPropagation();
-  const p=document.getElementById('ep-'+d)||document.getElementById('mep-'+d);
-  const f=document.getElementById('ef-'+d)||document.getElementById('mef-'+d);
-  const n=document.getElementById('en-'+d)||document.getElementById('men-'+d);
-  const idx=entries.findIndex(e=>e.date===d);
-  if(idx<0)return;
-  if(p&&p.value!=='')entries[idx].primo=parseInt(p.value)||0;
-  if(f&&f.value!=='')entries[idx].fates=parseInt(f.value)||0;
-  if(n)entries[idx].notes=n.value.trim()||undefined;
-  recalcTotals();save();expandedDate=null;render();
+  const pi=document.getElementById('ep-'+d),fi=document.getElementById('ef-'+d),ni=document.getElementById('en-'+d);
+  if(!pi)return;
+  const primo=parseInt(pi.value),fates=parseInt(fi.value),notes=ni?ni.value.trim():'',p=isNaN(primo)?0:primo,f=isNaN(fates)?0:fates;
+  const e=entries.find(x=>x.date===d);
+  if(e){e.primo=isNaN(primo)?null:primo;e.fates=isNaN(fates)?null:fates;e.total=p+f*160;e.pulls=Math.floor(p/160)+f;e.notes=notes;}
+  expandedDate=null;save();render();
 }
-function closeExpand(ev){ev.stopPropagation();expandedDate=null;renderLog();}
-function toggleRowExpand(d){if(expandedDate===d){closeExpand({stopPropagation:()=>{}});}else{expandedDate=d;renderLog();}}
+function closeExpand(ev){ev.stopPropagation();const el=document.querySelector('.log-expand-inner');if(el){el.style.animation='slide-up 0.18s ease forwards';setTimeout(()=>{expandedDate=null;renderLog();},160);}else{expandedDate=null;renderLog();}}
+function toggleRowExpand(d){if(expandedDate===d){closeExpand({stopPropagation:()=>{}});}else{expandedDate=d;renderLog();setTimeout(()=>{const el=document.getElementById('ep-'+d)||document.getElementById('mep-'+d);if(el)el.focus();},40);}}
+function setGranularity(el,g){
+  document.querySelectorAll('#granularity-tabs .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  chartGranularity=g;
+  renderChart();
+}
+
+function bucketEntries(ents,granularity){
+  if(granularity==='daily'||!ents.length) return ents;
+  const buckets={};
+  ents.forEach(e=>{
+    const d=new Date(e.date);
+    let key;
+    if(granularity==='weekly'){
+      // ISO week: find Monday of this week
+      const day=d.getDay()||7;
+      const mon=new Date(d);mon.setDate(d.getDate()-day+1);
+      key=mon.toISOString().slice(0,10);
+    } else {
+      key=e.date.slice(0,7); // YYYY-MM
+    }
+    if(!buckets[key]) buckets[key]={dates:[],primos:[],fates:[],totals:[],pulls:[]};
+    buckets[key].dates.push(e.date);
+    if(e.primo!=null) buckets[key].primos.push(e.primo);
+    if(e.fates!=null) buckets[key].fates.push(e.fates);
+    buckets[key].totals.push(e.total);
+    buckets[key].pulls.push(e.pulls);
+  });
+  return Object.entries(buckets).sort((a,b)=>a[0]>b[0]?1:-1).map(([key,v])=>{
+    const avg=arr=>arr.length?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length):null;
+    const sum=arr=>arr.reduce((a,b)=>a+b,0);
+    const label=granularity==='weekly'?'W/'+fmtDate(key):key.slice(0,7);
+    return {date:label,primo:avg(v.primos),fates:avg(v.fates),total:avg(v.totals),pulls:avg(v.pulls),_keys:v.dates,_bucketed:true,_count:v.dates.length};
+  });
+}
+
+function switchTab(el,m){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');activeMetric=m;renderChart();}
 function setupWheel(){
-  const vp=document.getElementById('log-vp');
-  if(!vp)return;
-  vp.addEventListener('wheel',function(e){
+  document.getElementById('log-vp').addEventListener('wheel',function(e){
     e.preventDefault();
-    const s=document.getElementById('log-slider'),max=parseInt(s?.max)||0;
+    const s=document.getElementById('log-slider'),max=parseInt(s.max)||0;
     const newO=Math.max(0,Math.min(max,offset+(e.deltaY>0?1:-1)));
-    offset=newO;if(s)s.value=max-offset;applySlider(offset);
+    offset=newO;s.value=max-offset;applySlider(offset);
   },{passive:false});
-}
-function applySlider(o){
-  const strip=document.getElementById('log-strip');
-  if(strip) strip.style.transform=`translateY(-${o*ROW_H}px)`;
-}
-function applyMSlider(o,rowH){
-  const strip=document.getElementById('m-log-strip');
-  if(strip) strip.style.transform=`translateY(-${o*rowH}px)`;
-}
-function onMSlider(){
-  const MOB_ROW_H=48,s=document.getElementById('m-log-slider');
-  if(!s)return;
-  const newO=(parseInt(s.max)||0)-parseInt(s.value);
-  offset=newO;
-  applyMSlider(offset,MOB_ROW_H);
-  const total=entries.length,MOB_PAGE=8,el=document.getElementById('m-scroll-hint');
-  if(el)el.textContent=total>MOB_PAGE?`${Math.min(offset+1,total)}–${Math.min(offset+MOB_PAGE,total)} of ${total}`:'';
 }
 
 function renderTiles(){
@@ -2157,73 +2171,6 @@ function renderChart(){
   }
 }
 function isMobile(){return window.innerWidth<=768;}
-function renderLog(){
-  // Explicitly show/hide based on screen width — beats any CSS specificity
-  const mob = isMobile();
-  document.querySelectorAll('.log-mobile-only').forEach(el => el.style.display = mob ? '' : 'none');
-  document.querySelectorAll('.log-desktop-only').forEach(el => el.style.display = mob ? 'none' : '');
-  const rev=[...entries].reverse(),total=rev.length,gains=getDG(),baseline=getBaseline();
-  document.getElementById('log-count').textContent=total?`${total} entr${total===1?'y':'ies'}`:'';
-  document.getElementById('scroll-hint').textContent=total>PAGE_SIZE?'click a row to edit · scroll for older entries':'click a row to edit';
-
-  // ── MOBILE LIST ──────────────────────────────────────────────────────────
-  const mobileList=document.getElementById('log-mobile-list');
-  const mScrollHint=document.getElementById('m-scroll-hint');
-  if(mobileList){
-    mobileList.innerHTML='';
-    if(!total){
-      mobileList.innerHTML='<div style="padding:16px;color:#907898;">No entries yet!</div>';
-    } else {
-      mobileList.innerHTML=`<div class="log-mobile-wrap"><div class="log-mobile-outer"><div style="display:flex;justify-content:space-between;padding:6px 12px 4px;border-bottom:1px solid rgba(240,208,128,0.1);"><span style="font-size:9px;color:#6a5f7a;letter-spacing:0.5px;text-transform:uppercase;">Date</span><span style="font-size:9px;color:#6a5f7a;letter-spacing:0.5px;text-transform:uppercase;">Primos</span><span style="font-size:9px;color:#6a5f7a;letter-spacing:0.5px;text-transform:uppercase;">Daily Gain</span></div><div class="log-mobile-vp"><div class="log-mobile-strip" id="m-log-strip"></div></div></div></div>`;
-      const strip=document.getElementById('m-log-strip');
-      rev.forEach(e=>{
-        const oi=entries.findIndex(x=>x.date===e.date),g=gains[oi];
-        let gh='<span class="gain-base">—</span>';
-        if(g!==null&&g!==undefined){const cls=g>=baseline?'gain-pos':'gain-neg';gh=`<span class="${cls}">${g>=0?'+':''}${g.toLocaleString()}</span>`;}
-        const nd=e.notes?'<span class="note-dot"></span>':'',isExp=expandedDate===e.date;
-        const row=document.createElement('div');
-        row.className='log-mobile-row'+(isExp?' expanded':'');
-        row.innerHTML=`<span style="color:#c8a84b;font-size:13px;min-width:48px;">${fmtDate(e.date)}${nd}</span><span style="flex:1;text-align:center;font-size:14px;">${e.primo!=null?e.primo.toLocaleString():'—'}</span><span style="font-size:14px;min-width:60px;text-align:right;">${gh}</span>`;
-        row.addEventListener('click',()=>toggleRowExpand(e.date));
-        strip.appendChild(row);
-        const exp=document.createElement('div');exp.className='log-expand';exp.dataset.date=e.date;
-        exp.style.cssText='overflow:hidden;'+(isExp?'':'height:0px;');
-        exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/primogem.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Primogems</div><input class="ef-input" type="number" id="mep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Fates</div><input class="ef-input" type="number" id="mef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="mepv-${e.date}"></div><textarea class="expand-note" id="men-${e.date}" placeholder="Notes...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
-        strip.appendChild(exp);
-      });
-      if(mScrollHint) mScrollHint.textContent=total>8?'↕ scroll for older entries':'';
-    }
-  }
-
-  // ── DESKTOP VIRTUAL SCROLL ───────────────────────────────────────────────
-  const vp=document.getElementById('log-vp'),strip=document.getElementById('log-strip');
-  strip.innerHTML='';
-  if(!total){
-    const e=document.createElement('div');e.className='log-row';e.style.cursor='default';
-    e.innerHTML='<span style="grid-column:1/-1;color:#907898;">No entries yet!</span>';
-    strip.appendChild(e);vp.style.height=(PAGE_SIZE*ROW_H)+'px';
-    document.getElementById('log-slider').max=0;document.getElementById('log-pos').textContent='';return;
-  }
-  rev.forEach(e=>{
-    const oi=entries.findIndex(x=>x.date===e.date),g=gains[oi];
-    let gh='<span class="gain-base">—</span>';
-    if(g!==null&&g!==undefined){const cls=g>=baseline?'gain-pos':'gain-neg';gh=`<span class="${cls}">${g>=0?'+':''}${g.toLocaleString()}</span>`;}
-    const nd=e.notes?'<span class="note-dot"></span>':'',isExp=expandedDate===e.date;
-    const row=document.createElement('div');row.className='log-row'+(isExp?' expanded':'');
-    row.innerHTML=`<span>${fmtDate(e.date)}${nd}</span><span>${e.primo!=null?e.primo.toLocaleString():'—'}</span><span>${e.fates!=null?e.fates.toLocaleString():'—'}</span><span>${e.total.toLocaleString()}</span><span>${e.pulls.toLocaleString()}</span><span>${gh}</span>`;
-    row.addEventListener('click',()=>toggleRowExpand(e.date));
-    strip.appendChild(row);
-    const exp=document.createElement('div');exp.className='log-expand';exp.dataset.date=e.date;
-    exp.style.cssText='overflow:hidden;height:0px;';
-    exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/primogem.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Primogems</div><input class="ef-input" type="number" id="ep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Intertwined Fates</div><input class="ef-input" type="number" id="ef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="epv-${e.date}"></div><textarea class="expand-note" id="en-${e.date}" placeholder="Notes for ${fmtDate(e.date)}...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
-    strip.appendChild(exp);
-  });
-  let expandH=0;
-  if(expandedDate){const op=strip.querySelector(`.log-expand[data-date="${expandedDate}"]`);if(op){op.style.height='auto';expandH=op.offsetHeight;}}
-  vp.style.height=(PAGE_SIZE*ROW_H+expandH)+'px';
-  const s=document.getElementById('log-slider'),maxO=Math.max(0,total-PAGE_SIZE);
-  s.max=maxO;offset=Math.min(offset,maxO);s.value=maxO-offset;applySlider(offset);
-}
 function renderLog(){
   // Explicitly show/hide based on screen width — beats any CSS specificity
   const mob = isMobile();
