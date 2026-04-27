@@ -170,7 +170,7 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   .sync-actions{width:100%;justify-content:flex-start;}
   .sync-pill{align-self:flex-start;}
 }
-.card{background:rgba(255,255,255,0.05);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.22);border-radius:12px;padding:16px 18px;margin-bottom:14px;position:relative;overflow:hidden;background-image:linear-gradient(135deg,rgba(255,255,255,0.06) 0%,transparent 50%);}
+.card{background:rgba(255,255,255,0.05);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.22);border-radius:12px;padding:16px 18px;margin-bottom:14px;position:relative;overflow:hidden;background-image:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 50%);}
 .card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,rgba(240,208,128,0.55),rgba(160,100,200,0.25));border-radius:12px 0 0 12px;pointer-events:none;}
 .card+.card{margin-top:11px;}
 .card-title{font-family:'Cinzel',serif;font-size:12px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;gap:7px;}
@@ -291,19 +291,19 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .pace-sub{font-size:10px;margin-top:5px;}
 .hist-wrap{position:relative;height:110px;}
 .stats-hero{display:grid;grid-template-columns:minmax(0,1.2fr) auto;gap:8px;align-items:stretch;margin-bottom:6px;}
-.stats-hero-main{background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.22);border-radius:12px;overflow:hidden;padding:14px 16px;display:flex;align-items:flex-end;justify-content:space-between;gap:14px;}
+.stats-hero-main{background:rgba(255,255,255,0.05);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.22);border-radius:12px;overflow:hidden;padding:14px 16px;background-image:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 50%);display:flex;align-items:flex-end;justify-content:space-between;gap:14px;}
 .stats-hero-kicker{font-size:9px;color:#907898;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
 .stats-hero-value{font-family:'Cinzel',serif;font-size:40px;color:#f0d080;line-height:1;}
 .stats-hero-label{font-size:10px;color:#907898;letter-spacing:1px;text-transform:uppercase;margin-top:6px;}
 .stats-hero-note{font-size:11px;color:#7c718f;margin-top:6px;line-height:1.45;max-width:540px;}
 .stats-hero-side{display:grid;grid-template-columns:repeat(2,minmax(160px,1fr));gap:8px;min-width:320px;}
-.stats-chip{background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;transition:transform 0.16s,box-shadow 0.18s;padding:12px 16px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;min-width:0;}
+.stats-chip{background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;transition:transform 0.16s,box-shadow 0.18s;padding:12px 16px;background-image:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 50%);display:flex;flex-direction:column;justify-content:center;overflow:hidden;min-width:0;}
 .stats-chip:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.28),0 0 0 1px rgba(240,208,128,0.2);}
 .stats-metric:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.28),0 0 0 1px rgba(240,208,128,0.2);}
 .stats-chip-value{font-family:'Cinzel',serif;font-size:26px;color:#f0d080;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .stats-chip-label{font-size:10px;color:#907898;letter-spacing:1px;text-transform:uppercase;margin-top:8px;}
 .stats-chip-sub{font-size:11px;color:#6d627f;margin-top:5px;line-height:1.35;}
-.stats-section{margin-bottom:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;padding:10px 14px;overflow:hidden;background-image:linear-gradient(135deg,rgba(255,255,255,0.06) 0%,transparent 50%);}.stats-controls{display:flex;justify-content:flex-end;gap:6px;margin-bottom:12px;}#stats-content{overflow:visible;}#stats-hist-card{overflow:hidden;}#stats-wrap{background:transparent!important;background-image:none!important;border:none!important;box-shadow:none!important;}.stats-chip{overflow:visible!important;}.stats-metric{overflow:visible!important;}
+.stats-section{margin-bottom:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;padding:10px 14px;overflow:hidden;background-image:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 50%);}.stats-controls{display:flex;justify-content:flex-end;gap:6px;margin-bottom:12px;}#stats-content{overflow:visible;}#stats-hist-card{overflow:hidden;}#stats-wrap{background:transparent!important;background-image:none!important;border:none!important;box-shadow:none!important;}.stats-chip{overflow:visible!important;}.stats-metric{overflow:visible!important;}
 .stats-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
 .stats-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
 .stats-metric{background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;overflow:hidden;transition:transform 0.16s,box-shadow 0.18s;padding:10px 12px;min-height:80px;box-sizing:border-box;min-width:0;}
@@ -763,7 +763,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:12px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v310</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:12px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v311</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1626,7 +1626,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v310';
+const APP_VERSION = 'v311';
 
 let gdToken = null;
 let gdTokenClient = null;
