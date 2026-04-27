@@ -763,7 +763,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v317</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v318</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1633,7 +1633,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v317';
+const APP_VERSION = 'v318';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2072,7 +2072,7 @@ function bucketEntries(ents,granularity){
     const avg=arr=>arr.length?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length):null;
     const sum=arr=>arr.reduce((a,b)=>a+b,0);
     const label=granularity==='weekly'?'W/'+fmtDate(key):key.slice(0,7);
-    return {date:label,primo:avg(v.primos),fates:avg(v.fates),total:avg(v.totals),pulls:avg(v.pulls),primoSum:sum(v.primos),_bucketed:true,_count:v.dates.length};
+    return {date:label,primo:avg(v.primos),fates:avg(v.fates),total:avg(v.totals),pulls:avg(v.pulls),_keys:v.dates,_bucketed:true,_count:v.dates.length};
   });
 }
 
@@ -2159,13 +2159,20 @@ function renderChart(){
     }
     const displayGains=gains.map(g=>g===null?null:g>=0?Math.min(g,gainCap):Math.max(g,-gainCap));
     // Build total gained dataset for weekly/monthly
-    const totalGainedData=chartGranularity!=='daily'?bucketed.map(b=>b._bucketed?b.primoSum:null):null;
-    chartInst=new Chart(ctx,{type:'bar',plugins:[blPlugin],data:{labels,datasets:[...(chartGranularity!=='daily'?[{label:'Total Gained',data:totalGainedData,maxBarThickness:20,backgroundColor:'rgba(128,240,160,0.15)',borderColor:'rgba(128,240,160,0.35)',borderWidth:1,borderRadius:3,order:3}]:[]),{label:'Daily Gain',data:displayGains,maxBarThickness:isMobile()?6:(chartGranularity==="daily"?20:40),backgroundColor:gains.map(g=>g===null?'transparent':g<0?'rgba(160,120,200,0.6)':g>baseline?'rgba(128,240,160,0.7)':g===baseline?'rgba(214,170,72,0.88)':'rgba(240,144,96,0.7)'),borderColor:gains.map(g=>g===null?'transparent':g<0?'#a078c8':g>baseline?'#80f0a0':g===baseline?'#c9922e':'#f09060'),borderWidth:1,borderRadius:3,order:2},(()=>{
+    const rawGainsAll=getDG();
+    // totalGained capped in displayTotalGained below
+    const totalGainedData=chartGranularity!=='daily'?bucketed.map(b=>{
+      if(!b._bucketed||!b._keys)return null;
+      const bucketGains=b._keys.map(date=>{const idx=entries.findIndex(e=>e.date===date);return idx>=0&&rawGainsAll[idx]!=null?rawGainsAll[idx]:null;}).filter(g=>g!==null&&g>=0);
+      return bucketGains.length?bucketGains.reduce((a,v)=>a+v,0):null;
+    }):null;
+    const displayTotalGained=totalGainedData?totalGainedData.map(v=>v!=null?Math.min(v,gainCap*3):null):null;
+    chartInst=new Chart(ctx,{type:'bar',plugins:[blPlugin],data:{labels,datasets:[...(chartGranularity!=='daily'?[{label:'Total Gained',data:displayTotalGained,maxBarThickness:30,backgroundColor:'rgba(128,240,160,0.15)',borderColor:'rgba(128,240,160,0.35)',borderWidth:1,borderRadius:3,order:3}]:[]),{label:'Daily Gain',data:displayGains,maxBarThickness:isMobile()?6:(chartGranularity==="daily"?20:30),backgroundColor:gains.map(g=>g===null?'transparent':g<0?'rgba(160,120,200,0.6)':g>baseline?'rgba(128,240,160,0.7)':g===baseline?'rgba(214,170,72,0.88)':'rgba(240,144,96,0.7)'),borderColor:gains.map(g=>g===null?'transparent':g<0?'#a078c8':g>baseline?'#80f0a0':g===baseline?'#c9922e':'#f09060'),borderWidth:1,borderRadius:3,order:2},(()=>{
       if(chartGranularity==='daily'){
         return {type:'line',label:'7-day average',data:moving,borderColor:'#80c0f0',backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:3,tension:0.3,spanGaps:true,order:1};
       }
       // Regression trend line for weekly/monthly - fit to bucketed gains
-      const bpts=gains.map((g,i)=>g!=null?{x:i,y:g}:null).filter(Boolean);
+      const bpts=gains.map((g,i)=>g!=null&&g>=0?{x:i,y:g}:null).filter(Boolean);
       const n=bpts.length;
       if(n<2) return {type:'line',label:'Trend',data:[],order:1};
       const sx=bpts.reduce((a,p)=>a+p.x,0),sy=bpts.reduce((a,p)=>a+p.y,0);
