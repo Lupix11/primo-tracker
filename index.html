@@ -763,7 +763,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:12px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v310</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:12px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v311</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1626,7 +1626,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v310';
+const APP_VERSION = 'v311';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -3221,24 +3221,27 @@ function buildSummaryHtml(type,orderedBanners){
   const pullsPerDay2=avgDay2/160;
   const curPulls2=entries.length?entries[entries.length-1].pulls:0;
 
+  let cumulativePullsSpent=0;
   const rows=[...orderedBanners].sort((a,b)=>new Date(a.endDate)-new Date(b.endDate)).map(b=>{
     const bType=type;
     const key=getBannerKey(b);
     const state=getChainState(bType,key);
     const status=getBannerStatusStr(b,state);
     const remaining=Math.max(0,state.goal-state.obtained);
-    let bMin=0;
-    if(b.type==='chronicled'){const r=calcCharMinMax(remaining,state.pity,state.fatePoint||0);bMin=r.min;}
-    else if(bType==='character'){const r=calcCharMinMax(remaining,state.pity,state.guaranteed);bMin=r.min;}
-    else{const r=calcWeapMinMax(remaining,state.pity,state.epitomized||0);bMin=r.min;}
+    let bMin=0,bMax=0;
+    if(b.type==='chronicled'){const r=calcCharMinMax(remaining,state.pity,state.fatePoint||0);bMin=r.min;bMax=r.max;}
+    else if(bType==='character'){const r=calcCharMinMax(remaining,state.pity,state.guaranteed);bMin=r.min;bMax=r.max;}
+    else{const r=calcWeapMinMax(remaining,state.pity,state.epitomized||0);bMin=r.min;bMax=r.max;}
     const goalStr=bType==='character'?['C0','C1','C2','C3','C4','C5','C6'][state.goal-1]||'C0':['R1','R2','R3','R4','R5'][state.goal-1]||'R1';
     const names=(Array.isArray(b.characters)?b.characters:[b.characters]).join(' · ');
     const shortName=b.type==='chronicled'?'Chronicled Wish':(names.length>22?names.slice(0,20)+'…':names);
     const deadlineDate=useStart?b.startDate:b.endDate;
     const targetDate=parseISODateLocal(deadlineDate);
     const daysLeft=Math.ceil((targetDate-today)/864e5);
-    const projPulls=daysLeft>0?Math.floor(curPulls2+pullsPerDay2*daysLeft):curPulls2;
+    const projPullsRaw=daysLeft>0?Math.floor(curPulls2+pullsPerDay2*daysLeft):curPulls2;
+    const projPulls=projPullsRaw-cumulativePullsSpent;
     const gap=projPulls-bMin;
+    if(status!=='complete'&&status!=='missed'&&remaining>0){cumulativePullsSpent+=Math.round((bMin+bMax)/2);}
     let chipHtml,nameColor='#e8dfc8';
     if(status==='complete'){
       chipHtml=`<span style="font-size:10px;font-weight:700;color:#f0d080;background:rgba(240,208,128,0.1);border:1px solid rgba(240,208,128,0.25);border-radius:999px;padding:2px 9px;">✓ Complete</span>`;
