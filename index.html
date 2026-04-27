@@ -766,7 +766,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v347</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v346</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -900,22 +900,16 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
       <div class="hist-wrap"><canvas id="hist-chart" role="img"></canvas></div>
     </div>
     <div class="card" style="padding:10px 16px;">
-      <div id="stats-range-row" style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;">
-        <div style="display:flex;gap:5px;align-items:center;">
+      <div id="stats-range-row" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span style="font-size:10px;color:#907898;letter-spacing:0.8px;text-transform:uppercase;margin-left:3px;">Range:</span>
+        <input type="text" id="stats-from" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);if(this.value.length===10){statsAvgRange='custom';document.querySelectorAll('.avg-pill').forEach(p=>p.classList.remove('active'));applyStatsDateRange();}" style="width:110px;padding:4px 8px;font-size:12px;"/>
+        <span style="color:#504060;font-size:12px;">→</span>
+        <input type="text" id="stats-to" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);if(this.value.length===10){statsAvgRange='custom';document.querySelectorAll('.avg-pill').forEach(p=>p.classList.remove('active'));applyStatsDateRange();}" style="width:110px;padding:4px 8px;font-size:12px;"/>
+        <div style="display:flex;gap:5px;margin-left:auto;">
           <button class="tab ${statsAvgRange==='7d'?'active':''}" onclick="setStatsAvg('7d')">7d</button>
           <button class="tab ${statsAvgRange==='30d'?'active':''}" onclick="setStatsAvg('30d')">30d</button>
           <button class="tab ${statsAvgRange==='all'?'active':''}" onclick="setStatsAvg('all')">All</button>
-          <button class="tab ${statsAvgRange==='custom'?'active':''}" onclick="toggleCustomRange()">Custom</button>
         </div>
-        <span id="stats-range-label" style="font-size:11px;color:#7a6e90;margin-left:4px;white-space:nowrap;"></span>
-      </div>
-      <div id="stats-custom-range" style="display:none;margin-top:8px;display:none;">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <input type="text" id="stats-from" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);if(this.value.length===10){statsAvgRange='custom';document.querySelectorAll('#stats-range-row .tab').forEach(t=>t.classList.toggle('active',t.textContent==='Custom'));applyStatsDateRange();}" style="width:110px;padding:4px 8px;font-size:12px;"/>
-          <span style="color:#504060;font-size:12px;">→</span>
-          <input type="text" id="stats-to" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this);if(this.value.length===10){statsAvgRange='custom';document.querySelectorAll('#stats-range-row .tab').forEach(t=>t.classList.toggle('active',t.textContent==='Custom'));applyStatsDateRange();}" style="width:110px;padding:4px 8px;font-size:12px;"/>
-        </div>
-      </div>
       </div>
     </div>
     <div id="stats-wrap" style="padding:0;"><div id="stats-content"><div class="msg">Add some entries to see your stats.</div></div></div>
@@ -1643,7 +1637,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v347';
+const APP_VERSION = 'v346';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2392,29 +2386,23 @@ function getInpDate(){
   if(!el) return null;
   return parseDMY(el.value);
 }
-function toggleCustomRange(){
-  const panel=document.getElementById('stats-custom-range');
-  if(!panel)return;
-  const open=panel.style.display!=='none';
-  panel.style.display=open?'none':'block';
-  if(!open){statsAvgRange='custom';document.querySelectorAll('#stats-range-row .tab').forEach(t=>t.classList.toggle('active',t.textContent==='Custom'));}
-}
 function applyStatsDateRange(){renderStats();}
 function setStatsAvg(r){
   statsAvgRange=r;
-  const panel=document.getElementById('stats-custom-range');
-  if(panel)panel.style.display='none';
   if(entries.length){
     const last=entries[entries.length-1].date;
     const fromISO2=r==='7d'?entries[Math.max(0,entries.length-8)].date:r==='30d'?entries[Math.max(0,entries.length-31)].date:entries[0].date;
-    const fmt=s=>s.slice(5).replace('-','/');
+    const toDMY=s=>{const[y,m,d]=s.split('-');return`${d}/${m}/${y}`;};
     const fi2=document.getElementById('stats-from'),ti2=document.getElementById('stats-to');
-    const toDMYf=s=>{const[y,m,d]=s.split('-');return`${d}/${m}/${y}`;};
-    if(fi2)fi2.value=toDMYf(fromISO2);
-    if(ti2)ti2.value=toDMYf(last);
-    const lbl=document.getElementById('stats-range-label');
-    if(lbl)lbl.textContent=`${fmt(fromISO2)} → ${fmt(last)}`;
+    if(fi2) fi2.value=toDMY(fromISO2);
+    if(ti2) ti2.value=toDMY(last);
   }
+  document.querySelectorAll('.avg-pill,.tab').forEach(p=>{
+    const t=p.textContent.trim().toLowerCase();
+    p.classList.toggle('active',t===r||(r==='all'&&t==='all'));
+  });
+  renderStats();
+}
 function swapMobileStatsChip(){
   if(window.innerWidth>768) return;
   const gains=getDG(),aAll=avg(gains);
