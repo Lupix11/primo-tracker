@@ -763,7 +763,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v320</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v321</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1633,7 +1633,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v320';
+const APP_VERSION = 'v321';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2015,7 +2015,7 @@ function addEntry(){
   document.getElementById('inp-note').value='';document.getElementById('qa-preview').style.opacity='0';
   const nw=document.getElementById('note-wrap');if(nw.classList.contains('open')){nw.classList.remove('open');document.getElementById('note-toggle-txt').textContent='Add a note';}
   const next=new Date(date);next.setDate(next.getDate()+1);document.getElementById('inp-date').value=`${String(next.getDate()).padStart(2,'0')}/${String(next.getMonth()+1).padStart(2,'0')}/${next.getFullYear()}`;
-  expandedDate=null;save();render();
+  expandedDate=null;offset=0;save();render();
 }
 function upsert(entry){
   const idx=entries.findIndex(e=>e.date===entry.date);
@@ -2028,7 +2028,7 @@ function expandPreviewCalc(d){
   const p=parseInt(pi.value),f=parseInt(fi.value),hasP=!isNaN(p),hasF=!isNaN(f);
   pv.textContent=(hasP||hasF)?`= ${((hasP?p:0)+(hasF?f*160:0)).toLocaleString()} primos · ${((hasP?Math.floor(p/160):0)+(hasF?f:0)).toLocaleString()} pulls`:'';
 }
-function deleteEntry(d,ev){ev.stopPropagation();entries=entries.filter(e=>e.date!==d);if(expandedDate===d)expandedDate=null;save();render();}
+function deleteEntry(d,ev){ev.stopPropagation();entries=entries.filter(e=>e.date!==d);if(expandedDate===d)expandedDate=null;offset=0;save();render();}
 function saveRowEdit(d,ev){
   ev.stopPropagation();
   const pi=document.getElementById('ep-'+d),fi=document.getElementById('ef-'+d),ni=document.getElementById('en-'+d);
@@ -2036,7 +2036,7 @@ function saveRowEdit(d,ev){
   const primo=parseInt(pi.value),fates=parseInt(fi.value),notes=ni?ni.value.trim():'',p=isNaN(primo)?0:primo,f=isNaN(fates)?0:fates;
   const e=entries.find(x=>x.date===d);
   if(e){e.primo=isNaN(primo)?null:primo;e.fates=isNaN(fates)?null:fates;e.total=p+f*160;e.pulls=Math.floor(p/160)+f;e.notes=notes;}
-  expandedDate=null;save();render();
+  expandedDate=null;offset=0;save();render();
 }
 function closeExpand(ev){ev.stopPropagation();const el=document.querySelector('.log-expand-inner');if(el){el.style.animation='slide-up 0.18s ease forwards';setTimeout(()=>{expandedDate=null;renderLog();},160);}else{expandedDate=null;renderLog();}}
 function toggleRowExpand(d){if(expandedDate===d){closeExpand({stopPropagation:()=>{}});}else{expandedDate=d;renderLog();setTimeout(()=>{const el=document.getElementById('ep-'+d)||document.getElementById('mep-'+d);if(el)el.focus();},40);}}
@@ -2172,7 +2172,6 @@ function renderChart(){
 }
 function isMobile(){return window.innerWidth<=768;}
 function renderLog(){
-  offset=0; // Always reset scroll position to top
   // Explicitly show/hide based on screen width — beats any CSS specificity
   const mob = isMobile();
   document.querySelectorAll('.log-mobile-only').forEach(el => el.style.display = mob ? '' : 'none');
