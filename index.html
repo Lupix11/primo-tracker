@@ -17,12 +17,12 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
 .bg{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 15% 40%,rgba(100,70,150,0.18) 0%,transparent 55%),radial-gradient(ellipse at 85% 15%,rgba(50,80,140,0.15) 0%,transparent 50%);}
 .shell{display:flex;min-height:100vh;position:relative;z-index:1;}
 .sidebar{position:fixed;top:0;left:0;bottom:0;width:190px;z-index:50;background:rgba(8,10,16,0.95);backdrop-filter:blur(16px);border-right:1px solid rgba(240,208,128,0.12);display:flex;flex-direction:column;box-shadow:4px 0 24px rgba(0,0,0,0.4);}
-.sidebar-logo{font-family:'Cinzel',serif;text-align:center;padding:22px 16px 18px;border-bottom:1px solid rgba(240,208,128,0.12);margin-bottom:8px;display:flex;flex-direction:column;align-items:center;gap:0;}.sidebar-logo-star{font-size:11px;color:#f0d080;opacity:0.85;margin-bottom:3px;filter:drop-shadow(0 0 6px rgba(240,208,128,0.6));}.sidebar-logo-name{font-size:13px;color:#f0d080;letter-spacing:3px;line-height:1;text-shadow:0 0 14px rgba(240,208,128,0.35);}.sidebar-logo-ver{font-size:9px;color:#4a3e5a;letter-spacing:1px;margin-top:5px;font-family:'Nunito',sans-serif;}
-.nav-item{display:flex;align-items:center;gap:11px;padding:11px 20px;cursor:pointer;background:transparent;border:none;border-left:3px solid transparent;color:#605870;font-family:'Nunito',sans-serif;font-size:13px;text-align:left;width:100%;transition:all 0.18s;white-space:nowrap;border-radius:0 8px 8px 0;margin:1px 8px 1px 0;width:calc(100% - 8px);}
+.sidebar-logo{font-family:'Cinzel',serif;text-align:center;padding:22px 16px 18px;border-bottom:1px solid rgba(240,208,128,0.12);margin-bottom:8px;display:flex;flex-direction:column;align-items:center;gap:0;}.sidebar-logo-star{font-size:11px;color:#f0d080;opacity:0.85;margin-bottom:3px;filter:drop-shadow(0 0 6px rgba(240,208,128,0.6));}.sidebar-logo-name{font-size:15px;color:#f0d080;letter-spacing:3px;line-height:1;text-shadow:0 0 14px rgba(240,208,128,0.35);}.sidebar-logo-ver{font-size:9px;color:#4a3e5a;letter-spacing:1px;margin-top:5px;font-family:'Nunito',sans-serif;}
+.nav-item{display:flex;align-items:center;gap:11px;padding:11px 20px;cursor:pointer;background:transparent;border:none;border-left:3px solid transparent;color:#605870;font-family:'Nunito',sans-serif;font-size:14px;text-align:left;width:100%;transition:all 0.18s;white-space:nowrap;border-radius:0 8px 8px 0;margin:1px 8px 1px 0;width:calc(100% - 8px);}
 .nav-item:hover{color:#c8a84b;background:rgba(240,208,128,0.05);}
 .nav-item.active{color:#f0d080 !important;background:linear-gradient(90deg,rgba(240,208,128,0.1),rgba(240,208,128,0.03));border-left-color:#f0d080;}
 .nav-item svg{width:17px;height:17px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.8;}
-.nav-label{font-size:12px;}
+.nav-label{font-size:14px;}
 .main{margin-left:190px;flex:1;min-width:0;}
 @keyframes page-in{from{opacity:0;transform:translateY(7px);}to{opacity:1;transform:translateY(0);}}
 .page{display:none;padding:18px 20px 28px;}
@@ -291,13 +291,13 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .pace-sub{font-size:10px;margin-top:5px;}
 .hist-wrap{position:relative;height:110px;}
 .stats-hero{display:grid;grid-template-columns:minmax(0,1.2fr) auto;gap:8px;align-items:stretch;margin-bottom:6px;}
-.stats-hero-main{background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.22);border-radius:12px;overflow:hidden;padding:14px 16px;display:flex;align-items:flex-end;justify-content:space-between;gap:14px;}
+.stats-hero-main{background:rgba(255,255,255,0.05);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.22);border-radius:12px;overflow:hidden;padding:14px 16px;background-image:linear-gradient(135deg,rgba(255,255,255,0.06) 0%,transparent 50%);display:flex;align-items:flex-end;justify-content:space-between;gap:14px;}
 .stats-hero-kicker{font-size:9px;color:#907898;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
 .stats-hero-value{font-family:'Cinzel',serif;font-size:40px;color:#f0d080;line-height:1;}
 .stats-hero-label{font-size:10px;color:#907898;letter-spacing:1px;text-transform:uppercase;margin-top:6px;}
 .stats-hero-note{font-size:11px;color:#7c718f;margin-top:6px;line-height:1.45;max-width:540px;}
 .stats-hero-side{display:grid;grid-template-columns:repeat(2,minmax(160px,1fr));gap:8px;min-width:320px;}
-.stats-chip{background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;transition:transform 0.16s,box-shadow 0.18s;padding:12px 16px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;min-width:0;}
+.stats-chip{background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;transition:transform 0.16s,box-shadow 0.18s;padding:12px 16px;background-image:linear-gradient(135deg,rgba(255,255,255,0.06) 0%,transparent 50%);display:flex;flex-direction:column;justify-content:center;overflow:hidden;min-width:0;}
 .stats-chip:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.28),0 0 0 1px rgba(240,208,128,0.2);}
 .stats-metric:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.28),0 0 0 1px rgba(240,208,128,0.2);}
 .stats-chip-value{font-family:'Cinzel',serif;font-size:26px;color:#f0d080;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -763,7 +763,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:12px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v311</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v312</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1626,7 +1626,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v311';
+const APP_VERSION = 'v312';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1655,8 +1655,8 @@ function initGoogleAuth() {
     scope: GDRIVE_SCOPE,
     callback: onGoogleToken
   });
-  // If user was previously signed in, silently refresh the token (desktop only)
-  if (APP.syncConnected && window.innerWidth > 768) {
+  // Silently refresh token on every load if previously signed in
+  if (APP.syncConnected) {
     gdSilentReauth = true;
     gdTokenClient.requestAccessToken({ prompt: '' });
   }
@@ -3205,7 +3205,7 @@ function renderChainPickerDropdown(type,allBanners){
 const FATE_ICO=`<img src="https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png" class="ico" alt="fate">`;
 const PRIMO_ICO=`<img src="https://lupix11.github.io/primo-tracker/images/pulls/primogem.png" class="ico" alt="primo">`;
 
-function buildSummaryHtml(type,orderedBanners){
+function buildSummaryHtml(type,orderedBanners,startCumulative=0){
   if(!orderedBanners.length) return '';
   const {totalMin,totalMax}=calcChainSummary(type,orderedBanners);
   if(!totalMin) return '';
@@ -3221,7 +3221,7 @@ function buildSummaryHtml(type,orderedBanners){
   const pullsPerDay2=avgDay2/160;
   const curPulls2=entries.length?entries[entries.length-1].pulls:0;
 
-  let cumulativePullsSpent=0;
+  let cumulativePullsSpent=startCumulative;
   const rows=[...orderedBanners].sort((a,b)=>new Date(a.endDate)-new Date(b.endDate)).map(b=>{
     const bType=type;
     const key=getBannerKey(b);
@@ -3266,7 +3266,7 @@ function buildSummaryHtml(type,orderedBanners){
       <div>${chipHtml}</div>
     </div>`;
   }).join('');
-
+  window._lastBuildCumulative=cumulativePullsSpent;
   return `<div class="chain-summary card" style="padding:14px 16px;margin-bottom:10px;">
   <div class="chain-sum-title">${title}</div>
   <div class="chain-sum-grid-4" style="margin-bottom:12px;">
@@ -3385,7 +3385,14 @@ function renderChainSummaryOnly(){
   const weapB=resolve('weapon');
   const row=document.getElementById('chain-summaries-row');
   const combined=document.getElementById('chain-combined');
-  if(row) row.innerHTML=buildSummaryHtml('character',charB)+buildSummaryHtml('weapon',weapB);
+  if(row){
+    // Cross-banner sequential: shared cumulative across char + weapon sorted by date
+    let crossCumulative=0;
+    const cHtml=buildSummaryHtml('character',charB,crossCumulative);
+    crossCumulative=window._lastBuildCumulative||0;
+    const wHtml=buildSummaryHtml('weapon',weapB,crossCumulative);
+    row.innerHTML=cHtml+wHtml;
+  }
   if(combined) combined.innerHTML=buildCombinedHtml(charB,weapB);
 }
 
