@@ -763,7 +763,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v330</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v331</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1634,7 +1634,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v330';
+const APP_VERSION = 'v331';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2107,7 +2107,7 @@ function renderChart(){
   if(existing) existing.destroy();
   chartInst=null;
   const ctx=chartCanvas.getContext('2d');
-  const blPlugin={id:'bl',afterDraw(chart){if(activeMetric!=='gain')return;const{ctx:c,chartArea,scales}=chart;if(!scales.y||!chartArea)return;const y=scales.y.getPixelForValue(baseline);c.save();c.strokeStyle='rgba(240,208,128,0.72)';c.lineWidth=2;c.setLineDash([6,4]);c.beginPath();c.moveTo(chartArea.left,y);c.lineTo(chartArea.right,y);c.stroke();c.setLineDash([]);c.restore();}};
+  const blPlugin={id:'bl',beforeDraw(chart){if(activeMetric!=='gain')return;const{ctx:c,chartArea,scales}=chart;if(!scales.y||!chartArea)return;const y=scales.y.getPixelForValue(baseline);c.save();c.strokeStyle='rgba(240,208,128,0.72)';c.lineWidth=2;c.setLineDash([6,4]);c.beginPath();c.moveTo(chartArea.left,y);c.lineTo(chartArea.right,y);c.stroke();c.setLineDash([]);c.restore();}};
   const glowPlugin={id:'lineGlow',beforeDatasetDraw(chart,args){const ds=args.meta.dataset;if(!ds)return;const lbl=chart.data.datasets[args.index]?.label;if(lbl!=='Raw Primogems')return;const ctx=chart.ctx;ctx.save();ctx.shadowColor='rgba(240,208,128,0.3)';ctx.shadowBlur=4;}};
   const xSc={grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#907898',font:{size:10,family:'Nunito'},autoSkip:true,maxTicksLimit:12,maxRotation:45}};
   const ySc={grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#907898',font:{size:10,family:'Nunito'},callback:v=>v?.toLocaleString()}};
