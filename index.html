@@ -307,8 +307,8 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .stats-chip-value{font-family:'Cinzel',serif;font-size:26px;color:#f0d080;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .stats-chip-label{font-size:10px;color:#907898;letter-spacing:1px;text-transform:uppercase;margin-top:8px;}
 .stats-chip-sub{font-size:11px;color:#6d627f;margin-top:5px;line-height:1.35;}
-.stats-desktop-only{display:flex;}.stats-mobile-only{display:none;}
-@media(max-width:768px){.stats-desktop-only{display:none!important;}.stats-mobile-only{display:flex!important;}}
+.stats-desktop-only{display:flex;}.stats-mobile-only{display:none;}.range-buttons-bottom{display:none;}
+@media(max-width:768px){.stats-desktop-only{display:none!important;}.stats-mobile-only{display:flex!important;}.range-buttons-bottom{display:flex;}}
 .stats-section{margin-bottom:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;padding:10px 14px;overflow:hidden;background-image:linear-gradient(135deg,rgba(255,255,255,0.06) 0%,transparent 50%);}.stats-controls{display:flex;justify-content:flex-end;gap:6px;margin-bottom:12px;}#stats-content{overflow:visible;}#stats-hist-card{overflow:hidden;}#stats-wrap{background:transparent!important;background-image:none!important;border:none!important;box-shadow:none!important;}.stats-chip{overflow:visible!important;}.stats-metric{overflow:visible!important;}
 .stats-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
 .stats-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
@@ -769,7 +769,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v350</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v351</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1655,7 +1655,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v350';
+const APP_VERSION = 'v351';
 
 let gdToken = null;
 let gdTokenClient = null;
