@@ -1,1 +1,23 @@
-
+{
+  "name": "Primo Tracker",
+  "short_name": "Primo Tracker",
+  "description": "Track your Genshin Impact primogem farming progress.",
+  "start_url": "/primo-tracker/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0e1219",
+  "theme_color": "#0e1219",
+  "icons": [
+    {
+      "src": "/primo-tracker/images/icon/primo-tracker-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/primo-tracker/images/icon/primo-tracker-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
