@@ -102,7 +102,7 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   .stats-hero-value{font-size:28px;display:flex;align-items:center;gap:8px;}
   .stats-grid-3{grid-template-columns:1fr!important;}
   .stats-metric{overflow:hidden!important;min-width:0!important;}
-  .stats-section{margin-bottom:10px!important;}
+  .stats-section{margin-bottom:16px!important;}
   .stats-metric-row{overflow:hidden!important;}
   .stats-metric-row img[width="48"]{width:26px!important;height:26px!important;}
   .stat-icon{width:26px!important;height:26px!important;font-size:12px!important;flex-shrink:0!important;}
@@ -131,7 +131,7 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   .chain-copy-sq{width:22px;height:22px;}
   .chain-card-name{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
   .chain-sum-title{font-size:10px;}
-  .ptl-head,.ptl-row{grid-template-columns:96px 1fr;}
+  .ptl-head,.ptl-row{grid-template-columns:64px 1fr;}
   .ptl-info{padding:8px 10px;}
   .ptl-name2{white-space:normal;font-size:11px;}
 
@@ -175,7 +175,7 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   .sync-pill{align-self:flex-start;}
 }
 .card{background:rgba(255,255,255,0.05);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.22);border-radius:12px;padding:16px 18px;margin-bottom:14px;position:relative;overflow:hidden;background-image:linear-gradient(135deg,rgba(255,255,255,0.06) 0%,transparent 50%);}
-.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,rgba(240,208,128,0.55),rgba(160,100,200,0.25));border-radius:12px 0 0 12px;pointer-events:none;}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,rgba(240,208,128,0.75),rgba(160,100,200,0.4));border-radius:12px 0 0 12px;pointer-events:none;}
 .card+.card{margin-top:11px;}
 .card-title{font-family:'Cinzel',serif;font-size:12px;color:#c8a84b;letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;gap:7px;}
 .card-title::before{content:'✦';font-size:10px;color:#f0d080;opacity:0.7;}
@@ -243,7 +243,7 @@ textarea.note-ta{width:100%;background:rgba(255,255,255,0.05);border:1px solid r
 .li{display:flex;align-items:center;gap:5px;font-size:11px;color:#907898;}
 .ls{width:20px;height:3px;border-radius:2px;flex-shrink:0;}
 .ld span{width:20px;height:2px;display:block;background:repeating-linear-gradient(90deg,rgba(255,246,216,1) 0,rgba(255,246,216,1) 5px,transparent 5px,transparent 9px);}
-.chart-wrap{position:relative;height:250px;}
+.chart-wrap{position:relative;height:250px;margin:0 -4px;}
 .log-header-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;}
 .log-header-left{display:flex;align-items:baseline;gap:7px;}
 .hint-txt{font-size:10px;color:#504060;font-style:italic;}
@@ -309,7 +309,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .stats-chip-sub{font-size:11px;color:#6d627f;margin-top:5px;line-height:1.35;}
 .stats-desktop-only{display:flex;}.stats-mobile-only{display:none;}.range-buttons-bottom{display:none;}
 @media(max-width:768px){.stats-desktop-only{display:none!important;}.stats-mobile-only{display:flex!important;}.range-buttons-bottom{display:flex;}}
-.stats-bg-box::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,rgba(240,208,128,0.55),rgba(160,100,200,0.25));border-radius:12px 0 0 12px;pointer-events:none;}.stats-section::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,rgba(240,208,128,0.55),rgba(160,100,200,0.25));border-radius:12px 0 0 12px;pointer-events:none;}.stats-section{margin-bottom:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;padding:10px 14px;overflow:hidden;position:relative;background-image:linear-gradient(135deg,rgba(255,255,255,0.025) 0%,transparent 60%);}.stats-controls{display:flex;justify-content:flex-end;gap:6px;margin-bottom:12px;}#stats-content{overflow:visible;}#stats-hist-card{overflow:hidden;}#stats-wrap{background:transparent!important;background-image:none!important;border:none!important;box-shadow:none!important;}.stats-chip{overflow:visible!important;}.stats-metric{overflow:visible!important;}
+.stats-bg-box::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,rgba(240,208,128,0.75),rgba(160,100,200,0.4));border-radius:12px 0 0 12px;pointer-events:none;}.stats-section::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,rgba(240,208,128,0.75),rgba(160,100,200,0.4));border-radius:12px 0 0 12px;pointer-events:none;}.stats-section{margin-bottom:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;padding:10px 14px;overflow:hidden;position:relative;background-image:linear-gradient(135deg,rgba(255,255,255,0.025) 0%,transparent 60%);}.stats-controls{display:flex;justify-content:flex-end;gap:6px;margin-bottom:12px;}#stats-content{overflow:visible;}#stats-hist-card{overflow:hidden;}#stats-wrap{background:transparent!important;background-image:none!important;border:none!important;box-shadow:none!important;}.stats-chip{overflow:visible!important;}.stats-metric{overflow:visible!important;}
 .stats-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
 .stats-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
 .stats-metric{background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;overflow:hidden;transition:transform 0.16s,box-shadow 0.18s;padding:10px 12px;min-height:80px;box-sizing:border-box;min-width:0;}
@@ -452,7 +452,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .bdot-empty{opacity:0;border:none;}
 @keyframes live-dot-pulse{0%,100%{box-shadow:0 0 5px rgba(128,240,160,0.4);}50%{box-shadow:0 0 10px rgba(128,240,160,0.7);}}
 .ptl-today-pill{position:absolute;top:0;left:50%;transform:translate(-50%,-115%);font-size:9px;color:#0e1219;background:#f0d080;padding:1px 6px;border-radius:10px;z-index:60;font-weight:700;white-space:nowrap;box-shadow:0 0 5px rgba(240,208,128,0.25);}
-.ptl-row{display:grid;grid-template-columns:120px 1fr;min-height:36px;border-top:1px solid rgba(255,255,255,0.03);}
+.ptl-row{display:grid;grid-template-columns:78px 1fr;min-height:36px;border-top:1px solid rgba(255,255,255,0.03);}
 .ptl-row:first-child{border-top:none;}
 .ptl-row.is-selected .ptl-name2{color:#f0d080;}
 .ptl-selected-chip{font-size:8px;padding:2px 6px;border-radius:999px;background:rgba(240,208,128,0.14);border:1px solid rgba(240,208,128,0.28);color:#f0d080;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;}
@@ -534,8 +534,8 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .plan-warn{color:#f0b060;}
 .plan-bad{color:#f08080;}
 .plan-soft{color:#80c0f0;}
-@media(max-width:920px){.ptl-head,.ptl-row{grid-template-columns:136px 1fr;}.plan-top{grid-template-columns:72px 1fr;}.plan-chip{grid-column:2;justify-self:start;text-align:left;}.plan-grid,.plan-rate-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:768px){.ptl-head,.ptl-row{grid-template-columns:108px 1fr;}.ptl-info{padding:10px;}.ptl-name2{white-space:normal;}.plan-top{grid-template-columns:1fr;}.plan-grade{text-align:left;font-size:42px;}.plan-grid,.plan-rate-grid{grid-template-columns:1fr 1fr;}.plan-insight{flex-direction:column;align-items:flex-start;}.plan-section{padding:8px 12px 0;}.plan-mini{padding:8px 10px;min-height:60px;}.plan-rate{padding:8px 10px;}.plan-mini-v,.plan-rate-v{font-size:20px;}.plan-section-title{font-size:9px;margin-bottom:6px;}.plan-result{padding:10px 12px 18px;}}
+@media(max-width:920px){.ptl-head,.ptl-row{grid-template-columns:88px 1fr;}.plan-top{grid-template-columns:72px 1fr;}.plan-chip{grid-column:2;justify-self:start;text-align:left;}.plan-grid,.plan-rate-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:768px){.ptl-head,.ptl-row{grid-template-columns:70px 1fr;}.ptl-info{padding:10px;}.ptl-name2{white-space:normal;}.plan-top{grid-template-columns:1fr;}.plan-grade{text-align:left;font-size:42px;}.plan-grid,.plan-rate-grid{grid-template-columns:1fr 1fr;}.plan-insight{flex-direction:column;align-items:flex-start;}.plan-section{padding:8px 12px 0;}.plan-mini{padding:8px 10px;min-height:60px;}.plan-rate{padding:8px 10px;}.plan-mini-v,.plan-rate-v{font-size:20px;}.plan-section-title{font-size:9px;margin-bottom:6px;}.plan-result{padding:10px 12px 18px;}}
 
 @media(max-width:760px){.settings-grid{grid-template-columns:1fr;}}
 .settings-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:11px;}
@@ -570,7 +570,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .profile-edit-panel.open{display:flex;}
 .sync-stack{display:grid;gap:10px;}
 .sync-card{background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.08);border-radius:10px;padding:14px 15px;}
-.sync-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid rgba(255,255,255,0.04);}
+.sync-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid rgba(255,255,255,0.04);}
 .sync-row:first-of-type{border-top:none;padding-top:0;}
 .sync-copy{min-width:0;}
 .sync-label{font-size:13px;color:#e8dfc8;}
@@ -620,7 +620,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .cr-mobile-body{padding:10px 13px 13px;transition:background 0.3s;}
 .cr-names{font-size:13px;color:#e8dfc8;font-weight:700;margin-bottom:3px;}
 .cr-status{font-size:11px;color:#80f0a0;}
-.cr-size-badge{display:inline-block;background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.1);border-radius:5px;padding:2px 10px;font-size:11px;color:#504060;margin-top:8px;}
+.cr-size-badge{display:inline-block;background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.1);border-radius:7px;padding:2px 10px;font-size:11px;color:#504060;margin-top:8px;}
 .cr-hint{font-size:11px;color:#403050;margin-top:6px;}
 .cr-reset-btn{font-size:11px;color:#604870;background:none;border:none;cursor:pointer;text-decoration:underline;float:right;}
 .cr-reset-btn:hover{color:#c8a84b;}
@@ -769,7 +769,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v361</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v363</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -955,8 +955,8 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
       <div class="chain-page-sub">Plan your future pulls and track the primogems you need for your goals.</div>
       <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
         <span style="font-size:11px;color:#a090c0;">Target deadline:</span>
-        <button id="timing-end" onclick="setPlannerTiming('end')" style="font-size:11px;padding:2px 10px;border-radius:999px;border:1px solid rgba(240,208,128,0.25);background:rgba(240,208,128,0.12);color:#f0d080;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;">Banner End</button>
         <button id="timing-start" onclick="setPlannerTiming('start')" style="font-size:11px;padding:2px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:#605870;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;">Banner Start</button>
+        <button id="timing-end" onclick="setPlannerTiming('end')" style="font-size:11px;padding:2px 10px;border-radius:999px;border:1px solid rgba(240,208,128,0.25);background:rgba(240,208,128,0.12);color:#f0d080;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;">Banner End</button>
       </div>
     </div>
     <div class="chain-layout">
@@ -1655,7 +1655,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v361';
+const APP_VERSION = 'v363';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1685,9 +1685,7 @@ function initGoogleAuth() {
     callback: onGoogleToken
   });
   // Silently refresh token on every load if previously signed in
-  if (APP.syncConnected && window.innerWidth > 768) {
-    setTimeout(()=>{gdSilentReauth = true;gdTokenClient.requestAccessToken({ prompt: 'none' });},1500);
-  }
+  // Silent reauth disabled — manual only via Settings
 }
 
 async function onGoogleToken(resp) {
@@ -2129,7 +2127,7 @@ function renderChart(){
   if(existing) existing.destroy();
   chartInst=null;
   const ctx=chartCanvas.getContext('2d');
-  const blPlugin={id:'bl',beforeDraw(chart){if(activeMetric!=='gain')return;const{ctx:c,chartArea,scales}=chart;if(!scales.y||!chartArea)return;const y=scales.y.getPixelForValue(baseline);c.save();c.strokeStyle='rgba(240,208,128,0.72)';c.lineWidth=2;c.setLineDash([6,4]);c.beginPath();c.moveTo(chartArea.left,y);c.lineTo(chartArea.right,y);c.stroke();c.setLineDash([]);c.restore();}};
+  const blPlugin={id:'bl',beforeDraw(chart){if(activeMetric!=='gain')return;const{ctx:c,chartArea,scales}=chart;if(!scales.y||!chartArea)return;const y=scales.y.getPixelForValue(baseline);c.save();c.strokeStyle='rgba(240,208,128,0.72)';c.lineWidth=2.5;c.setLineDash([6,4]);c.beginPath();c.moveTo(chartArea.left,y);c.lineTo(chartArea.right,y);c.stroke();c.setLineDash([]);c.restore();}};
   const glowPlugin={id:'lineGlow',beforeDatasetDraw(chart,args){const ds=args.meta.dataset;if(!ds)return;const lbl=chart.data.datasets[args.index]?.label;if(lbl!=='Raw Primogems')return;const ctx=chart.ctx;ctx.save();ctx.shadowColor='rgba(240,208,128,0.3)';ctx.shadowBlur=4;}};
   const xSc={grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#907898',font:{size:10,family:'Nunito'},autoSkip:true,maxTicksLimit:12,maxRotation:45}};
   const ySc={grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#907898',font:{size:10,family:'Nunito'},callback:v=>v?.toLocaleString()}};
@@ -2334,7 +2332,7 @@ function renderStats(){
       <div class="stats-hero-side">
         <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;padding:14px 16px;background-image:linear-gradient(135deg,rgba(255,255,255,0.025) 0%,transparent 60%);overflow:hidden;position:relative;display:flex;flex-direction:column;">
           <div class="s-sect-title">Days Tracked</div>
-          <div class="stats-inner-card" style="background:rgba(255,255,255,0.05);border:1px solid rgba(240,208,128,0.13);border-radius:10px;padding:12px 14px;flex:1;display:flex;flex-direction:column;justify-content:center;transition:transform 0.16s,box-shadow 0.18s;cursor:default;">
+          <div class="stats-inner-card" style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px 14px;flex:1;display:flex;flex-direction:column;justify-content:center;transition:transform 0.16s,box-shadow 0.18s;cursor:default;">
             <div class="stats-chip-value">${entries.length}</div>
             <div class="stats-chip-label">Days tracked</div>
             <div class="stats-chip-sub">From ${fmtDate(first.date)} to ${fmtDate(last.date)}.</div>
@@ -2342,7 +2340,7 @@ function renderStats(){
         </div>
         <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;padding:14px 16px;background-image:linear-gradient(135deg,rgba(255,255,255,0.025) 0%,transparent 60%);overflow:hidden;position:relative;display:flex;flex-direction:column;">
           <div class="s-sect-title">7-Day Pace Delta</div>
-          <div class="stats-inner-card" style="background:rgba(255,255,255,0.05);border:1px solid rgba(240,208,128,0.13);border-radius:10px;padding:12px 14px;flex:1;display:flex;flex-direction:column;justify-content:center;transition:transform 0.16s,box-shadow 0.18s;cursor:default;">
+          <div class="stats-inner-card" style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px 14px;flex:1;display:flex;flex-direction:column;justify-content:center;transition:transform 0.16s,box-shadow 0.18s;cursor:default;">
             <div class="stats-chip-value" id="stats-chip-2-val" style="color:${paceUp?'#80f0a0':'#f09060'};">${paceVal===null?'—':(paceUp?'+':'−')+Math.abs(paceVal).toLocaleString()}</div>
             <div class="stats-chip-label" id="stats-chip-2-lbl">7-day pace delta</div>
             <div class="stats-chip-sub" id="stats-chip-2-sub">${paceVal===null?'Recent pace unavailable.':paceUp?'Recent gains are above average.':'Recent gains are below average.'}</div>
@@ -2720,7 +2718,7 @@ function renderTimeline(banners){
       if(idx>0) top += barHeight + (b._start.getTime()===items[idx-1]._start.getTime() ? sameGap : groupGap);
       prevGroup=b._groupKey;
       const startOffset=diffDays(b._start,minDate)*dayWidth;
-      const durationDays=Math.max(1,diffDays(b._end,b._start)+1);
+      const durationDays=Math.max(1,diffDays(b._end,b._start));
       const barWidth=Math.max(84,durationDays*dayWidth-2);
       const isLive=now>=b._startMoment&&now<=b._endMoment;
       const isPast=now>b._endMoment;
