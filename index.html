@@ -769,7 +769,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v371</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v372</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1655,7 +1655,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v371';
+const APP_VERSION = 'v372';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2716,7 +2716,8 @@ function renderTimeline(banners){
     const groupGap=8;
     let top=laneBase;
     let prevGroup='';
-    const bars=items.map((b,idx)=>{
+    const dots=[];
+    const barHtmlArr=items.map((b,idx)=>{
       if(idx>0) top += barHeight + (b._start.getTime()===items[idx-1]._start.getTime() ? sameGap : groupGap);
       prevGroup=b._groupKey;
       const startOffset=diffDays(b._start,minDate)*dayWidth;
@@ -2746,17 +2747,18 @@ function renderTimeline(banners){
       const imgHtml = imgUrl && barWidth > 120
         ? `<img class="ptl-bar-img" src="${imgUrl}" alt="" loading="lazy" onerror="this.style.display='none';"/>`
         : '';
-      const statusDot=isLive?'<span class="bdot bdot-live" style="position:absolute;left:0;top:50%;transform:translate(-50%,-50%);z-index:20;margin:0;pointer-events:none;"></span>':(!isPast&&!isSpec?'<span class="bdot bdot-soon" style="position:absolute;left:0;top:50%;transform:translate(-50%,-50%);z-index:20;margin:0;pointer-events:none;"></span>':''); return `<div style="position:absolute;left:${startOffset}px;top:${top}px;overflow:visible;z-index:${zIdx};">
-        <button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="width:${barWidth}px;height:${barHeight}px;background:linear-gradient(90deg,${palette.c2},${palette.c1});color:${palette.fg};position:relative;z-index:10;" data-bidx="${b._index}" onmousemove="moveTip(event)" onmouseenter="showTLTooltip(event,'${b.displayName.replace(/'/g,"\\'")}','${b.startDate}','${b.endDate}')" onmouseleave="hideTLTooltip()">
-          ${statusDot}
+      const _dotClass=isLive?'bdot-live':(!isPast&&!isSpec?'bdot-soon':'');
+      if(_dotClass) dots.push(`<span class="bdot ${_dotClass}" style="position:absolute;left:${startOffset}px;top:${top+Math.floor(barHeight/2)}px;transform:translate(-50%,-50%);z-index:50;pointer-events:none;margin:0;"></span>`); return `<div style="position:absolute;left:${startOffset}px;top:${top}px;display:flex;align-items:center;z-index:${zIdx};">
+        <button class="ptl-bar ${statusClass} ${b.type}${isSel?' selected':''}${dimmed}" style="width:${barWidth}px;height:${barHeight}px;background:linear-gradient(90deg,${palette.c2},${palette.c1});color:${palette.fg};position:relative;" data-bidx="${b._index}" onmousemove="moveTip(event)" onmouseenter="showTLTooltip(event,'${b.displayName.replace(/'/g,"\\'")}','${b.startDate}','${b.endDate}')" onmouseleave="hideTLTooltip()">
           ${imgHtml}
           <span class="ptl-bar-label">${b.displayName}</span>
         </button>
         <span style="margin-left:6px;font-size:10px;font-weight:600;color:#c8b88a;white-space:nowrap;background:rgba(255,255,255,0.07);border:1px solid rgba(240,208,128,0.15);border-radius:999px;padding:1px 8px;">${isSel?'✓ ':''}${shortStatus}</span>
       </div>`;
     }).join('');
+    const dotOverlay=`<div style="position:absolute;inset:0;pointer-events:none;z-index:50;">${dots.join('')}</div>`;
     const height=items.length ? top + barHeight + laneBase : 50;
-    return {bars,height};
+    return {bars:barHtmlArr+dotOverlay,height};
   }
 
   const groups=[
