@@ -775,7 +775,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v410</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v411</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -833,11 +833,12 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
     </div>
     <div class="card">
       <div class="qa-title-row"><div class="card-title" data-i18n="dash_quick_add">Quick Add</div>
+        <button class="import-icon-btn" onclick="exportCSV()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Export</button>
         <button class="import-icon-btn" id="import-toggle-btn" onclick="toggleImport()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Import</button>
       </div>
       <div class="qa-wrap">
         <button class="qa-add-btn" onclick="this.style.animation='none';void this.offsetWidth;this.style.animation='btn-pop 0.22s ease';addEntry()">Add ＋</button>
-        <div class="qa-field"><div class="qa-label">Date</div><input type="text" id="inp-date" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this)"/></div>
+        <div class="qa-field"><div class="qa-label">Date</div><div style="display:flex;gap:5px;align-items:center;"><input type="text" id="inp-date" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this)"/><button class="import-icon-btn" onclick="fillTodayDate()" style="white-space:nowrap;flex-shrink:0;">Today</button></div></div>
         <div class="qa-field"><div class="qa-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/primogem.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Primogems</div><input type="number" id="inp-primo" class="qa-input" placeholder="21784" min="0" oninput="calcPreview()"/></div>
         <div class="qa-field"><div class="qa-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Intertwined Fates</div><input type="number" id="inp-fates" class="qa-input" placeholder="17" min="0" oninput="calcPreview()"/></div>
       </div>
@@ -1661,7 +1662,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v410';
+const APP_VERSION = 'v411';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2024,6 +2025,31 @@ function calcPreview(){
   const p=parseInt(document.getElementById('inp-primo').value),f=parseInt(document.getElementById('inp-fates').value),hasP=!isNaN(p),hasF=!isNaN(f),prev=document.getElementById('qa-preview');
   if(hasP||hasF){const t=(hasP?p:0)+(hasF?f*160:0),pu=(hasP?Math.floor(p/160):0)+(hasF?f:0);prev.textContent=`= ${t.toLocaleString()} primos · ${pu} pulls`;prev.style.opacity='1';}
   else{prev.textContent='—';prev.style.opacity='0';}
+}
+function fillTodayDate(){
+  const offset=REGION_UTC_OFFSETS[APP.plannerRegion]??-5;
+  const now=new Date();
+  const local=new Date(now.getTime()+offset*3600000);
+  if(local.getUTCHours()<4) local.setUTCDate(local.getUTCDate()-1);
+  const d=String(local.getUTCDate()).padStart(2,'0');
+  const m=String(local.getUTCMonth()+1).padStart(2,'0');
+  const y=local.getUTCFullYear();
+  document.getElementById('inp-date').value=`${d}/${m}/${y}`;
+}
+function exportCSV(){
+  if(!entries||entries.length===0){alert('No data to export.');return;}
+  const rows=[['Date','Primogems','Fates','Total','Pulls','Notes']];
+  const sorted=[...entries].sort((a,b)=>a.date.localeCompare(b.date));
+  for(const e of sorted){
+    const p=e.date.split('-');
+    const dateStr=p.length===3?`${p[2]}/${p[1]}/${p[0]}`:e.date;
+    rows.push([dateStr,e.primo??'',e.fates??'',e.total??'',e.pulls??'',(e.notes||'').replace(/"/g,'""')]);
+  }
+  const csv=rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download=`${(APP.currentProfile||'primo-tracker').replace(/\s+/g,'-').toLowerCase()}-log.csv`;
+  a.click();
 }
 function addEntry(){
   const date=parseDMY(document.getElementById('inp-date').value),primo=parseInt(document.getElementById('inp-primo').value),fates=parseInt(document.getElementById('inp-fates').value),notes=document.getElementById('inp-note').value.trim(),err=document.getElementById('err');
