@@ -66,7 +66,7 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
   .card+.card{margin-top:9px;}
 
   /* Quick Add — stack vertically */
-  .qa-wrap{flex-direction:column;gap:10px;}
+  .qa-wrap{flex-direction:row;flex-wrap:wrap;gap:8px;}
   .qa-field{min-width:0;width:100%;}
   .qa-add-btn{width:100%;justify-content:center;padding:12px;font-size:15px;border-radius:10px;}
   .qa-input{font-size:15px;padding:10px 12px;}
@@ -775,7 +775,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v414</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v415</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -839,8 +839,8 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
         </div>
       </div>
       <div class="qa-wrap">
-        <button class="qa-add-btn" onclick="this.style.animation='none';void this.offsetWidth;this.style.animation='btn-pop 0.22s ease';fillTodayDate();addEntry()">Add Today</button>
-        <div style="display:flex;gap:6px;align-items:flex-end;flex:1;min-width:180px;"><div class="qa-field" style="flex:1;min-width:0;"><div class="qa-label">Date</div><input type="text" id="inp-date" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this)" style="min-width:0;"/></div><button class="qa-add-btn" style="flex-shrink:0;" onclick="this.style.animation='none';void this.offsetWidth;this.style.animation='btn-pop 0.22s ease';addEntry()">By Date</button></div>
+        <button class="qa-add-btn" style="flex-shrink:0;white-space:nowrap;" onclick="this.style.animation='none';void this.offsetWidth;this.style.animation='btn-pop 0.22s ease';fillTodayDate();addEntry()">Add Today</button>
+        <div style="display:flex;gap:6px;align-items:flex-end;flex:1;min-width:0;"><button class="qa-add-btn" style="flex-shrink:0;white-space:nowrap;" onclick="this.style.animation='none';void this.offsetWidth;this.style.animation='btn-pop 0.22s ease';addEntry()">By Date</button><div class="qa-field" style="flex:1;min-width:80px;"><div class="qa-label">Date</div><input type="text" id="inp-date" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this)" style="min-width:0;"/></div></div>
         <div class="qa-field"><div class="qa-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/primogem.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Primogems</div><input type="number" id="inp-primo" class="qa-input" placeholder="21784" min="0" oninput="calcPreview()"/></div>
         <div class="qa-field"><div class="qa-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Intertwined Fates</div><input type="number" id="inp-fates" class="qa-input" placeholder="17" min="0" oninput="calcPreview()"/></div>
       </div>
@@ -1664,7 +1664,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v414';
+const APP_VERSION = 'v415';
 
 let gdToken = null;
 let gdTokenClient = null;
