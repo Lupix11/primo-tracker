@@ -67,6 +67,7 @@ body{background:#0e1219;color:#e8dfc8;font-family:'Nunito',sans-serif;overflow-x
 
   /* Quick Add — stack vertically */
   .qa-wrap{flex-direction:column;gap:10px;}
+  .bydate-row{width:100%;flex-direction:row-reverse;}
   .qa-field{min-width:0;width:100%;}
   .qa-add-btn{width:100%;justify-content:center;padding:12px;font-size:15px;border-radius:10px;}
   .qa-input{font-size:15px;padding:10px 12px;}
@@ -769,13 +770,26 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
   .stats-chip-value{font-size:26px!important;}
   .stats-chip-label{font-size:9px!important;letter-spacing:0.5px!important;}
   .stats-chip-sub{font-size:9px!important;display:none!important;}}
+.notes-fab{position:fixed;bottom:24px;right:20px;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#c8a84b,#f0d080);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 14px rgba(240,208,128,0.35);z-index:900;transition:transform 0.18s,box-shadow 0.18s;-webkit-tap-highlight-color:transparent;}
+.notes-fab:hover{transform:scale(1.09);box-shadow:0 4px 20px rgba(240,208,128,0.5);}
+.notes-fab svg{width:20px;height:20px;fill:none;stroke:#1a1200;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.notes-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:901;align-items:center;justify-content:center;padding:16px;}
+.notes-overlay.open{display:flex;}
+.notes-modal{background:#141820;border:1px solid rgba(240,208,128,0.18);border-top:2px solid #f0d080;border-radius:14px;width:min(500px,100%);max-height:80vh;display:flex;flex-direction:column;padding:20px;gap:12px;box-shadow:0 8px 40px rgba(0,0,0,0.6);}
+.notes-modal-title{font-family:'Cinzel',serif;color:#f0d080;font-size:13px;letter-spacing:1.5px;display:flex;justify-content:space-between;align-items:center;}
+.notes-modal-close{background:transparent;border:none;color:#a090c0;cursor:pointer;font-size:18px;line-height:1;padding:0;transition:color 0.15s;}
+.notes-modal-close:hover{color:#f0d080;}
+.notes-textarea{background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.16);border-radius:8px;color:#e8dfc8;font-family:'Nunito',sans-serif;font-size:13px;padding:12px;resize:none;flex:1;min-height:220px;outline:none;line-height:1.65;}
+.notes-textarea:focus{border-color:rgba(240,208,128,0.38);}
+.notes-save-hint{font-size:11px;color:#605870;text-align:right;height:14px;}
+@media(max-width:768px){.notes-fab{bottom:72px;right:14px;width:42px;height:42px;}}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v416</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v419</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -840,7 +854,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
       </div>
       <div class="qa-wrap">
         <button class="qa-add-btn" style="flex-shrink:0;white-space:nowrap;" onclick="this.style.animation='none';void this.offsetWidth;this.style.animation='btn-pop 0.22s ease';fillTodayDate();addEntry()">Add Today</button>
-        <div style="display:flex;gap:6px;align-items:flex-end;flex:1;min-width:0;"><button class="qa-add-btn" style="flex-shrink:0;white-space:nowrap;width:auto;padding:9px 14px;" onclick="this.style.animation='none';void this.offsetWidth;this.style.animation='btn-pop 0.22s ease';addEntry()">Add By Date</button><div class="qa-field" style="flex:1;min-width:80px;"><div class="qa-label">Date</div><input type="text" id="inp-date" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this)" style="min-width:0;"/></div></div>
+        <div class="bydate-row" style="display:flex;gap:6px;align-items:flex-end;"><button class="qa-add-btn" style="flex-shrink:0;white-space:nowrap;width:auto;padding:9px 14px;" onclick="this.style.animation='none';void this.offsetWidth;this.style.animation='btn-pop 0.22s ease';addEntry()">Add By Date</button><div class="qa-field" style="flex:1;min-width:80px;"><div class="qa-label">Date</div><input type="text" id="inp-date" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this)" style="min-width:0;"/></div></div>
         <div class="qa-field"><div class="qa-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/primogem.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Primogems</div><input type="number" id="inp-primo" class="qa-input" placeholder="21784" min="0" oninput="calcPreview()"/></div>
         <div class="qa-field"><div class="qa-label"><img src='https://lupix11.github.io/primo-tracker/images/pulls/intertwined_fate.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Intertwined Fates</div><input type="number" id="inp-fates" class="qa-input" placeholder="17" min="0" oninput="calcPreview()"/></div>
       </div>
@@ -1664,7 +1678,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v416';
+const APP_VERSION = 'v419';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -3722,6 +3736,28 @@ function runImport(){
 }
 function showIR(t,m){const el=document.getElementById('import-result');el.className='import-result '+t;el.textContent=m;el.style.display='block';}
 function render(){renderTiles();renderChart();renderLog();if(histInst){histInst.destroy();histInst=null;}}
+let _noteSaveTimer=null;
+function toggleNotes(){
+  const ov=document.getElementById('notes-overlay');
+  if(ov.classList.contains('open')){closeNotes();}
+  else{loadNotes();ov.classList.add('open');setTimeout(()=>document.getElementById('notes-textarea').focus(),50);}
+}
+function closeNotes(){document.getElementById('notes-overlay').classList.remove('open');}
+function loadNotes(){
+  const key=`primoNotes_${APP.currentProfile||'default'}`;
+  document.getElementById('notes-textarea').value=localStorage.getItem(key)||'';
+  document.getElementById('notes-hint').textContent='';
+  document.getElementById('notes-textarea').oninput=scheduleNoteSave;
+}
+function scheduleNoteSave(){
+  document.getElementById('notes-hint').textContent='Saving...';
+  clearTimeout(_noteSaveTimer);
+  _noteSaveTimer=setTimeout(()=>{
+    const key=`primoNotes_${APP.currentProfile||'default'}`;
+    localStorage.setItem(key,document.getElementById('notes-textarea').value);
+    document.getElementById('notes-hint').textContent='Saved ✓';
+  },600);
+}
 load();
 </script>
 <script>
@@ -3733,5 +3769,13 @@ if('serviceWorker' in navigator){
   });
 }
 </script>
+<button class="notes-fab" onclick="toggleNotes()" title="Global Notes"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></button>
+<div class="notes-overlay" id="notes-overlay" onclick="if(event.target===this)closeNotes()">
+  <div class="notes-modal">
+    <div class="notes-modal-title">✦ GLOBAL NOTES<button class="notes-modal-close" onclick="closeNotes()">✕</button></div>
+    <textarea class="notes-textarea" id="notes-textarea" placeholder="Save for Kazuha rerun · Lost 50/50, guarantee ready · Waiting for Skirk rerun · Skipping — bad synergy&#10;&#10;Anything you want to remember..."></textarea>
+    <div class="notes-save-hint" id="notes-hint"></div>
+  </div>
+</div>
 </body>
 </html>
