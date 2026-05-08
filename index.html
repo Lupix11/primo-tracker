@@ -770,26 +770,26 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
   .stats-chip-value{font-size:26px!important;}
   .stats-chip-label{font-size:9px!important;letter-spacing:0.5px!important;}
   .stats-chip-sub{font-size:9px!important;display:none!important;}}
-.notes-fab{position:fixed;bottom:24px;right:20px;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#c8a84b,#f0d080);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 14px rgba(240,208,128,0.35);z-index:900;transition:transform 0.18s,box-shadow 0.18s;-webkit-tap-highlight-color:transparent;}
-.notes-fab:hover{transform:scale(1.09);box-shadow:0 4px 20px rgba(240,208,128,0.5);}
-.notes-fab svg{width:20px;height:20px;fill:none;stroke:#1a1200;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.notes-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:901;align-items:center;justify-content:center;padding:16px;}
-.notes-overlay.open{display:flex;}
-.notes-modal{background:#141820;border:1px solid rgba(240,208,128,0.18);border-top:2px solid #f0d080;border-radius:14px;width:min(500px,100%);max-height:80vh;display:flex;flex-direction:column;padding:20px;gap:12px;box-shadow:0 8px 40px rgba(0,0,0,0.6);}
-.notes-modal-title{font-family:'Cinzel',serif;color:#f0d080;font-size:13px;letter-spacing:1.5px;display:flex;justify-content:space-between;align-items:center;}
+.notes-fab{position:fixed;bottom:24px;right:20px;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#c8a84b,#f0d080);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px rgba(240,208,128,0.35);z-index:900;transition:transform 0.18s,box-shadow 0.18s;-webkit-tap-highlight-color:transparent;}
+.notes-fab:hover{transform:scale(1.09);box-shadow:0 0 22px rgba(240,208,128,0.55);}
+.notes-fab svg{width:20px;height:20px;fill:none;stroke:#1a1200;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block;}
+.notes-fab.hidden{display:none;}
+.notes-modal{display:none;position:fixed;bottom:80px;right:24px;width:360px;min-width:260px;min-height:200px;background:#141820;border:1px solid rgba(240,208,128,0.18);border-top:2px solid #f0d080;border-radius:14px;flex-direction:column;padding:0;gap:0;box-shadow:0 4px 24px rgba(0,0,0,0.6);z-index:901;overflow:hidden;resize:both;}
+.notes-modal.open{display:flex;}
+.notes-modal-title{font-family:'Cinzel',serif;color:#f0d080;font-size:12px;letter-spacing:1.5px;display:flex;justify-content:space-between;align-items:center;padding:12px 14px 10px;cursor:grab;user-select:none;border-bottom:1px solid rgba(240,208,128,0.08);flex-shrink:0;}
+.notes-modal-title:active{cursor:grabbing;}
 .notes-modal-close{background:transparent;border:none;color:#a090c0;cursor:pointer;font-size:18px;line-height:1;padding:0;transition:color 0.15s;}
 .notes-modal-close:hover{color:#f0d080;}
-.notes-textarea{background:rgba(255,255,255,0.04);border:1px solid rgba(240,208,128,0.16);border-radius:8px;color:#e8dfc8;font-family:'Nunito',sans-serif;font-size:13px;padding:12px;resize:none;flex:1;min-height:220px;outline:none;line-height:1.65;}
-.notes-textarea:focus{border-color:rgba(240,208,128,0.38);}
-.notes-save-hint{font-size:11px;color:#605870;text-align:right;height:14px;}
-@media(max-width:768px){.notes-fab{bottom:72px;right:14px;width:42px;height:42px;}}
+.notes-textarea{background:transparent;border:none;color:#e8dfc8;font-family:'Nunito',sans-serif;font-size:13px;padding:12px 14px;resize:none;flex:1;outline:none;line-height:1.65;min-height:0;}
+.notes-save-hint{font-size:10px;color:#605870;text-align:right;padding:4px 14px 8px;flex-shrink:0;}
+@media(max-width:768px){.notes-fab{bottom:72px;right:14px;width:42px;height:42px;}.notes-modal{width:calc(100vw - 32px);right:16px;bottom:130px;min-height:160px;resize:none;}}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v419</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v420</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1678,7 +1678,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v419';
+const APP_VERSION = 'v420';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -1989,6 +1989,8 @@ async function save(){
 function goTo(pg){
   document.querySelectorAll('.nav-item').forEach(b=>b.blur());
   activePage=pg;
+  const fab=document.getElementById('notes-fab');
+  if(fab) fab.classList.toggle('hidden',pg==='settings'||pg==='cropper');
   if(pg==='dashboard'){chartGranularity='daily';document.querySelectorAll('#granularity-tabs .tab').forEach(t=>t.classList.toggle('active',t.textContent.toLowerCase()==='daily'));}
   if(pg==='stats'){statsAvgRange='all';setTimeout(()=>{applyStatsDateRange();document.querySelectorAll('#page-stats .tab').forEach(t=>t.classList.toggle('active',t.textContent.trim().toLowerCase()==='all'));},50);}
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -3736,13 +3738,13 @@ function runImport(){
 }
 function showIR(t,m){const el=document.getElementById('import-result');el.className='import-result '+t;el.textContent=m;el.style.display='block';}
 function render(){renderTiles();renderChart();renderLog();if(histInst){histInst.destroy();histInst=null;}}
-let _noteSaveTimer=null;
+let _noteSaveTimer=null,_dragState=null;
 function toggleNotes(){
-  const ov=document.getElementById('notes-overlay');
-  if(ov.classList.contains('open')){closeNotes();}
-  else{loadNotes();ov.classList.add('open');setTimeout(()=>document.getElementById('notes-textarea').focus(),50);}
+  const modal=document.getElementById('notes-modal');
+  if(modal.classList.contains('open')){closeNotes();}
+  else{loadNotes();modal.classList.add('open');setTimeout(()=>document.getElementById('notes-textarea').focus(),50);}
 }
-function closeNotes(){document.getElementById('notes-overlay').classList.remove('open');}
+function closeNotes(){document.getElementById('notes-modal').classList.remove('open');}
 function loadNotes(){
   const key=`primoNotes_${APP.currentProfile||'default'}`;
   document.getElementById('notes-textarea').value=localStorage.getItem(key)||'';
@@ -3758,7 +3760,26 @@ function scheduleNoteSave(){
     document.getElementById('notes-hint').textContent='Saved ✓';
   },600);
 }
+function initNoteDrag(){
+  const modal=document.getElementById('notes-modal');
+  const handle=document.getElementById('notes-drag-handle');
+  if(!handle||!modal)return;
+  handle.addEventListener('mousedown',e=>{
+    if(e.target.classList.contains('notes-modal-close'))return;
+    const r=modal.getBoundingClientRect();
+    _dragState={ox:e.clientX-r.left,oy:e.clientY-r.top};
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!_dragState)return;
+    const x=Math.max(0,Math.min(window.innerWidth-modal.offsetWidth,e.clientX-_dragState.ox));
+    const y=Math.max(0,Math.min(window.innerHeight-modal.offsetHeight,e.clientY-_dragState.oy));
+    modal.style.left=x+'px';modal.style.top=y+'px';modal.style.right='auto';modal.style.bottom='auto';
+  });
+  document.addEventListener('mouseup',()=>{_dragState=null;});
+}
 load();
+initNoteDrag();
 </script>
 <script>
 if('serviceWorker' in navigator){
@@ -3769,13 +3790,11 @@ if('serviceWorker' in navigator){
   });
 }
 </script>
-<button class="notes-fab" onclick="toggleNotes()" title="Global Notes"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></button>
-<div class="notes-overlay" id="notes-overlay" onclick="if(event.target===this)closeNotes()">
-  <div class="notes-modal">
-    <div class="notes-modal-title">✦ GLOBAL NOTES<button class="notes-modal-close" onclick="closeNotes()">✕</button></div>
-    <textarea class="notes-textarea" id="notes-textarea" placeholder="Save for Kazuha rerun · Lost 50/50, guarantee ready · Waiting for Skirk rerun · Skipping — bad synergy&#10;&#10;Anything you want to remember..."></textarea>
-    <div class="notes-save-hint" id="notes-hint"></div>
-  </div>
+<button class="notes-fab" id="notes-fab" onclick="toggleNotes()" title="Global Notes"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></button>
+<div class="notes-modal" id="notes-modal">
+  <div class="notes-modal-title" id="notes-drag-handle">✦ GLOBAL NOTES<button class="notes-modal-close" onclick="closeNotes()">✕</button></div>
+  <textarea class="notes-textarea" id="notes-textarea" placeholder="Anything you want to remember..."></textarea>
+  <div class="notes-save-hint" id="notes-hint"></div>
 </div>
 </body>
 </html>
