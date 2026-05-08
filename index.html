@@ -774,24 +774,22 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .notes-fab:hover{transform:scale(1.09);box-shadow:0 0 22px rgba(240,208,128,0.55);}
 .notes-fab svg{width:20px;height:20px;fill:none;stroke:#1a1200;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
 .notes-fab.hidden{display:none;}
-.notes-modal{display:none;position:fixed;bottom:80px;right:24px;width:360px;min-width:240px;min-height:180px;background:#141820;border:1px solid rgba(240,208,128,0.18);border-top:2px solid #f0d080;border-radius:14px;flex-direction:column;padding:0;gap:0;box-shadow:0 4px 24px rgba(0,0,0,0.6);z-index:901;overflow:auto;resize:both;}
+.notes-modal{display:none;position:fixed;bottom:80px;right:24px;width:360px;height:280px;min-width:220px;min-height:160px;background:#141820;border:1px solid rgba(240,208,128,0.18);border-top:2px solid #f0d080;border-radius:14px;flex-direction:column;padding:0;gap:0;box-shadow:0 4px 24px rgba(0,0,0,0.6);z-index:901;overflow:hidden;resize:both;}
 .notes-modal.open{display:flex;}
-.notes-modal-title{font-family:'Cinzel',serif;color:#f0d080;font-size:12px;letter-spacing:1.5px;display:flex;justify-content:space-between;align-items:center;padding:12px 14px 10px;cursor:grab;user-select:none;border-bottom:1px solid rgba(240,208,128,0.08);flex-shrink:0;}
+.notes-modal-title{font-family:'Cinzel',serif;color:#f0d080;font-size:12px;letter-spacing:1.5px;display:flex;justify-content:space-between;align-items:center;padding:12px 14px 10px;cursor:grab;user-select:none;touch-action:none;border-bottom:1px solid rgba(240,208,128,0.08);flex-shrink:0;}
 .notes-modal-title:active{cursor:grabbing;}
 .notes-modal-close{background:transparent;border:none;color:#a090c0;cursor:pointer;font-size:18px;line-height:1;padding:0;transition:color 0.15s;}
 .notes-modal-close:hover{color:#f0d080;}
-.notes-textarea{background:transparent;border:none;color:#e8dfc8;font-family:'Nunito',sans-serif;font-size:13px;padding:12px 14px;resize:none;flex:1;outline:none;line-height:1.65;min-height:0;}
+.notes-textarea{background:transparent;border:none;color:#e8dfc8;font-family:'Nunito',sans-serif;font-size:13px;padding:12px 14px;resize:none;flex:1;outline:none;line-height:1.65;overflow-y:auto;min-height:0;}
 .notes-save-hint{font-size:10px;color:#605870;text-align:right;padding:4px 14px 8px;flex-shrink:0;}
-.notes-grip{position:absolute;bottom:4px;right:4px;width:18px;height:18px;cursor:se-resize;opacity:0.35;display:none;}
-.notes-grip svg{width:18px;height:18px;stroke:#f0d080;stroke-width:1.5;}
-@media(max-width:768px){.notes-fab{bottom:72px;right:14px;width:42px;height:42px;}.notes-modal{width:calc(100vw - 32px);right:16px;bottom:130px;min-height:160px;resize:none;}.notes-grip{display:block;}}
+@media(max-width:768px){.notes-fab{bottom:72px;right:14px;width:42px;height:42px;}.notes-modal{width:calc(100vw - 32px);right:16px;bottom:130px;}}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v421</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v422</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1680,7 +1678,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v421';
+const APP_VERSION = 'v422';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -3765,43 +3763,23 @@ function scheduleNoteSave(){
 function initNoteDrag(){
   const modal=document.getElementById('notes-modal');
   const handle=document.getElementById('notes-drag-handle');
-  const grip=document.getElementById('notes-grip');
   if(!handle||!modal)return;
-
-  // Drag to move (pointer events — works mouse + touch)
+  let dragging=false,ox=0,oy=0;
   handle.addEventListener('pointerdown',e=>{
-    if(e.target.classList.contains('notes-modal-close'))return;
+    if(e.target.closest('.notes-modal-close'))return;
     const r=modal.getBoundingClientRect();
     modal.style.left=r.left+'px';modal.style.top=r.top+'px';
     modal.style.right='auto';modal.style.bottom='auto';
-    _dragState={ox:e.clientX-r.left,oy:e.clientY-r.top,type:'move'};
-    handle.setPointerCapture(e.pointerId);
-    e.preventDefault();
+    ox=e.clientX-r.left;oy=e.clientY-r.top;
+    dragging=true;e.preventDefault();
   });
-  handle.addEventListener('pointermove',e=>{
-    if(!_dragState||_dragState.type!=='move')return;
-    const x=Math.max(0,Math.min(window.innerWidth-modal.offsetWidth,e.clientX-_dragState.ox));
-    const y=Math.max(0,Math.min(window.innerHeight-modal.offsetHeight,e.clientY-_dragState.oy));
+  document.addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    const x=Math.max(0,Math.min(window.innerWidth-modal.offsetWidth,e.clientX-ox));
+    const y=Math.max(0,Math.min(window.innerHeight-modal.offsetHeight,e.clientY-oy));
     modal.style.left=x+'px';modal.style.top=y+'px';
   });
-  handle.addEventListener('pointerup',()=>{_dragState=null;});
-
-  // Touch resize grip (mobile)
-  if(grip){
-    grip.addEventListener('pointerdown',e=>{
-      const r=modal.getBoundingClientRect();
-      _dragState={sx:e.clientX,sy:e.clientY,sw:r.width,sh:r.height,type:'resize'};
-      grip.setPointerCapture(e.pointerId);
-      e.preventDefault();
-    });
-    grip.addEventListener('pointermove',e=>{
-      if(!_dragState||_dragState.type!=='resize')return;
-      const w=Math.max(240,_dragState.sw+(e.clientX-_dragState.sx));
-      const h=Math.max(180,_dragState.sh+(e.clientY-_dragState.sy));
-      modal.style.width=w+'px';modal.style.height=h+'px';
-    });
-    grip.addEventListener('pointerup',()=>{_dragState=null;});
-  }
+  document.addEventListener('pointerup',()=>{dragging=false;});
 }
 load();
 initNoteDrag();
@@ -3820,7 +3798,6 @@ if('serviceWorker' in navigator){
   <div class="notes-modal-title" id="notes-drag-handle">✦ GLOBAL NOTES<button class="notes-modal-close" onclick="closeNotes()">✕</button></div>
   <textarea class="notes-textarea" id="notes-textarea" placeholder="Anything you want to remember..."></textarea>
   <div class="notes-save-hint" id="notes-hint"></div>
-  <div class="notes-grip" id="notes-grip"><svg viewBox="0 0 18 18" fill="none"><line x1="6" y1="18" x2="18" y2="6"/><line x1="12" y1="18" x2="18" y2="12"/></svg></div>
 </div>
 </body>
 </html>
