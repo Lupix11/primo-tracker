@@ -792,7 +792,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v428</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v429</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1681,7 +1681,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v428';
+const APP_VERSION = 'v429';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -3794,6 +3794,14 @@ function initNoteDrag(){
   }
 
   // MOVE: document listeners
+  function applyResize(){
+    modal.style.width=Math.max(220,rW)+'px';modal.style.height=Math.max(160,rH)+'px';
+    const r=modal.getBoundingClientRect();
+    if(r.right>window.innerWidth){modal.style.width=(modal.offsetWidth-(r.right-window.innerWidth))+'px';}
+    if(r.left<0){modal.style.width=(modal.offsetWidth+r.left)+'px';}
+    if(r.bottom>window.innerHeight){modal.style.height=(modal.offsetHeight-(r.bottom-window.innerHeight))+'px';}
+    if(r.top<0){modal.style.height=(modal.offsetHeight+r.top)+'px';}
+  }
   function clamp(){
     const r=modal.getBoundingClientRect();
     if(r.left<0)trX-=r.left;
@@ -3804,13 +3812,13 @@ function initNoteDrag(){
   }
   document.addEventListener('mousemove',function(e){
     if(dragOn){trX+=e.clientX-prevX;trY+=e.clientY-prevY;prevX=e.clientX;prevY=e.clientY;modal.style.transform='translate('+trX+'px,'+trY+'px)';clamp();}
-    if(resOn){rW+=e.clientX-prevX;rH+=e.clientY-prevY;prevX=e.clientX;prevY=e.clientY;const r=modal.getBoundingClientRect();modal.style.width=Math.min(Math.max(220,rW),window.innerWidth-r.left)+'px';modal.style.height=Math.min(Math.max(160,rH),window.innerHeight-r.top)+'px';}
+    if(resOn){rW+=e.clientX-prevX;rH+=e.clientY-prevY;prevX=e.clientX;prevY=e.clientY;applyResize();}
   });
   document.addEventListener('touchmove',function(e){
     if(!dragOn&&!resOn)return;
     const cx=e.touches[0].clientX,cy=e.touches[0].clientY;
     if(dragOn){trX+=cx-prevX;trY+=cy-prevY;prevX=cx;prevY=cy;modal.style.transform='translate('+trX+'px,'+trY+'px)';clamp();}
-    if(resOn){rW+=cx-prevX;rH+=cy-prevY;prevX=cx;prevY=cy;const r=modal.getBoundingClientRect();modal.style.width=Math.min(Math.max(220,rW),window.innerWidth-r.left)+'px';modal.style.height=Math.min(Math.max(160,rH),window.innerHeight-r.top)+'px';}
+    if(resOn){rW+=cx-prevX;rH+=cy-prevY;prevX=cx;prevY=cy;applyResize();}
     e.preventDefault();
   },{passive:false});
   document.addEventListener('mouseup',function(){dragOn=false;resOn=false;});
