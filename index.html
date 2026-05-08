@@ -792,7 +792,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v430</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v431</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1681,7 +1681,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v430';
+const APP_VERSION = 'v431';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -3754,6 +3754,7 @@ function loadNotes(){
   document.getElementById('notes-hint').textContent='';
   document.getElementById('notes-textarea').oninput=scheduleNoteSave;
   try{const s=JSON.parse(localStorage.getItem('primoNotesSize'));if(s&&s.w&&s.h){const modal=document.getElementById('notes-modal');modal.style.width=s.w+'px';modal.style.height=s.h+'px';}}catch(e){}
+  try{const p=JSON.parse(localStorage.getItem('primoNotesPos'));if(p){const modal=document.getElementById('notes-modal');modal.style.transform='translate('+(p.x||0)+'px,'+(p.y||0)+'px)';}}catch(e){}
 }
 function scheduleNoteSave(){
   document.getElementById('notes-hint').textContent='Saving...';
@@ -3796,6 +3797,7 @@ function initNoteDrag(){
 
   // MOVE: document listeners
   function saveNotesSize(){localStorage.setItem('primoNotesSize',JSON.stringify({w:modal.offsetWidth,h:modal.offsetHeight}));}
+  function saveNotesPos(){localStorage.setItem('primoNotesPos',JSON.stringify({x:trX,y:trY}));}
   function applyResize(){
     modal.style.width=Math.max(220,rW)+'px';modal.style.height=Math.max(160,rH)+'px';
     const r=modal.getBoundingClientRect();
@@ -3823,8 +3825,8 @@ function initNoteDrag(){
     if(resOn){rW+=cx-prevX;rH+=cy-prevY;prevX=cx;prevY=cy;applyResize();}
     e.preventDefault();
   },{passive:false});
-  document.addEventListener('mouseup',function(){if(resOn)saveNotesSize();dragOn=false;resOn=false;});
-  document.addEventListener('touchend',function(){if(resOn)saveNotesSize();dragOn=false;resOn=false;});
+  document.addEventListener('mouseup',function(){if(resOn)saveNotesSize();if(dragOn)saveNotesPos();dragOn=false;resOn=false;});
+  document.addEventListener('touchend',function(){if(resOn)saveNotesSize();if(dragOn)saveNotesPos();dragOn=false;resOn=false;});
 }
 load();
 </script>
