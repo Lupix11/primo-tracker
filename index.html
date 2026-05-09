@@ -806,13 +806,32 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .history-loading{color:#605870;font-size:13px;padding:32px;text-align:center;}
 .history-table-wrap{overflow-x:auto;}
 @media(max-width:768px){.history-search{width:100%;}.history-ver{font-size:9px;}.history-table th,.history-table td{padding:6px 6px;}}
+
+.history-outer{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.history-tbl{border-collapse:collapse;}
+.h-sticky-char{position:sticky;left:0;z-index:4;background:#141820;width:155px;min-width:155px;border-right:1px solid rgba(240,208,128,0.1);}
+.h-sticky-runs{position:sticky;left:155px;z-index:4;background:#141820;width:44px;min-width:44px;border-right:1px solid rgba(240,208,128,0.18);text-align:center;}
+.h-ver-hdr{font-family:'Cinzel',serif;font-size:9px;color:#c8a84b;text-align:center;padding:5px 2px 3px;letter-spacing:0.5px;border-bottom:1px solid rgba(240,208,128,0.1);white-space:nowrap;border-left:1px solid rgba(240,208,128,0.06);}
+.h-phase-hdr{font-size:8px;color:#504060;text-align:center;padding:2px 1px 4px;border-bottom:1px solid rgba(240,208,128,0.06);width:36px;min-width:36px;max-width:36px;}
+.h-char-cell{display:flex;align-items:center;gap:6px;padding:3px 8px 3px 6px;height:38px;}
+.h-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0;text-shadow:0 1px 2px rgba(0,0,0,0.6);}
+.h-char-name{font-size:12px;color:#e8dfc8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:95px;}
+.h-runs-cell{font-size:12px;font-weight:700;height:38px;vertical-align:middle;}
+.h-phase-cell{width:36px;min-width:36px;max-width:36px;height:38px;text-align:center;vertical-align:middle;padding:0;}
+.h-icon-cell{background:rgba(255,255,255,0.04);}
+.h-num{font-size:10px;font-weight:600;}
+.h-dash{font-size:11px;color:#252030;}
+.history-tbl tbody tr{border-bottom:1px solid rgba(255,255,255,0.025);}
+.history-tbl tbody tr:hover .h-sticky-char,.history-tbl tbody tr:hover .h-sticky-runs,.history-tbl tbody tr:hover td{background:rgba(240,208,128,0.04)!important;}
+.h-new-badge{font-size:7px;background:#f0d080;color:#1a1200;border-radius:3px;padding:1px 3px;font-family:'Cinzel',serif;letter-spacing:0.3px;margin-left:3px;vertical-align:middle;font-weight:800;}
+@media(max-width:768px){.h-sticky-char{width:108px;min-width:108px;}.h-sticky-runs{left:108px;width:36px;min-width:36px;}.h-char-name{max-width:62px;font-size:11px;}.h-phase-hdr,.h-phase-cell{width:28px;min-width:28px;max-width:28px;}.h-dot{width:20px;height:20px;font-size:8px;}.h-char-cell{padding:3px 4px;gap:3px;}}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v433</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v434</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1043,24 +1062,17 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 
   <section id="page-history" class="page">
     <div class="page-header"><div class="page-title">Banner History</div><div class="page-sub">Character banner run history across all versions.</div></div>
-    <div class="card">
-      <div class="card-title" style="margin-bottom:12px;">✦ CHARACTER RUNS</div>
-      <div class="history-controls">
+    <div class="card" style="padding:14px 12px 10px;">
+      <div class="history-controls" style="margin-bottom:12px;">
         <button class="history-sort-btn active" onclick="setHistorySort('latest')">Latest First</button>
         <button class="history-sort-btn" onclick="setHistorySort('oldest')">Oldest First</button>
         <button class="history-sort-btn" onclick="setHistorySort('runs')">Most Runs</button>
-        <input class="history-search" id="history-search" placeholder="Search character..." oninput="renderHistory()"/>
+        <input class="history-search" id="history-search" placeholder="Search..." oninput="renderHistory()"/>
       </div>
-      <div class="history-table-wrap">
-        <table class="history-table">
-          <thead><tr>
-            <th>Character</th>
-            <th style="text-align:center;">Runs</th>
-            <th style="text-align:center;">Phases Since Last</th>
-            <th>Last Seen</th>
-            <th>Version History</th>
-          </tr></thead>
-          <tbody id="history-tbody"><tr><td colspan="5" class="history-loading">Loading...</td></tr></tbody>
+      <div class="history-outer">
+        <table class="history-tbl" id="history-tbl">
+          <thead id="history-thead"></thead>
+          <tbody id="history-tbody"><tr><td colspan="3" style="padding:32px;text-align:center;color:#605870;font-size:13px;">Loading...</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -1734,7 +1746,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v433';
+const APP_VERSION = 'v434';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -3797,82 +3809,132 @@ function runImport(){
 // ═══ BANNER HISTORY ═══
 let BANNER_HISTORY=null,historySort='latest';
 
-async function loadBannerHistory(){
-  if(BANNER_HISTORY)return BANNER_HISTORY;
-  try{const r=await fetch('bannerhistory.json?t='+Date.now());BANNER_HISTORY=await r.json();return BANNER_HISTORY;}
-  catch(e){return[];}
-}
+const ELEM_COLORS={Anemo:'#74c2a8',Pyro:'#ef7b39',Hydro:'#4a9fcc',Cryo:'#9fd6e3',Geo:'#f0b942',Electro:'#9b6dcc',Dendro:'#7bb042'};
+const ELEM_MAP={
+  'Venti':'Anemo','Xiao':'Anemo','Kazuha':'Anemo','Jean':'Anemo','Wanderer':'Anemo','Xianyun':'Anemo','Chasca':'Anemo','Varka':'Anemo','Yumemizuki Mizuki':'Anemo',
+  'Klee':'Pyro','Hu Tao':'Pyro','Yoimiya':'Pyro','Diluc':'Pyro','Lyney':'Pyro','Arlecchino':'Pyro','Mavuika':'Pyro','Dehya':'Pyro','Durin':'Pyro',
+  'Childe':'Hydro','Kokomi':'Hydro','Yelan':'Hydro','Nilou':'Hydro','Furina':'Hydro','Sigewinne':'Hydro','Mualani':'Hydro','Mona':'Hydro','Neuvillette':'Hydro','Columbina':'Hydro','Ayato':'Hydro',
+  'Ganyu':'Cryo','Eula':'Cryo','Ayaka':'Cryo','Shenhe':'Cryo','Qiqi':'Cryo','Wriothesley':'Cryo','Citlali':'Cryo','Escoffier':'Cryo','Skirk':'Cryo',
+  'Zhongli':'Geo','Albedo':'Geo','Itto':'Geo','Navia':'Geo','Chiori':'Geo','Xilonen':'Geo','Linnea':'Geo','Zibai':'Geo',
+  'Raiden Shogun':'Electro','Yae Miko':'Electro','Cyno':'Electro','Keqing':'Electro','Clorinde':'Electro','Varesa':'Electro','Ineffa':'Electro','Flins':'Electro',
+  'Tighnari':'Dendro','Nahida':'Dendro','Alhaitham':'Dendro','Baizhu':'Dendro','Emilie':'Dendro','Kinich':'Dendro','Lauma':'Dendro','Nefer':'Dendro',
+};
 
 function parseVer(v){const p=v.split('.').map(Number);return p;}
 function cmpVer(a,b){const pa=parseVer(a),pb=parseVer(b);for(let i=0;i<3;i++){const d=(pa[i]||0)-(pb[i]||0);if(d)return d;}return 0;}
-function verToLabel(v){const p=parseVer(v);return p[0]+'.'+p[1]+' P'+p[2];}
+function getElemColor(name){return ELEM_COLORS[ELEM_MAP[name]||'']||'#606070';}
+function verKeyLabel(k){const p=k.split('.').map(Number);if(p[0]>=6){const n=['I','II','III','IV','V','VI','VII','VIII'];return'Luna '+(n[p[1]]||p[1]);}return k;}
+function phasesSinceColor(n){if(n===0)return'#f0d080';if(n>=20)return'#ef5350';const t=(n-1)/19;const h=Math.round(120*(1-t));return'hsl('+h+',72%,52%)';}
 
-function buildHistoryRows(){
-  if(!BANNER_HISTORY)return[];
-  const banners=PL.banners&&PL.banners.length?PL.banners:STATIC_BANNERS;
-
-  // Build a set of all known phases for "phases since last" calc
-  const allPhases=new Set();
-  BANNER_HISTORY.forEach(ch=>ch.versions.forEach(v=>allPhases.add(v)));
-  banners.filter(b=>b.type&&b.type.startsWith('character')).forEach(b=>{
-    if(b.version&&b.phase)allPhases.add(b.version+'.'+b.phase);
-  });
-  const sortedPhases=[...allPhases].sort(cmpVer);
-
-  return BANNER_HISTORY.map(char=>{
-    const versions=[...char.versions];
-    // Add runs from banners.json
-    banners.filter(b=>b.type&&b.type.startsWith('character')).forEach(b=>{
-      const chars=Array.isArray(b.characters)?b.characters:(b.characters?[b.characters]:[]);
-      if(chars.some(ch=>ch.toLowerCase()===char.name.toLowerCase())){
-        const vStr=b.version+'.'+b.phase;
-        if(!versions.includes(vStr))versions.push(vStr);
-      }
-    });
-    versions.sort(cmpVer);
-    const totalRuns=versions.length;
-    const lastSeen=versions[versions.length-1]||null;
-    // Phases since last
-    let phasesSince=0;
-    if(lastSeen){
-      const idx=sortedPhases.indexOf(lastSeen);
-      if(idx>=0)phasesSince=sortedPhases.length-1-idx;
-    }
-    return{name:char.name,totalRuns,lastSeen,phasesSince,versions};
-  });
+async function loadBannerHistory(){
+  if(BANNER_HISTORY)return BANNER_HISTORY;
+  try{const r=await fetch('bannerhistory.json?t='+Date.now());BANNER_HISTORY=await r.json();return BANNER_HISTORY;}
+  catch(e){BANNER_HISTORY=[];return[];}
 }
 
 function setHistorySort(s){
   historySort=s;
   document.querySelectorAll('.history-sort-btn').forEach(b=>{
-    b.classList.toggle('active',b.textContent.toLowerCase().startsWith(s==='latest'?'latest':s==='oldest'?'oldest':'most'));
+    b.classList.toggle('active',
+      (s==='latest'&&b.textContent.startsWith('Latest'))||
+      (s==='oldest'&&b.textContent.startsWith('Oldest'))||
+      (s==='runs'&&b.textContent.startsWith('Most'))
+    );
   });
   renderHistory();
 }
 
 async function renderHistory(){
+  const tbody=document.getElementById('history-tbody');
+  const thead=document.getElementById('history-thead');
+  if(!tbody||!thead)return;
   if(!BANNER_HISTORY)await loadBannerHistory();
-  let rows=buildHistoryRows();
+  if(!BANNER_HISTORY||!BANNER_HISTORY.length){tbody.innerHTML='<tr><td colspan="3" style="padding:32px;text-align:center;color:#605870;">No data.</td></tr>';return;}
+
+  // All phases newest-first
+  const phaseSet=new Set();
+  BANNER_HISTORY.forEach(c=>c.versions.forEach(v=>phaseSet.add(v)));
+  const allPhases=[...phaseSet].sort((a,b)=>-cmpVer(a,b));
+
+  // Latest version key for debut badge
+  const latestVK=allPhases.length?allPhases[0].split('.').slice(0,2).join('.'):'';
+
+  // Version group headers
+  const verGroups=[];
+  let lastVK=null;
+  for(const ph of allPhases){
+    const vk=ph.split('.').slice(0,2).join('.');
+    if(vk!==lastVK){verGroups.push({vk,count:1});lastVK=vk;}
+    else verGroups[verGroups.length-1].count++;
+  }
+
+  // Build rows
+  let rows=BANNER_HISTORY.map(char=>{
+    const vSet=new Set(char.versions);
+    const sortedV=[...char.versions].sort(cmpVer);
+    const lastSeen=sortedV[sortedV.length-1]||null;
+    const firstSeen=sortedV[0]||null;
+    const lastIdx=lastSeen?allPhases.indexOf(lastSeen):999;
+    const phasesSince=lastIdx<999?lastIdx:0;
+    const firstVK=firstSeen?firstSeen.split('.').slice(0,2).join('.'):'';
+    const isNew=char.versions.length>0&&firstVK===latestVK;
+    return{name:char.name,vSet,totalRuns:char.versions.length,lastIdx,phasesSince,isNew};
+  });
+
+  // Filter
   const q=(document.getElementById('history-search')||{}).value||'';
   if(q)rows=rows.filter(r=>r.name.toLowerCase().includes(q.toLowerCase()));
-  if(historySort==='latest')rows.sort((a,b)=>a.lastSeen&&b.lastSeen?-cmpVer(a.lastSeen,b.lastSeen):!a.lastSeen?1:-1);
-  else if(historySort==='oldest')rows.sort((a,b)=>a.lastSeen&&b.lastSeen?cmpVer(a.lastSeen,b.lastSeen):!a.lastSeen?1:-1);
+
+  // Sort
+  if(historySort==='latest')rows.sort((a,b)=>a.lastIdx-b.lastIdx);
+  else if(historySort==='oldest')rows.sort((a,b)=>b.lastIdx-a.lastIdx);
   else rows.sort((a,b)=>b.totalRuns-a.totalRuns);
 
-  const tbody=document.getElementById('history-tbody');
-  if(!tbody)return;
-  if(!rows.length){tbody.innerHTML='<tr><td colspan="5" class="history-loading">No results.</td></tr>';return;}
+  // Headers
+  const sh='background:#141820;position:sticky;z-index:5;border-bottom:1px solid rgba(240,208,128,0.15);';
+  thead.innerHTML='<tr>'
+    +'<th class="h-sticky-char" rowspan="2" style="'+sh+'left:0;padding:6px 8px;font-family:Cinzel,serif;font-size:10px;color:#c8a84b;letter-spacing:1px;text-align:left;vertical-align:bottom;">CHARACTER</th>'
+    +'<th class="h-sticky-runs" rowspan="2" style="'+sh+'left:155px;font-size:9px;color:#c8a84b;vertical-align:bottom;padding:6px 2px;">#</th>'
+    +verGroups.map(g=>'<th class="h-ver-hdr" colspan="'+g.count+'">'+verKeyLabel(g.vk)+'</th>').join('')
+    +'</tr><tr>'
+    +allPhases.map(ph=>{const p=parseVer(ph);return'<th class="h-phase-hdr">P'+p[2]+'</th>';}).join('')
+    +'</tr>';
 
-  tbody.innerHTML=rows.map(r=>{
-    const phasesColor=r.phasesSince===0?'#f0d080':r.phasesSince<=4?'#a0d080':r.phasesSince<=10?'#a090c0':'#605870';
-    const versHtml=r.versions.map(v=>`<span class="history-ver">${verToLabel(v)}</span>`).join('');
-    return `<tr class="history-row">
-      <td class="history-name">${r.name}</td>
-      <td class="history-runs">${r.totalRuns}</td>
-      <td class="history-phases" style="color:${phasesColor}">${r.lastSeen?r.phasesSince:'—'}</td>
-      <td class="history-last">${r.lastSeen?verToLabel(r.lastSeen):'—'}</td>
-      <td><div class="history-versions">${versHtml}</div></td>
-    </tr>`;
+  if(!rows.length){
+    tbody.innerHTML='<tr><td colspan="'+(allPhases.length+2)+'" style="padding:32px;text-align:center;color:#605870;">No results.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML=rows.map(row=>{
+    const ec=getElemColor(row.name);
+    const init=row.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const psColor=phasesSinceColor(row.phasesSince);
+    const badge=row.isNew?'<span class="h-new-badge">NEW</span>':'';
+
+    const charTd='<td class="h-sticky-char"><div class="h-char-cell">'
+      +'<div class="h-dot" style="background:'+ec+'25;border:2px solid '+ec+';box-shadow:0 0 7px '+ec+'70;">'+init+'</div>'
+      +'<span class="h-char-name">'+row.name+badge+'</span>'
+      +'</div></td>';
+
+    const runsTd='<td class="h-sticky-runs h-runs-cell" style="color:'+psColor+';">'+row.totalRuns+'</td>';
+
+    const cells=allPhases.map((ph,i)=>{
+      if(row.vSet.has(ph)){
+        return'<td class="h-phase-cell h-icon-cell" style="background:'+ec+'12;">'
+          +'<div class="h-dot" style="margin:auto;width:22px;height:22px;background:'+ec+'35;border:2px solid '+ec+';box-shadow:0 0 6px '+ec+'90;">'+init+'</div>'
+          +'</td>';
+      }
+      if(row.lastIdx<999&&i<row.lastIdx){
+        return'<td class="h-phase-cell"><span class="h-dash">\u2013</span></td>';
+      }
+      let nr=-1;
+      for(let j=i+1;j<allPhases.length;j++){if(row.vSet.has(allPhases[j])){nr=j;break;}}
+      if(nr===-1)return'<td class="h-phase-cell"></td>';
+      const num=nr-i;
+      return'<td class="h-phase-cell"><span class="h-num" style="color:'+phasesSinceColor(num)+'">'+num+'</span></td>';
+    }).join('');
+
+    return'<tr>'+charTd+runsTd+cells+'</tr>';
   }).join('');
 }
 
