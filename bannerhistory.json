@@ -54,11 +54,10 @@
   { "name": "Skirk", "versions": ["5.7.1", "6.4.2"] },
   { "name": "Ineffa", "versions": ["5.8.1", "6.3.1"] },
   { "name": "Lauma", "versions": ["6.0.1"] },
-  { "name": "Flins", "versions": ["6.0.2", "6.4.2"] },
+  { "name": "Flins", "versions": ["6.0.2", "6.4.1"] },
   { "name": "Nefer", "versions": ["6.1.1"] },
   { "name": "Durin", "versions": ["6.2.1"] },
   { "name": "Columbina", "versions": ["6.3.1"] },
   { "name": "Zibai", "versions": ["6.3.2"] },
-  { "name": "Varka", "versions": ["6.4.1"] },
-  { "name": "Linnea", "versions": [] }
+  { "name": "Varka", "versions": ["6.4.1"] }
 ]
