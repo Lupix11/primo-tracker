@@ -807,15 +807,16 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .history-table-wrap{overflow-x:auto;}
 @media(max-width:768px){.history-search{width:100%;}.history-ver{font-size:9px;}.history-table th,.history-table td{padding:6px 6px;}}
 
-.history-outer{overflow-x:auto;-webkit-overflow-scrolling:touch;position:relative;border:1px solid rgba(240,208,128,0.25);border-radius:8px;}
-.history-outer::after{content:'';position:absolute;top:0;right:0;width:36px;height:100%;background:linear-gradient(to right,transparent,#1a1e25);pointer-events:none;z-index:6;}
+.history-wrap{position:relative;border:1px solid rgba(240,208,128,0.25);border-radius:8px;overflow:hidden;}
+.history-wrap::after{content:'';position:absolute;top:0;right:0;width:40px;height:calc(100% - 6px);background:linear-gradient(to right,transparent,#1a1e25);pointer-events:none;z-index:10;}
+.history-outer{overflow-x:auto;-webkit-overflow-scrolling:touch;}
 .history-outer::-webkit-scrollbar{height:6px;}
 .history-outer::-webkit-scrollbar-track{background:rgba(255,255,255,0.04);border-radius:3px;}
 .history-outer::-webkit-scrollbar-thumb{background:rgba(240,208,128,0.22);border-radius:3px;}
 .history-outer::-webkit-scrollbar-thumb:hover{background:rgba(240,208,128,0.4);}
 .history-tbl{border-collapse:collapse;}
-.h-sticky-char{position:sticky;left:0;z-index:4;background:#1a1e25;width:165px;min-width:165px;border-right:2px solid rgba(240,208,128,0.22);}
-.h-sticky-runs{position:sticky;left:165px;z-index:4;background:#1a1e25;width:44px;min-width:44px;border-right:2px solid rgba(240,208,128,0.3);text-align:center;}
+.h-sticky-char{position:sticky;left:0;z-index:4;background:#1a1e25;width:165px;min-width:165px;border-right:none;box-shadow:3px 0 0 rgba(240,208,128,0.22),6px 0 16px rgba(14,18,25,1);}
+.h-sticky-runs{width:44px;min-width:44px;text-align:center;background:transparent;border-right:1px solid rgba(240,208,128,0.1);}
 .h-ver-hdr{font-family:'Cinzel',serif;font-size:9px;color:#c8a84b;text-align:center;padding:5px 2px 3px;letter-spacing:0.5px;border-bottom:1px solid rgba(240,208,128,0.12);white-space:nowrap}
 .h-phase-hdr{font-size:9px;color:#605070;text-align:center;padding:2px 1px 4px;border-bottom:1px solid rgba(240,208,128,0.08);width:36px;min-width:36px;max-width:36px;}
 .h-char-cell{display:flex;align-items:center;gap:6px;padding:3px 8px 3px 6px;height:40px;}
@@ -828,14 +829,14 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .history-tbl tbody tr{border-bottom:1px solid rgba(240,208,128,0.12);}
 
 .h-new-badge{font-size:7px;background:#f0d080;color:#1a1200;border-radius:3px;padding:1px 3px;font-family:'Cinzel',serif;letter-spacing:0.3px;margin-left:3px;font-weight:800;position:relative;top:-2px;}
-@media(max-width:768px){.h-sticky-char{width:112px;min-width:112px;}.h-sticky-runs{left:112px;width:36px;min-width:36px;}.h-char-name{max-width:70px;font-size:12px;}.h-phase-hdr,.h-phase-cell{width:28px;min-width:28px;max-width:28px;}.h-dot{width:20px;height:20px;font-size:8px;}.h-char-cell{padding:3px 4px;gap:3px;}.h-num{font-size:10px;}}
+@media(max-width:768px){.h-sticky-char{width:112px;min-width:112px;}.h-sticky-runs{width:36px;min-width:36px;}.h-char-name{max-width:70px;font-size:12px;}.h-phase-hdr,.h-phase-cell{width:28px;min-width:28px;max-width:28px;}.h-dot{width:20px;height:20px;font-size:8px;}.h-char-cell{padding:3px 4px;gap:3px;}.h-num{font-size:10px;}}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v436</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v437</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1074,7 +1075,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
         <button class="history-sort-btn" onclick="setHistorySort('runs')">Most Runs</button>
         <input class="history-search" id="history-search" placeholder="Search..." oninput="renderHistory()"/>
       </div>
-      <div class="history-outer">
+      <div class="history-wrap"><div class="history-outer">
         <table class="history-tbl" id="history-tbl">
           <thead id="history-thead"></thead>
           <tbody id="history-tbody"><tr><td colspan="3" style="padding:32px;text-align:center;color:#605870;font-size:13px;">Loading...</td></tr></tbody>
@@ -1751,7 +1752,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v436';
+const APP_VERSION = 'v437';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -3905,7 +3906,7 @@ async function renderHistory(){
   const sh='background:#1a1e25;position:sticky;z-index:5;border-bottom:1px solid rgba(240,208,128,0.15);';
   thead.innerHTML='<tr>'
     +'<th class="h-sticky-char" rowspan="2" style="'+sh+'left:0;padding:6px 8px;font-family:Cinzel,serif;font-size:10px;color:#c8a84b;letter-spacing:1px;text-align:left;vertical-align:bottom;">CHARACTER</th>'
-    +'<th class="h-sticky-runs" rowspan="2" style="'+sh+'left:165px;font-size:9px;color:#c8a84b;vertical-align:bottom;padding:6px 2px;">#</th>'
+    +'<th class="h-sticky-runs" style="font-size:9px;color:#c8a84b;vertical-align:bottom;padding:6px 2px;border-bottom:1px solid rgba(240,208,128,0.15);">#</th>'
     +verGroups.map((g,gi)=>{const bl=gi===0?'':'border-left:1px solid rgba(240,208,128,0.25);';return'<th class="h-ver-hdr" colspan="'+g.count+'" style="'+bl+'">'+verKeyLabel(g.vk)+'</th>';}).join('')
     +'</tr><tr>'
     +allPhases.map((ph,i)=>{const p=parseVer(ph);const bl=verStartIdx.has(i)?'border-left:1px solid rgba(240,208,128,0.22);':'border-left:1px solid rgba(240,208,128,0.07);';return'<th class="h-phase-hdr" style="'+bl+'">P'+p[2]+'</th>';}).join('')
