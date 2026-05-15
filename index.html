@@ -833,13 +833,14 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
 
 .h-new-badge{font-size:7px;background:#f0d080;color:#1a1200;border-radius:3px;padding:1px 3px;font-family:'Cinzel',serif;letter-spacing:0.3px;margin-left:3px;font-weight:800;position:relative;top:-2px;}
 @media(max-width:768px){.h-sticky-char{width:112px;min-width:112px;}.h-sticky-runs{width:36px;min-width:36px;}.h-char-name{max-width:70px;font-size:12px;}.h-phase-hdr,.h-phase-cell{width:28px;min-width:28px;max-width:28px;}.h-dot{width:20px;height:20px;font-size:8px;}.h-char-cell{padding:3px 4px;gap:3px;}.h-num{font-size:10px;}}
+#timing-start.active,#timing-end.active{box-shadow:0 0 10px rgba(240,208,128,0.3),inset 0 0 6px rgba(240,208,128,0.06);}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v447</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v448</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1755,7 +1756,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v447';
+const APP_VERSION = 'v448';
 
 let gdToken = null;
 let gdTokenClient = null;
