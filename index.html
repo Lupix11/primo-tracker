@@ -816,7 +816,8 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .history-outer::-webkit-scrollbar-thumb:hover{background:rgba(240,208,128,0.4);}
 .history-tbl{border-collapse:collapse;}
 .h-sticky-char{position:sticky;left:0;z-index:4;background:#1a1e25;width:165px;min-width:165px;border-right:none;border-bottom:none;box-shadow:4px 0 12px rgba(14,18,25,0.98);}
-.h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:100%;height:1px;background:rgba(240,208,128,0.22);z-index:5;pointer-events:none;}
+thead .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;background:rgba(240,208,128,0.4);z-index:5;pointer-events:none;}
+tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:100%;height:1px;background:rgba(240,208,128,0.22);z-index:5;pointer-events:none;}
 .h-sticky-char::after{content:'';position:absolute;top:0;right:0;width:2px;height:100%;background:rgba(240,208,128,0.45);z-index:5;pointer-events:none;}
 .h-sticky-runs{width:44px;min-width:44px;text-align:center;background:transparent;border-right:2px solid rgba(240,208,128,0.4);}
 .h-ver-hdr{font-family:'Cinzel',serif;font-size:9px;color:#c8a84b;text-align:center;padding:5px 2px 3px;letter-spacing:0.5px;border-bottom:1px solid rgba(240,208,128,0.12);white-space:nowrap}
@@ -838,7 +839,7 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v442</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v443</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1754,7 +1755,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v442';
+const APP_VERSION = 'v443';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -3905,7 +3906,7 @@ async function renderHistory(){
   else rows.sort((a,b)=>b.totalRuns-a.totalRuns);
 
   // Headers
-  const sh='background:#1a1e25;position:sticky;z-index:5;border-bottom:2px solid rgba(240,208,128,0.35);';
+  const sh='background:#1a1e25;position:sticky;z-index:5;';
   thead.innerHTML='<tr>'
     +'<th class="h-sticky-char" rowspan="2" style="'+sh+'left:0;padding:6px 8px;font-family:Cinzel,serif;font-size:10px;color:#c8a84b;letter-spacing:1px;text-align:left;vertical-align:bottom;">CHARACTER</th>'
     +'<th class="h-sticky-runs" rowspan="2" style="font-size:9px;color:#c8a84b;vertical-align:bottom;padding:6px 2px;border-bottom:1px solid rgba(240,208,128,0.15);border-right:2px solid rgba(240,208,128,0.4);">#</th>'
