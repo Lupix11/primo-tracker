@@ -1,19 +1,19 @@
-const CACHE_NAME = 'primo-tracker-v1.0';
-const ASSETS = [
+const CACHE_NAME = 'primo-tracker-v445';
+
+const PRECACHE = [
   '/primo-tracker/',
   '/primo-tracker/index.html',
-  '/primo-tracker/banners.json',
-  '/primo-tracker/images/icon/primo-tracker-192x192.png',
-  '/primo-tracker/images/icon/primo-tracker-512x512.png'
 ];
 
+// Install: precache core files
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE))
   );
-  self.skipWaiting();
+  self.skipWaiting(); // take over immediately
 });
 
+// Activate: delete old caches
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
@@ -24,6 +24,25 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  const url = new URL(e.request.url);
+
+  // Network-first for HTML and JSON (always get fresh index.html and banners.json)
+  if (e.request.mode === 'navigate' ||
+      url.pathname.endsWith('.html') ||
+      url.pathname.endsWith('.json')) {
+    e.respondWith(
+      fetch(e.request)
+        .then(res => {
+          const clone = res.clone();
+          caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
+          return res;
+        })
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
+  // Cache-first for everything else (images, fonts, etc.)
   e.respondWith(
     caches.match(e.request).then(cached => cached || fetch(e.request))
   );
