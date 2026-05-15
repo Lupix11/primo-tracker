@@ -13,12 +13,12 @@
     ],
     "images": {
       "Linnea": {
-        "desktop": "images/linnea/linnea-desktop.jpg",
-        "mobile": "images/linnea/linnea-mobile.jpg"
+        "desktop": "genshin-images/linnea/linnea-desktop.jpg",
+        "mobile": "genshin-images/linnea/linnea-mobile.jpg"
       },
       "Chasca": {
-        "desktop": "images/chasca/chasca-desktop.jpg",
-        "mobile": "images/chasca/chasca-mobile.jpg"
+        "desktop": "genshin-images/chasca/chasca-desktop.jpg",
+        "mobile": "genshin-images/chasca/chasca-mobile.jpg"
       }
     },
     "startDate": "2026-04-08",
@@ -46,12 +46,12 @@
     "status": "live",
     "images": {
       "Golden Frostbound Oath": {
-        "desktop": "images/linnea/golden-frostbound-oath-desktop.jpg",
-        "mobile": "images/linnea/golden-frostbound-oath-mobile.jpg"
+        "desktop": "genshin-images/linnea/golden-frostbound-oath-desktop.jpg",
+        "mobile": "genshin-images/linnea/golden-frostbound-oath-mobile.jpg"
       },
       "Astral Vulture's Crimson Plumage": {
-        "desktop": "images/chasca/astra-vulture-crimson-plumage-desktop.jpg",
-        "mobile": "images/chasca/astra-vulture-crimson-plumage-mobile.jpg"
+        "desktop": "genshin-images/chasca/astra-vulture-crimson-plumage-desktop.jpg",
+        "mobile": "genshin-images/chasca/astra-vulture-crimson-plumage-mobile.jpg"
       }
     }
   },
@@ -69,12 +69,12 @@
     ],
     "images": {
       "Nefer": {
-        "desktop": "images/nefer/nefer-desktop.jpg",
-        "mobile": "images/nefer/nefer-mobile.jpg"
+        "desktop": "genshin-images/nefer/nefer-desktop.jpg",
+        "mobile": "genshin-images/nefer/nefer-mobile.jpg"
       },
       "Lauma": {
-        "desktop": "images/lauma/lauma-desktop.jpg",
-        "mobile": "images/lauma/lauma-mobile.jpg"
+        "desktop": "genshin-images/lauma/lauma-desktop.jpg",
+        "mobile": "genshin-images/lauma/lauma-mobile.jpg"
       }
     },
     "startDate": "2026-04-28",
@@ -102,12 +102,12 @@
     "status": "soon",
     "images": {
       "Reliquary of Truth": {
-        "desktop": "images/nefer/reliquary-of-truth-desktop.jpg",
-        "mobile": "images/nefer/reliquary-of-truth-mobile.jpg"
+        "desktop": "genshin-images/nefer/reliquary-of-truth-desktop.jpg",
+        "mobile": "genshin-images/nefer/reliquary-of-truth-mobile.jpg"
       },
       "Nightweaver's Looking Glass": {
-        "desktop": "images/lauma/nightweaver-looking-glass-desktop.jpg",
-        "mobile": "images/lauma/nightweaver-looking-glass-mobile.jpg"
+        "desktop": "genshin-images/lauma/nightweaver-looking-glass-desktop.jpg",
+        "mobile": "genshin-images/lauma/nightweaver-looking-glass-mobile.jpg"
       }
     }
   },
@@ -124,8 +124,8 @@
     ],
     "images": {
       "Fontaine Chronicled Wish": {
-        "desktop": "images/chronicled-wish/fontaine-chronicled-wish-desktop.jpg",
-        "mobile": "images/chronicled-wish/fontaine-chronicled-wish-mobile.jpg"
+        "desktop": "genshin-images/chronicled-wish/fontaine-chronicled-wish-desktop.jpg",
+        "mobile": "genshin-images/chronicled-wish/fontaine-chronicled-wish-mobile.jpg"
       }
     },
     "pool": [
@@ -177,8 +177,8 @@
     ],
     "images": {
       "Fontaine Chronicled Wish": {
-        "desktop": "images/chronicled-wish/fontaine-chronicled-wish-weapons-desktop.jpg",
-        "mobile": "images/chronicled-wish/fontaine-chronicled-wish-weapons-mobile.jpg"
+        "desktop": "genshin-images/chronicled-wish/fontaine-chronicled-wish-weapons-desktop.jpg",
+        "mobile": "genshin-images/chronicled-wish/fontaine-chronicled-wish-weapons-mobile.jpg"
       }
     },
     "pool": [
@@ -231,12 +231,12 @@
     ],
     "images": {
       "Nicole": {
-        "desktop": "images/nicole/nicole-desktop.jpg",
-        "mobile": "images/nicole/nicole-mobile.jpg"
+        "desktop": "genshin-images/nicole/nicole-desktop.jpg",
+        "mobile": "genshin-images/nicole/nicole-mobile.jpg"
       },
       "Lohen": {
-        "desktop": "images/lohen/lohen-desktop.jpg",
-        "mobile": "images/lohen/lohen-mobile.jpg"
+        "desktop": "genshin-images/lohen/lohen-desktop.jpg",
+        "mobile": "genshin-images/lohen/lohen-mobile.jpg"
       }
     },
     "startDate": "2026-05-20",
@@ -277,12 +277,12 @@
     ],
     "images": {
       "Mavuika": {
-        "desktop": "images/mavuika/mavuika-desktop.jpg",
-        "mobile": "images/mavuika/mavuika-mobile.jpg"
+        "desktop": "genshin-images/mavuika/mavuika-desktop.jpg",
+        "mobile": "genshin-images/mavuika/mavuika-mobile.jpg"
       },
       "Durin": {
-        "desktop": "images/durin/durin-desktop.jpg",
-        "mobile": "images/durin/durin-mobile.jpg"
+        "desktop": "genshin-images/durin/durin-desktop.jpg",
+        "mobile": "genshin-images/durin/durin-mobile.jpg"
       }
     },
     "startDate": "2026-06-09",
@@ -310,12 +310,12 @@
     "status": "speculative",
     "images": {
       "A Thousand Blazing Suns": {
-        "desktop": "images/mavuika/a-thousand-blazing-suns-desktop.jpg",
-        "mobile": "images/mavuika/a-thousand-blazing-suns-mobile.jpg"
+        "desktop": "genshin-images/mavuika/a-thousand-blazing-suns-desktop.jpg",
+        "mobile": "genshin-images/mavuika/a-thousand-blazing-suns-mobile.jpg"
       },
       "Athame Artis": {
-        "desktop": "images/durin/athame-artis-desktop.jpg",
-        "mobile": "images/durin/athame-artis-mobile.jpg"
+        "desktop": "genshin-images/durin/athame-artis-desktop.jpg",
+        "mobile": "genshin-images/durin/athame-artis-mobile.jpg"
       }
     }
   },
@@ -333,8 +333,8 @@
     ],
     "images": {
       "Sandrone": {
-        "desktop": "images/sandrone/sandrone-desktop.jpg",
-        "mobile": "images/sandrone/sandrone-mobile.jpg"
+        "desktop": "genshin-images/sandrone/sandrone-desktop.jpg",
+        "mobile": "genshin-images/sandrone/sandrone-mobile.jpg"
       }
     },
     "startDate": "2026-07-01",
