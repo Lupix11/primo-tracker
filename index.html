@@ -839,7 +839,7 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v445</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v446</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1755,7 +1755,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v445';
+const APP_VERSION = 'v446';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -3957,6 +3957,12 @@ async function renderHistory(){
 
 function showIR(t,m){const el=document.getElementById('import-result');el.className='import-result '+t;el.textContent=m;el.style.display='block';}
 function render(){renderTiles();renderChart();renderLog();if(histInst){histInst.destroy();histInst=null;}}
+// Global btn-pop for import-icon-btn, history-sort-btn, tab buttons
+document.addEventListener('click',function(e){
+  const btn=e.target.closest('.import-icon-btn,.history-sort-btn,.tab,.set-btn,.welkin-toggle,.fetch-btn,.btn-s,.btn-outline-s');
+  if(!btn)return;
+  btn.style.animation='none';void btn.offsetWidth;btn.style.animation='btn-pop 0.22s ease';
+});
 let _noteSaveTimer=null,_dragState=null;
 function toggleNotes(){
   const modal=document.getElementById('notes-modal');
@@ -4050,7 +4056,15 @@ load();
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
     navigator.serviceWorker.register('/primo-tracker/service-worker.js')
-      .then(r=>console.log('SW registered'))
+      .then(reg=>{
+        console.log('SW registered');
+        reg.addEventListener('updatefound',()=>{
+          const nw=reg.installing;
+          nw.addEventListener('statechange',()=>{
+            if(nw.state==='installed'&&navigator.serviceWorker.controller)window.location.reload();
+          });
+        });
+      })
       .catch(e=>console.log('SW failed:',e));
   });
 }
