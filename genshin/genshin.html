@@ -852,7 +852,7 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v1.1.455</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name">Primo Tracker</div><div class="sidebar-logo-ver">v1.1.456</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1083,7 +1083,7 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
 
   <section id="page-history" class="page">
     <div class="chain-page-title"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:#f0d080;stroke-width:1.8;flex-shrink:0;"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Banner History</div>
-    <div class="chain-page-sub" style="margin-bottom:14px;">Character banner run history across all versions.</div>
+    <div class="chain-page-sub">Character banner run history across all versions.</div>
     <div class="card" style="padding:14px 12px 10px;">
       <div class="history-controls" style="margin-bottom:12px;">
         <button class="history-sort-btn active" onclick="setHistorySort('latest')">Latest Rerun</button>
@@ -1099,6 +1099,7 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
       </div>
       </div>
       <div id="history-cards" class="bh-card-list"></div>
+    </div>
   </section>
 
   <section id="page-settings" class="page">
@@ -1769,7 +1770,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v1.1.455';
+const APP_VERSION = 'v1.1.456';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -3876,7 +3877,12 @@ async function renderHistory(){
   const thead=document.getElementById('history-thead');
   if(!tbody||!thead)return;
   if(!BANNER_HISTORY)await loadBannerHistory();
-  if(!BANNER_HISTORY||!BANNER_HISTORY.length){tbody.innerHTML='<tr><td colspan="3" style="padding:32px;text-align:center;color:#605870;">No data.</td></tr>';return;}
+  if(!BANNER_HISTORY||!BANNER_HISTORY.length){
+    tbody.innerHTML='<tr><td colspan="3" style="padding:32px;text-align:center;color:#605870;">No data.</td></tr>';
+    const cardsEl=document.getElementById('history-cards');
+    if(cardsEl)cardsEl.innerHTML='<div style="padding:32px;text-align:center;color:#605870;">No data.</div>';
+    return;
+  }
 
   // All phases newest-first
   const phaseSet=new Set();
@@ -3935,6 +3941,8 @@ async function renderHistory(){
 
   if(!rows.length){
     tbody.innerHTML='<tr><td colspan="'+(allPhases.length+2)+'" style="padding:32px;text-align:center;color:#605870;">No results.</td></tr>';
+    const cardsEl=document.getElementById('history-cards');
+    if(cardsEl)cardsEl.innerHTML='<div style="padding:32px;text-align:center;color:#605870;">No results.</div>';
     return;
   }
 
