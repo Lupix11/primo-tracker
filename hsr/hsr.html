@@ -840,7 +840,7 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Jade Tracker</div><div class="sidebar-logo-ver">v451</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Jade Tracker</div><div class="sidebar-logo-ver">v452</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -914,8 +914,8 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
       <div class="qa-wrap">
         <button class="qa-add-btn" style="flex-shrink:0;white-space:nowrap;" onclick="this.style.animation='none';void this.offsetWidth;this.style.animation='btn-pop 0.22s ease';fillTodayDate();addEntry()">Add Today</button>
         <div class="bydate-row" style="display:flex;gap:6px;align-items:flex-end;"><button class="qa-add-btn" style="flex-shrink:0;white-space:nowrap;width:auto;padding:9px 14px;" onclick="this.style.animation='none';void this.offsetWidth;this.style.animation='btn-pop 0.22s ease';addEntry()">Add By Date</button><div class="qa-field" style="flex:1;min-width:80px;"><div class="qa-label">Date</div><input type="text" id="inp-date" class="qa-input" placeholder="dd/mm/yyyy" maxlength="10" oninput="fmtDateInput(this)" style="min-width:0;"/></div></div>
-        <div class="qa-field"><div class="qa-label"><img src='https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/primogem.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Stellar Jade</div><input type="number" id="inp-primo" class="qa-input" placeholder="21784" min="0" oninput="calcPreview()"/></div>
-        <div class="qa-field"><div class="qa-label"><img src='https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/intertwined_fate.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Special Passes</div><input type="number" id="inp-fates" class="qa-input" placeholder="17" min="0" oninput="calcPreview()"/></div>
+        <div class="qa-field"><div class="qa-label"><img src='https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Stellar-jade.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Stellar Jade</div><input type="number" id="inp-primo" class="qa-input" placeholder="21784" min="0" oninput="calcPreview()"/></div>
+        <div class="qa-field"><div class="qa-label"><img src='https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Special-Pass.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Special Passes</div><input type="number" id="inp-fates" class="qa-input" placeholder="17" min="0" oninput="calcPreview()"/></div>
       </div>
       <div class="qa-preview" id="qa-preview">—</div>
       <span class="note-toggle" onclick="toggleNoteInput()">📝 <span id="note-toggle-txt">Add a note</span></span>
@@ -932,10 +932,10 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
     <div class="card">
       <div class="ov-header"><div class="card-title" data-i18n="dash_overview">Overview</div><div class="welkin-toggle" id="welkin-btn" onclick="toggleWelkin()"><span class="welkin-dot"></span>Welkin</div></div>
       <div class="tiles">
-        <div class="tile" style="border-left:3px solid rgba(128,192,240,0.5);"><img class="tile-icon" src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/primogem.png" alt="jade"><div class="tile-text"><div class="tile-val" id="s-primo">—</div><div class="tile-lbl">Stellar Jade</div></div></div>
-        <div class="tile" style="border-left:3px solid rgba(180,120,240,0.5);"><img class="tile-icon" src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/intertwined_fate.png" alt="pass"><div class="tile-text"><div class="tile-val" id="s-fates">—</div><div class="tile-lbl">Passes</div></div></div>
-        <div class="tile" style="border-left:3px solid rgba(240,208,128,0.5);"><img class="tile-icon" src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/primogem.png" alt="jade"><div class="tile-text"><div class="tile-val" id="s-total">—</div><div class="tile-lbl">Total Primos</div></div></div>
-        <div class="tile" style="border-left:3px solid rgba(128,240,160,0.5);"><img class="tile-icon" src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/intertwined_fate.png" alt="pass"><div class="tile-text"><div class="tile-val" id="s-pulls">—</div><div class="tile-lbl">Total Warps</div></div></div>
+        <div class="tile" style="border-left:3px solid rgba(128,192,240,0.5);"><img class="tile-icon" src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Stellar-jade.png" alt="jade"><div class="tile-text"><div class="tile-val" id="s-primo">—</div><div class="tile-lbl">Stellar Jade</div></div></div>
+        <div class="tile" style="border-left:3px solid rgba(180,120,240,0.5);"><img class="tile-icon" src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Special-Pass.png" alt="pass"><div class="tile-text"><div class="tile-val" id="s-fates">—</div><div class="tile-lbl">Passes</div></div></div>
+        <div class="tile" style="border-left:3px solid rgba(240,208,128,0.5);"><img class="tile-icon" src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Stellar-jade.png" alt="jade"><div class="tile-text"><div class="tile-val" id="s-total">—</div><div class="tile-lbl">Total Jade</div></div></div>
+        <div class="tile" style="border-left:3px solid rgba(128,240,160,0.5);"><img class="tile-icon" src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Special-Pass.png" alt="pass"><div class="tile-text"><div class="tile-val" id="s-pulls">—</div><div class="tile-lbl">Total Warps</div></div></div>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
         <div class="tabs">
@@ -963,7 +963,7 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
       </div>
       <div class="log-wrap log-desktop-only">
         <div class="log-outer">
-          <div class="log-col-hdr log-desktop-only"><span>Date</span><span><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/primogem.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Jade</span><span><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/intertwined_fate.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Passes</span><span><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/primogem.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Total Primos</span><span><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/intertwined_fate.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Pulls</span><span>Daily Gain</span></div>
+          <div class="log-col-hdr log-desktop-only"><span>Date</span><span><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Stellar-jade.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Jade</span><span><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Special-Pass.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Passes</span><span><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Stellar-jade.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Total Jade</span><span><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Special-Pass.png" style="width:13px;height:13px;vertical-align:middle;margin-right:3px;">Pulls</span><span>Daily Gain</span></div>
           <div class="log-vp" id="log-vp"><div class="log-strip" id="log-strip"></div></div>
         </div>
         <div class="v-col"><input type="range" class="v-slider" id="log-slider" min="0" value="0" step="1" oninput="onSlider()"/></div>
@@ -1290,7 +1290,7 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
           </div>
 
           <div class="cr-section">
-            <span class="cr-label">Element Color</span>
+            <span class="cr-label">Type Color</span>
             <div class="cr-el-grid" id="crElGrid"></div>
           </div>
 
@@ -1742,7 +1742,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v451';
+const APP_VERSION = 'v452';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2338,7 +2338,7 @@ function renderLog(){
         strip.appendChild(row);
         const exp=document.createElement('div');exp.className='log-expand';exp.dataset.date=e.date;
         exp.style.cssText='overflow:hidden;'+(isExp?'':'height:0px;');
-        exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/primogem.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Stellar Jade</div><input class="ef-input" type="number" id="mep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/intertwined_fate.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Passes</div><input class="ef-input" type="number" id="mef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="mepv-${e.date}"></div><textarea class="expand-note" id="men-${e.date}" placeholder="Notes...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
+        exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Stellar-jade.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Stellar Jade</div><input class="ef-input" type="number" id="mep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Special-Pass.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Passes</div><input class="ef-input" type="number" id="mef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="mepv-${e.date}"></div><textarea class="expand-note" id="men-${e.date}" placeholder="Notes...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
         strip.appendChild(exp);
       });
       if(mScrollHint) mScrollHint.textContent=total>8?'↕ scroll for older entries':'';
@@ -2365,7 +2365,7 @@ function renderLog(){
     strip.appendChild(row);
     const exp=document.createElement('div');exp.className='log-expand';exp.dataset.date=e.date;
     exp.style.cssText='overflow:hidden;height:0px;';
-    exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/primogem.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Stellar Jade</div><input class="ef-input" type="number" id="ep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/intertwined_fate.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Special Passes</div><input class="ef-input" type="number" id="ef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="epv-${e.date}"></div><textarea class="expand-note" id="en-${e.date}" placeholder="Notes for ${fmtDate(e.date)}...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
+    exp.innerHTML=`<div class="log-expand-inner"><div class="expand-fields"><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Stellar-jade.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Stellar Jade</div><input class="ef-input" type="number" id="ep-${e.date}" value="${e.primo??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div><div><div class="ef-label"><img src='https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Special-Pass.png' style='width:13px;height:13px;vertical-align:middle;margin-right:3px;'>Special Passes</div><input class="ef-input" type="number" id="ef-${e.date}" value="${e.fates??''}" min="0" oninput="expandPreviewCalc('${e.date}')"/></div></div><div class="expand-preview" id="epv-${e.date}"></div><textarea class="expand-note" id="en-${e.date}" placeholder="Notes for ${fmtDate(e.date)}...">${e.notes||''}</textarea><div class="expand-actions"><button class="btn-s" onclick="saveRowEdit('${e.date}',event)">Save</button><button class="btn-outline-s" onclick="closeExpand(event)">Cancel</button><span class="spacer"></span><button class="btn-del-red" onclick="deleteEntry('${e.date}',event)">Delete</button></div></div>`;
     strip.appendChild(exp);
   });
   let expandH=0;
@@ -2439,7 +2439,7 @@ function renderStats(){
       <div class="stats-bg-box" style="background:rgba(255,255,255,0.03);border:1px solid rgba(240,208,128,0.13);border-top:1px solid rgba(240,208,128,0.2);border-radius:12px;padding:14px 16px;background-image:linear-gradient(135deg,rgba(255,255,255,0.025) 0%,transparent 60%);overflow:hidden;position:relative;">
         <div class="s-sect-title">Average Daily Gain</div>
         <div class="stats-inner-card" style="background:rgba(255,255,255,0.05);border:1px solid rgba(240,208,128,0.13);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;justify-content:center;transition:transform 0.16s,box-shadow 0.18s;cursor:default;">
-          <div class="stats-hero-value" id="avg-display" style="display:flex;align-items:center;gap:10px;"><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/primogem.png" width="48" height="48" style="filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5));flex-shrink:0;">${curAvg!=null?curAvg.toLocaleString():'—'}</div>
+          <div class="stats-hero-value" id="avg-display" style="display:flex;align-items:center;gap:10px;"><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Stellar-jade.png" width="48" height="48" style="filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5));flex-shrink:0;">${curAvg!=null?curAvg.toLocaleString():'—'}</div>
           <div class="stats-hero-label">Average daily gain</div>
           <div class="stats-hero-note">How many Stellar Jade you gained per tracked day during the selected range.</div>
         </div>
@@ -2468,9 +2468,9 @@ function renderStats(){
     <div class="stats-section" >
       <div class="s-sect-title" data-i18n="stats_snapshot">Snapshot</div>
       <div class="stats-grid-3">
-        <div class="stats-metric"><div class="stats-metric-row"><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/primogem.png" width="48" height="48" style="flex-shrink:0;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.5));"><div class="stats-metric-body"><div class="stats-metric-value">${primoGained.toLocaleString()}</div><div class="stats-metric-label">Jade gained</div><div class="stats-metric-sub">Growth during the selected range.</div></div></div></div>
-        <div class="stats-metric"><div class="stats-metric-row"><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/intertwined_fate.png" width="48" height="48" style="flex-shrink:0;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.5));"><div class="stats-metric-body"><div class="stats-metric-value">${pullsGained.toLocaleString()}</div><div class="stats-metric-label">Warps gained</div><div class="stats-metric-sub">Converted from the total primo gain.</div></div></div></div>
-        <div class="stats-metric"><div class="stats-metric-row"><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/primogem.png" width="48" height="48" style="flex-shrink:0;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.5));"><div class="stats-metric-body"><div class="stats-metric-value">${last.total.toLocaleString()}</div><div class="stats-metric-label">Current Jade</div><div class="stats-metric-sub">Latest total in your tracker.</div></div></div></div>
+        <div class="stats-metric"><div class="stats-metric-row"><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Stellar-jade.png" width="48" height="48" style="flex-shrink:0;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.5));"><div class="stats-metric-body"><div class="stats-metric-value">${primoGained.toLocaleString()}</div><div class="stats-metric-label">Jade gained</div><div class="stats-metric-sub">Growth during the selected range.</div></div></div></div>
+        <div class="stats-metric"><div class="stats-metric-row"><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Special-Pass.png" width="48" height="48" style="flex-shrink:0;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.5));"><div class="stats-metric-body"><div class="stats-metric-value">${pullsGained.toLocaleString()}</div><div class="stats-metric-label">Warps gained</div><div class="stats-metric-sub">Converted from the total primo gain.</div></div></div></div>
+        <div class="stats-metric"><div class="stats-metric-row"><img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Stellar-jade.png" width="48" height="48" style="flex-shrink:0;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.5));"><div class="stats-metric-body"><div class="stats-metric-value">${last.total.toLocaleString()}</div><div class="stats-metric-label">Current Jade</div><div class="stats-metric-sub">Latest total in your tracker.</div></div></div></div>
       </div>
     </div>
     <div class="stats-section" >
@@ -3299,7 +3299,7 @@ function renderChainCard(b,type){
       const wtSrc=`${BASE_URL}hsr-images/weapon-types/${target.weaponType||'sword'}.png`;
       iconHtml=`<img src="${wtSrc}" width="22" height="22" onerror="this.style.display='none'" alt="${target.weaponType}">`;
     } else {
-      const elSrc=`${BASE_URL}hsr-images/elements/element_${el.toLowerCase()}.svg`;
+      const elSrc=`${BASE_URL}hsr-images/types/Type-${el}.png`;
       iconHtml=`<img src="${elSrc}" width="22" height="22" onerror="this.style.display='none'" alt="${el}">`;
     }
     const pityMax=90;
@@ -3349,7 +3349,7 @@ function renderChainCard(b,type){
   let iconHtml;
   if(type==='character'){
     const elName=el.toLowerCase();
-    const elSrc=`${BASE_URL}hsr-images/elements/element_${elName}.svg`;
+    const elSrc=`${BASE_URL}hsr-images/types/Type-${elName}.png`;
     iconHtml=`<img src="${elSrc}" width="22" height="22" onerror="this.style.display='none';this.parentNode.innerHTML='${ELEM_ICON[el]||'✦'}'" alt="${el}">`;
   } else {
     const wt=(Array.isArray(b.weaponTypes)?b.weaponTypes[state.targetWeaponIdx||0]:b.weaponType)||'sword';
@@ -3420,8 +3420,8 @@ function renderChainPickerDropdown(type,allBanners){
   return `<div class="chain-picker-dropdown">${items}</div>`;
 }
 
-const FATE_ICO=`<img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/intertwined_fate.png" class="ico" alt="pass">`;
-const PRIMO_ICO=`<img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/primogem.png" class="ico" alt="jade">`;
+const FATE_ICO=`<img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Special-Pass.png" class="ico" alt="pass">`;
+const PRIMO_ICO=`<img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Stellar-jade.png" class="ico" alt="jade">`;
 
 function buildSummaryHtml(type,orderedBanners,startCumulative=0){
   if(!orderedBanners.length) return '';
