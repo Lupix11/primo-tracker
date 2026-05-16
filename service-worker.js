@@ -1,8 +1,8 @@
-const CACHE_NAME = 'primo-tracker-v445';
+const CACHE_NAME = 'primo-tracker-v456';
 
 const PRECACHE = [
-  '/primo-tracker/',
-  '/primo-tracker/index.html',
+  '/primo-tracker/genshin/genshin.html',
+  '/primo-tracker/hsr/hsr.html',
 ];
 
 // Install: precache core files
@@ -26,7 +26,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
 
-  // Network-first for HTML and JSON (always get fresh index.html and banners.json)
+  // Network-first for HTML and JSON (always get fresh HTML and data files)
   if (e.request.mode === 'navigate' ||
       url.pathname.endsWith('.html') ||
       url.pathname.endsWith('.json')) {
