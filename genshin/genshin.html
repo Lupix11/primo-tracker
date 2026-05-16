@@ -833,6 +833,18 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
 
 .h-new-badge{font-size:7px;background:#f0d080;color:#1a1200;border-radius:3px;padding:1px 3px;font-family:'Cinzel',serif;letter-spacing:0.3px;margin-left:3px;font-weight:800;position:relative;top:-2px;}
 @media(max-width:768px){.h-sticky-char{width:112px;min-width:112px;}.h-sticky-runs{width:36px;min-width:36px;}.h-char-name{max-width:70px;font-size:12px;}.h-phase-hdr,.h-phase-cell{width:28px;min-width:28px;max-width:28px;}.h-dot{width:20px;height:20px;font-size:8px;}.h-char-cell{padding:3px 4px;gap:3px;}.h-num{font-size:10px;}}
+.bh-card-list{display:none;flex-direction:column;gap:6px;}
+.bh-card{display:flex;align-items:flex-start;gap:12px;padding:10px;border-radius:8px;border:1px solid rgba(240,208,128,0.08);background:rgba(255,255,255,0.02);}
+.bh-card-icon{position:relative;width:46px;height:46px;flex-shrink:0;}
+.bh-card-icon-fallback{position:absolute;inset:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.6);}
+.bh-card-icon img{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:top;}
+.bh-card-body{flex:1;min-width:0;}
+.bh-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px;}
+.bh-card-name{font-size:14px;font-weight:600;color:#e8dfc8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bh-card-count{font-size:12px;color:#f0d080;font-weight:700;flex-shrink:0;}
+.bh-card-versions{display:flex;flex-wrap:wrap;gap:4px;}
+.bh-ver-chip{font-size:10px;border-radius:4px;padding:2px 6px;font-family:'IBM Plex Sans',monospace;border:1px solid;}
+@media(max-width:768px){.history-wrap{display:none;}.bh-card-list{display:flex;}}
 #timing-start.active,#timing-end.active{box-shadow:0 0 10px rgba(240,208,128,0.3),inset 0 0 6px rgba(240,208,128,0.06);}
 </style>
 </head>
@@ -840,7 +852,7 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v450</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Primo Tracker</div><div class="sidebar-logo-ver">v1.1.455</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1085,7 +1097,8 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
           <tbody id="history-tbody"><tr><td colspan="3" style="padding:32px;text-align:center;color:#605870;font-size:13px;">Loading...</td></tr></tbody>
         </table>
       </div>
-    </div>
+      </div>
+      <div id="history-cards" class="bh-card-list"></div>
   </section>
 
   <section id="page-settings" class="page">
@@ -1756,7 +1769,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v450';
+const APP_VERSION = 'v1.1.455';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -3954,6 +3967,37 @@ async function renderHistory(){
 
     return'<tr>'+charTd+runsTd+cells+'</tr>';
   }).join('');
+
+  // Mobile cards
+  const cardsEl=document.getElementById('history-cards');
+  if(cardsEl){
+    if(!rows.length){
+      cardsEl.innerHTML='<div style="padding:32px;text-align:center;color:#605870;">No results.</div>';
+    }else{
+      cardsEl.innerHTML=rows.map(row=>{
+        const ec=getElemColor(row.name);
+        const init=row.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+        const safeName=row.name.toLowerCase().replace(/\s+/g,'-');
+        const portraitSrc=`${BASE_URL}genshin-images/${safeName}/${safeName}-portrait.png`;
+        const badge=row.isNew?'<span class="h-new-badge" style="margin-left:4px;">NEW</span>':'';
+        const chips=[...row.vSet].sort((a,b)=>-cmpVer(a,b))
+          .map(v=>`<span class="bh-ver-chip" style="color:${ec};border-color:${ec}40;background:${ec}15;">${v}</span>`).join('');
+        return`<div class="bh-card">
+          <div class="bh-card-icon">
+            <div class="bh-card-icon-fallback" style="background:${ec}25;border:2px solid ${ec};box-shadow:0 0 7px ${ec}70;">${init}</div>
+            <img src="${portraitSrc}" onerror="this.style.display='none'" alt="${row.name}">
+          </div>
+          <div class="bh-card-body">
+            <div class="bh-card-header">
+              <span class="bh-card-name">${row.name}${badge}</span>
+              <span class="bh-card-count">×${row.totalRuns}</span>
+            </div>
+            <div class="bh-card-versions">${chips}</div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
 }
 
 function showIR(t,m){const el=document.getElementById('import-result');el.className='import-result '+t;el.textContent=m;el.style.display='block';}
