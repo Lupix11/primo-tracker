@@ -457,11 +457,9 @@ input[type=range].v-slider::-moz-range-thumb{width:13px;height:13px;border-radiu
 .bdot-soon{border:1.5px solid #f0d080;box-shadow:0 0 5px rgba(240,208,128,0.35);animation:soon-dot-pulse 2.4s ease-in-out infinite;}@keyframes soon-dot-pulse{0%,100%{box-shadow:0 0 5px rgba(240,208,128,0.35);}50%{box-shadow:0 0 10px rgba(240,208,128,0.65);}}
 .bdot-soon::after{background:#f0d080;}
 .bdot-empty{opacity:0;border:none;}
-@keyframes tl-mob-live-pulse{0%,100%{box-shadow:0 0 10px rgba(128,240,160,0.3);}50%{box-shadow:0 0 20px rgba(128,240,160,0.6),0 0 6px rgba(128,240,160,0.2);}}
-@keyframes tl-mob-soon-pulse{0%,100%{box-shadow:0 0 8px rgba(240,208,128,0.2);}50%{box-shadow:0 0 16px rgba(240,208,128,0.45);}}
-.tl-mob-live{animation:tl-mob-live-pulse 2.4s ease-in-out infinite;}
-.tl-mob-soon{animation:tl-mob-soon-pulse 2.8s ease-in-out infinite;}
 @keyframes live-dot-pulse{0%,100%{box-shadow:0 0 5px rgba(128,240,160,0.4);}50%{box-shadow:0 0 10px rgba(128,240,160,0.7);}}
+.tl-mob-live{box-shadow:0 0 0 1.5px rgba(128,240,160,0.55),0 0 14px rgba(128,240,160,0.22);}
+.tl-mob-soon{box-shadow:0 0 0 1.5px rgba(240,208,128,0.45),0 0 12px rgba(240,208,128,0.18);}
 .ptl-today-pill{position:absolute;top:0;left:50%;transform:translate(-50%,-115%);font-size:9px;color:#0e1219;background:#f0d080;padding:1px 6px;border-radius:10px;z-index:60;font-weight:700;white-space:nowrap;box-shadow:0 0 5px rgba(240,208,128,0.25);}
 .ptl-row{display:grid;grid-template-columns:80px 1fr;min-height:30px;border-top:1px solid rgba(255,255,255,0.03);}
 .ptl-row:first-child{border-top:none;}
@@ -856,7 +854,7 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name">Primo Tracker</div><div class="sidebar-logo-ver">v1.1.461</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name">Primo Tracker</div><div class="sidebar-logo-ver">v1.1.462</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1774,7 +1772,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v1.1.461';
+const APP_VERSION = 'v1.1.462';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -2828,7 +2826,7 @@ function renderTimeline(banners){
       </button>`;
     }).join('');
     const scrollHint='';
-    list.innerHTML=`<div id="m-banner-scroll" style="height:calc(100vh - 220px);max-height:calc(100vh - 220px);overflow-y:auto;-webkit-overflow-scrolling:touch;">${cards}</div>`;
+    list.innerHTML=`<div id="m-banner-scroll" style="height:calc(100vh - 220px);max-height:calc(100vh - 220px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 4px 4px 4px;">${cards}</div>`;
     const mlCopyEarly=document.getElementById('timeline-list-mobile');
     if(mlCopyEarly) mlCopyEarly.innerHTML=list.innerHTML;
     return;
