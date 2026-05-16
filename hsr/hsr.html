@@ -24,6 +24,26 @@ body{background:#060d18;color:#d4ecf8;font-family:'Nunito',sans-serif;overflow-x
 .bg{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 15% 40%,rgba(100,70,150,0.18) 0%,transparent 55%),radial-gradient(ellipse at 85% 15%,rgba(50,80,140,0.15) 0%,transparent 50%);}
 .shell{display:flex;min-height:100vh;position:relative;z-index:1;}
 .sidebar{position:fixed;top:0;left:0;bottom:0;width:190px;z-index:50;background:rgba(8,10,16,0.95);backdrop-filter:blur(16px);border-right:1px solid rgba(76,201,240,0.12);display:flex;flex-direction:column;box-shadow:4px 0 24px rgba(0,0,0,0.4);}
+/* Starfield layers */
+.sidebar::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;width:1px;height:1px;border-radius:50%;background:transparent;box-shadow:2px 447px 0 0 rgba(255,255,255,0.46),50px 321px 0 0 rgba(255,255,255,0.27),182px 437px 0 0 rgba(255,255,255,0.39),49px 93px 0 0 rgba(255,255,255,0.49),168px 386px 0 0 rgba(255,255,255,0.29),47px 162px 0 0 rgba(255,255,255,0.31),21px 688px 0 0 rgba(255,255,255,0.39),158px 628px 0 0 rgba(255,255,255,0.23),101px 113px 0 0 rgba(255,255,255,0.50),87px 403px 0 0 rgba(255,255,255,0.36),45px 12px 0 0 rgba(255,255,255,0.21),185px 780px 0 0 rgba(255,255,255,0.48),107px 655px 0 0 rgba(255,255,255,0.42),65px 321px 0 0 rgba(255,255,255,0.29),67px 546px 0 0 rgba(255,255,255,0.33),11px 451px 0 0 rgba(255,255,255,0.26),85px 281px 0 0 rgba(255,255,255,0.27),13px 840px 0 0 rgba(255,255,255,0.39),18px 846px 0 0 rgba(255,255,255,0.35),131px 160px 0 0 rgba(255,255,255,0.39),186px 163px 0 0 rgba(255,255,255,0.44),75px 375px 0 0 rgba(255,255,255,0.46),34px 691px 0 0 rgba(255,255,255,0.48),20px 27px 0 0 rgba(255,255,255,0.25),119px 325px 0 0 rgba(255,255,255,0.29),95px 444px 0 0 rgba(255,255,255,0.24),183px 298px 0 0 rgba(255,255,255,0.47),51px 568px 0 0 rgba(255,255,255,0.52),88px 376px 0 0 rgba(255,255,255,0.52),88px 832px 0 0 rgba(255,255,255,0.31),148px 737px 0 0 rgba(255,255,255,0.46),105px 704px 0 0 rgba(255,255,255,0.39),58px 293px 0 0 rgba(255,255,255,0.31),84px 483px 0 0 rgba(255,255,255,0.43),13px 418px 0 0 rgba(255,255,255,0.36),3px 597px 0 0 rgba(255,255,255,0.34),84px 797px 0 0 rgba(255,255,255,0.24),81px 250px 0 0 rgba(255,255,255,0.34),47px 312px 0 0 rgba(255,255,255,0.45),175px 17px 0 0 rgba(255,255,255,0.37),153px 454px 0 0 rgba(255,255,255,0.24),76px 111px 0 0 rgba(255,255,255,0.48),74px 66px 0 0 rgba(255,255,255,0.41),64px 217px 0 0 rgba(255,255,255,0.34),60px 526px 0 0 rgba(255,255,255,0.27),54px 842px 0 0 rgba(255,255,255,0.27),124px 439px 0 0 rgba(255,255,255,0.47),25px 306px 0 0 rgba(255,255,255,0.28),57px 144px 0 0 rgba(255,255,255,0.53),136px 502px 0 0 rgba(255,255,255,0.38),92px 313px 0 0 rgba(255,255,255,0.30),74px 349px 0 0 rgba(255,255,255,0.35),61px 301px 0 0 rgba(255,255,255,0.24),136px 349px 0 0 rgba(255,255,255,0.20),66px 458px 0 0 rgba(255,255,255,0.27),163px 777px 0 0 rgba(255,255,255,0.54),148px 200px 0 0 rgba(255,255,255,0.38),38px 742px 0 0 rgba(255,255,255,0.48),184px 294px 0 0 rgba(255,255,255,0.42),126px 760px 0 0 rgba(255,255,255,0.24),127px 849px 0 0 rgba(255,255,255,0.54),26px 315px 0 0 rgba(255,255,255,0.21),102px 150px 0 0 rgba(255,255,255,0.38),30px 676px 0 0 rgba(255,255,255,0.29),42px 288px 0 0 rgba(255,255,255,0.46),78px 815px 0 0 rgba(255,255,255,0.40),85px 543px 0 0 rgba(255,255,255,0.53),93px 393px 0 0 rgba(255,255,255,0.23),141px 130px 0 0 rgba(255,255,255,0.40),114px 294px 0 0 rgba(255,255,255,0.34);}
+.sidebar::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;width:2px;height:2px;border-radius:50%;background:transparent;animation:star-twinkle 5s ease-in-out infinite;box-shadow:43px 697px 1px 0 rgba(180,230,255,0.67),120px 436px 1px 0 rgba(180,230,255,0.48),117px 577px 1px 0 rgba(180,230,255,0.52),148px 185px 1px 0 rgba(180,230,255,0.47),86px 631px 1px 0 rgba(180,230,255,0.88),100px 40px 1px 0 rgba(180,230,255,0.74),72px 427px 1px 0 rgba(180,230,255,0.62),72px 722px 1px 0 rgba(180,230,255,0.83),168px 474px 1px 0 rgba(180,230,255,0.47),135px 225px 1px 0 rgba(180,230,255,0.73),8px 402px 1px 0 rgba(180,230,255,0.74),162px 290px 1px 0 rgba(180,230,255,0.85),177px 387px 1px 0 rgba(180,230,255,0.67),163px 25px 1px 0 rgba(180,230,255,0.47),90px 469px 1px 0 rgba(180,230,255,0.63),101px 569px 1px 0 rgba(180,230,255,0.71),115px 114px 1px 0 rgba(180,230,255,0.80),149px 829px 1px 0 rgba(180,230,255,0.64),19px 379px 1px 0 rgba(180,230,255,0.89),178px 347px 1px 0 rgba(180,230,255,0.60),182px 681px 1px 0 rgba(180,230,255,0.62),59px 64px 1px 0 rgba(180,230,255,0.87),117px 787px 1px 0 rgba(180,230,255,0.78),157px 128px 1px 0 rgba(180,230,255,0.66),14px 255px 1px 0 rgba(180,230,255,0.56);}
+@keyframes star-twinkle{0%,100%{opacity:0.7;}50%{opacity:1;}}
+/* Nav items above starfield */
+.nav-item{position:relative;z-index:1;}
+.sidebar-logo{position:relative;z-index:1;}
+/* Corner brackets on stat tiles */
+.tile::before{content:'';position:absolute;top:7px;left:7px;width:12px;height:12px;border-top:1.5px solid rgba(76,201,240,0.55);border-left:1.5px solid rgba(76,201,240,0.55);pointer-events:none;}
+.tile::after{content:'';position:absolute;bottom:7px;right:7px;width:12px;height:12px;border-bottom:1.5px solid rgba(76,201,240,0.55);border-right:1.5px solid rgba(76,201,240,0.55);pointer-events:none;}
+/* Game switcher */
+.game-switcher{position:relative;z-index:1;margin-top:auto;padding:10px 8px;border-top:1px solid rgba(76,201,240,0.1);display:flex;gap:4px;}
+.gs-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 4px;border-radius:6px;border:1px solid rgba(76,201,240,0.12);background:rgba(76,201,240,0.04);cursor:pointer;text-decoration:none;color:#2a5068;font-size:8px;letter-spacing:0.5px;font-family:'Cinzel',serif;transition:all 0.15s;}
+.gs-btn:hover:not(.gs-disabled){border-color:rgba(76,201,240,0.3);color:#4cc9f0;background:rgba(76,201,240,0.1);}
+.gs-active{border-color:rgba(76,201,240,0.45)!important;background:rgba(76,201,240,0.12)!important;color:#4cc9f0!important;cursor:default;}
+.gs-gi{border-color:rgba(240,208,128,0.2)!important;color:#8a7040!important;}
+.gs-gi:hover{border-color:rgba(240,208,128,0.4)!important;color:#c8a84b!important;background:rgba(240,208,128,0.06)!important;}
+.gs-disabled{opacity:0.3;cursor:not-allowed;}
+.gs-abbr{font-size:10px;font-weight:700;line-height:1;}
+.gs-label{font-size:7px;opacity:0.8;letter-spacing:0.3px;}
 .sidebar-logo{font-family:'Cinzel',serif;text-align:center;padding:22px 16px 18px;border-bottom:1px solid rgba(76,201,240,0.12);margin-bottom:8px;display:flex;flex-direction:column;align-items:center;gap:0;}.sidebar-logo-star{font-size:11px;color:#4cc9f0;opacity:0.85;margin-bottom:3px;filter:drop-shadow(0 0 6px rgba(76,201,240,0.6));}.sidebar-logo-name{font-size:15px;color:#4cc9f0;letter-spacing:3px;line-height:1;text-shadow:0 0 14px rgba(76,201,240,0.35);}.sidebar-logo-ver{font-size:9px;color:#143858;letter-spacing:1px;margin-top:5px;font-family:'Nunito',sans-serif;}
 .nav-item{display:flex;align-items:center;gap:11px;padding:11px 20px;cursor:pointer;background:transparent;border:none;border-left:3px solid transparent;color:#2a5068;font-family:'Nunito',sans-serif;font-size:14px;text-align:left;width:100%;transition:all 0.18s;white-space:nowrap;border-radius:0 8px 8px 0;margin:1px 8px 1px 0;width:calc(100% - 8px);}
 .nav-item:hover{color:#2ab8de;background:rgba(76,201,240,0.05);}
@@ -46,6 +66,9 @@ body{background:#060d18;color:#d4ecf8;font-family:'Nunito',sans-serif;overflow-x
   .sidebar-logo{padding:20px 0 16px;overflow:hidden;}
   .sidebar-logo-name,.sidebar-logo-ver{display:none;}
   .sidebar-logo-star{font-size:14px;margin-bottom:0;}
+  .game-switcher{flex-direction:column;padding:8px 4px;gap:3px;}
+  .gs-label{display:none;}
+  .gs-abbr{font-size:8px;}
   .nav-label{display:none;}
   .nav-item{padding:11px;justify-content:center;border-left:none;border-right:2px solid transparent;}
   .nav-item.active{border-left:none;border-right-color:#4cc9f0;}
@@ -854,7 +877,7 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Jade Tracker</div><div class="sidebar-logo-ver">v6</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Jade Tracker</div><div class="sidebar-logo-ver">v7</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -883,6 +906,20 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-.33-1A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1-.33H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1-.33A1.65 1.65 0 0 0 4.6 8a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 .33 1A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 8c0 .39.14.76.4 1 .26.25.62.4 1 .33H21a2 2 0 1 1 0 4h-.09c-.38-.07-.74.08-1 .33-.26.24-.4.61-.4 1z"/></svg>
     <span class="nav-label" data-i18n="nav_settings">Settings</span>
   </button>
+  <div class="game-switcher">
+    <a href="/primo-tracker/genshin/genshin.html" class="gs-btn gs-gi" title="Genshin Impact">
+      <span class="gs-abbr">GI</span>
+      <span class="gs-label">Genshin</span>
+    </a>
+    <div class="gs-btn gs-active" title="Honkai: Star Rail">
+      <span class="gs-abbr">HSR</span>
+      <span class="gs-label">Star Rail</span>
+    </div>
+    <div class="gs-btn gs-disabled" title="Coming ~not~ soon">
+      <span class="gs-abbr">ZZZ</span>
+      <span class="gs-label">ZZZ</span>
+    </div>
+  </div>
 </nav>
 <nav class="bottomnav">
   <div class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
@@ -1758,7 +1795,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v6';
+const APP_VERSION = 'v7';
 
 let gdToken = null;
 let gdTokenClient = null;
