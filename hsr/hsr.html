@@ -32,23 +32,21 @@ body{background:#060d18;color:#d4ecf8;font-family:'Nunito',sans-serif;overflow-x
 .nav-item{position:relative;z-index:1;}
 .sidebar-logo{position:relative;z-index:1;}
 /* Corner brackets on stat tiles */
-.tile::before{content:'';position:absolute;top:9px;left:9px;width:11px;height:11px;border-top:1.5px solid rgba(76,201,240,0.55);border-left:1.5px solid rgba(76,201,240,0.55);pointer-events:none;z-index:2;}
-.tile::after{content:'';position:absolute;bottom:9px;right:9px;width:11px;height:11px;border-bottom:1.5px solid rgba(76,201,240,0.55);border-right:1.5px solid rgba(76,201,240,0.55);pointer-events:none;z-index:2;}
 /* Game switcher */
-.game-switcher{position:relative;z-index:10;margin-top:auto;border-top:1px solid rgba(76,201,240,0.1);}
-.gs-bar{display:flex;align-items:center;gap:8px;padding:11px 14px;cursor:pointer;transition:background 0.15s;user-select:none;}
-.gs-bar:hover{background:rgba(76,201,240,0.06);}
-.gs-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.gs-bar-name{flex:1;font-size:11px;color:#4090a8;font-family:'Nunito',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.gs-chevron{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;color:#2a5068;flex-shrink:0;transition:transform 0.2s,color 0.15s;}
-.gs-bar:hover .gs-chevron,.game-switcher.gs-open .gs-chevron{color:#4cc9f0;}
+.game-switcher{position:relative;z-index:10;margin-top:auto;}
+.gs-bar{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;transition:background 0.15s;user-select:none;background:linear-gradient(90deg,rgba(76,201,240,0.1),rgba(76,201,240,0.03));border-top:1px solid rgba(76,201,240,0.3);box-shadow:0 -4px 16px rgba(76,201,240,0.06);}
+.gs-bar:hover{background:linear-gradient(90deg,rgba(76,201,240,0.16),rgba(76,201,240,0.06));}
+.gs-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.gs-bar-name{flex:1;font-size:12px;font-weight:600;color:#4cc9f0;font-family:'Nunito',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:0.3px;}
+.gs-chevron{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.5;color:#4cc9f0;flex-shrink:0;transition:transform 0.2s;opacity:0.7;}
 .game-switcher.gs-open .gs-chevron{transform:rotate(180deg);}
-.gs-popup{position:absolute;bottom:100%;left:0;right:0;background:rgba(4,9,20,0.98);border:1px solid rgba(76,201,240,0.2);border-bottom:none;border-radius:8px 8px 0 0;overflow:hidden;backdrop-filter:blur(16px);display:none;}
+.gs-popup{position:absolute;bottom:100%;left:0;right:0;background:rgba(4,9,20,0.98);border:1px solid rgba(76,201,240,0.25);border-bottom:none;border-radius:10px 10px 0 0;overflow:hidden;backdrop-filter:blur(20px);display:none;box-shadow:0 -8px 24px rgba(76,201,240,0.08);}
 .game-switcher.gs-open .gs-popup{display:block;}
-.gs-option{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;font-size:12px;color:#4090a8;font-family:'Nunito',sans-serif;transition:all 0.15s;text-decoration:none;border-bottom:1px solid rgba(76,201,240,0.06);}
+.gs-option{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;font-size:12px;color:#4090a8;font-family:'Nunito',sans-serif;transition:all 0.15s;text-decoration:none;border-bottom:1px solid rgba(76,201,240,0.07);border-left:3px solid transparent;}
 .gs-option:last-child{border-bottom:none;}
-.gs-option:hover:not(.gs-opt-active):not(.gs-opt-disabled){background:rgba(76,201,240,0.07);color:#6ab8d8;}
-.gs-opt-active{color:#4cc9f0 !important;background:rgba(76,201,240,0.06);}
+.gs-option:hover:not(.gs-opt-active):not(.gs-opt-disabled){background:rgba(76,201,240,0.07);color:#7ac8e0;border-left-color:rgba(76,201,240,0.3);}
+.gs-opt-active{color:#4cc9f0;background:rgba(76,201,240,0.07);border-left-color:#4cc9f0;font-weight:600;}
+.gs-opt-gi:hover{border-left-color:rgba(200,168,75,0.5)!important;background:rgba(200,168,75,0.06)!important;color:#c8a84b!important;}
 .gs-opt-disabled{opacity:0.35;cursor:not-allowed;}
 .gs-opt-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .sidebar-logo{font-family:'Cinzel',serif;text-align:center;padding:22px 16px 18px;border-bottom:1px solid rgba(76,201,240,0.12);margin-bottom:8px;display:flex;flex-direction:column;align-items:center;gap:0;}.sidebar-logo-star{font-size:11px;color:#4cc9f0;opacity:0.85;margin-bottom:3px;filter:drop-shadow(0 0 6px rgba(76,201,240,0.6));}.sidebar-logo-name{font-size:15px;color:#4cc9f0;letter-spacing:3px;line-height:1;text-shadow:0 0 14px rgba(76,201,240,0.35);}.sidebar-logo-ver{font-size:9px;color:#143858;letter-spacing:1px;margin-top:5px;font-family:'Nunito',sans-serif;}
@@ -883,7 +881,7 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Jade Tracker</div><div class="sidebar-logo-ver">v9</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Jade Tracker</div><div class="sidebar-logo-ver">v10</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -914,7 +912,7 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
   </button>
   <div class="game-switcher" id="game-switcher">
     <div class="gs-popup">
-      <a href="/primo-tracker/genshin/genshin.html" class="gs-option">
+      <a href="/primo-tracker/genshin/genshin.html" class="gs-option gs-opt-gi">
         <span class="gs-dot" style="background:#c8a84b;box-shadow:0 0 5px rgba(200,168,75,0.6);"></span>
         <span class="gs-opt-name">Genshin Impact</span>
       </a>
@@ -994,7 +992,7 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
       </div>
     </div>
     <div class="card">
-      <div class="ov-header"><div class="card-title" data-i18n="dash_overview">Overview</div><div class="welkin-toggle" id="welkin-btn" onclick="toggleWelkin()"><span class="welkin-dot"></span>Welkin</div></div>
+      <div class="ov-header"><div class="card-title" data-i18n="dash_overview">Overview</div><div class="welkin-toggle" id="welkin-btn" onclick="toggleWelkin()"><span class="welkin-dot"></span>Express Pass</div></div>
       <div class="tiles">
         <div class="tile" style="border-left:3px solid rgba(128,192,240,0.5);"><img class="tile-icon" src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Stellar-Jade.png" alt="jade"><div class="tile-text"><div class="tile-val" id="s-primo">—</div><div class="tile-lbl">Stellar Jade</div></div></div>
         <div class="tile" style="border-left:3px solid rgba(180,120,240,0.5);"><img class="tile-icon" src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/pulls/Special-Pass.png" alt="pass"><div class="tile-text"><div class="tile-val" id="s-fates">—</div><div class="tile-lbl">Passes</div></div></div>
@@ -1808,7 +1806,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v9';
+const APP_VERSION = 'v10';
 
 let gdToken = null;
 let gdTokenClient = null;
