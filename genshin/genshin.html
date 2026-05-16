@@ -852,7 +852,7 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name">Primo Tracker</div><div class="sidebar-logo-ver">v1.1.458</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name">Primo Tracker</div><div class="sidebar-logo-ver">v1.1.459</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -1770,7 +1770,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v1.1.458';
+const APP_VERSION = 'v1.1.459';
 
 let gdToken = null;
 let gdTokenClient = null;
@@ -3983,6 +3983,7 @@ async function renderHistory(){
       cardsEl.innerHTML='<div style="padding:32px;text-align:center;color:#605870;">No results.</div>';
     }else{
       try{
+        const BASE_URL='https://lupix11.github.io/primo-tracker/genshin/';
         cardsEl.innerHTML=rows.map(row=>{
           const ec=getElemColor(row.name);
           const init=row.name.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase()||'?';
