@@ -36,7 +36,9 @@ body{background:#060d18;color:#d4ecf8;font-family:'Nunito',sans-serif;overflow-x
 .game-switcher{position:relative;z-index:10;margin-top:auto;}
 .gs-bar{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;transition:background 0.15s;user-select:none;background:linear-gradient(90deg,rgba(76,201,240,0.1),rgba(76,201,240,0.03));border-top:1px solid rgba(76,201,240,0.25);box-shadow:0 -4px 16px rgba(76,201,240,0.07);}
 .gs-bar:hover{background:linear-gradient(90deg,rgba(76,201,240,0.16),rgba(76,201,240,0.06));}
-.gs-game-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:box-shadow 0.2s;}
+.gs-game-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:box-shadow 0.2s;position:relative;}
+.gs-icon-symbol{position:relative;z-index:0;}
+.gs-icon-img{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;object-fit:cover;z-index:1;}
 .gs-icon-hsr{background:linear-gradient(135deg,rgba(76,201,240,0.25),rgba(76,201,240,0.08));border:1.5px solid rgba(76,201,240,0.55);box-shadow:0 0 10px rgba(76,201,240,0.25),inset 0 0 8px rgba(76,201,240,0.08);color:#4cc9f0;}
 .gs-icon-gi{background:linear-gradient(135deg,rgba(200,168,75,0.25),rgba(200,168,75,0.08));border:1.5px solid rgba(200,168,75,0.45);box-shadow:0 0 8px rgba(200,168,75,0.2);color:#c8a84b;}
 .gs-icon-zzz{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);color:#2a5068;font-size:12px;}
@@ -885,7 +887,7 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
 <div class="bg"></div>
 <div class="shell">
 <nav class="sidebar">
-  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Jade Tracker</div><div class="sidebar-logo-ver">v13</div></div>
+  <div class="sidebar-logo"><div class="sidebar-logo-name" style="font-size:14px;letter-spacing:2px;">Jade Tracker</div><div class="sidebar-logo-ver">v14</div></div>
   <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
     <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
@@ -894,13 +896,13 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
     <svg viewBox="0 0 24 24"><rect x="16" y="3" width="4" height="18" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="4" y="13" width="4" height="8" rx="1"/></svg>
     <span class="nav-label" data-i18n="nav_stats">Stats</span>
   </button>
-  <button class="nav-item" data-page="timeline" onclick="goTo('timeline')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
-    <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><polyline points="8 6 3 12 8 18"/><polyline points="16 6 21 12 16 18"/></svg>
-    <span class="nav-label">Timeline</span>
-  </button>
   <button class="nav-item" data-page="planner" onclick="goTo('planner')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><circle cx="8" cy="14" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="14" r="1.2" fill="currentColor" stroke="none"/><circle cx="16" cy="14" r="1.2" fill="currentColor" stroke="none"/></svg>
     <span class="nav-label" data-i18n="nav_planner">Planner</span>
+  </button>
+  <button class="nav-item" data-page="timeline" onclick="goTo('timeline')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
+    <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><polyline points="8 6 3 12 8 18"/><polyline points="16 6 21 12 16 18"/></svg>
+    <span class="nav-label">Timeline</span>
   </button>
   <button class="nav-item" data-page="history" onclick="goTo('history')" style="-webkit-tap-highlight-color:transparent" tabindex="-1">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
@@ -917,22 +919,33 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
   <div class="game-switcher" id="game-switcher">
     <div class="gs-popup">
       <a href="/primo-tracker/genshin/genshin.html" class="gs-option gs-opt-gi">
-        <div class="gs-game-icon gs-icon-gi">✦</div>
+        <div class="gs-game-icon gs-icon-gi">
+          <span class="gs-icon-symbol">✦</span>
+          <img src="https://lupix11.github.io/primo-tracker/genshin/genshin-images/game-icon.png" class="gs-icon-img" onerror="this.style.display='none'" alt="GI">
+        </div>
         <span class="gs-opt-name" style="color:#c8a84b;">Genshin Impact</span>
       </a>
       <div class="gs-option gs-opt-active">
-        <div class="gs-game-icon gs-icon-hsr">◈</div>
+        <div class="gs-game-icon gs-icon-hsr">
+          <span class="gs-icon-symbol">◈</span>
+          <img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/game-icon.png" class="gs-icon-img" onerror="this.style.display='none'" alt="HSR">
+        </div>
         <span class="gs-opt-name" style="color:#4cc9f0;">Honkai: Star Rail</span>
       </div>
       <div class="gs-option gs-opt-disabled" title="Coming ~not~ soon">
-        <div class="gs-game-icon gs-icon-zzz">Z</div>
+        <div class="gs-game-icon gs-icon-zzz">
+          <span class="gs-icon-symbol">Z</span>
+        </div>
         <span class="gs-opt-name">Zenless Zone Zero</span>
       </div>
     </div>
     <div class="gs-bar" onclick="toggleGS()">
-      <div class="gs-game-icon gs-icon-hsr">◈</div>
+      <div class="gs-game-icon gs-icon-hsr">
+        <span class="gs-icon-symbol">◈</span>
+        <img src="https://lupix11.github.io/primo-tracker/hsr/hsr-images/game-icon.png" class="gs-icon-img" onerror="this.style.display='none'" alt="HSR">
+      </div>
       <div class="gs-bar-inner">
-        <span class="gs-bar-name">Honkai: Star Rail</span>
+        <span class="gs-bar-name">Star Rail</span>
       </div>
       <svg class="gs-chevron" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
     </div>
@@ -947,13 +960,13 @@ tbody .h-sticky-char::before{content:'';position:absolute;bottom:0;left:0;width:
     <svg viewBox="0 0 24 24"><rect x="16" y="3" width="4" height="18" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="4" y="13" width="4" height="8" rx="1"/></svg>
     <span class="nav-label" data-i18n="nav_stats">Stats</span>
   </div>
-  <div class="nav-item" data-page="timeline" onclick="goTo('timeline')">
-    <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><polyline points="8 6 3 12 8 18"/><polyline points="16 6 21 12 16 18"/></svg>
-    <span class="nav-label">Timeline</span>
-  </div>
   <div class="nav-item" data-page="planner" onclick="goTo('planner')">
     <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><circle cx="8" cy="14" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="14" r="1.2" fill="currentColor" stroke="none"/><circle cx="16" cy="14" r="1.2" fill="currentColor" stroke="none"/></svg>
     <span class="nav-label" data-i18n="nav_planner">Planner</span>
+  </div>
+  <div class="nav-item" data-page="timeline" onclick="goTo('timeline')">
+    <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><polyline points="8 6 3 12 8 18"/><polyline points="16 6 21 12 16 18"/></svg>
+    <span class="nav-label">Timeline</span>
   </div>
   <div class="nav-item" data-page="history" onclick="goTo('history')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
@@ -1812,7 +1825,7 @@ function updateStorageUI(){
 const GDRIVE_CLIENT_ID = '342785476694-ith1idsqgn95j0vm1gk903kmufsa5flr.apps.googleusercontent.com';
 const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 const GDRIVE_FILE_NAME = 'primogem_tracker_vault.json';
-const APP_VERSION = 'v13';
+const APP_VERSION = 'v14';
 
 let gdToken = null;
 let gdTokenClient = null;
