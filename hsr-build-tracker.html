@@ -749,7 +749,33 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield;}
 #page-detail .asc-checks{gap:7px;}
 #page-detail .asc-check{height:28px;padding:0 9px;background:linear-gradient(90deg,rgba(232,196,122,.075),rgba(14,18,38,.35));border-color:rgba(232,196,122,.22);}
 #page-detail .asc-check .asc-mark{width:13px;height:13px;border-radius:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15);}
-/* no-msp stretch removed: trace cells handle vertical fill */
+/* ── Trace icon cells ── */
+.trace-cells{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.msp-cells{grid-template-columns:repeat(3,1fr);}
+.tc{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:12px 8px 14px;
+  background:linear-gradient(180deg,rgba(232,196,122,.06),rgba(10,14,30,.5) 75%);
+  border:1px solid rgba(232,196,122,.2);
+  clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px));
+  transition:border-color .2s,box-shadow .2s;}
+.tc:hover{border-color:rgba(232,196,122,.42);box-shadow:0 0 14px rgba(232,196,122,.12) inset;}
+.tc-ic{width:44px;height:44px;position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:6px;}
+.tc-ic img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:2;filter:drop-shadow(0 0 7px rgba(232,196,122,.4));}
+.tc-fb{font-size:22px;opacity:.5;}
+.tc-name{font-size:9.5px;color:#c8b88e;letter-spacing:1.1px;text-transform:uppercase;font-weight:800;line-height:1.2;flex:1;}
+.tc-lv{font-size:15px;color:var(--gold);font-weight:800;margin-top:3px;}
+.tc-max{font-size:10px;color:var(--dim);font-weight:700;}
+.tc-line{position:absolute;left:8px;right:8px;bottom:5px;height:2px;background:rgba(255,255,255,.07);overflow:hidden;}
+.tc-line span{display:block;height:100%;background:linear-gradient(90deg,#b9904e,#e8c47a);box-shadow:0 0 6px rgba(232,196,122,.5);}
+.tc.maxed{border-color:rgba(232,196,122,.5);background:linear-gradient(180deg,rgba(232,196,122,.14),rgba(10,14,30,.5) 80%);box-shadow:inset 0 1px 0 rgba(232,196,122,.3);}
+.tc.msp .tc-lv{color:#c2bcfc;}
+.tc.msp{border-color:rgba(160,152,250,.3);background:linear-gradient(180deg,rgba(160,152,250,.09),rgba(10,14,30,.5) 75%);}
+.tc.msp .tc-line span{background:linear-gradient(90deg,#7a6fd8,#a89cfa);}
+.tc.msp .tc-ic img{filter:drop-shadow(0 0 7px rgba(160,152,250,.5));}
+.tc.msp.maxed{border-color:rgba(160,152,250,.55);}
+/* non-Remembrance: 2x2 cells fill the column height */
+#page-detail .trace-body.no-msp{height:100%;display:flex;flex-direction:column;}
+#page-detail .trace-body.no-msp .trace-cells{flex:1;grid-auto-rows:1fr;}
+#page-detail .trace-body.no-msp .tc{justify-content:center;}
 #page-detail .trace-spacer-card{display:none!important;}
 
 /* Build summary: give the radar label room so CRIT labels stop losing their C. */
@@ -974,61 +1000,23 @@ html.png-export .dt-top button{
 }
 
 
-/* ══ Trace icon cells ══ */
-.trace-cells{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
-.trace-cells.msp-cells{grid-template-columns:repeat(3,1fr);}
-.tc{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:11px 8px 13px;min-width:0;
-  background:linear-gradient(180deg,rgba(232,196,122,.06),rgba(10,14,30,.45) 70%);
-  border:1px solid rgba(232,196,122,.18);
-  clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px));
-  transition:border-color .2s,box-shadow .2s;}
-.tc:hover{border-color:rgba(232,196,122,.4);box-shadow:0 0 14px rgba(232,196,122,.12) inset;}
-.tc-ic{width:38px;height:38px;position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:7px;flex:1 0 auto;min-height:38px;}
-.tc-ic img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:38px;height:38px;object-fit:contain;z-index:2;filter:drop-shadow(0 0 6px rgba(232,196,122,.35));}
-.tc-fb{font-size:20px;opacity:.55;}
-.tc-name{font-size:9.5px;color:#c8b88e;letter-spacing:1.1px;text-transform:uppercase;font-weight:800;line-height:1.2;}
-.tc-lv{font-size:14px;color:var(--gold);font-weight:800;margin-top:3px;}
-.tc-max{font-size:10.5px;color:var(--dim);font-weight:700;}
-.tc-line{position:absolute;left:8px;right:8px;bottom:5px;height:2px;background:rgba(255,255,255,.07);overflow:hidden;}
-.tc-line span{display:block;height:100%;background:linear-gradient(90deg,#b9904e,#e8c47a);box-shadow:0 0 6px rgba(232,196,122,.5);}
-.tc.maxed{border-color:rgba(232,196,122,.45);background:linear-gradient(180deg,rgba(232,196,122,.12),rgba(10,14,30,.45) 75%);box-shadow:0 0 16px rgba(232,196,122,.1),inset 0 1px 0 rgba(232,196,122,.25);}
-.tc.msp{border-color:rgba(160,152,250,.28);background:linear-gradient(180deg,rgba(160,152,250,.09),rgba(10,14,30,.45) 70%);}
-.tc.msp .tc-lv{color:#c2bcfc;}
-.tc.msp .tc-line span{background:linear-gradient(90deg,#7a6fd8,#a89cfa);box-shadow:0 0 6px rgba(160,152,250,.5);}
-.tc.msp .tc-ic img{filter:drop-shadow(0 0 6px rgba(160,152,250,.45));}
-.tc.msp.maxed{border-color:rgba(160,152,250,.55);box-shadow:0 0 16px rgba(160,152,250,.12);}
-.tc.msp:hover{border-color:rgba(160,152,250,.5);}
-#page-detail .trace-body.no-msp .trace-cells:first-of-type{flex:1;grid-auto-rows:1fr;align-content:stretch;}
-#page-detail .trace-body.no-msp .tc{justify-content:center;}
-
-/* ══ Ambience: deeper star sea ══ */
-.bg::before{content:'';position:absolute;inset:0;width:1px;height:1px;border-radius:50%;background:transparent;animation:twinkle 9s ease-in-out infinite reverse;box-shadow:
-  5vw 8vh 0 0 rgba(255,255,255,.16),17vw 38vh 0 0 rgba(255,255,255,.13),24vw 12vh 1px 0 rgba(180,230,255,.22),
-  33vw 76vh 0 0 rgba(255,255,255,.12),41vw 58vh 0 0 rgba(232,196,122,.2),48vw 88vh 1px 0 rgba(255,255,255,.16),
-  57vw 28vh 0 0 rgba(255,255,255,.14),64vw 64vh 0 0 rgba(180,230,255,.18),71vw 8vh 0 0 rgba(255,255,255,.12),
-  78vw 48vh 1px 0 rgba(232,196,122,.18),84vw 28vh 0 0 rgba(255,255,255,.13),90vw 68vh 0 0 rgba(255,255,255,.15),
-  95vw 14vh 1px 0 rgba(180,230,255,.2),12vw 68vh 0 0 rgba(255,255,255,.12),60vw 92vh 0 0 rgba(255,255,255,.14);}
+/* ── Ambience ── */
+.bg::before{content:'';position:absolute;inset:0;width:1px;height:1px;border-radius:50%;background:transparent;animation:twinkle 9s ease-in-out infinite reverse;box-shadow:5vw 8vh 0 0 rgba(255,255,255,.16),17vw 38vh 0 0 rgba(255,255,255,.13),24vw 12vh 1px 0 rgba(180,230,255,.22),33vw 76vh 0 0 rgba(255,255,255,.12),41vw 58vh 0 0 rgba(232,196,122,.2),48vw 88vh 1px 0 rgba(255,255,255,.16),57vw 28vh 0 0 rgba(255,255,255,.14),64vw 64vh 0 0 rgba(180,230,255,.18),71vw 8vh 0 0 rgba(255,255,255,.12),78vw 48vh 1px 0 rgba(232,196,122,.18),84vw 28vh 0 0 rgba(255,255,255,.13),90vw 68vh 0 0 rgba(255,255,255,.15);}
 .bg .shoot{position:absolute;top:12%;left:-6%;width:110px;height:1.5px;background:linear-gradient(90deg,transparent,rgba(232,210,160,.85),rgba(255,255,255,.95));border-radius:2px;filter:drop-shadow(0 0 5px rgba(232,196,122,.7));opacity:0;transform:rotate(16deg);animation:shoot 17s ease-in 4s infinite;}
-.bg .shoot.s2{top:58%;left:-8%;animation-duration:23s;animation-delay:11s;transform:rotate(11deg);width:84px;}
+.bg .shoot.s2{top:58%;animation-duration:23s;animation-delay:11s;transform:rotate(11deg);width:84px;}
 @keyframes shoot{0%{opacity:0;translate:0 0;}1.5%{opacity:1;}5%{opacity:0;translate:62vw 18vh;}100%{opacity:0;translate:62vw 18vh;}}
-
-/* ══ Ambience: panels & portrait ══ */
-.dt-panel{transition:border-color .25s,box-shadow .25s;}
-.dt-panel:hover{border-color:rgba(232,196,122,.34);box-shadow:inset 0 0 30px rgba(20,30,70,.3),0 4px 22px rgba(0,0,0,.4),0 0 18px rgba(232,196,122,.07);}
-.dt-portrait::before{content:'';position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,transparent,rgba(7,10,22,.78));z-index:2;pointer-events:none;}
+.dt-portrait::before{content:'';position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,transparent,rgba(7,10,22,.8));z-index:2;pointer-events:none;}
 .dt-portrait{animation:portrait-breathe 7s ease-in-out infinite;}
 @keyframes portrait-breathe{0%,100%{box-shadow:inset 0 -14px 44px rgba(160,132,250,.10);}50%{box-shadow:inset 0 -22px 64px rgba(160,132,250,.22);}}
-.dt-grid{position:relative;}
-.dt-grid::after{content:'';position:absolute;inset:-26px -10px;z-index:-1;pointer-events:none;background:
-  radial-gradient(ellipse 46% 34% at 12% 4%,color-mix(in srgb,var(--elc,#a098fa) 8%,transparent),transparent 70%),
-  radial-gradient(ellipse 40% 30% at 92% 90%,color-mix(in srgb,var(--elc,#a098fa) 5%,transparent),transparent 70%);}
 .dt-name{background:linear-gradient(100deg,#e8c47a 25%,#fdf2cf 50%,#e8c47a 75%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none;animation:name-shine 7s linear infinite;}
 @keyframes name-shine{0%{background-position:120% 0;}100%{background-position:-120% 0;}}
-.radar-wrap{filter:drop-shadow(0 0 9px rgba(232,196,122,.16));}
+.dt-panel{transition:border-color .25s,box-shadow .25s;}
+.dt-panel:hover{border-color:rgba(232,196,122,.34);box-shadow:inset 0 0 30px rgba(20,30,70,.3),0 4px 22px rgba(0,0,0,.4),0 0 18px rgba(232,196,122,.07);}
 .rl-card{transition:border-color .2s,box-shadow .2s;}
 .rl-card:hover{border-color:rgba(232,196,122,.5);box-shadow:0 0 16px rgba(232,196,122,.08);}
-.status-badge{transition:box-shadow .15s,filter .15s;}
-.status-badge:hover{filter:brightness(1.15);}
+.radar-wrap{filter:drop-shadow(0 0 9px rgba(232,196,122,.16));}
+.dt-grid::after{content:'';position:absolute;inset:-26px -10px;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 46% 34% at 12% 4%,color-mix(in srgb,var(--elc,#a098fa) 8%,transparent),transparent 70%),radial-gradient(ellipse 40% 30% at 92% 90%,color-mix(in srgb,var(--elc,#a098fa) 5%,transparent),transparent 70%);}
+.dt-grid{position:relative;}
 </style>
 </head>
 <body>
@@ -2115,29 +2103,30 @@ function tracesHTML(c){
   const hasMsp=isRem&&(tr.msB||tr.msS||tr.msU);
   if(!hasMain&&!hasA&&!hasMsp)return '<div class="trace-body"><div class="cb-val dim">not set</div></div>';
   const id=charId(c);
-  const cell=(label,v,max,suffix,cls,fb)=>{
+  const cell=(label,v,max,suffix,cls)=>{
     if(!v)return '';
     const n=parseInt(v,10)||0;
     const pct=Math.max(4,Math.min(100,Math.round(n/max*100)));
     const url=id?SR+'icon/skill/'+id+'_'+suffix+'.png':null;
-    return '<div class="tc'+(cls||'')+(n>=max?' maxed':'')+'">'+
-      '<div class="tc-ic">'+imgFallback(url,'<span class="tc-fb">'+fb+'</span>')+'</div>'+
-      '<div class="tc-name">'+label+'</div>'+
-      '<div class="tc-lv">'+esc(v)+'<span class="tc-max"> / '+max+'</span></div>'+
-      '<span class="tc-line"><span style="width:'+pct+'%"></span></span></div>';
+    const fb={'basic_atk':'\u2694','skill':'\u2726','ultimate':'\u2604','talent':'\u25c8','memosprite_skill':'\ud83d\udc3e','memosprite_ultimate':'\ud83d\udc3e','memosprite_talent':'\ud83d\udc3e'}[suffix]||'\u2726';
+    return '<div class="tc'+(cls||'')+(n>=max?' maxed':'')+'">'
+      +'<div class="tc-ic">'+imgFallback(url,'<span class="tc-fb">'+fb+'</span>')+'</div>'
+      +'<div class="tc-name">'+label+'</div>'
+      +'<div class="tc-lv">'+esc(v)+'<span class="tc-max"> / '+max+'</span></div>'
+      +'<span class="tc-line"><span style="width:'+pct+'%"></span></span></div>';
   };
   const box=(name,on)=>'<span class="asc-check '+(on?'on':'off')+'"><span class="asc-mark">'+(on?'\u2713':'')+'</span><span>'+name+'</span></span>';
   let out='<div class="trace-body '+(!isRem?'no-msp':'')+'">';
-  if(hasMain)out+='<div class="trace-cells">'+
-    cell('Basic ATK',tr.b,6,'basic_atk','','\u2694')+
-    cell('Skill',tr.s,10,'skill','','\u2726')+
-    cell('Ultimate',tr.u,10,'ultimate','','\u2604')+
-    cell('Talent',tr.t,10,'talent','','\u25c8')+'</div>';
+  if(hasMain)out+='<div class="trace-cells">'
+    +cell('Basic ATK',tr.b,6,'basic_atk')
+    +cell('Skill',tr.s,10,'skill')
+    +cell('Ultimate',tr.u,10,'ultimate')
+    +cell('Talent',tr.t,10,'talent')+'</div>';
   out+='<div class="tr2-tag">Ascension Traces</div><div class="asc-checks">'+box('A2',tr.a2)+box('A4',tr.a4)+box('A6',tr.a6)+'</div>';
-  if(hasMsp)out+='<div class="tr2-tag">Memosprite Traces</div><div class="trace-cells msp-cells">'+
-    cell('Basic ATK',tr.msB,10,'memosprite_basic_atk',' msp','\ud83d\udc3e')+
-    cell('Skill',tr.msS,10,'memosprite_skill',' msp','\ud83d\udc3e')+
-    cell('Ultimate',tr.msU,10,'memosprite_ultimate',' msp','\ud83d\udc3e')+'</div>';
+  if(hasMsp)out+='<div class="tr2-tag">Memosprite Traces</div><div class="trace-cells msp-cells">'
+    +cell('Basic ATK',tr.msB,10,'memosprite_skill',' msp')
+    +cell('Skill',tr.msS,10,'memosprite_skill',' msp')
+    +cell('Ultimate',tr.msU,10,'memosprite_ultimate',' msp')+'</div>';
   out+='<div class="dt-note trace-note">Minor trace nodes &amp; set bonuses not included \u2014 in-game reads higher.</div></div>';
   return out;
 }
