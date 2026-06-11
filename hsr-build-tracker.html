@@ -207,6 +207,33 @@ input[type=checkbox]{accent-color:var(--gold);width:15px;height:15px;cursor:poin
 /* number inputs: hide spinner arrows (rolls/+lv readability) */
 input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 input[type=number]{-moz-appearance:textfield;appearance:textfield;}
+/* mockup detail additions */
+.dt-stars{color:var(--gold);font-size:14px;letter-spacing:2px;text-shadow:0 0 8px rgba(232,196,122,0.5);}
+.dt-chips{display:flex;gap:9px;flex-wrap:wrap;margin:-8px 0 14px;}
+.dt-chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c8b88e;padding:5px 13px;border:1px solid rgba(232,196,122,0.22);background:rgba(232,196,122,0.05);clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));}
+.lc-card{display:flex;gap:11px;align-items:flex-start;}
+.lc-art{width:62px;aspect-ratio:1/1.36;flex-shrink:0;position:relative;overflow:hidden;border:1px solid rgba(232,196,122,0.3);background:rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;}
+.lc-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;}
+.lc-meta{flex:1;min-width:0;}
+.lc-name{font-size:13px;color:var(--gold);font-weight:700;line-height:1.3;margin-bottom:4px;}
+.lc-quote{font-size:11px;color:#7d9cb8;font-style:italic;line-height:1.55;margin-top:9px;border-top:1px solid rgba(232,196,122,0.1);padding-top:8px;}
+.rl-lvchip{color:var(--gold);font-weight:800;margin-left:6px;font-size:10px;background:rgba(232,196,122,0.12);border:1px solid rgba(232,196,122,0.3);padding:1px 6px;}
+.tr2{padding:6px 0;border-bottom:1px solid rgba(232,196,122,0.07);}
+.tr2:last-of-type{border-bottom:none;}
+.tr2-name{font-size:11px;color:#c8b88e;letter-spacing:1.2px;text-transform:uppercase;font-weight:700;margin-bottom:5px;}
+.tr2-line{display:grid;grid-template-columns:44px 1fr 44px;gap:10px;align-items:center;}
+.tr2-lv{font-size:11.5px;color:var(--dim);font-weight:700;}
+.tr2-val{font-size:12.5px;color:var(--gold);font-weight:700;text-align:right;white-space:nowrap;}
+.tr2.msp .tr-fill{background:linear-gradient(90deg,#7a6fd8,#a89cfa);box-shadow:0 0 10px rgba(160,152,250,0.4);}
+.tr2.msp .tr2-val{color:#c2bcfc;}
+.tr2.at .tr-fill{background:linear-gradient(90deg,#5ab078,#8ee8a8);box-shadow:0 0 10px rgba(142,232,168,0.35);}
+.tr2.at .tr2-val{color:#9aeab0;}
+.tr2-tag{font-size:9.5px;color:var(--dim);letter-spacing:1.6px;text-transform:uppercase;font-weight:800;margin:13px 0 3px;}
+.se-block{padding:7px 0;border-bottom:1px solid rgba(232,196,122,0.08);}
+.se-block:last-child{border-bottom:none;}
+.se-block .se-row{border-bottom:none;padding:0 0 4px;}
+.se-desc{font-size:10.5px;color:#8aa6c0;line-height:1.5;padding-left:35px;}
+.se-desc b{color:#c8b88e;font-weight:700;}
 /* edit mode */
 .e-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
 .e-grid .span2{grid-column:1/-1;}
@@ -276,9 +303,16 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield;}
 .bottomnav .nav-item::before{display:none;}
 .bottomnav .nav-item.active{border-top:2px solid var(--gold);background:transparent;color:var(--gold);}
 .bottomnav .nav-item svg{width:19px;height:19px;}
+@media(max-width:1460px){
+  #page-detail{height:auto;overflow:visible;}
+  #page-detail.active{display:block;}
+  #page-detail .dt-grid{grid-template-columns:268px 1fr 1fr;}
+  #page-detail .dt-col{height:auto;overflow:visible;}
+  .dt-grid .dt-c4{grid-column:1/-1;}
+}
 @media(max-width:1060px){
-  .dt-grid{grid-template-columns:255px 1fr;}
-  .dt-grid .dt-col:nth-child(3){grid-column:1/-1;}
+  #page-detail .dt-grid{grid-template-columns:255px 1fr;}
+  .dt-grid .dt-c3{grid-column:1/-1;}
 }
 @media(max-width:768px){
   .sidebar{display:none;}
@@ -309,7 +343,7 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield;}
 #page-detail{padding:13px 20px;max-width:none;height:100vh;overflow:hidden;}
 #page-detail.active{display:flex;flex-direction:column;}
 #page-detail .dt-top{margin-bottom:11px;flex-shrink:0;}
-#page-detail .dt-grid{flex:1;min-height:0;grid-template-columns:250px 1.02fr 1.5fr;gap:12px;}
+#page-detail .dt-grid{flex:1;min-height:0;grid-template-columns:258px 0.95fr 0.88fr 1.62fr;gap:12px;}
 #page-detail .dt-col{height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(232,196,122,0.25) transparent;padding-right:3px;}
 #page-detail .dt-col::-webkit-scrollbar{width:5px;}
 #page-detail .dt-col::-webkit-scrollbar-thumb{background:rgba(232,196,122,0.22);}
@@ -551,12 +585,13 @@ async function loadGameData(){
     ]);
     GD.charProm=cp;GD.lcProm=lp;
     GD.charByName={};Object.values(c).forEach(x=>{if(x.name)GD.charByName[normName(x.name)]=x.id;});
-    GD.lcByName={};GD.lcNames=[];
-    Object.values(l).forEach(x=>{if(x.name){GD.lcByName[normName(x.name)]=x.id;GD.lcNames.push(x.name);}});
-    GD.setByName={};GD.cavernSets=[];GD.planarSets=[];
+    GD.lcByName={};GD.lcNames=[];GD.lcDesc={};
+    Object.values(l).forEach(x=>{if(x.name){GD.lcByName[normName(x.name)]=x.id;GD.lcNames.push(x.name);GD.lcDesc[String(x.id)]=x.desc||'';}});
+    GD.setByName={};GD.setDesc={};GD.cavernSets=[];GD.planarSets=[];
     Object.values(rs).forEach(x=>{
       if(!x.name)return;
       GD.setByName[normName(x.name)]=String(x.id);
+      GD.setDesc[String(x.id)]=x.desc||[];
       (parseInt(x.id,10)>=300?GD.planarSets:GD.cavernSets).push(x.name);
     });
     fillDatalists();
@@ -801,26 +836,28 @@ function radarSVG(c){
     b.atk*(1+g('ATK%')/100)+g('ATK'),
     b.def*(1+g('DEF%')/100)+g('DEF'),
     b.spd+g('SPD'),
-    b.cr+g('CRIT Rate'),
-    b.cd+g('CRIT DMG')];
-  const caps=[6000,4000,3000,200,100,250];
-  const labels=['HP','ATK','DEF','SPD','CR','CD'];
-  const full=['HP','ATK','DEF','SPD','CRIT Rate','CRIT DMG'];
+    b.cd+g('CRIT DMG'),
+    b.cr+g('CRIT Rate')];
+  const caps=[6000,4000,3000,200,250,100];
+  const labels=['HP','ATK','DEF','SPD','CRIT DMG','CRIT Rate'];
   const disp=i=>(i>=4)?((+vals[i].toFixed(1))+'%'):String(Math.round(vals[i]));
-  const cx=74,cy=76,R=48;
+  const cx=97,cy=96,R=58;
   const pt=(i,r)=>{const a=-Math.PI/2+i*Math.PI/3;return [(cx+r*Math.cos(a)),(cy+r*Math.sin(a))];};
   const P=(i,r)=>{const p=pt(i,r);return p[0].toFixed(1)+','+p[1].toFixed(1);};
-  let svg='<svg width="148" height="152" viewBox="0 0 148 152">';
-  [0.5,1].forEach(f=>{svg+='<polygon points="'+[0,1,2,3,4,5].map(i=>P(i,R*f)).join(' ')+'" fill="none" stroke="rgba(232,196,122,0.18)" stroke-width="1"/>';});
+  let svg='<svg width="194" height="192" viewBox="0 0 194 192">';
+  [0.33,0.66,1].forEach(f=>{svg+='<polygon points="'+[0,1,2,3,4,5].map(i=>P(i,R*f)).join(' ')+'" fill="none" stroke="rgba(232,196,122,0.16)" stroke-width="1"/>';});
   [0,1,2,3,4,5].forEach(i=>{const p=pt(i,R);svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+p[0].toFixed(1)+'" y2="'+p[1].toFixed(1)+'" stroke="rgba(232,196,122,0.1)" stroke-width="1"/>';});
-  svg+='<polygon points="'+vals.map((v,i)=>P(i,Math.max(4,Math.min(1,v/caps[i])*R))).join(' ')+'" fill="rgba(232,196,122,0.22)" stroke="#e8c47a" stroke-width="1.5"/>';
+  svg+='<polygon points="'+vals.map((v,i)=>P(i,Math.max(4,Math.min(1,v/caps[i])*R))).join(' ')+'" fill="rgba(232,196,122,0.20)" stroke="#e8c47a" stroke-width="1.5"/>';
   vals.forEach((v,i)=>{
     const p=pt(i,Math.max(4,Math.min(1,v/caps[i])*R));
-    svg+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="3.5" fill="#e8c47a" style="cursor:help;"><title>'+full[i]+': '+disp(i)+'</title></circle>';
+    svg+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="3" fill="#e8c47a"/>';
   });
   [0,1,2,3,4,5].forEach(i=>{
-    const p=pt(i,R+12);
-    svg+='<text x="'+p[0].toFixed(1)+'" y="'+p[1].toFixed(1)+'" fill="#9cb8d0" font-size="9.5" font-family="Nunito,sans-serif" font-weight="700" text-anchor="middle" dominant-baseline="middle" style="cursor:help;">'+labels[i]+'<title>'+full[i]+': '+disp(i)+'</title></text>';
+    const p=pt(i,R+19);
+    const anch=(i===0||i===3)?'middle':(i<3?'start':'end');
+    const lx=(anch==='start')?p[0]-12:(anch==='end'?p[0]+12:p[0]);
+    svg+='<text x="'+lx.toFixed(1)+'" y="'+(p[1]-4).toFixed(1)+'" fill="#9cb8d0" font-size="9.5" font-family="Nunito,sans-serif" font-weight="700" text-anchor="'+anch+'">'+labels[i]+'</text>'+
+         '<text x="'+lx.toFixed(1)+'" y="'+(p[1]+8).toFixed(1)+'" fill="#e8c47a" font-size="10" font-family="Nunito,sans-serif" font-weight="700" text-anchor="'+anch+'">'+disp(i)+'</text>';
   });
   svg+='</svg>';
   return '<div class="radar-wrap">'+svg+'</div>';
@@ -829,7 +866,10 @@ function setEffectsHTML(c){
   const mk=name=>{
     const sid=setIdFor(name);
     const ic='<span class="se-ic">'+imgFallback(sid?SR+'icon/relic/'+sid+'.png':null,'<span style="opacity:0.5;">\u2726</span>')+'</span>';
-    return '<div class="se-row">'+ic+'<span class="se-name">'+esc(name)+'</span><span class="se-check">\u2713</span></div>';
+    let desc='';
+    const ds=(sid&&GD.setDesc&&GD.setDesc[sid])||[];
+    ds.forEach((d,i)=>{if(d)desc+='<div class="se-desc"><b>'+(i===0?'2-Pc:':'4-Pc:')+'</b> '+esc(d)+'</div>';});
+    return '<div class="se-block"><div class="se-row">'+ic+'<span class="se-name">'+esc(name)+'</span><span class="se-check">\u2713</span></div>'+desc+'</div>';
   };
   const off=kind=>'<div class="se-row"><span class="se-ic"><span style="opacity:0.3;">\uff0b</span></span><span class="se-name off">No '+kind+' set</span></div>';
   let out='';
@@ -859,6 +899,29 @@ function portraitHTML(c){
   return '<div class="dt-portrait"><span class="ce-big">'+(ELEM_ICON[c.element]||'✦')+'</span>'+
     (id?'<img src="'+SR+'image/character_portrait/'+id+'.png" alt="" onerror="this.remove()"/>':'')+'</div>';
 }
+function lcCardHTML(c){
+  if(!c.lc)return '<div class="cb-val dim">not set</div>';
+  const id=GD.lcByName?GD.lcByName[normName(c.lc)]:null;
+  const art=id?'<div class="lc-art">'+imgFallback(SR+'image/light_cone_preview/'+id+'.png','<span style="opacity:0.35;font-size:22px;">\u29bf</span>')+'</div>':'';
+  let quote=(id&&GD.lcDesc&&GD.lcDesc[String(id)])||'';
+  quote=quote.replace(/\\n|\n/g,' ').replace(/\s+/g,' ').trim();
+  if(quote.length>170)quote=quote.slice(0,167)+'\u2026';
+  return '<div class="lc-card">'+art+'<div class="lc-meta">'+
+    '<div class="lc-name">'+esc(c.lc)+'</div>'+
+    '<div class="id-row"><span class="id-k">Superimposition</span><span class="id-v">'+esc(c.si)+'</span></div>'+
+    '<div class="id-row"><span class="id-k">Level</span><span class="id-v">'+(c.lclv?esc(c.lclv):'= char')+'</span></div>'+
+    '</div></div>'+(quote?'<div class="lc-quote">\u201c'+esc(quote)+'\u201d</div>':'');
+}
+function exportChar(id){
+  const c=state.chars.find(x=>x.id===id);
+  if(!c)return;
+  const blob=new Blob([JSON.stringify(c,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(normName(c.name)||'character')+'-build.json';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
 function detailViewHTML(c){
   const sb='status-'+c.status.toLowerCase();
   const stars='\u2605'.repeat(parseInt(c.rarity,10)||4);
@@ -878,19 +941,27 @@ function detailViewHTML(c){
         return '<div class="rl-sub"><span class="k">'+esc(x.s)+'</span><span class="v">'+esc(x.v||'')+pips+'</span></div>';
       }).join('');
     }else inner='<div class="rl-empty">empty</div>';
-    return '<div class="rl-card"><div class="rl-headbar">'+icon+'<span class="rl-slotname">'+s.l+(p&&p.lv?'<span class="rl-lv">+'+esc(p.lv)+'</span>':'')+'</span></div>'+inner+'</div>';
+    return '<div class="rl-card"><div class="rl-headbar">'+icon+'<span class="rl-slotname">'+s.l+(p&&p.lv?'<span class="rl-lvchip">+'+esc(p.lv)+'</span>':'')+'</span></div>'+inner+'</div>';
   }).join('');
+  const eidN=parseInt(String(c.eidolon||'E0').replace(/[^0-9]/g,''),10)||0;
   return ''+
   '<div class="dt-top">'+
     '<button class="dt-back" onclick="nav(\'roster\')">\u2190 Roster</button>'+
     '<span class="dt-name">'+esc(c.name||'Unnamed')+'</span>'+
+    '<span class="dt-stars">'+stars+'</span>'+
     '<span class="status-badge '+sb+'" onclick="cycleStatus(event,\''+c.id+'\')" title="Click to change status">'+c.status+'</span>'+
     '<span class="spacer"></span>'+
-    '<button class="btn-gold" onclick="startEdit()">\u270e Edit</button>'+
+    '<button class="btn-gold" onclick="startEdit()">\u270e Edit Build</button>'+
+    '<button class="btn-outline-s" onclick="exportChar(\''+c.id+'\')">\u2b06 Export</button>'+
     '<button class="btn-del-red" onclick="delChar(\''+c.id+'\')">Delete</button>'+
   '</div>'+
+  '<div class="dt-chips">'+
+    '<span class="dt-chip">'+pathIcon(c.path)+' '+esc(c.path)+'</span>'+
+    '<span class="dt-chip">'+elemIcon(c.element)+' '+esc(c.element)+'</span>'+
+    '<span class="dt-chip">\u272a Eidolons '+eidN+'</span>'+
+  '</div>'+
   '<div class="dt-grid '+elClass(c)+'">'+
-    '<div class="dt-col">'+
+    '<div class="dt-col dt-c1">'+
       '<div class="dt-panel"><div class="dt-sect">Identity</div>'+
         portraitHTML(c)+
         '<div class="id-row"><span class="id-k">Rarity</span><span class="id-v gold">'+stars+'</span></div>'+
@@ -899,23 +970,20 @@ function detailViewHTML(c){
         '<div class="id-row"><span class="id-k">Level</span><span class="id-v">'+(c.level?esc(c.level):'\u2014')+'</span></div>'+
         '<div class="id-row"><span class="id-k">Eidolon</span><span class="id-v">'+esc(c.eidolon)+'</span></div>'+
       '</div>'+
-      '<div class="dt-panel"><div class="dt-sect">Light Cone</div>'+
-        (c.lc
-          ?'<div class="id-row"><span class="id-k">Name</span><span class="id-v gold">'+esc(c.lc)+'</span></div>'+
-           '<div class="id-row"><span class="id-k">Superimposition</span><span class="id-v">'+esc(c.si)+'</span></div>'+
-           '<div class="id-row"><span class="id-k">Level</span><span class="id-v">'+(c.lclv?esc(c.lclv):'= char')+'</span></div>'
-          :'<div class="cb-val dim">not set</div>')+
-      '</div>'+
-      ((c.subs||c.notes)?'<div class="dt-panel"><div class="dt-sect">Notes</div>'+
+      '<div class="dt-panel"><div class="dt-sect">Light Cone</div>'+lcCardHTML(c)+'</div>'+
+    '</div>'+
+    '<div class="dt-col dt-c2">'+
+      '<div class="dt-panel"><div class="dt-sect">Stats</div>'+st.html+(st.note?'<div class="dt-note">'+st.note+'</div>':'')+'</div>'+
+      '<div class="dt-panel"><div class="dt-sect">Notes</div>'+
         (c.subs?'<div class="id-row"><span class="id-k">Priority</span><span class="id-v">'+esc(c.subs)+'</span></div>':'')+
         (c.notes?'<div style="font-size:12px;color:#a8c2da;line-height:1.5;margin-top:7px;">'+esc(c.notes)+'</div>':'')+
-      '</div>':'')+
+        ((!c.subs&&!c.notes)?'<div class="cb-val dim">\u2014</div>':'')+
+      '</div>'+
     '</div>'+
-    '<div class="dt-col">'+
-      '<div class="dt-panel"><div class="dt-sect">Stats</div>'+st.html+(st.note?'<div class="dt-note">'+st.note+'</div>':'')+'</div>'+
+    '<div class="dt-col dt-c3">'+
       '<div class="dt-panel"><div class="dt-sect">Traces</div>'+tracesHTML(c)+'</div>'+
     '</div>'+
-    '<div class="dt-col">'+
+    '<div class="dt-col dt-c4">'+
       '<div class="dt-panel"><div class="dt-sect">Relics</div>'+
         '<div class="rl-grid">'+rl+'</div>'+
       '</div>'+
@@ -1082,17 +1150,26 @@ async function importUID(){
   btn.disabled=true;btn.textContent='Importing…';
   try{
     const target='https://api.mihomo.me/sr_info_parsed/'+uid+'?lang=en';
-    const attempts=[target,'https://corsproxy.io/?url='+encodeURIComponent(target),'https://api.allorigins.win/raw?url='+encodeURIComponent(target)];
-    let data=null,lastErr=null;
-    for(const u of attempts){
+    const attempts=[
+      ['direct',target],
+      ['codetabs','https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(target)],
+      ['allorigins','https://api.allorigins.win/get?url='+encodeURIComponent(target)],
+      ['allorigins-raw','https://api.allorigins.win/raw?url='+encodeURIComponent(target)]
+    ];
+    let data=null;const errs=[];
+    for(const a of attempts){
+      const tag=a[0],u=a[1];
       try{
         const res=await fetch(u);
-        if(!res.ok){lastErr=new Error('HTTP '+res.status+(res.status===404?' \u2014 UID not found or showcase hidden':''));continue;}
-        data=await res.json();
-        if(data)break;
-      }catch(e){lastErr=e;}
+        if(!res.ok){errs.push(tag+': HTTP '+res.status+(res.status===404?' (UID not found or showcase hidden)':''));continue;}
+        let j=await res.json();
+        if(j&&typeof j.contents==='string'){try{j=JSON.parse(j.contents);}catch(_){errs.push(tag+': proxy returned non-JSON');continue;}}
+        if(j&&j.characters){data=j;break;}
+        if(j&&j.detail&&!j.characters){errs.push(tag+': '+(j.detail||'API error'));continue;}
+        errs.push(tag+': unexpected payload (no characters field)');
+      }catch(e){errs.push(tag+': '+((e&&e.message)||'blocked (network/CORS)'));}
     }
-    if(!data)throw lastErr||new Error('all endpoints unreachable');
+    if(!data)throw new Error('All endpoints failed:\n\u2022 '+errs.join('\n\u2022 '));
     const chars=(data&&data.characters)||[];
     if(!chars.length)throw new Error('No showcased characters returned. Add characters to your in-game Trailblaze Profile showcase, wait a few minutes, and retry.');
     let added=0,updated=0;
@@ -1254,17 +1331,22 @@ function tracesHTML(c){
   if(!hasMain&&!hasA&&!hasMsp)return '<div class="cb-val dim">not set</div>';
   const bar=(l,v,max,cls)=>{
     if(!v)return '';
-    const pct=Math.max(6,Math.min(100,Math.round((parseInt(v,10)||0)/max*100)));
-    return '<div class="tr-row'+(cls||'')+'"><span class="tr-k">'+l+'</span><span class="tr-bar"><span class="tr-fill" style="width:'+pct+'%"></span></span><span class="tr-v">'+esc(v)+'</span></div>';
+    const n=parseInt(v,10)||0;
+    const pct=Math.max(6,Math.min(100,Math.round(n/max*100)));
+    return '<div class="tr2'+(cls||'')+'"><div class="tr2-name">'+l+'</div>'+
+      '<div class="tr2-line"><span class="tr2-lv">Lv. '+esc(v)+'</span>'+
+      '<span class="tr-bar"><span class="tr-fill" style="width:'+pct+'%"></span></span>'+
+      '<span class="tr2-val">'+esc(v)+' / '+max+'</span></div></div>';
   };
   let out='';
-  if(hasMain)out+=bar('Basic',tr.b,6)+bar('Skill',tr.s,10)+bar('Ult',tr.u,10)+bar('Talent',tr.t,10);
-  if(hasA)out+='<div class="trace-row" style="margin-top:10px;">'+
-    (tr.a2?'<span class="trace-pill atrace">A2 \u2713</span>':'')+
-    (tr.a4?'<span class="trace-pill atrace">A4 \u2713</span>':'')+
-    (tr.a6?'<span class="trace-pill atrace">A6 \u2713</span>':'')+'</div>';
-  if(hasMsp)out+='<div class="trace-tag" style="display:block;margin-top:12px;">Memosprite</div>'+
-    bar('Basic',tr.msB,10,' msp')+bar('Skill',tr.msS,10,' msp')+bar('Ult',tr.msU,10,' msp');
+  if(hasMain)out+=bar('Basic ATK',tr.b,6)+bar('Skill',tr.s,10)+bar('Ultimate',tr.u,10)+bar('Talent',tr.t,10);
+  if(hasA){
+    out+='<div class="tr2-tag">Additional Ability</div>';
+    [['A2',tr.a2],['A4',tr.a4],['A6',tr.a6]].forEach(a=>{if(a[1])out+=bar(a[0],'1',1,' at');});
+  }
+  if(hasMsp)out+='<div class="tr2-tag">Memosprite</div>'+
+    bar('Basic ATK',tr.msB,10,' msp')+bar('Skill',tr.msS,10,' msp')+bar('Ultimate',tr.msU,10,' msp');
+  out+='<div class="dt-note">Minor trace nodes &amp; set bonuses not included \u2014 in-game reads higher.</div>';
   return out;
 }
 const SLOTS=[
