@@ -1880,7 +1880,7 @@ async function importUID(){
   const btn=document.getElementById('uid-go');
   btn.disabled=true;btn.textContent='Importing…';
   try{
-    const target='https://api.mihomo.me/sr_info_parsed/'+uid+'?lang=en';
+    const target = 'https://hsr-proxy.erikdavid0311.workers.dev/sr_info_parsed/'+uid+'?lang=en';
     const attempts=[
       ['direct',target],
       ['codetabs','https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(target)],
