@@ -1031,9 +1031,9 @@ html.png-export .dt-top button{
 .bg .shoot.s2{top:58%;animation-duration:23s;animation-delay:11s;transform:rotate(11deg);width:84px;}
 @keyframes shoot{0%{opacity:0;translate:0 0;}1.5%{opacity:1;}5%{opacity:0;translate:62vw 18vh;}100%{opacity:0;translate:62vw 18vh;}}
 .dt-portrait::before{content:'';position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,transparent,rgba(7,10,22,.8));z-index:2;pointer-events:none;}
-.dt-portrait{animation:portrait-breathe 7s ease-in-out infinite;}
+.dt-portrait{box-shadow:inset 0 -18px 54px rgba(160,132,250,.16);}
 @keyframes portrait-breathe{0%,100%{box-shadow:inset 0 -14px 44px rgba(160,132,250,.10);}50%{box-shadow:inset 0 -22px 64px rgba(160,132,250,.22);}}
-.dt-name{background:linear-gradient(100deg,#e8c47a 25%,#fdf2cf 50%,#e8c47a 75%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none;animation:name-shine 7s linear infinite;}
+.dt-name{background:linear-gradient(100deg,#e8c47a 25%,#fdf2cf 50%,#e8c47a 75%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none;animation:name-shine 12s linear infinite;}
 @keyframes name-shine{0%{background-position:120% 0;}100%{background-position:-120% 0;}}
 .dt-panel{transition:border-color .25s,box-shadow .25s;}
 .dt-panel:hover{border-color:rgba(232,196,122,.34);box-shadow:inset 0 0 30px rgba(20,30,70,.3),0 4px 22px rgba(0,0,0,.4),0 0 18px rgba(232,196,122,.07);}
@@ -1046,10 +1046,10 @@ html.png-export .dt-top button{
 /* ═══════════ VISUAL OVERHAUL ═══════════ */
 /* — Aurora nebulae: large drifting color fields, always visibly moving — */
 .bg{overflow:hidden;}
-.aurora{position:absolute;width:120vmax;height:120vmax;border-radius:50%;filter:blur(70px);opacity:.5;mix-blend-mode:screen;will-change:transform;}
-.aurora.a1{left:-42vmax;top:-58vmax;background:radial-gradient(circle at 50% 50%,rgba(98,68,210,.34),rgba(40,28,120,.13) 45%,transparent 68%);animation:drift1 38s ease-in-out infinite alternate;}
-.aurora.a2{right:-55vmax;top:-30vmax;background:radial-gradient(circle at 50% 50%,rgba(28,110,170,.27),rgba(20,70,130,.10) 48%,transparent 70%);animation:drift2 47s ease-in-out infinite alternate;}
-.aurora.a3{left:8vmax;bottom:-70vmax;background:radial-gradient(circle at 50% 50%,rgba(186,128,58,.16),rgba(120,80,40,.06) 45%,transparent 68%);animation:drift3 56s ease-in-out infinite alternate;}
+.aurora{position:absolute;width:110vmax;height:110vmax;border-radius:50%;opacity:.55;will-change:transform;transform:translateZ(0);}
+.aurora.a1{left:-42vmax;top:-58vmax;background:radial-gradient(circle at 50% 50%,rgba(98,68,210,.22) 0%,rgba(60,40,160,.10) 30%,rgba(40,28,120,.04) 52%,transparent 70%);animation:drift1 38s ease-in-out infinite alternate;}
+.aurora.a2{right:-55vmax;top:-30vmax;background:radial-gradient(circle at 50% 50%,rgba(28,110,170,.18) 0%,rgba(24,90,150,.08) 32%,rgba(20,70,130,.03) 54%,transparent 72%);animation:drift2 47s ease-in-out infinite alternate;}
+.aurora.a3{left:8vmax;bottom:-70vmax;background:radial-gradient(circle at 50% 50%,rgba(186,128,58,.11) 0%,rgba(150,100,48,.05) 30%,rgba(120,80,40,.02) 52%,transparent 70%);animation:drift3 56s ease-in-out infinite alternate;}
 @keyframes drift1{from{transform:translate(0,0) rotate(0deg) scale(1);}to{transform:translate(9vw,7vh) rotate(28deg) scale(1.14);}}
 @keyframes drift2{from{transform:translate(0,0) scale(1.1);}to{transform:translate(-8vw,9vh) scale(.94);}}
 @keyframes drift3{from{transform:translate(0,0) scale(1);}to{transform:translate(6vw,-7vh) scale(1.18);}}
@@ -1078,14 +1078,14 @@ html.png-export .dt-top button{
   background-size:280% 280%;
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;mask-composite:exclude;
-  opacity:0;transition:opacity .35s;animation:edge-sweep 5.5s linear infinite;}
-.dt-panel:hover::after,.panel:hover::after{opacity:1;}
+  opacity:0;transition:opacity .35s;}
+.dt-panel:hover::after,.panel:hover::after{opacity:1;animation:edge-sweep 2.2s linear infinite;}
 @keyframes edge-sweep{0%{background-position:120% 120%;}100%{background-position:-60% -60%;}}
 
 /* — Section titles: gold spark before text breathes — */
 .dt-sect{position:relative;}
 .dt-sect::after{content:'';position:absolute;left:0;bottom:-4px;height:1px;width:42px;background:linear-gradient(90deg,var(--gold),transparent);box-shadow:0 0 8px rgba(232,196,122,.6);animation:sect-pulse 3.2s ease-in-out infinite;}
-@keyframes sect-pulse{0%,100%{opacity:.45;width:42px;}50%{opacity:1;width:64px;}}
+@keyframes sect-pulse{0%,100%{opacity:.45;}50%{opacity:1;}}
 
 /* — Roster cards: entrance stagger + hover bloom — */
 .char-card{animation:card-in .45s cubic-bezier(.2,.7,.3,1) both;}
@@ -1103,11 +1103,11 @@ html.png-export .dt-top button{
 .status-pulling{box-shadow:0 0 10px -2px rgba(232,196,122,.5);}
 
 /* — Trace cells: icon breathes gold, maxed cells shimmer — */
-.tc-ic img{animation:tc-breathe 4.5s ease-in-out infinite;}
-@keyframes tc-breathe{0%,100%{filter:drop-shadow(0 0 5px rgba(232,196,122,.30));}50%{filter:drop-shadow(0 0 11px rgba(232,196,122,.62));}}
-.tc.msp .tc-ic img{animation:tc-breathe-msp 4.5s ease-in-out infinite;}
-@keyframes tc-breathe-msp{0%,100%{filter:drop-shadow(0 0 5px rgba(160,152,250,.35));}50%{filter:drop-shadow(0 0 11px rgba(160,152,250,.7));}}
-.tc.maxed::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,240,200,.10) 50%,transparent 65%);background-size:240% 100%;animation:maxed-shine 3.8s linear infinite;pointer-events:none;}
+
+50%{filter:drop-shadow(0 0 11px rgba(232,196,122,.62));}}
+
+50%{filter:drop-shadow(0 0 11px rgba(160,152,250,.7));}}
+.tc.maxed::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,240,200,.10) 50%,transparent 65%);background-size:240% 100%;animation:maxed-shine 6s linear infinite;pointer-events:none;}
 @keyframes maxed-shine{0%{background-position:130% 0;}100%{background-position:-130% 0;}}
 
 /* — Portrait: aura intensified + rising sparkles — */
