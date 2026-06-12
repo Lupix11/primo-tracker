@@ -776,6 +776,14 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield;}
 #page-detail .trace-body:not(.no-msp) .tr2-tag{margin:9px 0 5px;}
 
 .trace-cells{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.trace-cells.five{grid-template-columns:repeat(6,1fr);}
+.trace-cells.five .tc{grid-column:span 3;}
+.trace-cells.five .tc:nth-child(4){grid-column:1/span 3;}
+.trace-cells.five .tc:nth-child(5){grid-column:4/span 3;}
+.tc.elation{border-color:rgba(255,200,90,.35);background:linear-gradient(180deg,rgba(255,200,90,.10),rgba(10,14,30,.5) 75%);}
+.tc.elation .tc-lv{color:#ffd27a;}
+.tc.elation .tc-line span{background:linear-gradient(90deg,#d99a2b,#ffd27a);box-shadow:0 0 6px rgba(255,210,120,.6);}
+.tc.elation.maxed{border-color:rgba(255,210,120,.6);}
 .msp-cells{grid-template-columns:1fr 1fr;}
 .tc{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px 8px 14px;
   background:linear-gradient(180deg,rgba(232,196,122,.06),rgba(10,14,30,.5) 75%);
@@ -1980,6 +1988,10 @@ function detailEditHTML(c){
         '<label class="a-tog"><input type="checkbox" id="d-a2"'+(tr.a2?' checked':'')+'/><span>A2</span></label>'+ 
         '<label class="a-tog"><input type="checkbox" id="d-a4"'+(tr.a4?' checked':'')+'/><span>A4</span></label>'+ 
         '<label class="a-tog"><input type="checkbox" id="d-a6"'+(tr.a6?' checked':'')+'/><span>A6</span></label></div>'+ 
+        '<div id="d-elt" style="display:'+(c.path==='Elation'?'block':'none')+';margin-top:12px;">'+
+          '<div class="f-label" style="margin-bottom:7px;">Elation Skill</div>'+
+          ff('Level','<input class="f-input" id="d-elt-lv" type="number" min="1" max="10" placeholder="1" value="'+esc(tr.elt||'')+'"/>')+
+        '</div>'+
         '<div id="d-msp" style="display:'+(c.path==='Remembrance'?'block':'none')+';margin-top:12px;">'+
           '<div class="f-label" style="margin-bottom:7px;">Memosprite Traces</div>'+ 
           '<div class="e-grid2">'+
@@ -1995,9 +2007,11 @@ function detailEditHTML(c){
   '</div>';
 }
 function toggleMspEdit(){
-  const el=document.getElementById('d-msp');
-  const isRem=document.getElementById('d-path').value==='Remembrance';
-  if(el)el.style.display=isRem?'block':'none';
+  const path=document.getElementById('d-path').value;
+  const elMsp=document.getElementById('d-msp');
+  const elElt=document.getElementById('d-elt');
+  if(elMsp)elMsp.style.display=(path==='Remembrance')?'block':'none';
+  if(elElt)elElt.style.display=(path==='Elation')?'block':'none';
 }
 function startEdit(){editMode=true;isNewDetail=false;renderDetail();window.scrollTo({top:0});}
 function cancelEdit(){
@@ -2036,7 +2050,7 @@ function saveDetail(){
     relic:g('d-relic'),relic2:g('d-relic2'),planar:g('d-planar'),subs:g('d-subs'),notes:g('d-notes'),relics,
     traces:{b:g('d-tr-b'),s:g('d-tr-s'),u:g('d-tr-u'),t:g('d-tr-t'),
       a2:gc('d-a2'),a4:gc('d-a4'),a6:gc('d-a6'),
-      msS:rem?g('d-ms-s'):'',msU:rem?g('d-ms-u'):''}
+      msS:rem?g('d-ms-s'):'',msU:rem?g('d-ms-u'):'',elt:(newPath==='Elation')?g('d-elt-lv'):''}
   });
   isNewDetail=false;editMode=false;
   save();renderAll();renderDetail();
@@ -2237,17 +2251,19 @@ function clearDone(){
 function tracesHTML(c){
   const tr=c.traces||{};
   const isRem=c.path==='Remembrance';
+  const isElation=c.path==='Elation';
   const hasMain=tr.b||tr.s||tr.u||tr.t;
   const hasA=tr.a2||tr.a4||tr.a6;
   const hasMsp=isRem&&(tr.msS||tr.msU);
-  if(!hasMain&&!hasA&&!hasMsp)return '<div class="trace-body"><div class="cb-val dim">not set</div></div>';
+  const hasElt=isElation&&tr.elt;
+  if(!hasMain&&!hasA&&!hasMsp&&!hasElt)return '<div class="trace-body"><div class="cb-val dim">not set</div></div>';
   const id=charId(c);
   const cell=(label,v,max,suffix,cls)=>{
     if(!v)return '';
     const n=parseInt(v,10)||0;
     const pct=Math.max(4,Math.min(100,Math.round(n/max*100)));
     const url=id?SR+'icon/skill/'+id+'_'+suffix+'.png':null;
-    const fb={'basic_atk':'\u2694','skill':'\u2726','ultimate':'\u2604','talent':'\u25c8','memosprite_basic_atk':'\ud83d\udc3e','memosprite_skill':'\ud83d\udc3e','memosprite_talent':'\ud83d\udc3e'}[suffix]||'\u2726';
+    const fb={'basic_atk':'\u2694','skill':'\u2726','ultimate':'\u2604','talent':'\u25c8','memosprite_basic_atk':'\ud83d\udc3e','memosprite_skill':'\ud83d\udc3e','memosprite_talent':'\ud83d\udc3e','elation':'\ud83c\udf89'}[suffix]||'\u2726';
     return '<div class="tc'+(cls||'')+(n>=max?' maxed':'')+'">'
       +'<div class="tc-ic">'+imgFallback(url,'<span class="tc-fb">'+fb+'</span>')+'</div>'
       +'<div class="tc-name">'+label+'</div>'
@@ -2256,11 +2272,12 @@ function tracesHTML(c){
   };
   const box=(name,on)=>'<span class="asc-check '+(on?'on':'off')+'"><span class="asc-mark">'+(on?'\u2713':'')+'</span><span>'+name+'</span></span>';
   let out='<div class="trace-body '+(!isRem?'no-msp':'')+'">';
-  if(hasMain)out+='<div class="trace-cells">'
+  if(hasMain)out+='<div class="trace-cells'+(hasElt?' five':'')+'">'
     +cell('Basic ATK',tr.b,6,'basic_atk')
     +cell('Skill',tr.s,10,'skill')
     +cell('Ultimate',tr.u,10,'ultimate')
-    +cell('Talent',tr.t,10,'talent')+'</div>';
+    +cell('Talent',tr.t,10,'talent')
+    +(hasElt?cell('Elation Skill',tr.elt,10,'elation',' elation'):'')+'</div>';
   out+='<div class="tr2-tag" style="margin-top:13px;">Ascension Traces</div><div class="asc-checks">'+box('A2',tr.a2)+box('A4',tr.a4)+box('A6',tr.a6)+'</div>';
   if(hasMsp)out+='<div class="tr2-tag">Memosprite Traces</div><div class="trace-cells msp-cells">'
     +cell('Skill',tr.msS,6,'memosprite_skill',' msp')
