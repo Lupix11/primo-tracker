@@ -113,7 +113,7 @@ input[type=checkbox]{accent-color:var(--gold);width:15px;height:15px;cursor:poin
 .char-card::before{content:'';position:absolute;top:0;left:0;right:14px;height:1px;background:linear-gradient(90deg,var(--elc),transparent 75%);opacity:0.5;pointer-events:none;}
 .char-wm{position:absolute;right:8px;top:6px;width:88px;height:88px;font-size:96px;opacity:0.05;pointer-events:none;user-select:none;line-height:1;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .ec-fire{--elc:#f08a70;}.ec-ice{--elc:#90d4fa;}.ec-lightning{--elc:#c898fa;}.ec-wind{--elc:#80e8b0;}.ec-physical{--elc:#d8dde2;}.ec-quantum{--elc:#a098fa;}.ec-imaginary{--elc:#f0d478;}
-.char-head{display:flex;align-items:center;gap:12px;padding:13px 15px;user-select:none;position:relative;z-index:1;flex:1;width:100%;}
+.char-head{display:flex;align-items:center;gap:10px;padding:13px 13px;user-select:none;position:relative;z-index:1;flex:1;width:100%;}
 .char-elem{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;border:1.5px solid var(--elc);background:rgba(232,196,122,0.08);box-shadow:0 0 10px rgba(232,196,122,0.18);position:relative;overflow:hidden;}
 .char-elem img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;}
 .char-info{flex:1;min-width:0;}
@@ -128,7 +128,7 @@ input[type=checkbox]{accent-color:var(--gold);width:15px;height:15px;cursor:poin
 .flame{font-size:11px;line-height:1;cursor:pointer;filter:grayscale(1) brightness(.95);opacity:.8;transition:filter .15s,opacity .15s,transform .12s;}
 .flame.on{filter:none;opacity:1;text-shadow:0 0 6px rgba(255,140,60,.7);}
 .flame:hover{transform:scale(1.25);}
-.char-card.prio3{box-shadow:inset 0 0 0 1px rgba(255,120,50,.35),0 0 14px rgba(255,120,50,.1);}
+.char-card.prio3{box-shadow:0 0 16px rgba(255,120,50,.12);}
 .ci-line{display:flex;align-items:center;justify-content:space-between;gap:8px;}
 .ci-line .char-eid{flex-shrink:0;}
 .char-lv{font-size:11px;color:var(--dim);letter-spacing:0.8px;text-transform:uppercase;margin-top:2px;}
@@ -1110,10 +1110,10 @@ html.png-export .dt-top button{
     <div class="tabs" id="roster-tabs">
       <button class="tab active" data-f="all" onclick="setFilter('all',this)">All</button>
       <button class="tab" data-f="Pulling" onclick="setFilter('Pulling',this)">Pulling</button>
+      <button class="tab" data-f="Dropped" onclick="setFilter('Dropped',this)">Dropped</button>
       <button class="tab" data-f="Planned" onclick="setFilter('Planned',this)">Planned</button>
       <button class="tab" data-f="Farming" onclick="setFilter('Farming',this)">Farming</button>
       <button class="tab" data-f="Built" onclick="setFilter('Built',this)">Built</button>
-      <button class="tab" data-f="Dropped" onclick="setFilter('Dropped',this)">Dropped</button>
     </div>
     <div class="char-grid" id="char-grid"></div>
     <div class="empty-hint" id="roster-empty" style="display:none;">No characters here — add one above ✦</div>
@@ -1506,7 +1506,12 @@ function setFilter(f,btn){
 }
 function renderRoster(){
   const grid=document.getElementById('char-grid');
-  const list=state.chars.filter(c=>filter==='all'||c.status===filter);
+  const SORT_STATUS=['Built','Farming','Planned','Dropped','Pulling'];
+  const list=state.chars.filter(c=>filter==='all'||c.status===filter).slice().sort((a,b)=>{
+    const sa=SORT_STATUS.indexOf(a.status),sb2=SORT_STATUS.indexOf(b.status);
+    if(sa!==sb2)return (sa<0?99:sa)-(sb2<0?99:sb2);
+    return (b.prio||0)-(a.prio||0);
+  });
   document.getElementById('roster-empty').style.display=list.length?'none':'block';
   grid.innerHTML=list.map(c=>{
     const sb='status-'+c.status.toLowerCase();
