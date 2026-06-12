@@ -107,13 +107,13 @@ input[type=checkbox]{accent-color:var(--gold);width:15px;height:15px;cursor:poin
 .tab.active{background:rgba(232,196,122,0.12);color:var(--gold);}
 .tab:hover:not(.active){color:#a8c4dc;background:rgba(255,255,255,0.03);}
 /* ── Character cards ── */
-.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
-.char-card{--elc:#4cc9f0;min-height:102px;background:rgba(255,255,255,0.035);border:1px solid var(--line);border-left:2px solid var(--elc);overflow:hidden;transition:transform 0.16s,box-shadow 0.18s;position:relative;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);cursor:pointer;}
+.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;grid-auto-rows:1fr;}
+.char-card{--elc:#4cc9f0;min-height:102px;height:100%;display:flex;background:rgba(255,255,255,0.035);border:1px solid var(--line);border-left:2px solid var(--elc);overflow:hidden;transition:transform 0.16s,box-shadow 0.18s;position:relative;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);cursor:pointer;}
 .char-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.35),0 0 0 1px rgba(232,196,122,0.18);}
 .char-card::before{content:'';position:absolute;top:0;left:0;right:14px;height:1px;background:linear-gradient(90deg,var(--elc),transparent 75%);opacity:0.5;pointer-events:none;}
 .char-wm{position:absolute;right:-14px;top:-22px;width:96px;height:96px;font-size:96px;opacity:0.05;pointer-events:none;user-select:none;line-height:1;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .ec-fire{--elc:#f08a70;}.ec-ice{--elc:#90d4fa;}.ec-lightning{--elc:#c898fa;}.ec-wind{--elc:#80e8b0;}.ec-physical{--elc:#d8dde2;}.ec-quantum{--elc:#a098fa;}.ec-imaginary{--elc:#f0d478;}
-.char-head{display:flex;align-items:center;gap:12px;padding:13px 15px;user-select:none;position:relative;z-index:1;}
+.char-head{display:flex;align-items:center;gap:12px;padding:13px 15px;user-select:none;position:relative;z-index:1;flex:1;width:100%;}
 .char-elem{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;border:1.5px solid var(--elc);background:rgba(232,196,122,0.08);box-shadow:0 0 10px rgba(232,196,122,0.18);position:relative;overflow:hidden;}
 .char-elem img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;}
 .char-info{flex:1;min-width:0;}
@@ -123,13 +123,19 @@ input[type=checkbox]{accent-color:var(--gold);width:15px;height:15px;cursor:poin
 .char-card.r5 .char-stars{color:var(--gold);text-shadow:0 0 6px rgba(232,196,122,0.5);}
 .char-sub{font-size:11px;color:var(--dim);letter-spacing:0.8px;text-transform:uppercase;margin-top:3px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
 .char-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;}
+.char-flames{display:inline-flex;gap:2px;margin-left:7px;vertical-align:middle;}
+.flame{font-size:12px;line-height:1;cursor:pointer;filter:grayscale(1) brightness(.6);opacity:.55;transition:filter .15s,opacity .15s,transform .12s;}
+.flame.on{filter:none;opacity:1;text-shadow:0 0 6px rgba(255,140,60,.7);}
+.flame:hover{transform:scale(1.25);}
+.char-card.prio3{box-shadow:inset 3px 0 0 rgba(255,120,50,.55);}
+.char-name-row{display:flex;align-items:center;}
 .status-badge{font-size:9px;padding:3px 9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:box-shadow 0.15s;user-select:none;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));}
 .status-badge:hover{box-shadow:0 0 0 1px rgba(232,196,122,0.4);}
 .status-built{background:rgba(128,240,160,0.13);color:#92ecac;border:1px solid rgba(128,240,160,0.32);}
 .status-farming{background:rgba(76,201,240,0.13);color:#6ad4f4;border:1px solid rgba(76,201,240,0.32);}
 .status-planned{background:rgba(255,255,255,0.05);color:#92aec6;border:1px solid rgba(255,255,255,0.14);}
-.status-prebuilding{background:rgba(200,152,250,0.12);color:#d0a8fc;border:1px solid rgba(200,152,250,0.32);}
-.status-done{background:rgba(232,196,122,0.13);color:var(--gold);border:1px solid rgba(232,196,122,0.38);}
+.status-pulling{background:rgba(232,196,122,0.13);color:var(--gold);border:1px solid rgba(232,196,122,0.38);}
+.status-dropped{background:rgba(200,90,90,0.12);color:#e08a8a;border:1px solid rgba(200,90,90,0.3);}
 .char-eid{font-size:11px;color:var(--dim);}
 /* ── Detail page (mockup-styled) ── */
 .dt-top{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
@@ -751,8 +757,8 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield;}
 #page-detail .asc-check .asc-mark{width:13px;height:13px;border-radius:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15);}
 /* ── Trace icon cells ── */
 .trace-cells{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
-.msp-cells{grid-template-columns:repeat(3,1fr);}
-.tc{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 8px 16px;
+.msp-cells{grid-template-columns:1fr 1fr;}
+.tc{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px 8px 14px;
   background:linear-gradient(180deg,rgba(232,196,122,.06),rgba(10,14,30,.5) 75%);
   border:1px solid rgba(232,196,122,.2);
   clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px));
@@ -760,7 +766,7 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield;}
 .tc:hover{border-color:rgba(232,196,122,.42);box-shadow:0 0 14px rgba(232,196,122,.12) inset;}
 .tc-ic{width:100%;flex:1 1 auto;min-height:80px;display:grid;place-items:center;margin:2px 0 8px;}
 .tc-ic img{width:90px;height:90px;max-width:90%;max-height:90%;object-fit:contain;display:block;z-index:2;filter:drop-shadow(0 0 7px rgba(232,196,122,.4));}
-.tc-fb{font-size:48px;opacity:.5;}
+.tc-fb{font-size:36px;opacity:.5;}
 .tc-name{font-size:9.5px;color:#c8b88e;letter-spacing:1.1px;text-transform:uppercase;font-weight:800;line-height:1.2;flex:1;}
 .tc-lv{font-size:15px;color:var(--gold);font-weight:800;margin-top:3px;}
 .tc-max{font-size:10px;color:var(--dim);font-weight:700;}
@@ -1088,11 +1094,11 @@ html.png-export .dt-top button{
     </div>
     <div class="tabs" id="roster-tabs">
       <button class="tab active" data-f="all" onclick="setFilter('all',this)">All</button>
+      <button class="tab" data-f="Pulling" onclick="setFilter('Pulling',this)">Pulling</button>
       <button class="tab" data-f="Planned" onclick="setFilter('Planned',this)">Planned</button>
-      <button class="tab" data-f="Prebuilding" onclick="setFilter('Prebuilding',this)">Prebuilding</button>
       <button class="tab" data-f="Farming" onclick="setFilter('Farming',this)">Farming</button>
       <button class="tab" data-f="Built" onclick="setFilter('Built',this)">Built</button>
-      <button class="tab" data-f="Done" onclick="setFilter('Done',this)">Done</button>
+      <button class="tab" data-f="Dropped" onclick="setFilter('Dropped',this)">Dropped</button>
     </div>
     <div class="char-grid" id="char-grid"></div>
     <div class="empty-hint" id="roster-empty" style="display:none;">No characters here — add one above ✦</div>
@@ -1202,7 +1208,7 @@ const KEY='hsrBuildTracker';
 
 const ELEM_ICON={Physical:'✊',Fire:'🔥',Ice:'❄️',Lightning:'⚡',Wind:'🍃',Quantum:'🌀',Imaginary:'✨'};
 const PATH_ICON={'Destruction':'⚔️','The Hunt':'🏹','Erudition':'📚','Harmony':'🎶','Nihility':'🌑','Preservation':'🛡️','Abundance':'💚','Remembrance':'🐾','Elation':'🃏'};
-const STATUS_ORDER=['Planned','Prebuilding','Farming','Built','Done'];
+const STATUS_ORDER=['Pulling','Dropped','Planned','Farming','Built'];
 const PCT_STATS=['CRIT Rate','CRIT DMG','HP%','ATK%','DEF%','Effect Hit Rate','Effect RES','Break Effect','Outgoing Healing','Energy Regen Rate'];
 const ELEMENTS=['Physical','Fire','Ice','Lightning','Wind','Quantum','Imaginary'];
 const PATHS=['Destruction','The Hunt','Erudition','Harmony','Nihility','Preservation','Abundance','Remembrance','Elation'];
@@ -1301,7 +1307,7 @@ function getBaseStats(c){
 function seed(){
   const mk=(name,rar,el,path,status,eid,extra)=>Object.assign({
     id:crypto.randomUUID(),name,rarity:rar,element:el,path,status,level:'',eidolon:eid,
-    lc:'',si:'S1',lclv:'',relic:'',planar:'',subs:'',notes:''
+    lc:'',si:'S1',lclv:'',relic:'',planar:'',subs:'',notes:'',prio:0
   },extra||{});
   return {
     chars:[
@@ -1349,7 +1355,7 @@ function openDetail(id,edit){
   loadGameData();
 }
 function addCharacter(){
-  const c={id:crypto.randomUUID(),name:'',rarity:'5',element:'Quantum',path:'Harmony',status:'Planned',
+  const c={id:crypto.randomUUID(),name:'',rarity:'5',element:'Quantum',path:'Harmony',status:'Planned',prio:0,
     level:'',eidolon:'E0',lc:'',si:'S1',lclv:'',relic:'',planar:'',subs:'',notes:''};
   state.chars.push(c);
   isNewDetail=true;
@@ -1457,8 +1463,8 @@ function selOpts(arr,cur){return arr.map(o=>'<option'+(o===cur?' selected':'')+'
 /* ── Overview ── */
 function renderOverview(){
   const cs=state.chars;
-  const complete=cs.filter(c=>c.status==='Built'||c.status==='Done').length;
-  const inprog=cs.filter(c=>c.status==='Farming'||c.status==='Prebuilding');
+  const complete=cs.filter(c=>c.status==='Built').length;
+  const inprog=cs.filter(c=>c.status==='Farming');
   const planned=cs.filter(c=>c.status==='Planned');
   const open=state.tasks.filter(t=>!t.done).length;
   document.getElementById('ov-total').textContent=cs.length;
@@ -1490,15 +1496,29 @@ function renderRoster(){
   grid.innerHTML=list.map(c=>{
     const sb='status-'+c.status.toLowerCase();
     const stars='★'.repeat(parseInt(c.rarity,10)||4);
-    return '<div class="char-card '+elClass(c)+' '+(c.rarity==='5'?'r5':'')+'" onclick="openDetail(\''+c.id+'\')">'+
+    return '<div class="char-card '+elClass(c)+' '+(c.rarity==='5'?'r5':'')+((c.prio||0)>=3?' prio3':'')+'" onclick="openDetail(\''+c.id+'\')">'+
       '<span class="char-wm">'+(ELEM_FILE[c.element]?'<img src="'+SR+'icon/element/'+ELEM_FILE[c.element]+'.png" alt="" style="width:96px;height:96px;object-fit:contain;filter:brightness(0) invert(1);"/>':(ELEM_ICON[c.element]||'\u2726'))+'</span>'+
       '<div class="char-head">'+elemChip(c)+
-        '<div class="char-info"><div class="char-name">'+esc(c.name||'Unnamed')+'</div>'+
+        '<div class="char-info"><div class="char-name-row"><div class="char-name">'+esc(c.name||'Unnamed')+'</div>'+flamesHTML(c)+'</div>'+
         '<div class="char-stars">'+stars+'</div>'+
         '<div class="char-sub"><span>'+pathIcon(c.path)+' '+esc(c.path)+'</span>'+(c.level?'<span>Lv '+esc(c.level)+'</span>':'')+'</div></div>'+
         '<div class="char-right"><span class="status-badge '+sb+'" title="Click to change status" onclick="cycleStatus(event,\''+c.id+'\')">'+c.status+'</span><span class="char-eid">'+esc(c.eidolon)+(c.lc?' · '+esc(c.si):'')+'</span></div>'+
       '</div></div>';
   }).join('');
+}
+function flamesHTML(c){
+  const p=c.prio||0;
+  let h='<span class="char-flames" onclick="event.stopPropagation()">';
+  for(let i=1;i<=3;i++)h+='<span class="flame'+(i<=p?' on':'')+'" title="Priority '+i+'" onclick="setPrio(event,\''+c.id+'\','+i+')">\ud83d\udd25</span>';
+  h+='</span>';
+  return h;
+}
+function setPrio(ev,id,n){
+  ev.stopPropagation();
+  const c=state.chars.find(x=>x.id===id);
+  if(!c)return;
+  c.prio=(c.prio===n)?n-1:n; // click same flame again to decrement
+  save();renderRoster();
 }
 function cycleStatus(ev,id){
   ev.stopPropagation();
@@ -1684,7 +1704,7 @@ async function exportChar(id){
       onclone:doc=>{
         doc.documentElement.classList.add('png-export');
         const st=doc.createElement('style');
-        st.textContent='*,*::before,*::after{animation:none!important;transition:none!important}#page-detail,#page-detail.active,.page.active{opacity:1!important;transform:none!important;filter:none!important}button{opacity:1!important;filter:none!important}.dt-top button{pointer-events:none!important}.bg{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:'+node.scrollHeight+'px!important}.dt-portrait img,.dt-portrait{object-fit:cover!important;width:100%!important;height:100%!important}';
+        st.textContent='*,*::before,*::after{animation:none!important;transition:none!important}#page-detail,#page-detail.active,.page.active{opacity:1!important;transform:none!important;filter:none!important}button{opacity:1!important;filter:none!important}.dt-top button{pointer-events:none!important}.bg{position:absolute!important;top:0!important;left:0!important;width:100%!important;height:'+node.scrollHeight+'px!important;min-height:'+node.scrollHeight+'px!important}.dt-portrait{height:auto!important;aspect-ratio:3/4!important}.dt-portrait img{object-fit:cover!important;width:100%!important;height:100%!important;position:absolute!important;inset:0!important}';
         doc.head.appendChild(st);
         const cloneBtn=[...doc.querySelectorAll('.dt-top button')].find(b=>b.textContent.includes('Export')||b.textContent.includes('Rendering'));
         if(cloneBtn){cloneBtn.disabled=false;cloneBtn.textContent='⬆ Export';}
@@ -2102,7 +2122,7 @@ function tracesHTML(c){
   const isRem=c.path==='Remembrance';
   const hasMain=tr.b||tr.s||tr.u||tr.t;
   const hasA=tr.a2||tr.a4||tr.a6;
-  const hasMsp=isRem&&(tr.msB||tr.msS||tr.msU);
+  const hasMsp=isRem&&(tr.msS||tr.msU);
   if(!hasMain&&!hasA&&!hasMsp)return '<div class="trace-body"><div class="cb-val dim">not set</div></div>';
   const id=charId(c);
   const cell=(label,v,max,suffix,cls)=>{
@@ -2126,9 +2146,8 @@ function tracesHTML(c){
     +cell('Talent',tr.t,10,'talent')+'</div>';
   out+='<div class="tr2-tag" style="margin-top:13px;">Ascension Traces</div><div class="asc-checks">'+box('A2',tr.a2)+box('A4',tr.a4)+box('A6',tr.a6)+'</div>';
   if(hasMsp)out+='<div class="tr2-tag">Memosprite Traces</div><div class="trace-cells msp-cells">'
-    +cell('Basic ATK',tr.msB,10,'memosprite_basic_atk',' msp')
     +cell('Skill',tr.msS,10,'memosprite_skill',' msp')
-    +cell('Ultimate',tr.msU,10,'memosprite_talent',' msp')+'</div>';
+    +cell('Talent',tr.msU,10,'memosprite_talent',' msp')+'</div>';
   out+='<div class="dt-note trace-note">Minor trace nodes &amp; set bonuses not included \u2014 in-game reads higher.</div></div>';
   return out;
 }
