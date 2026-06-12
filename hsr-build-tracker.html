@@ -1047,8 +1047,8 @@ html.png-export .dt-top button{
 /* — Aurora nebulae: large drifting color fields, always visibly moving — */
 .bg{overflow:hidden;}
 .aurora{position:absolute;width:110vmax;height:110vmax;border-radius:50%;opacity:.55;will-change:transform;transform:translateZ(0);}
-.aurora.a1{left:-42vmax;top:-58vmax;background:radial-gradient(circle at 50% 50%,rgba(98,68,210,.22) 0%,rgba(60,40,160,.10) 30%,rgba(40,28,120,.04) 52%,transparent 70%);animation:drift1 38s ease-in-out infinite alternate;}
-.aurora.a2{right:-55vmax;top:-30vmax;background:radial-gradient(circle at 50% 50%,rgba(28,110,170,.18) 0%,rgba(24,90,150,.08) 32%,rgba(20,70,130,.03) 54%,transparent 72%);animation:drift2 47s ease-in-out infinite alternate;}
+.aurora.a1{left:-42vmax;top:-58vmax;background:radial-gradient(circle at 50% 50%,rgba(98,68,210,.22) 0%,rgba(60,40,160,.10) 30%,rgba(40,28,120,.04) 52%,transparent 70%);animation:drift1 55s ease-in-out infinite alternate;}
+.aurora.a2{right:-55vmax;top:-30vmax;background:radial-gradient(circle at 50% 50%,rgba(28,110,170,.18) 0%,rgba(24,90,150,.08) 32%,rgba(20,70,130,.03) 54%,transparent 72%);animation:drift2 70s ease-in-out infinite alternate;}
 .aurora.a3{left:8vmax;bottom:-70vmax;background:radial-gradient(circle at 50% 50%,rgba(186,128,58,.11) 0%,rgba(150,100,48,.05) 30%,rgba(120,80,40,.02) 52%,transparent 70%);animation:drift3 56s ease-in-out infinite alternate;}
 @keyframes drift1{from{transform:translate(0,0) rotate(0deg) scale(1);}to{transform:translate(9vw,7vh) rotate(28deg) scale(1.14);}}
 @keyframes drift2{from{transform:translate(0,0) scale(1.1);}to{transform:translate(-8vw,9vh) scale(.94);}}
@@ -1132,8 +1132,8 @@ html.png-export .dt-top button{
 </head>
 <body>
 <div class="bg">
-  <div class="aurora a1"></div><div class="aurora a2"></div><div class="aurora a3"></div>
-  <div class="dust d1"></div><div class="dust d2"></div>
+  <div class="aurora a1"></div><div class="aurora a2"></div>
+  <div class="dust d1"></div>
   <span class="shoot"></span><span class="shoot s2"></span><span class="shoot s3"></span>
   <div class="bg-vignette"></div>
 </div>
