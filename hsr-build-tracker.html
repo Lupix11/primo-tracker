@@ -776,13 +776,10 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield;}
 #page-detail .trace-body:not(.no-msp) .tr2-tag{margin:9px 0 5px;}
 
 .trace-cells{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
-.trace-cells.five{grid-template-columns:repeat(5,1fr);}
-.trace-cells.five .tc{padding:8px 4px 11px;}
-.trace-cells.five .tc-ic{min-height:0;}
-.trace-cells.five .tc-ic img{width:38px;height:38px;}
-.trace-cells.five .tc-name{font-size:8px;letter-spacing:.7px;}
-.trace-cells.five .tc-lv{font-size:12px;}
-.trace-cells.five .tc-max{font-size:9px;}
+.trace-cells.five{grid-template-columns:repeat(6,1fr);}
+.trace-cells.five .tc{grid-column:span 3;}
+.trace-cells.five .tc:nth-child(4){grid-column:1/span 3;}
+.trace-cells.five .tc:nth-child(5){grid-column:4/span 3;}
 .tc.elation{border-color:rgba(255,200,90,.35);background:linear-gradient(180deg,rgba(255,200,90,.10),rgba(10,14,30,.5) 75%);}
 .tc.elation .tc-lv{color:#ffd27a;}
 .tc.elation .tc-line span{background:linear-gradient(90deg,#d99a2b,#ffd27a);box-shadow:0 0 6px rgba(255,210,120,.6);}
