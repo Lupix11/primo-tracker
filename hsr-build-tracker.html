@@ -752,14 +752,14 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield;}
 /* ── Trace icon cells ── */
 .trace-cells{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
 .msp-cells{grid-template-columns:repeat(3,1fr);}
-.tc{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:12px 8px 14px;
+.tc{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 8px 16px;min-height:108px;
   background:linear-gradient(180deg,rgba(232,196,122,.06),rgba(10,14,30,.5) 75%);
   border:1px solid rgba(232,196,122,.2);
   clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px));
   transition:border-color .2s,box-shadow .2s;}
 .tc:hover{border-color:rgba(232,196,122,.42);box-shadow:0 0 14px rgba(232,196,122,.12) inset;}
-.tc-ic{flex:1;width:100%;min-height:44px;position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:6px;}
-.tc-ic img{position:absolute;width:80%;height:80%;top:10%;left:10%;object-fit:contain;z-index:2;filter:drop-shadow(0 0 7px rgba(232,196,122,.4));}
+.tc-ic{width:100%;min-height:60px;position:relative;display:flex;align-items:center;justify-content:center;margin:2px 0 8px;}
+.tc-ic img{position:absolute;width:64px;height:64px;top:50%;left:50%;transform:translate(-50%,-50%);object-fit:contain;z-index:2;filter:drop-shadow(0 0 7px rgba(232,196,122,.4));}
 .tc-fb{font-size:34px;opacity:.5;}
 .tc-name{font-size:9.5px;color:#c8b88e;letter-spacing:1.1px;text-transform:uppercase;font-weight:800;line-height:1.2;flex:1;}
 .tc-lv{font-size:15px;color:var(--gold);font-weight:800;margin-top:3px;}
@@ -1491,7 +1491,7 @@ function renderRoster(){
     const sb='status-'+c.status.toLowerCase();
     const stars='★'.repeat(parseInt(c.rarity,10)||4);
     return '<div class="char-card '+elClass(c)+' '+(c.rarity==='5'?'r5':'')+'" onclick="openDetail(\''+c.id+'\')">'+
-      '<span class="char-wm">'+(ELEM_ICON[c.element]||'✦')+'</span>'+
+      '<span class="char-wm">'+(ELEM_FILE[c.element]?'<img src="'+SR+'icon/element/'+ELEM_FILE[c.element]+'.png" alt="" style="width:100%;height:100%;object-fit:contain;filter:brightness(0) invert(1);"/>':(ELEM_ICON[c.element]||'\u2726'))+'</span>'+
       '<div class="char-head">'+elemChip(c)+
         '<div class="char-info"><div class="char-name">'+esc(c.name||'Unnamed')+'</div>'+
         '<div class="char-stars">'+stars+'</div>'+
