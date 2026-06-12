@@ -108,7 +108,7 @@ input[type=checkbox]{accent-color:var(--gold);width:15px;height:15px;cursor:poin
 .tab:hover:not(.active){color:#a8c4dc;background:rgba(255,255,255,0.03);}
 /* ── Character cards ── */
 .char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
-.char-card{--elc:#4cc9f0;background:rgba(255,255,255,0.035);border:1px solid var(--line);border-left:2px solid var(--elc);overflow:hidden;transition:transform 0.16s,box-shadow 0.18s;position:relative;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);cursor:pointer;}
+.char-card{--elc:#4cc9f0;min-height:102px;background:rgba(255,255,255,0.035);border:1px solid var(--line);border-left:2px solid var(--elc);overflow:hidden;transition:transform 0.16s,box-shadow 0.18s;position:relative;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);cursor:pointer;}
 .char-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.35),0 0 0 1px rgba(232,196,122,0.18);}
 .char-card::before{content:'';position:absolute;top:0;left:0;right:14px;height:1px;background:linear-gradient(90deg,var(--elc),transparent 75%);opacity:0.5;pointer-events:none;}
 .char-wm{position:absolute;right:-14px;top:-22px;width:96px;height:96px;font-size:96px;opacity:0.05;pointer-events:none;user-select:none;line-height:1;display:flex;align-items:center;justify-content:center;overflow:hidden;}
@@ -758,8 +758,8 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield;}
   clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px));
   transition:border-color .2s,box-shadow .2s;}
 .tc:hover{border-color:rgba(232,196,122,.42);box-shadow:0 0 14px rgba(232,196,122,.12) inset;}
-.tc-ic{width:100%;flex:1 1 auto;min-height:80px;position:relative;display:flex;align-items:center;justify-content:center;margin:2px 0 8px;}
-.tc-ic img{width:90px;height:90px;max-width:90%;max-height:90%;object-fit:contain;z-index:2;filter:drop-shadow(0 0 7px rgba(232,196,122,.4));}
+.tc-ic{width:100%;flex:1 1 auto;min-height:80px;display:grid;place-items:center;margin:2px 0 8px;}
+.tc-ic img{width:90px;height:90px;max-width:90%;max-height:90%;object-fit:contain;display:block;z-index:2;filter:drop-shadow(0 0 7px rgba(232,196,122,.4));}
 .tc-fb{font-size:48px;opacity:.5;}
 .tc-name{font-size:9.5px;color:#c8b88e;letter-spacing:1.1px;text-transform:uppercase;font-weight:800;line-height:1.2;flex:1;}
 .tc-lv{font-size:15px;color:var(--gold);font-weight:800;margin-top:3px;}
@@ -770,7 +770,7 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield;}
 .tc.msp .tc-lv{color:#c2bcfc;}
 .tc.msp{border-color:rgba(160,152,250,.3);background:linear-gradient(180deg,rgba(160,152,250,.09),rgba(10,14,30,.5) 75%);}
 .tc.msp .tc-line span{background:linear-gradient(90deg,#7a6fd8,#a89cfa);}
-.tc.msp .tc-ic img{filter:drop-shadow(0 0 7px rgba(160,152,250,.5));}
+.tc.msp .tc-ic img{width:60px;height:60px;filter:drop-shadow(0 0 7px rgba(160,152,250,.5));}
 .tc.msp.maxed{border-color:rgba(160,152,250,.55);}
 /* non-Remembrance: 2x2 cells fill the column height */
 #page-detail .trace-body.no-msp{height:100%;display:flex;flex-direction:column;}
@@ -1684,7 +1684,7 @@ async function exportChar(id){
       onclone:doc=>{
         doc.documentElement.classList.add('png-export');
         const st=doc.createElement('style');
-        st.textContent='*,*::before,*::after{animation:none!important;transition:none!important}#page-detail,#page-detail.active,.page.active{opacity:1!important;transform:none!important;filter:none!important}button{opacity:1!important;filter:none!important}.dt-top button{pointer-events:none!important}';
+        st.textContent='*,*::before,*::after{animation:none!important;transition:none!important}#page-detail,#page-detail.active,.page.active{opacity:1!important;transform:none!important;filter:none!important}button{opacity:1!important;filter:none!important}.dt-top button{pointer-events:none!important}.bg{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:'+node.scrollHeight+'px!important}.dt-portrait img,.dt-portrait{object-fit:cover!important;width:100%!important;height:100%!important}';
         doc.head.appendChild(st);
         const cloneBtn=[...doc.querySelectorAll('.dt-top button')].find(b=>b.textContent.includes('Export')||b.textContent.includes('Rendering'));
         if(cloneBtn){cloneBtn.disabled=false;cloneBtn.textContent='⬆ Export';}
