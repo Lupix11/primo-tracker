@@ -1042,10 +1042,101 @@ html.png-export .dt-top button{
 .radar-wrap{filter:drop-shadow(0 0 9px rgba(232,196,122,.16));}
 .dt-grid::after{content:'';position:absolute;inset:-26px -10px;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 46% 34% at 12% 4%,rgba(160,152,250,.10),transparent 70%),radial-gradient(ellipse 40% 30% at 92% 90%,rgba(160,152,250,.06),transparent 70%);}
 .dt-grid{position:relative;}
+
+/* ═══════════ VISUAL OVERHAUL ═══════════ */
+/* — Aurora nebulae: large drifting color fields, always visibly moving — */
+.bg{overflow:hidden;}
+.aurora{position:absolute;width:120vmax;height:120vmax;border-radius:50%;filter:blur(70px);opacity:.5;mix-blend-mode:screen;will-change:transform;}
+.aurora.a1{left:-42vmax;top:-58vmax;background:radial-gradient(circle at 50% 50%,rgba(98,68,210,.34),rgba(40,28,120,.13) 45%,transparent 68%);animation:drift1 38s ease-in-out infinite alternate;}
+.aurora.a2{right:-55vmax;top:-30vmax;background:radial-gradient(circle at 50% 50%,rgba(28,110,170,.27),rgba(20,70,130,.10) 48%,transparent 70%);animation:drift2 47s ease-in-out infinite alternate;}
+.aurora.a3{left:8vmax;bottom:-70vmax;background:radial-gradient(circle at 50% 50%,rgba(186,128,58,.16),rgba(120,80,40,.06) 45%,transparent 68%);animation:drift3 56s ease-in-out infinite alternate;}
+@keyframes drift1{from{transform:translate(0,0) rotate(0deg) scale(1);}to{transform:translate(9vw,7vh) rotate(28deg) scale(1.14);}}
+@keyframes drift2{from{transform:translate(0,0) scale(1.1);}to{transform:translate(-8vw,9vh) scale(.94);}}
+@keyframes drift3{from{transform:translate(0,0) scale(1);}to{transform:translate(6vw,-7vh) scale(1.18);}}
+
+/* — Cosmic dust: slow-rising micro stars — */
+.dust{position:absolute;inset:-10% 0 0 0;width:2px;height:2px;border-radius:50%;will-change:transform;
+  box-shadow:8vw 105vh 0 0 rgba(255,255,255,.20),22vw 118vh 1px 0 rgba(180,220,255,.16),37vw 102vh 0 0 rgba(255,255,255,.13),
+  52vw 124vh 0 0 rgba(232,196,122,.18),66vw 108vh 1px 0 rgba(255,255,255,.15),81vw 116vh 0 0 rgba(180,220,255,.13),
+  93vw 104vh 0 0 rgba(255,255,255,.17),15vw 132vh 0 0 rgba(255,255,255,.12),45vw 138vh 1px 0 rgba(232,196,122,.14),74vw 130vh 0 0 rgba(255,255,255,.12);}
+.dust.d1{animation:rise 52s linear infinite;}
+.dust.d2{animation:rise 76s linear infinite;animation-delay:-31s;transform:translateX(4vw);}
+@keyframes rise{from{transform:translateY(0);}to{transform:translateY(-140vh);}}
+
+/* — Comets: frequent enough to actually see — */
+.bg .shoot{animation:shoot 8s ease-in 2s infinite;}
+.bg .shoot.s2{animation-duration:11s;animation-delay:6s;}
+.bg .shoot.s3{top:34%;left:-7%;width:130px;transform:rotate(19deg);animation:shoot 13s ease-in 9.5s infinite;}
+
+/* — Edge vignette: focuses the content, deepens the space feel — */
+.bg-vignette{position:absolute;inset:0;background:radial-gradient(ellipse 120% 95% at 50% 38%,transparent 55%,rgba(2,3,9,.55) 100%);}
+
+/* — Panels: living gold edge + corner ticks — */
+.dt-panel,.panel{position:relative;}
+.dt-panel::after,.panel::after{content:'';position:absolute;inset:0;pointer-events:none;padding:1px;
+  background:linear-gradient(115deg,transparent 20%,rgba(232,196,122,.42) 38%,rgba(255,240,200,.65) 50%,rgba(232,196,122,.42) 62%,transparent 80%);
+  background-size:280% 280%;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:0;transition:opacity .35s;animation:edge-sweep 5.5s linear infinite;}
+.dt-panel:hover::after,.panel:hover::after{opacity:1;}
+@keyframes edge-sweep{0%{background-position:120% 120%;}100%{background-position:-60% -60%;}}
+
+/* — Section titles: gold spark before text breathes — */
+.dt-sect{position:relative;}
+.dt-sect::after{content:'';position:absolute;left:0;bottom:-4px;height:1px;width:42px;background:linear-gradient(90deg,var(--gold),transparent);box-shadow:0 0 8px rgba(232,196,122,.6);animation:sect-pulse 3.2s ease-in-out infinite;}
+@keyframes sect-pulse{0%,100%{opacity:.45;width:42px;}50%{opacity:1;width:64px;}}
+
+/* — Roster cards: entrance stagger + hover bloom — */
+.char-card{animation:card-in .45s cubic-bezier(.2,.7,.3,1) both;}
+.char-card:nth-child(1){animation-delay:.02s}.char-card:nth-child(2){animation-delay:.05s}.char-card:nth-child(3){animation-delay:.08s}.char-card:nth-child(4){animation-delay:.11s}.char-card:nth-child(5){animation-delay:.14s}.char-card:nth-child(6){animation-delay:.17s}.char-card:nth-child(7){animation-delay:.20s}.char-card:nth-child(8){animation-delay:.23s}.char-card:nth-child(9){animation-delay:.26s}.char-card:nth-child(10){animation-delay:.29s}.char-card:nth-child(n+11){animation-delay:.32s}
+@keyframes card-in{from{opacity:0;transform:translateY(14px) scale(.985);}to{opacity:1;transform:none;}}
+.char-card:hover{box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 24px -4px var(--elc),0 0 0 1px rgba(232,196,122,.22);}
+.char-card:hover .char-wm{opacity:.11;transform:rotate(8deg) scale(1.06);}
+.char-wm{transition:opacity .35s,transform .45s;}
+.char-card:hover .char-elem{box-shadow:0 0 16px var(--elc);}
+.char-elem{transition:box-shadow .3s;}
+
+/* — Status badges glow their color — */
+.status-farming{box-shadow:0 0 10px -2px rgba(76,201,240,.5);}
+.status-built{box-shadow:0 0 10px -2px rgba(128,240,160,.45);}
+.status-pulling{box-shadow:0 0 10px -2px rgba(232,196,122,.5);}
+
+/* — Trace cells: icon breathes gold, maxed cells shimmer — */
+.tc-ic img{animation:tc-breathe 4.5s ease-in-out infinite;}
+@keyframes tc-breathe{0%,100%{filter:drop-shadow(0 0 5px rgba(232,196,122,.30));}50%{filter:drop-shadow(0 0 11px rgba(232,196,122,.62));}}
+.tc.msp .tc-ic img{animation:tc-breathe-msp 4.5s ease-in-out infinite;}
+@keyframes tc-breathe-msp{0%,100%{filter:drop-shadow(0 0 5px rgba(160,152,250,.35));}50%{filter:drop-shadow(0 0 11px rgba(160,152,250,.7));}}
+.tc.maxed::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,240,200,.10) 50%,transparent 65%);background-size:240% 100%;animation:maxed-shine 3.8s linear infinite;pointer-events:none;}
+@keyframes maxed-shine{0%{background-position:130% 0;}100%{background-position:-130% 0;}}
+
+/* — Portrait: aura intensified + rising sparkles — */
+.dt-portrait::after{box-shadow:inset 0 0 28px rgba(160,132,250,.12);}
+.dt-portrait .spark{position:absolute;bottom:-4px;width:3px;height:3px;border-radius:50%;background:rgba(232,196,122,.9);box-shadow:0 0 6px rgba(232,196,122,.8);opacity:0;animation:spark-rise 6s ease-in infinite;z-index:3;pointer-events:none;}
+@keyframes spark-rise{0%{opacity:0;transform:translateY(0) scale(1);}8%{opacity:.9;}100%{opacity:0;transform:translateY(-300px) scale(.4);}}
+
+/* — Buttons: light sweep — */
+.btn-gold{position:relative;overflow:hidden;}
+.btn-gold::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.45) 50%,transparent 62%);background-size:260% 100%;background-position:130% 0;transition:none;pointer-events:none;}
+.btn-gold:hover::after{animation:btn-sweep .7s ease forwards;}
+@keyframes btn-sweep{to{background-position:-130% 0;}}
+
+/* — Sidebar: active item gets a living gold spine — */
+.nav-item.active{position:relative;}
+.nav-item.active::after{content:'';position:absolute;left:0;top:15%;bottom:15%;width:2px;background:linear-gradient(180deg,transparent,var(--gold),transparent);box-shadow:0 0 10px rgba(232,196,122,.8);animation:spine 2.6s ease-in-out infinite;}
+@keyframes spine{0%,100%{opacity:.55;}50%{opacity:1;}}
+
+/* — Page headers shimmer line — */
+.page-title-line,.hero h1{position:relative;}
 </style>
 </head>
 <body>
-<div class="bg"><span class="shoot"></span><span class="shoot s2"></span></div>
+<div class="bg">
+  <div class="aurora a1"></div><div class="aurora a2"></div><div class="aurora a3"></div>
+  <div class="dust d1"></div><div class="dust d2"></div>
+  <span class="shoot"></span><span class="shoot s2"></span><span class="shoot s3"></span>
+  <div class="bg-vignette"></div>
+</div>
 <div class="shell">
 <aside class="sidebar">
   <div class="sidebar-logo">
@@ -1679,7 +1770,7 @@ function renderDetail(){
 function portraitHTML(c){
   const id=charId(c);
   return '<div class="dt-portrait"><span class="ce-big">'+(ELEM_ICON[c.element]||'✦')+'</span>'+
-    (id?'<img src="'+SR+'image/character_portrait/'+id+'.png" alt="" onerror="this.remove()"/>':'')+'</div>';
+    (id?'<img src="'+SR+'image/character_portrait/'+id+'.png" alt="" onerror="this.remove()"/>':'')+'<span class="spark" style="left:18%;animation-delay:0s;"></span><span class="spark" style="left:52%;animation-delay:2.1s;"></span><span class="spark" style="left:78%;animation-delay:4.2s;"></span></div>';
 }
 function lcCardHTML(c){
   if(!c.lc)return '<div class="cb-val dim">not set</div>';
