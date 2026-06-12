@@ -763,10 +763,14 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield;}
 /* ── Trace icon cells ── */
 /* Remembrance: compact so memosprite row never clips */
 #page-detail .trace-body:not(.no-msp) .trace-cells{gap:7px;}
-#page-detail .trace-body:not(.no-msp) .tc{padding:8px 6px 11px;}
-#page-detail .trace-body:not(.no-msp) .tc-ic{min-height:40px;margin:0 0 4px;}
-#page-detail .trace-body:not(.no-msp) .tc-ic img{width:44px;height:44px;}
-#page-detail .trace-body:not(.no-msp) .tc.msp .tc-ic img{width:38px;height:38px;}
+#page-detail .trace-body:not(.no-msp){display:flex;flex-direction:column;height:100%;}
+#page-detail .trace-body:not(.no-msp) .trace-cells{flex:1 1 auto;grid-auto-rows:1fr;}
+#page-detail .trace-body:not(.no-msp) .msp-cells{flex:0 0 auto;}
+
+#page-detail .trace-body:not(.no-msp) .tc{padding:11px 6px 13px;}
+#page-detail .trace-body:not(.no-msp) .tc-ic{min-height:48px;margin:0 0 5px;}
+#page-detail .trace-body:not(.no-msp) .tc-ic img{width:54px;height:54px;}
+#page-detail .trace-body:not(.no-msp) .tc.msp .tc-ic img{width:48px;height:48px;}
 #page-detail .trace-body:not(.no-msp) .tc-name{font-size:9px;}
 #page-detail .trace-body:not(.no-msp) .tc-lv{font-size:13px;margin-top:2px;}
 #page-detail .trace-body:not(.no-msp) .tr2-tag{margin:9px 0 5px;}
