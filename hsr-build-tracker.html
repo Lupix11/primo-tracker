@@ -111,7 +111,7 @@ input[type=checkbox]{accent-color:var(--gold);width:15px;height:15px;cursor:poin
 .char-card{--elc:#4cc9f0;min-height:102px;height:100%;display:flex;background:rgba(255,255,255,0.035);border:1px solid var(--line);border-left:2px solid var(--elc);overflow:hidden;transition:transform 0.16s,box-shadow 0.18s;position:relative;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);cursor:pointer;}
 .char-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.35),0 0 0 1px rgba(232,196,122,0.18);}
 .char-card::before{content:'';position:absolute;top:0;left:0;right:14px;height:1px;background:linear-gradient(90deg,var(--elc),transparent 75%);opacity:0.5;pointer-events:none;}
-.char-wm{position:absolute;right:-14px;top:-22px;width:96px;height:96px;font-size:96px;opacity:0.05;pointer-events:none;user-select:none;line-height:1;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.char-wm{position:absolute;right:-6px;top:6px;width:88px;height:88px;font-size:96px;opacity:0.05;pointer-events:none;user-select:none;line-height:1;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .ec-fire{--elc:#f08a70;}.ec-ice{--elc:#90d4fa;}.ec-lightning{--elc:#c898fa;}.ec-wind{--elc:#80e8b0;}.ec-physical{--elc:#d8dde2;}.ec-quantum{--elc:#a098fa;}.ec-imaginary{--elc:#f0d478;}
 .char-head{display:flex;align-items:center;gap:12px;padding:13px 15px;user-select:none;position:relative;z-index:1;flex:1;width:100%;}
 .char-elem{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;border:1.5px solid var(--elc);background:rgba(232,196,122,0.08);box-shadow:0 0 10px rgba(232,196,122,0.18);position:relative;overflow:hidden;}
@@ -123,9 +123,9 @@ input[type=checkbox]{accent-color:var(--gold);width:15px;height:15px;cursor:poin
 .char-card.r5 .char-stars{color:var(--gold);text-shadow:0 0 6px rgba(232,196,122,0.5);}
 .char-sub{font-size:11px;color:var(--dim);letter-spacing:0.8px;text-transform:uppercase;margin-top:3px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
 .char-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;}
-.flame-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;}
-.char-flames{display:inline-flex;gap:3px;background:rgba(6,9,18,.72);border:1px solid rgba(232,196,122,.18);padding:3px 6px;border-radius:11px;}
-.flame{font-size:12px;line-height:1;cursor:pointer;filter:grayscale(1) brightness(.9);opacity:.8;transition:filter .15s,opacity .15s,transform .12s;}
+.avatar-wrap{position:relative;flex-shrink:0;line-height:0;}
+.char-flames{position:absolute;left:50%;bottom:-5px;transform:translateX(-50%);display:inline-flex;gap:2px;background:rgba(6,9,18,.85);border:1px solid rgba(232,196,122,.28);padding:2px 5px;border-radius:10px;z-index:4;box-shadow:0 1px 4px rgba(0,0,0,.5);}
+.flame{font-size:10px;line-height:1;cursor:pointer;filter:grayscale(1) brightness(.95);opacity:.8;transition:filter .15s,opacity .15s,transform .12s;}
 .flame.on{filter:none;opacity:1;text-shadow:0 0 6px rgba(255,140,60,.7);}
 .flame:hover{transform:scale(1.25);}
 .char-card.prio3{box-shadow:inset 3px 0 0 rgba(255,120,50,.55);}
@@ -1510,7 +1510,7 @@ function renderRoster(){
     const stars='★'.repeat(parseInt(c.rarity,10)||4);
     return '<div class="char-card '+elClass(c)+' '+(c.rarity==='5'?'r5':'')+((c.prio||0)>=3?' prio3':'')+'" onclick="openDetail(\''+c.id+'\')">'+
       '<span class="char-wm">'+(ELEM_FILE[c.element]?'<img src="'+SR+'icon/element/'+ELEM_FILE[c.element]+'.png" alt="" style="width:96px;height:96px;object-fit:contain;filter:brightness(0) invert(1);"/>':(ELEM_ICON[c.element]||'\u2726'))+'</span>'+
-      '<div class="char-head">'+'<div class="flame-wrap">'+elemChip(c)+flamesHTML(c)+'</div>'+
+      '<div class="char-head">'+'<div class="avatar-wrap">'+elemChip(c)+flamesHTML(c)+'</div>'+
         '<div class="char-info"><div class="char-name">'+esc(c.name||'Unnamed')+'</div>'+
         '<div class="char-stars">'+stars+'</div>'+
         '<div class="char-sub"><span>'+pathIcon(c.path)+' '+esc(c.path)+'</span>'+(c.level?'<span>Lv '+esc(c.level)+'</span>':'')+'</div></div>'+
