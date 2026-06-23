@@ -1141,16 +1141,34 @@ html.png-export .dt-top button{
 .page-title-line,.hero h1{position:relative;}
 
 
-/* ── V9 quick fixes: full-page background + AI text export button fit ── */
+/* ── Quickfix: smoother page, single export menu, clean PNG exports ── */
+/* The animated star field and page-in animation are pretty, but they make html2canvas and weaker browsers stutter. */
+.bg::after{animation:none!important;opacity:.72!important;}
+.page.active{animation:none!important;}
+.spark{display:none!important;}
+
+.export-wrap{position:relative;display:inline-flex;}
+.export-menu{position:absolute;right:0;top:calc(100% + 6px);min-width:138px;background:rgba(7,10,20,.98);border:1px solid rgba(232,196,122,.28);box-shadow:0 12px 28px rgba(0,0,0,.45);z-index:250;display:none;padding:5px;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);}
+.export-menu.open{display:block;}
+.export-menu button{width:100%;height:30px!important;min-height:30px!important;padding:0 10px!important;background:transparent;border:none;color:#cfe4f5;font-family:'Nunito',sans-serif;font-size:12px!important;font-weight:800!important;text-align:left;justify-content:flex-start!important;cursor:pointer;clip-path:none!important;}
+.export-menu button:hover{background:rgba(232,196,122,.10);color:var(--gold);}
+
+
 html,body{min-width:100%;min-height:100%;background:#05070f!important;}
-body{min-height:100vh;background:radial-gradient(ellipse 70% 45% at 18% 0%,rgba(100,70,160,.16),transparent 62%),radial-gradient(ellipse 70% 45% at 92% 8%,rgba(26,106,122,.14),transparent 60%),#05070f!important;}
-.bg{position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;min-width:100vw!important;min-height:100vh!important;max-width:none!important;max-height:none!important;}
 .shell,.main{min-height:100vh;}
-.main{position:relative;background:transparent!important;}
-#page-detail,#detail-wrap,#page-detail .dt-grid{width:100%;max-width:none;}
-#page-detail .dt-top{width:100%;background:linear-gradient(90deg,rgba(8,12,26,.62),rgba(8,12,26,.32) 58%,rgba(8,12,26,.14) 100%);border-bottom:1px solid rgba(106,150,200,.10);padding:0 2px 6px 0;}
-#page-detail .dt-top .btn-text-export{min-width:86px;}
-html.png-export body{background:#05070f!important;}
+#page-detail .dt-top{width:100%;background:linear-gradient(90deg,rgba(7,10,21,.72),rgba(7,10,21,.38) 62%,rgba(7,10,21,.18));border-bottom:1px solid rgba(106,150,200,.10);padding-bottom:6px;}
+
+/* PNG mode: capture the build only, not the website controls/glow effects. */
+html.png-export .dt-top button,
+html.png-export .export-menu,
+html.png-export .export-wrap{display:none!important;}
+html.png-export *,
+html.png-export *::before,
+html.png-export *::after{animation:none!important;transition:none!important;box-shadow:none!important;text-shadow:none!important;filter:none!important;}
+html.png-export .dt-panel,
+html.png-export .rl-card,
+html.png-export .dt-portrait,
+html.png-export .char-elem{box-shadow:none!important;filter:none!important;}
 
 </style>
 </head>
@@ -1843,21 +1861,20 @@ async function exportChar(id){
       windowHeight:Math.max(node.scrollHeight,document.documentElement.clientHeight),
       scrollX:0,
       scrollY:0,
-      ignoreElements:el=>el.classList&&el.classList.contains('save-flash'),
+      ignoreElements:el=>el.classList&&(el.classList.contains('save-flash')||el.classList.contains('export-menu')),
       onclone:doc=>{
         doc.documentElement.classList.add('png-export');
+        doc.querySelectorAll('#page-detail .dt-top button,.export-menu,.export-wrap').forEach(el=>el.remove());
         const st=doc.createElement('style');
-        st.textContent='*,*::before,*::after{animation:none!important;transition:none!important}#page-detail,#page-detail.active,.page.active{opacity:1!important;transform:none!important;filter:none!important}button{opacity:1!important;filter:none!important}.dt-top button{pointer-events:none!important}.bg{position:absolute!important;top:0!important;left:0!important;width:100%!important;height:'+node.scrollHeight+'px!important;min-height:'+node.scrollHeight+'px!important}.dt-portrait{height:auto!important;aspect-ratio:3/4!important}.dt-portrait img{object-fit:cover!important;width:100%!important;height:100%!important;position:absolute!important;inset:0!important}';
+        st.textContent='*,*::before,*::after{animation:none!important;transition:none!important;box-shadow:none!important;text-shadow:none!important;filter:none!important}#page-detail,#page-detail.active,.page.active{opacity:1!important;transform:none!important;filter:none!important}.bg{position:absolute!important;top:0!important;left:0!important;width:100%!important;height:'+node.scrollHeight+'px!important;min-height:'+node.scrollHeight+'px!important}.dt-portrait{height:auto!important;aspect-ratio:3/4!important}.dt-portrait img{object-fit:cover!important;width:100%!important;height:100%!important;position:absolute!important;inset:0!important}';
         doc.head.appendChild(st);
-        const cloneBtn=[...doc.querySelectorAll('.dt-top button')].find(b=>b.textContent.includes('Export')||b.textContent.includes('Rendering'));
-        if(cloneBtn){cloneBtn.disabled=false;cloneBtn.textContent='⬆ Export';}
       }
     });
     canvas.toBlob(blob=>{
       if(!blob){throw new Error('PNG render produced no image.');}
       const a=document.createElement('a');
       a.href=URL.createObjectURL(blob);
-      a.download=(normName(c.name)||'character')+'-build.png';
+      a.download=safeFileName(c.name)+' Build.png';
       document.body.appendChild(a);a.click();a.remove();
       setTimeout(()=>URL.revokeObjectURL(a.href),2000);
     },'image/png');
@@ -1868,43 +1885,47 @@ async function exportChar(id){
   }
 }
 
-function exportValueForStat(k,v){
+function safeFileName(name){
+  const cleaned=String(name||'Character').replace(/[<>:"/\\|?*\x00-\x1F]/g,'').replace(/\s+/g,' ').trim();
+  return (cleaned||'Character').slice(0,70);
+}
+function formatExportValue(k,v){
   if(v===undefined||v===null||v==='')return '—';
   const n=Number(v);
   if(Number.isFinite(n))return (+n.toFixed(1))+(PCT_STATS.includes(k)||/DMG$/.test(k)?'%':'');
   return String(v);
 }
-function buildAIText(c){
+function buildCharacterTextExport(c){
   const lines=[];
   const tr=c.traces||{};
   const relics=c.relics||{};
   const totals=computeRelicTotals(c);
   const base=getBaseStats(c);
-  const flame=c.prio||0;
-  lines.push('HSR Build Tracker export for AI team/build optimization');
-  lines.push('Generated from the tracker text export. Minor trace nodes and hidden set effects may not be included in computed totals.');
+  const statLine=(label,baseVal,totalVal)=>lines.push(label+': '+baseVal+' base / '+totalVal+' total');
+  lines.push((c.name||'Character')+' Export');
+  lines.push('Source: HSR Build Tracker');
   lines.push('');
-  lines.push('CHARACTER');
+  lines.push('Character');
   lines.push('Name: '+(c.name||'Unnamed'));
   lines.push('Status: '+(c.status||'—'));
-  lines.push('Importance / priority flames: '+flame+'/3');
+  lines.push('Importance/fire priority: '+(c.prio||0)+'/3');
   lines.push('Rarity: '+(c.rarity||'—')+' star');
   lines.push('Path: '+(c.path||'—'));
   lines.push('Element: '+(c.element||'—'));
   lines.push('Level: '+(c.level||'—'));
   lines.push('Eidolon: '+(c.eidolon||'E0'));
   lines.push('');
-  lines.push('LIGHT CONE');
+  lines.push('Light Cone');
   lines.push('Name: '+(c.lc||'—'));
   lines.push('Superimposition: '+(c.si||'—'));
-  lines.push('Level: '+(c.lclv||'= character level / unknown'));
+  lines.push('Level: '+(c.lclv||'—'));
   lines.push('');
-  lines.push('RELIC SETS');
+  lines.push('Sets');
   lines.push('Cavern set 1: '+(c.relic||'—'));
   lines.push('Cavern set 2: '+(c.relic2||'—'));
   lines.push('Planar set: '+(c.planar||'—'));
   lines.push('');
-  lines.push('TRACES');
+  lines.push('Traces');
   lines.push('Basic ATK: '+(tr.b||'—'));
   lines.push('Skill: '+(tr.s||'—'));
   lines.push('Ultimate: '+(tr.u||'—'));
@@ -1916,55 +1937,52 @@ function buildAIText(c){
   if(c.path==='Elation')lines.push('Elation Skill: '+(tr.elt||'—'));
   lines.push('Ascension traces: A2='+(tr.a2?'yes':'no')+', A4='+(tr.a4?'yes':'no')+', A6='+(tr.a6?'yes':'no'));
   lines.push('');
-  lines.push('COMPUTED STATS');
+  lines.push('Stats');
   if(base){
     const g=k=>totals[k]||0;
     const elemDmg=(c.element?c.element+' DMG':'Element DMG');
-    const rows=[
-      ['HP',Math.round(base.hp),Math.round(base.hp*(1+g('HP%')/100)+g('HP'))],
-      ['ATK',Math.round(base.atk),Math.round(base.atk*(1+g('ATK%')/100)+g('ATK'))],
-      ['DEF',Math.round(base.def),Math.round(base.def*(1+g('DEF%')/100)+g('DEF'))],
-      ['SPD',+(base.spd+g('SPD')).toFixed(1),+(base.spd+g('SPD')).toFixed(1)],
-      ['CRIT Rate',(+base.cr.toFixed(1))+'%',(+(base.cr+g('CRIT Rate')).toFixed(1))+'%'],
-      ['CRIT DMG',(+base.cd.toFixed(1))+'%',(+(base.cd+g('CRIT DMG')).toFixed(1))+'%'],
-      ['Effect Hit Rate','0%',(+(g('Effect Hit Rate')).toFixed(1))+'%'],
-      ['Effect RES','0%',(+(g('Effect RES')).toFixed(1))+'%'],
-      ['Energy Regen Rate','100%',(+(100+g('Energy Regen Rate')).toFixed(1))+'%'],
-      [elemDmg,'0%',(+(g(elemDmg)).toFixed(1))+'%'],
-      ['Break Effect','0%',(+(g('Break Effect')).toFixed(1))+'%']
-    ];
-    rows.forEach(r=>lines.push(r[0]+': base '+r[1]+' | total '+r[2]));
+    statLine('HP',Math.round(base.hp),Math.round(base.hp*(1+g('HP%')/100)+g('HP')));
+    statLine('ATK',Math.round(base.atk),Math.round(base.atk*(1+g('ATK%')/100)+g('ATK')));
+    statLine('DEF',Math.round(base.def),Math.round(base.def*(1+g('DEF%')/100)+g('DEF')));
+    statLine('SPD',+(base.spd+g('SPD')).toFixed(1),+(base.spd+g('SPD')).toFixed(1));
+    statLine('CRIT Rate',(+base.cr.toFixed(1))+'%',(+(base.cr+g('CRIT Rate')).toFixed(1))+'%');
+    statLine('CRIT DMG',(+base.cd.toFixed(1))+'%',(+(base.cd+g('CRIT DMG')).toFixed(1))+'%');
+    statLine('Effect Hit Rate','0%',(+(g('Effect Hit Rate')).toFixed(1))+'%');
+    statLine('Effect RES','0%',(+(g('Effect RES')).toFixed(1))+'%');
+    statLine('Energy Regen Rate','100%',(+(100+g('Energy Regen Rate')).toFixed(1))+'%');
+    statLine(elemDmg,'0%',(+(g(elemDmg)).toFixed(1))+'%');
+    statLine('Break Effect','0%',(+(g('Break Effect')).toFixed(1))+'%');
   }else{
-    lines.push('Base stat calculation unavailable. Use relic totals below.');
+    lines.push('Base stats unavailable. Relic totals are listed below.');
   }
   lines.push('');
-  lines.push('RELIC TOTALS');
-  const keys=Object.keys(totals);
-  if(keys.length)keys.sort().forEach(k=>lines.push(k+': '+exportValueForStat(k,totals[k])));
+  lines.push('Relic totals');
+  const keys=Object.keys(totals).sort();
+  if(keys.length)keys.forEach(k=>lines.push(k+': '+formatExportValue(k,totals[k])));
   else lines.push('—');
   lines.push('');
-  lines.push('RELIC PIECES');
+  lines.push('Relic pieces');
   SLOTS.forEach(slot=>{
     const p=relics[slot.k]||{};
     const subs=(p.subs||[]).filter(x=>x&&(x.s||x.v)).map(x=>{
       let s=(x.s||'—')+' '+(x.v||'—');
-      if(x.r)s+=' ('+x.r+' roll'+(String(x.r)==='1'?'':'s')+')';
+      if(x.r)s+=' ['+x.r+' roll'+(String(x.r)==='1'?'':'s')+']';
       return s;
     });
     const setNote=(slot.k==='sphere'||slot.k==='rope')?'planar':(p.set==='2'?'cavern set 2':'cavern set 1');
-    lines.push(slot.l+': +'+(p.lv||'0')+' | '+setNote+' | main '+(p.main||'—')+' '+(p.mainVal||'—')+' | subs: '+(subs.length?subs.join('; '):'—'));
+    lines.push(slot.l+': +'+(p.lv||'0')+', '+setNote+', main '+(p.main||'—')+' '+(p.mainVal||'—')+', subs: '+(subs.length?subs.join('; '):'—'));
   });
   lines.push('');
-  lines.push('TRACKER NOTES');
+  lines.push('Notes');
   lines.push('Substat priority: '+(c.subs||'—'));
   lines.push('Notes: '+(c.notes||'—'));
   const teams=state.teams.filter(t=>(t.slots||[]).includes(c.id));
   if(teams.length){
     lines.push('');
-    lines.push('TEAMS USING THIS CHARACTER');
+    lines.push('Teams using this character');
     teams.forEach(t=>{
       const names=(t.slots||[]).map(id=>{const x=state.chars.find(ch=>ch.id===id);return x?x.name:'empty';}).join(' / ');
-      lines.push((t.name||'Untitled team')+': '+names+(t.notes?' | notes: '+t.notes:''));
+      lines.push((t.name||'Untitled team')+': '+names+(t.notes?' | '+t.notes:''));
     });
   }
   return lines.join('\n');
@@ -1980,16 +1998,18 @@ function downloadTextFile(filename,text){
 function exportCharText(id){
   const c=state.chars.find(x=>x.id===id);
   if(!c)return;
-  const text=buildAIText(c);
-  const filename=(normName(c.name)||'character')+'-ai-export.txt';
-  downloadTextFile(filename,text);
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(()=>alert('AI text export copied to clipboard and downloaded as '+filename+'.')).catch(()=>alert('AI text export downloaded as '+filename+'.'));
-  }else{
-    alert('AI text export downloaded as '+filename+'.');
-  }
+  downloadTextFile(safeFileName(c.name)+' Export.txt',buildCharacterTextExport(c));
 }
-
+function closeExportMenus(){document.querySelectorAll('.export-menu.open').forEach(m=>m.classList.remove('open'));}
+function toggleExportMenu(ev,id){
+  ev.stopPropagation();
+  const m=document.getElementById('export-menu-'+id);
+  if(!m)return;
+  const open=m.classList.contains('open');
+  closeExportMenus();
+  if(!open)m.classList.add('open');
+}
+document.addEventListener('click',closeExportMenus);
 function detailViewHTML(c){
   const sb='status-'+c.status.toLowerCase();
   const stars='★'.repeat(parseInt(c.rarity,10)||4);
@@ -2019,8 +2039,7 @@ function detailViewHTML(c){
     '<span class="status-badge '+sb+'" onclick="cycleStatus(event,\''+c.id+'\')" title="Click to change status">'+c.status+'</span>'+
     '<span class="spacer"></span>'+
     '<button class="btn-gold" onclick="startEdit()">✎ Edit</button>'+
-    '<button class="btn-outline-s" onclick="exportChar(\''+c.id+'\')">⬆ PNG</button>'+
-    '<button class="btn-outline-s btn-text-export" onclick="exportCharText(\''+c.id+'\')" title="Download/copy an AI-readable text export">☰ Text</button>'+
+    '<span class="export-wrap"><button class="btn-outline-s" onclick="toggleExportMenu(event,\''+c.id+'\')">⬆ Export</button><span class="export-menu" id="export-menu-'+c.id+'"><button onclick="event.stopPropagation();closeExportMenus();exportChar(\''+c.id+'\')">PNG image</button><button onclick="event.stopPropagation();closeExportMenus();exportCharText(\''+c.id+'\')">Text file</button></span></span>'+
     '<button class="btn-del-red" onclick="delChar(\''+c.id+'\')">Delete</button>'+
   '</div>'+
   '<div class="dt-grid '+elClass(c)+'">'+
