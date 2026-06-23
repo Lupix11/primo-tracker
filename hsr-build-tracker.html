@@ -1139,6 +1139,19 @@ html.png-export .dt-top button{
 
 /* — Page headers shimmer line — */
 .page-title-line,.hero h1{position:relative;}
+
+
+/* ── V9 quick fixes: full-page background + AI text export button fit ── */
+html,body{min-width:100%;min-height:100%;background:#05070f!important;}
+body{min-height:100vh;background:radial-gradient(ellipse 70% 45% at 18% 0%,rgba(100,70,160,.16),transparent 62%),radial-gradient(ellipse 70% 45% at 92% 8%,rgba(26,106,122,.14),transparent 60%),#05070f!important;}
+.bg{position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;min-width:100vw!important;min-height:100vh!important;max-width:none!important;max-height:none!important;}
+.shell,.main{min-height:100vh;}
+.main{position:relative;background:transparent!important;}
+#page-detail,#detail-wrap,#page-detail .dt-grid{width:100%;max-width:none;}
+#page-detail .dt-top{width:100%;background:linear-gradient(90deg,rgba(8,12,26,.62),rgba(8,12,26,.32) 58%,rgba(8,12,26,.14) 100%);border-bottom:1px solid rgba(106,150,200,.10);padding:0 2px 6px 0;}
+#page-detail .dt-top .btn-text-export{min-width:86px;}
+html.png-export body{background:#05070f!important;}
+
 </style>
 </head>
 <body>
@@ -1372,6 +1385,7 @@ function fillDatalists(){
 function normName(s){return String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'');}
 const ALIAS={'sw999':'silverwolflv999','silverwolf999':'silverwolflv999','mblade':'mortenaxblade','dhpt':'danhengpermansorterrae','ogsilverwolf':'silverwolf','ogsw':'silverwolf'};
 function charId(c){
+  if(c&&(c.hsrId||c.avatarId))return String(c.hsrId||c.avatarId);
   if(!GD.charByName)return null;
   let n=normName(c.name);
   if(/trailblazer|stelle|caelus|^rtb$|^htb$|^dtb$|^ptb$/.test(n)){
@@ -1853,6 +1867,129 @@ async function exportChar(id){
     if(btn){btn.disabled=false;btn.textContent=oldText||'⬆ Export';}
   }
 }
+
+function exportValueForStat(k,v){
+  if(v===undefined||v===null||v==='')return '—';
+  const n=Number(v);
+  if(Number.isFinite(n))return (+n.toFixed(1))+(PCT_STATS.includes(k)||/DMG$/.test(k)?'%':'');
+  return String(v);
+}
+function buildAIText(c){
+  const lines=[];
+  const tr=c.traces||{};
+  const relics=c.relics||{};
+  const totals=computeRelicTotals(c);
+  const base=getBaseStats(c);
+  const flame=c.prio||0;
+  lines.push('HSR Build Tracker export for AI team/build optimization');
+  lines.push('Generated from the tracker text export. Minor trace nodes and hidden set effects may not be included in computed totals.');
+  lines.push('');
+  lines.push('CHARACTER');
+  lines.push('Name: '+(c.name||'Unnamed'));
+  lines.push('Status: '+(c.status||'—'));
+  lines.push('Importance / priority flames: '+flame+'/3');
+  lines.push('Rarity: '+(c.rarity||'—')+' star');
+  lines.push('Path: '+(c.path||'—'));
+  lines.push('Element: '+(c.element||'—'));
+  lines.push('Level: '+(c.level||'—'));
+  lines.push('Eidolon: '+(c.eidolon||'E0'));
+  lines.push('');
+  lines.push('LIGHT CONE');
+  lines.push('Name: '+(c.lc||'—'));
+  lines.push('Superimposition: '+(c.si||'—'));
+  lines.push('Level: '+(c.lclv||'= character level / unknown'));
+  lines.push('');
+  lines.push('RELIC SETS');
+  lines.push('Cavern set 1: '+(c.relic||'—'));
+  lines.push('Cavern set 2: '+(c.relic2||'—'));
+  lines.push('Planar set: '+(c.planar||'—'));
+  lines.push('');
+  lines.push('TRACES');
+  lines.push('Basic ATK: '+(tr.b||'—'));
+  lines.push('Skill: '+(tr.s||'—'));
+  lines.push('Ultimate: '+(tr.u||'—'));
+  lines.push('Talent: '+(tr.t||'—'));
+  if(c.path==='Remembrance'){
+    lines.push('Memosprite Skill: '+(tr.msS||'—'));
+    lines.push('Memosprite Talent: '+(tr.msU||'—'));
+  }
+  if(c.path==='Elation')lines.push('Elation Skill: '+(tr.elt||'—'));
+  lines.push('Ascension traces: A2='+(tr.a2?'yes':'no')+', A4='+(tr.a4?'yes':'no')+', A6='+(tr.a6?'yes':'no'));
+  lines.push('');
+  lines.push('COMPUTED STATS');
+  if(base){
+    const g=k=>totals[k]||0;
+    const elemDmg=(c.element?c.element+' DMG':'Element DMG');
+    const rows=[
+      ['HP',Math.round(base.hp),Math.round(base.hp*(1+g('HP%')/100)+g('HP'))],
+      ['ATK',Math.round(base.atk),Math.round(base.atk*(1+g('ATK%')/100)+g('ATK'))],
+      ['DEF',Math.round(base.def),Math.round(base.def*(1+g('DEF%')/100)+g('DEF'))],
+      ['SPD',+(base.spd+g('SPD')).toFixed(1),+(base.spd+g('SPD')).toFixed(1)],
+      ['CRIT Rate',(+base.cr.toFixed(1))+'%',(+(base.cr+g('CRIT Rate')).toFixed(1))+'%'],
+      ['CRIT DMG',(+base.cd.toFixed(1))+'%',(+(base.cd+g('CRIT DMG')).toFixed(1))+'%'],
+      ['Effect Hit Rate','0%',(+(g('Effect Hit Rate')).toFixed(1))+'%'],
+      ['Effect RES','0%',(+(g('Effect RES')).toFixed(1))+'%'],
+      ['Energy Regen Rate','100%',(+(100+g('Energy Regen Rate')).toFixed(1))+'%'],
+      [elemDmg,'0%',(+(g(elemDmg)).toFixed(1))+'%'],
+      ['Break Effect','0%',(+(g('Break Effect')).toFixed(1))+'%']
+    ];
+    rows.forEach(r=>lines.push(r[0]+': base '+r[1]+' | total '+r[2]));
+  }else{
+    lines.push('Base stat calculation unavailable. Use relic totals below.');
+  }
+  lines.push('');
+  lines.push('RELIC TOTALS');
+  const keys=Object.keys(totals);
+  if(keys.length)keys.sort().forEach(k=>lines.push(k+': '+exportValueForStat(k,totals[k])));
+  else lines.push('—');
+  lines.push('');
+  lines.push('RELIC PIECES');
+  SLOTS.forEach(slot=>{
+    const p=relics[slot.k]||{};
+    const subs=(p.subs||[]).filter(x=>x&&(x.s||x.v)).map(x=>{
+      let s=(x.s||'—')+' '+(x.v||'—');
+      if(x.r)s+=' ('+x.r+' roll'+(String(x.r)==='1'?'':'s')+')';
+      return s;
+    });
+    const setNote=(slot.k==='sphere'||slot.k==='rope')?'planar':(p.set==='2'?'cavern set 2':'cavern set 1');
+    lines.push(slot.l+': +'+(p.lv||'0')+' | '+setNote+' | main '+(p.main||'—')+' '+(p.mainVal||'—')+' | subs: '+(subs.length?subs.join('; '):'—'));
+  });
+  lines.push('');
+  lines.push('TRACKER NOTES');
+  lines.push('Substat priority: '+(c.subs||'—'));
+  lines.push('Notes: '+(c.notes||'—'));
+  const teams=state.teams.filter(t=>(t.slots||[]).includes(c.id));
+  if(teams.length){
+    lines.push('');
+    lines.push('TEAMS USING THIS CHARACTER');
+    teams.forEach(t=>{
+      const names=(t.slots||[]).map(id=>{const x=state.chars.find(ch=>ch.id===id);return x?x.name:'empty';}).join(' / ');
+      lines.push((t.name||'Untitled team')+': '+names+(t.notes?' | notes: '+t.notes:''));
+    });
+  }
+  return lines.join('\n');
+}
+function downloadTextFile(filename,text){
+  const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+function exportCharText(id){
+  const c=state.chars.find(x=>x.id===id);
+  if(!c)return;
+  const text=buildAIText(c);
+  const filename=(normName(c.name)||'character')+'-ai-export.txt';
+  downloadTextFile(filename,text);
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>alert('AI text export copied to clipboard and downloaded as '+filename+'.')).catch(()=>alert('AI text export downloaded as '+filename+'.'));
+  }else{
+    alert('AI text export downloaded as '+filename+'.');
+  }
+}
+
 function detailViewHTML(c){
   const sb='status-'+c.status.toLowerCase();
   const stars='★'.repeat(parseInt(c.rarity,10)||4);
@@ -1882,7 +2019,8 @@ function detailViewHTML(c){
     '<span class="status-badge '+sb+'" onclick="cycleStatus(event,\''+c.id+'\')" title="Click to change status">'+c.status+'</span>'+
     '<span class="spacer"></span>'+
     '<button class="btn-gold" onclick="startEdit()">✎ Edit</button>'+
-    '<button class="btn-outline-s" onclick="exportChar(\''+c.id+'\')">⬆ Export</button>'+
+    '<button class="btn-outline-s" onclick="exportChar(\''+c.id+'\')">⬆ PNG</button>'+
+    '<button class="btn-outline-s btn-text-export" onclick="exportCharText(\''+c.id+'\')" title="Download/copy an AI-readable text export">☰ Text</button>'+
     '<button class="btn-del-red" onclick="delChar(\''+c.id+'\')">Delete</button>'+
   '</div>'+
   '<div class="dt-grid '+elClass(c)+'">'+
@@ -2105,7 +2243,8 @@ async function importUID(){
       try{
         const name=ch.name||'';
         if(!name)return;
-        const existing=state.chars.find(x=>normName(x.name)===normName(name)||(charId(x)&&ch.id&&String(charId(x))===String(ch.id)));
+        const incomingId=ch.id?String(ch.id):'';
+        const existing=state.chars.find(x=>(incomingId&&(String(x.hsrId||x.avatarId||'')===incomingId||(charId(x)&&String(charId(x))===incomingId)))||normName(x.name)===normName(name));
         const elRaw=(ch.element&&(ch.element.name||ch.element.id))||'';
         const pathRaw=(ch.path&&(ch.path.name||ch.path.id))||'';
         const relics={};
@@ -2133,6 +2272,7 @@ async function importUID(){
         });
         const upd={
           name,
+          hsrId:incomingId,
           rarity:String(ch.rarity||'5'),
           element:ELEM_FIX[elRaw]||elRaw||(existing?existing.element:'Physical'),
           path:PATH_FIX[pathRaw]||pathRaw||(existing?existing.path:'Destruction'),
@@ -2148,8 +2288,28 @@ async function importUID(){
         if(Object.keys(traces).length){
           upd.traces=Object.assign({},existing?existing.traces:{},traces);
         }
-        if(existing){Object.assign(existing,upd);updated++;}
-        else{state.chars.push(Object.assign({id:crypto.randomUUID(),status:'Built',relic:'',planar:'',subs:'',notes:'Imported via UID'},upd));added++;}
+        if(existing){
+          const keep={
+            id:existing.id,
+            name:existing.name||upd.name,
+            status:existing.status||'Built',
+            prio:existing.prio||0,
+            subs:existing.subs||'',
+            notes:existing.notes||'',
+            relic:existing.relic||'',
+            relic2:existing.relic2||'',
+            planar:existing.planar||''
+          };
+          const oldTraces=existing.traces||{};
+          const oldRelics=existing.relics||{};
+          const nextRelics=upd.relics||{};
+          Object.keys(nextRelics).forEach(k=>{if(oldRelics[k]&&oldRelics[k].set)nextRelics[k].set=oldRelics[k].set;});
+          Object.assign(existing,upd,keep);
+          existing.relics=nextRelics;
+          if(upd.traces)existing.traces=Object.assign({},oldTraces,upd.traces);
+          updated++;
+        }
+        else{state.chars.push(Object.assign({id:crypto.randomUUID(),status:'Built',relic:'',relic2:'',planar:'',subs:'',notes:'Imported via UID',prio:0},upd));added++;}
       }catch(e){/* skip malformed character */}
     });
     save();renderAll();
