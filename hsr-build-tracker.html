@@ -1141,34 +1141,13 @@ html.png-export .dt-top button{
 .page-title-line,.hero h1{position:relative;}
 
 
-/* ── Quickfix: smoother page, single export menu, clean PNG exports ── */
-/* The animated star field and page-in animation are pretty, but they make html2canvas and weaker browsers stutter. */
-.bg::after{animation:none!important;opacity:.72!important;}
-.page.active{animation:none!important;}
-.spark{display:none!important;}
-
+/* ── Strict quick fixes only: export menu + header fill ── */
+#page-detail .dt-top{width:100%;background:linear-gradient(90deg,rgba(8,12,26,.58),rgba(8,12,26,.26) 62%,rgba(8,12,26,.08));border-bottom:1px solid rgba(106,150,200,.10);padding-bottom:6px;}
 .export-wrap{position:relative;display:inline-flex;}
-.export-menu{position:absolute;right:0;top:calc(100% + 6px);min-width:138px;background:rgba(7,10,20,.98);border:1px solid rgba(232,196,122,.28);box-shadow:0 12px 28px rgba(0,0,0,.45);z-index:250;display:none;padding:5px;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);}
+.export-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:80;display:none;min-width:138px;background:rgba(7,11,23,.98);border:1px solid rgba(232,196,122,.28);box-shadow:0 12px 28px rgba(0,0,0,.38);padding:5px;}
 .export-menu.open{display:block;}
-.export-menu button{width:100%;height:30px!important;min-height:30px!important;padding:0 10px!important;background:transparent;border:none;color:#cfe4f5;font-family:'Nunito',sans-serif;font-size:12px!important;font-weight:800!important;text-align:left;justify-content:flex-start!important;cursor:pointer;clip-path:none!important;}
+.export-menu button{display:block;width:100%;min-width:0!important;text-align:left;background:transparent;border:0;color:#d9e8f6;font-family:'Nunito',sans-serif;font-size:12.5px;font-weight:700;padding:7px 9px;cursor:pointer;clip-path:none;}
 .export-menu button:hover{background:rgba(232,196,122,.10);color:var(--gold);}
-
-
-html,body{min-width:100%;min-height:100%;background:#05070f!important;}
-.shell,.main{min-height:100vh;}
-#page-detail .dt-top{width:100%;background:linear-gradient(90deg,rgba(7,10,21,.72),rgba(7,10,21,.38) 62%,rgba(7,10,21,.18));border-bottom:1px solid rgba(106,150,200,.10);padding-bottom:6px;}
-
-/* PNG mode: capture the build only, not the website controls/glow effects. */
-html.png-export .dt-top button,
-html.png-export .export-menu,
-html.png-export .export-wrap{display:none!important;}
-html.png-export *,
-html.png-export *::before,
-html.png-export *::after{animation:none!important;transition:none!important;box-shadow:none!important;text-shadow:none!important;filter:none!important;}
-html.png-export .dt-panel,
-html.png-export .rl-card,
-html.png-export .dt-portrait,
-html.png-export .char-elem{box-shadow:none!important;filter:none!important;}
 
 </style>
 </head>
@@ -1837,18 +1816,130 @@ function loadHtml2Canvas(){
     document.head.appendChild(s);
   });
 }
+function exportFileName(name,suffix,ext){
+  const clean=String(name||'Character').replace(/[\\/:*?"<>|]+/g,'').replace(/\s+/g,' ').trim()||'Character';
+  return clean+' '+suffix+'.'+ext;
+}
+function copyPlainText(text){
+  const ta=document.createElement('textarea');
+  ta.value=text;
+  ta.setAttribute('readonly','');
+  ta.style.position='fixed';ta.style.left='-9999px';ta.style.top='0';
+  document.body.appendChild(ta);
+  ta.focus();ta.select();
+  let ok=false;
+  try{ok=document.execCommand('copy');}catch(e){ok=false;}
+  ta.remove();
+  return ok;
+}
+function downloadTextFile(filename,text){
+  const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+function statExportValue(k,v){
+  if(v===undefined||v===null||v==='')return '—';
+  const n=Number(v);
+  if(Number.isFinite(n))return (+n.toFixed(1))+(PCT_STATS.includes(k)||/DMG$/.test(k)?'%':'');
+  return String(v);
+}
+function buildCharacterText(c){
+  const lines=[];
+  const tr=c.traces||{};
+  const relics=c.relics||{};
+  const totals=computeRelicTotals(c);
+  const base=getBaseStats(c);
+  const row=(k,v)=>lines.push(k+': '+(v===undefined||v===null||v===''?'—':v));
+  lines.push('HSR Build Tracker Export');
+  lines.push('');
+  row('Name',c.name||'Unnamed');
+  row('Status',c.status||'—');
+  row('Importance / fire',String(c.prio||0)+'/3');
+  row('Rarity',(c.rarity||'—')+' star');
+  row('Path',c.path||'—');
+  row('Element',c.element||'—');
+  row('Level',c.level||'—');
+  row('Eidolon',c.eidolon||'E0');
+  lines.push('');
+  lines.push('Light Cone');
+  row('Name',c.lc||'—');
+  row('Superimposition',c.si||'—');
+  row('Level',c.lclv||'—');
+  lines.push('');
+  lines.push('Sets');
+  row('Cavern set 1',c.relic||'—');
+  row('Cavern set 2',c.relic2||'—');
+  row('Planar set',c.planar||'—');
+  lines.push('');
+  lines.push('Traces');
+  row('Basic ATK',tr.b||'—');row('Skill',tr.s||'—');row('Ultimate',tr.u||'—');row('Talent',tr.t||'—');
+  if(c.path==='Remembrance'){row('Memosprite Skill',tr.msS||'—');row('Memosprite Talent',tr.msU||'—');}
+  if(c.path==='Elation')row('Elation Skill',tr.elt||'—');
+  row('Ascension traces','A2='+(tr.a2?'yes':'no')+', A4='+(tr.a4?'yes':'no')+', A6='+(tr.a6?'yes':'no'));
+  lines.push('');
+  lines.push('Computed Stats');
+  if(base){
+    const g=k=>totals[k]||0;
+    const elem=c.element?c.element+' DMG':'Element DMG';
+    const rows=[
+      ['HP',Math.round(base.hp*(1+g('HP%')/100)+g('HP'))],
+      ['ATK',Math.round(base.atk*(1+g('ATK%')/100)+g('ATK'))],
+      ['DEF',Math.round(base.def*(1+g('DEF%')/100)+g('DEF'))],
+      ['SPD',+(base.spd+g('SPD')).toFixed(1)],
+      ['CRIT Rate',+(base.cr+g('CRIT Rate')).toFixed(1)+'%'],
+      ['CRIT DMG',+(base.cd+g('CRIT DMG')).toFixed(1)+'%'],
+      ['Effect Hit Rate',+g('Effect Hit Rate').toFixed(1)+'%'],
+      ['Effect RES',+g('Effect RES').toFixed(1)+'%'],
+      ['Energy Regen Rate',+(100+g('Energy Regen Rate')).toFixed(1)+'%'],
+      [elem,+g(elem).toFixed(1)+'%'],
+      ['Break Effect',+g('Break Effect').toFixed(1)+'%']
+    ];
+    rows.forEach(x=>row(x[0],x[1]));
+  }else row('Stats','Base stat calculation unavailable');
+  lines.push('');
+  lines.push('Relic Totals');
+  const keys=Object.keys(totals).sort();
+  if(keys.length)keys.forEach(k=>row(k,statExportValue(k,totals[k]))); else lines.push('—');
+  lines.push('');
+  lines.push('Relics');
+  SLOTS.forEach(slot=>{
+    const p=relics[slot.k]||{};
+    const subs=(p.subs||[]).filter(x=>x&&(x.s||x.v)).map(x=>(x.s||'—')+' '+(x.v||'—')+(x.r?' ['+x.r+' roll'+(String(x.r)==='1'?'':'s')+']':''));
+    lines.push(slot.l+': +'+(p.lv||'0')+', main '+(p.main||'—')+' '+(p.mainVal||'—')+', subs: '+(subs.length?subs.join('; '):'—'));
+  });
+  lines.push('');
+  row('Substat priority',c.subs||'—');
+  row('Notes',c.notes||'—');
+  return lines.join('\n');
+}
+function exportCharText(id){
+  const c=state.chars.find(x=>x.id===id);
+  if(!c)return;
+  const txt=buildCharacterText(c);
+  copyPlainText(txt);
+  downloadTextFile(exportFileName(c.name,'Export','txt'),txt);
+}
+function toggleExportMenu(ev){
+  ev.stopPropagation();
+  const menu=document.getElementById('export-menu');
+  if(menu)menu.classList.toggle('open');
+}
+document.addEventListener('click',e=>{
+  const menu=document.getElementById('export-menu');
+  if(menu&&!e.target.closest('.export-wrap'))menu.classList.remove('open');
+});
 async function exportChar(id){
   const c=state.chars.find(x=>x.id===id);
   if(!c)return;
   if(editMode){alert('Save or cancel editing before exporting a PNG.');return;}
+  const menu=document.getElementById('export-menu');
+  if(menu)menu.classList.remove('open');
   const node=document.getElementById('page-detail');
   if(!node)return;
-  const btn=[...document.querySelectorAll('.dt-top button')].find(b=>b.textContent.includes('Export'));
-  const oldText=btn?btn.textContent:'';
   try{
-    // Do NOT change the visible page before capture. The previous version captured
-    // the disabled "Rendering…" button and html2canvas restarted page animations,
-    // which made the PNG look dark/ghosted.
     await (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve());
     const h2c=await loadHtml2Canvas();
     const canvas=await h2c(node,{
@@ -1864,9 +1955,8 @@ async function exportChar(id){
       ignoreElements:el=>el.classList&&(el.classList.contains('save-flash')||el.classList.contains('export-menu')),
       onclone:doc=>{
         doc.documentElement.classList.add('png-export');
-        doc.querySelectorAll('#page-detail .dt-top button,.export-menu,.export-wrap').forEach(el=>el.remove());
         const st=doc.createElement('style');
-        st.textContent='*,*::before,*::after{animation:none!important;transition:none!important;box-shadow:none!important;text-shadow:none!important;filter:none!important}#page-detail,#page-detail.active,.page.active{opacity:1!important;transform:none!important;filter:none!important}.bg{position:absolute!important;top:0!important;left:0!important;width:100%!important;height:'+node.scrollHeight+'px!important;min-height:'+node.scrollHeight+'px!important}.dt-portrait{height:auto!important;aspect-ratio:3/4!important}.dt-portrait img{object-fit:cover!important;width:100%!important;height:100%!important;position:absolute!important;inset:0!important}';
+        st.textContent='button,.export-menu{display:none!important}*,*::before,*::after{animation:none!important;transition:none!important;box-shadow:none!important;text-shadow:none!important;filter:none!important}#page-detail,#page-detail.active,.page.active{opacity:1!important;transform:none!important}.bg{position:absolute!important;top:0!important;left:0!important;width:100%!important;height:'+node.scrollHeight+'px!important;min-height:'+node.scrollHeight+'px!important}.dt-portrait{height:auto!important;aspect-ratio:3/4!important}.dt-portrait img{object-fit:cover!important;width:100%!important;height:100%!important;position:absolute!important;inset:0!important}';
         doc.head.appendChild(st);
       }
     });
@@ -1874,142 +1964,15 @@ async function exportChar(id){
       if(!blob){throw new Error('PNG render produced no image.');}
       const a=document.createElement('a');
       a.href=URL.createObjectURL(blob);
-      a.download=safeFileName(c.name)+' Build.png';
+      a.download=exportFileName(c.name,'Build','png');
       document.body.appendChild(a);a.click();a.remove();
       setTimeout(()=>URL.revokeObjectURL(a.href),2000);
     },'image/png');
   }catch(e){
     alert('PNG export failed: '+((e&&e.message)||e));
-  }finally{
-    if(btn){btn.disabled=false;btn.textContent=oldText||'⬆ Export';}
   }
 }
 
-function safeFileName(name){
-  const cleaned=String(name||'Character').replace(/[<>:"/\\|?*\x00-\x1F]/g,'').replace(/\s+/g,' ').trim();
-  return (cleaned||'Character').slice(0,70);
-}
-function formatExportValue(k,v){
-  if(v===undefined||v===null||v==='')return '—';
-  const n=Number(v);
-  if(Number.isFinite(n))return (+n.toFixed(1))+(PCT_STATS.includes(k)||/DMG$/.test(k)?'%':'');
-  return String(v);
-}
-function buildCharacterTextExport(c){
-  const lines=[];
-  const tr=c.traces||{};
-  const relics=c.relics||{};
-  const totals=computeRelicTotals(c);
-  const base=getBaseStats(c);
-  const statLine=(label,baseVal,totalVal)=>lines.push(label+': '+baseVal+' base / '+totalVal+' total');
-  lines.push((c.name||'Character')+' Export');
-  lines.push('Source: HSR Build Tracker');
-  lines.push('');
-  lines.push('Character');
-  lines.push('Name: '+(c.name||'Unnamed'));
-  lines.push('Status: '+(c.status||'—'));
-  lines.push('Importance/fire priority: '+(c.prio||0)+'/3');
-  lines.push('Rarity: '+(c.rarity||'—')+' star');
-  lines.push('Path: '+(c.path||'—'));
-  lines.push('Element: '+(c.element||'—'));
-  lines.push('Level: '+(c.level||'—'));
-  lines.push('Eidolon: '+(c.eidolon||'E0'));
-  lines.push('');
-  lines.push('Light Cone');
-  lines.push('Name: '+(c.lc||'—'));
-  lines.push('Superimposition: '+(c.si||'—'));
-  lines.push('Level: '+(c.lclv||'—'));
-  lines.push('');
-  lines.push('Sets');
-  lines.push('Cavern set 1: '+(c.relic||'—'));
-  lines.push('Cavern set 2: '+(c.relic2||'—'));
-  lines.push('Planar set: '+(c.planar||'—'));
-  lines.push('');
-  lines.push('Traces');
-  lines.push('Basic ATK: '+(tr.b||'—'));
-  lines.push('Skill: '+(tr.s||'—'));
-  lines.push('Ultimate: '+(tr.u||'—'));
-  lines.push('Talent: '+(tr.t||'—'));
-  if(c.path==='Remembrance'){
-    lines.push('Memosprite Skill: '+(tr.msS||'—'));
-    lines.push('Memosprite Talent: '+(tr.msU||'—'));
-  }
-  if(c.path==='Elation')lines.push('Elation Skill: '+(tr.elt||'—'));
-  lines.push('Ascension traces: A2='+(tr.a2?'yes':'no')+', A4='+(tr.a4?'yes':'no')+', A6='+(tr.a6?'yes':'no'));
-  lines.push('');
-  lines.push('Stats');
-  if(base){
-    const g=k=>totals[k]||0;
-    const elemDmg=(c.element?c.element+' DMG':'Element DMG');
-    statLine('HP',Math.round(base.hp),Math.round(base.hp*(1+g('HP%')/100)+g('HP')));
-    statLine('ATK',Math.round(base.atk),Math.round(base.atk*(1+g('ATK%')/100)+g('ATK')));
-    statLine('DEF',Math.round(base.def),Math.round(base.def*(1+g('DEF%')/100)+g('DEF')));
-    statLine('SPD',+(base.spd+g('SPD')).toFixed(1),+(base.spd+g('SPD')).toFixed(1));
-    statLine('CRIT Rate',(+base.cr.toFixed(1))+'%',(+(base.cr+g('CRIT Rate')).toFixed(1))+'%');
-    statLine('CRIT DMG',(+base.cd.toFixed(1))+'%',(+(base.cd+g('CRIT DMG')).toFixed(1))+'%');
-    statLine('Effect Hit Rate','0%',(+(g('Effect Hit Rate')).toFixed(1))+'%');
-    statLine('Effect RES','0%',(+(g('Effect RES')).toFixed(1))+'%');
-    statLine('Energy Regen Rate','100%',(+(100+g('Energy Regen Rate')).toFixed(1))+'%');
-    statLine(elemDmg,'0%',(+(g(elemDmg)).toFixed(1))+'%');
-    statLine('Break Effect','0%',(+(g('Break Effect')).toFixed(1))+'%');
-  }else{
-    lines.push('Base stats unavailable. Relic totals are listed below.');
-  }
-  lines.push('');
-  lines.push('Relic totals');
-  const keys=Object.keys(totals).sort();
-  if(keys.length)keys.forEach(k=>lines.push(k+': '+formatExportValue(k,totals[k])));
-  else lines.push('—');
-  lines.push('');
-  lines.push('Relic pieces');
-  SLOTS.forEach(slot=>{
-    const p=relics[slot.k]||{};
-    const subs=(p.subs||[]).filter(x=>x&&(x.s||x.v)).map(x=>{
-      let s=(x.s||'—')+' '+(x.v||'—');
-      if(x.r)s+=' ['+x.r+' roll'+(String(x.r)==='1'?'':'s')+']';
-      return s;
-    });
-    const setNote=(slot.k==='sphere'||slot.k==='rope')?'planar':(p.set==='2'?'cavern set 2':'cavern set 1');
-    lines.push(slot.l+': +'+(p.lv||'0')+', '+setNote+', main '+(p.main||'—')+' '+(p.mainVal||'—')+', subs: '+(subs.length?subs.join('; '):'—'));
-  });
-  lines.push('');
-  lines.push('Notes');
-  lines.push('Substat priority: '+(c.subs||'—'));
-  lines.push('Notes: '+(c.notes||'—'));
-  const teams=state.teams.filter(t=>(t.slots||[]).includes(c.id));
-  if(teams.length){
-    lines.push('');
-    lines.push('Teams using this character');
-    teams.forEach(t=>{
-      const names=(t.slots||[]).map(id=>{const x=state.chars.find(ch=>ch.id===id);return x?x.name:'empty';}).join(' / ');
-      lines.push((t.name||'Untitled team')+': '+names+(t.notes?' | '+t.notes:''));
-    });
-  }
-  return lines.join('\n');
-}
-function downloadTextFile(filename,text){
-  const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download=filename;
-  document.body.appendChild(a);a.click();a.remove();
-  setTimeout(()=>URL.revokeObjectURL(a.href),2000);
-}
-function exportCharText(id){
-  const c=state.chars.find(x=>x.id===id);
-  if(!c)return;
-  downloadTextFile(safeFileName(c.name)+' Export.txt',buildCharacterTextExport(c));
-}
-function closeExportMenus(){document.querySelectorAll('.export-menu.open').forEach(m=>m.classList.remove('open'));}
-function toggleExportMenu(ev,id){
-  ev.stopPropagation();
-  const m=document.getElementById('export-menu-'+id);
-  if(!m)return;
-  const open=m.classList.contains('open');
-  closeExportMenus();
-  if(!open)m.classList.add('open');
-}
-document.addEventListener('click',closeExportMenus);
 function detailViewHTML(c){
   const sb='status-'+c.status.toLowerCase();
   const stars='★'.repeat(parseInt(c.rarity,10)||4);
@@ -2039,7 +2002,7 @@ function detailViewHTML(c){
     '<span class="status-badge '+sb+'" onclick="cycleStatus(event,\''+c.id+'\')" title="Click to change status">'+c.status+'</span>'+
     '<span class="spacer"></span>'+
     '<button class="btn-gold" onclick="startEdit()">✎ Edit</button>'+
-    '<span class="export-wrap"><button class="btn-outline-s" onclick="toggleExportMenu(event,\''+c.id+'\')">⬆ Export</button><span class="export-menu" id="export-menu-'+c.id+'"><button onclick="event.stopPropagation();closeExportMenus();exportChar(\''+c.id+'\')">PNG image</button><button onclick="event.stopPropagation();closeExportMenus();exportCharText(\''+c.id+'\')">Text file</button></span></span>'+
+    '<span class="export-wrap"><button class="btn-outline-s" onclick="toggleExportMenu(event)">⬆ Export</button><span class="export-menu" id="export-menu"><button onclick="exportChar(\''+c.id+'\')">PNG image</button><button onclick="exportCharText(\''+c.id+'\')">Text file</button></span></span>'+
     '<button class="btn-del-red" onclick="delChar(\''+c.id+'\')">Delete</button>'+
   '</div>'+
   '<div class="dt-grid '+elClass(c)+'">'+
