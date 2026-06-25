@@ -1162,6 +1162,20 @@ html.png-export .dt-top button{
 .tc.empty{opacity:.68;}
 .tc.empty .tc-line span{width:0!important;}
 
+
+
+/* ── Roster edit mode: batch priority/status changes, no jumping until Save ── */
+.roster-edit-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.roster-edit-hint{display:none;margin:-2px 0 12px;padding:9px 12px;border:1px solid rgba(232,196,122,.18);background:rgba(232,196,122,.055);color:#9fb8cf;font-size:12.5px;line-height:1.45;}
+.roster-edit-hint b{color:var(--gold);}
+#page-roster.roster-editing .roster-edit-hint{display:block;}
+#page-roster.roster-editing .char-card{cursor:default;}
+#page-roster.roster-editing .char-card:hover{transform:none;}
+#page-roster.roster-editing .status-badge,#page-roster.roster-editing .flame{cursor:pointer;}
+#page-roster.roster-editing #roster-tabs{opacity:.65;}
+.char-card.roster-dirty{box-shadow:0 0 0 1px rgba(232,196,122,.32),0 8px 24px rgba(0,0,0,.28);}
+.char-card.roster-dirty::after{content:'edited';position:absolute;right:10px;bottom:8px;font-size:8.5px;letter-spacing:1.1px;text-transform:uppercase;color:var(--gold);opacity:.85;pointer-events:none;}
+
 </style>
 </head>
 <body>
@@ -1231,7 +1245,10 @@ html.png-export .dt-top button{
   <div class="card">
     <div class="card-head">
       <div class="card-title">Character Roster</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <div class="roster-edit-actions">
+        <button class="btn-outline-s" id="roster-edit-btn" onclick="startRosterEdit()">✎ Edit Roster</button>
+        <button class="btn-gold" id="roster-save-btn" onclick="saveRosterEdit()" style="display:none;">Save</button>
+        <button class="btn-outline-s" id="roster-cancel-btn" onclick="cancelRosterEdit()" style="display:none;">Cancel</button>
         <button class="btn-gold" onclick="openImport()">⬇ Import by UID</button>
         <button class="btn-s" onclick="addCharacter()">+ Add Character</button>
       </div>
@@ -1244,6 +1261,7 @@ html.png-export .dt-top button{
       <button class="tab" data-f="Farming" onclick="setFilter('Farming',this)">Farming</button>
       <button class="tab" data-f="Built" onclick="setFilter('Built',this)">Built</button>
     </div>
+    <div class="roster-edit-hint"><b>Edit Roster:</b> change fire priority/status freely. The roster order will not move until you press Save.</div>
     <div class="char-grid" id="char-grid"></div>
     <div class="empty-hint" id="roster-empty" style="display:none;">No characters here — add one above ✦</div>
   </div>
@@ -1629,40 +1647,115 @@ function renderOverview(){
 
 /* ── Roster ── */
 let filter='all';
-function setFilter(f,btn){
-  filter=f;
-  document.querySelectorAll('#roster-tabs .tab').forEach(t=>t.classList.toggle('active',t.dataset.f===f));
-  renderRoster();
-}
-function renderRoster(){
-  const grid=document.getElementById('char-grid');
+let rosterEditMode=false;
+let rosterDraft={};
+let rosterEditIds=[];
+function rosterSortList(){
   const SORT_STATUS=['Built','Farming','Planned','Dropped','Pulling'];
-  const list=state.chars.filter(c=>filter==='all'||c.status===filter).slice().sort((a,b)=>{
+  return state.chars.filter(c=>filter==='all'||c.status===filter).slice().sort((a,b)=>{
     const sa=SORT_STATUS.indexOf(a.status),sb2=SORT_STATUS.indexOf(b.status);
     if(sa!==sb2)return (sa<0?99:sa)-(sb2<0?99:sb2);
     return (b.prio||0)-(a.prio||0);
   });
+}
+function rosterVals(c){
+  const d=rosterDraft[c.id]||{};
+  return {
+    status:d.status||c.status,
+    prio:Number.isFinite(Number(d.prio))?Number(d.prio):(c.prio||0)
+  };
+}
+function ensureRosterDraft(id){
+  if(!rosterDraft[id]){
+    const c=state.chars.find(x=>x.id===id);
+    if(c)rosterDraft[id]={status:c.status,prio:c.prio||0};
+  }
+  return rosterDraft[id];
+}
+function rosterHasChanges(id){
+  const d=rosterDraft[id];
+  if(!d)return false;
+  const c=state.chars.find(x=>x.id===id);
+  if(!c)return false;
+  return d.status!==c.status||(d.prio||0)!==(c.prio||0);
+}
+function updateRosterEditControls(){
+  const page=document.getElementById('page-roster');
+  if(page)page.classList.toggle('roster-editing',rosterEditMode);
+  const edit=document.getElementById('roster-edit-btn');
+  const saveBtn=document.getElementById('roster-save-btn');
+  const cancelBtn=document.getElementById('roster-cancel-btn');
+  if(edit)edit.style.display=rosterEditMode?'none':'';
+  if(saveBtn)saveBtn.style.display=rosterEditMode?'':'none';
+  if(cancelBtn)cancelBtn.style.display=rosterEditMode?'':'none';
+}
+function setFilter(f,btn){
+  if(rosterEditMode){
+    alert('Save or cancel roster editing before changing filters.');
+    return;
+  }
+  filter=f;
+  document.querySelectorAll('#roster-tabs .tab').forEach(t=>t.classList.toggle('active',t.dataset.f===f));
+  renderRoster();
+}
+function startRosterEdit(){
+  rosterEditMode=true;
+  rosterDraft={};
+  rosterEditIds=rosterSortList().map(c=>c.id);
+  updateRosterEditControls();
+  renderRoster();
+}
+function saveRosterEdit(){
+  Object.entries(rosterDraft).forEach(([id,d])=>{
+    const c=state.chars.find(x=>x.id===id);
+    if(c){c.status=d.status||c.status;c.prio=Number.isFinite(Number(d.prio))?Number(d.prio):(c.prio||0);}
+  });
+  rosterEditMode=false;
+  rosterDraft={};
+  rosterEditIds=[];
+  save();
+  renderAll();
+  updateRosterEditControls();
+}
+function cancelRosterEdit(){
+  rosterEditMode=false;
+  rosterDraft={};
+  rosterEditIds=[];
+  updateRosterEditControls();
+  renderRoster();
+}
+function rosterCardClick(ev,id){
+  if(rosterEditMode){ev.preventDefault();return;}
+  openDetail(id);
+}
+function renderRoster(){
+  updateRosterEditControls();
+  const grid=document.getElementById('char-grid');
+  const list=(rosterEditMode&&rosterEditIds.length)
+    ?rosterEditIds.map(id=>state.chars.find(c=>c.id===id)).filter(Boolean)
+    :rosterSortList();
   document.getElementById('roster-empty').style.display=list.length?'none':'block';
   grid.innerHTML=list.map(c=>{
-    const sb='status-'+c.status.toLowerCase();
+    const rv=rosterVals(c);
+    const sb='status-'+String(rv.status||'').toLowerCase();
     const stars='★'.repeat(parseInt(c.rarity,10)||4);
-    return '<div class="char-card '+elClass(c)+' '+(c.rarity==='5'?'r5':'')+((c.prio||0)>=3?' prio3':'')+'" onclick="openDetail(\''+c.id+'\')">'+
-      '<span class="char-wm">'+(ELEM_FILE[c.element]?'<img src="'+SR+'icon/element/'+ELEM_FILE[c.element]+'.png" alt="" style="width:96px;height:96px;object-fit:contain;filter:brightness(0) invert(1);"/>':(ELEM_ICON[c.element]||'\u2726'))+'</span>'+
-      '<div class="char-head">'+'<div class="avatar-wrap">'+elemChip(c)+flamesHTML(c)+'</div>'+
+    return '<div class="char-card '+elClass(c)+' '+(c.rarity==='5'?'r5':'')+((rv.prio||0)>=3?' prio3':'')+(rosterHasChanges(c.id)?' roster-dirty':'')+'" onclick="rosterCardClick(event,\''+c.id+'\')">'+
+      '<span class="char-wm">'+(ELEM_FILE[c.element]?'<img src="'+SR+'icon/element/'+ELEM_FILE[c.element]+'.png" alt="" style="width:96px;height:96px;object-fit:contain;filter:brightness(0) invert(1);"/>':(ELEM_ICON[c.element]||'\u2726'))+'</span>'+ 
+      '<div class="char-head">'+'<div class="avatar-wrap">'+elemChip(c)+flamesHTML(c,rv.prio)+'</div>'+ 
         '<div class="char-info">'+
-          '<div class="ci-line"><div class="char-name">'+esc(c.name||'Unnamed')+'</div>'+
-            '<span class="status-badge '+sb+'" title="Click to change status" onclick="cycleStatus(event,\''+c.id+'\')">'+c.status+'</span></div>'+
-          '<div class="ci-line"><div class="char-stars">'+stars+'</div><span class="char-eid">'+esc(c.eidolon||'E0')+(c.lc?' · '+esc(c.si):'')+'</span></div>'+
-          '<div class="char-sub"><span>'+pathIcon(c.path)+' '+esc(c.path)+'</span></div>'+
-          '<div class="char-lv">'+(c.level?'Lv '+esc(c.level):'\u2014')+'</div>'+
-        '</div>'+
+          '<div class="ci-line"><div class="char-name">'+esc(c.name||'Unnamed')+'</div>'+ 
+            '<span class="status-badge '+sb+'" title="Click to change status" onclick="cycleStatus(event,\''+c.id+'\')">'+esc(rv.status)+'</span></div>'+ 
+          '<div class="ci-line"><div class="char-stars">'+stars+'</div><span class="char-eid">'+esc(c.eidolon||'E0')+(c.lc?' · '+esc(c.si):'')+'</span></div>'+ 
+          '<div class="char-sub"><span>'+pathIcon(c.path)+' '+esc(c.path)+'</span></div>'+ 
+          '<div class="char-lv">'+(c.level?'Lv '+esc(c.level):'\u2014')+'</div>'+ 
+        '</div>'+ 
       '</div></div>';
   }).join('');
 }
-function flamesHTML(c){
-  const p=c.prio||0;
+function flamesHTML(c,pOverride){
+  const p=Number.isFinite(Number(pOverride))?Number(pOverride):(c.prio||0);
   let h='<span class="char-flames" onclick="event.stopPropagation()">';
-  for(let i=1;i<=3;i++)h+='<span class="flame'+(i<=p?' on':'')+'" title="Priority '+i+'" onclick="setPrio(event,\''+c.id+'\','+i+')">\ud83d\udd25</span>';
+  for(let i=1;i<=3;i++)h+='<span class="flame'+(i<=p?' on':'')+'" title="Priority '+i+'" onclick="setPrio(event,\''+c.id+'\','+i+')">🔥</span>';
   h+='</span>';
   return h;
 }
@@ -1670,12 +1763,27 @@ function setPrio(ev,id,n){
   ev.stopPropagation();
   const c=state.chars.find(x=>x.id===id);
   if(!c)return;
+  if(rosterEditMode){
+    const d=ensureRosterDraft(id);if(!d)return;
+    const cur=Number.isFinite(Number(d.prio))?Number(d.prio):(c.prio||0);
+    d.prio=(cur===n)?n-1:n;
+    renderRoster();
+    return;
+  }
   c.prio=(c.prio===n)?n-1:n; // click same flame again to decrement
   save();renderRoster();
 }
 function cycleStatus(ev,id){
   ev.stopPropagation();
   const c=state.chars.find(x=>x.id===id);
+  if(!c)return;
+  if(rosterEditMode){
+    const d=ensureRosterDraft(id);if(!d)return;
+    const cur=d.status||c.status;
+    d.status=STATUS_ORDER[(STATUS_ORDER.indexOf(cur)+1)%STATUS_ORDER.length];
+    renderRoster();
+    return;
+  }
   c.status=STATUS_ORDER[(STATUS_ORDER.indexOf(c.status)+1)%STATUS_ORDER.length];
   save();renderRoster();renderOverview();
   if(currentDetail===id&&document.getElementById('page-detail').classList.contains('active')&&!editMode)renderDetail();
