@@ -1176,6 +1176,32 @@ html.png-export .dt-top button{
 .char-card.roster-dirty{box-shadow:0 0 0 1px rgba(232,196,122,.32),0 8px 24px rgba(0,0,0,.28);}
 .char-card.roster-dirty::after{content:'edited';position:absolute;right:10px;bottom:8px;font-size:8.5px;letter-spacing:1.1px;text-transform:uppercase;color:var(--gold);opacity:.85;pointer-events:none;}
 
+
+
+/* ── Roster edit polish: compact controls + no visual reload + splash zoom ── */
+#roster-edit-btn,#roster-save-btn,#roster-cancel-btn{
+  min-width:0!important;height:32px!important;min-height:32px!important;padding:0 12px!important;
+  font-size:12px!important;letter-spacing:.35px;line-height:32px;border-radius:0;
+}
+#roster-edit-btn{
+  color:var(--gold)!important;border-color:rgba(232,196,122,.34)!important;
+  background:linear-gradient(90deg,rgba(232,196,122,.09),rgba(255,255,255,.025))!important;
+}
+#roster-save-btn{
+  color:#1a1206!important;background:linear-gradient(135deg,#d8ae5c,#e8c47a)!important;
+  border:1px solid rgba(232,196,122,.45)!important;
+}
+#roster-cancel-btn{
+  color:#9fb8cf!important;border-color:rgba(106,150,200,.26)!important;
+  background:rgba(255,255,255,.025)!important;
+}
+#page-roster.roster-editing .char-card{transition:box-shadow .15s,border-color .15s!important;}
+#page-roster.roster-editing .flame,#page-roster.roster-editing .status-badge{transition:filter .12s,opacity .12s,transform .12s,box-shadow .12s!important;}
+#page-detail .dt-portrait img{
+  inset:-5%!important;width:110%!important;height:110%!important;max-width:none!important;max-height:none!important;
+  transform:none!important;object-fit:cover!important;
+}
+
 </style>
 </head>
 <body>
@@ -1739,7 +1765,7 @@ function renderRoster(){
     const rv=rosterVals(c);
     const sb='status-'+String(rv.status||'').toLowerCase();
     const stars='★'.repeat(parseInt(c.rarity,10)||4);
-    return '<div class="char-card '+elClass(c)+' '+(c.rarity==='5'?'r5':'')+((rv.prio||0)>=3?' prio3':'')+(rosterHasChanges(c.id)?' roster-dirty':'')+'" onclick="rosterCardClick(event,\''+c.id+'\')">'+
+    return '<div class="char-card '+elClass(c)+' '+(c.rarity==='5'?'r5':'')+((rv.prio||0)>=3?' prio3':'')+(rosterHasChanges(c.id)?' roster-dirty':'')+'" data-char-id="'+c.id+'" onclick="rosterCardClick(event,\''+c.id+'\')">'+
       '<span class="char-wm">'+(ELEM_FILE[c.element]?'<img src="'+SR+'icon/element/'+ELEM_FILE[c.element]+'.png" alt="" style="width:96px;height:96px;object-fit:contain;filter:brightness(0) invert(1);"/>':(ELEM_ICON[c.element]||'\u2726'))+'</span>'+ 
       '<div class="char-head">'+'<div class="avatar-wrap">'+elemChip(c)+flamesHTML(c,rv.prio)+'</div>'+ 
         '<div class="char-info">'+
@@ -1759,6 +1785,23 @@ function flamesHTML(c,pOverride){
   h+='</span>';
   return h;
 }
+function updateRosterCard(id){
+  if(!rosterEditMode){renderRoster();return;}
+  const c=state.chars.find(x=>x.id===id);
+  const safeId=String(id).replace(/"/g,'\"');
+  const card=document.querySelector('#char-grid .char-card[data-char-id="'+safeId+'"]');
+  if(!c||!card){renderRoster();return;}
+  const rv=rosterVals(c);
+  card.classList.toggle('prio3',(rv.prio||0)>=3);
+  card.classList.toggle('roster-dirty',rosterHasChanges(id));
+  const badge=card.querySelector('.status-badge');
+  if(badge){
+    badge.textContent=rv.status||'';
+    badge.className='status-badge status-'+String(rv.status||'').toLowerCase();
+  }
+  const flames=card.querySelector('.char-flames');
+  if(flames)flames.outerHTML=flamesHTML(c,rv.prio);
+}
 function setPrio(ev,id,n){
   ev.stopPropagation();
   const c=state.chars.find(x=>x.id===id);
@@ -1767,7 +1810,7 @@ function setPrio(ev,id,n){
     const d=ensureRosterDraft(id);if(!d)return;
     const cur=Number.isFinite(Number(d.prio))?Number(d.prio):(c.prio||0);
     d.prio=(cur===n)?n-1:n;
-    renderRoster();
+    updateRosterCard(id);
     return;
   }
   c.prio=(c.prio===n)?n-1:n; // click same flame again to decrement
@@ -1781,7 +1824,7 @@ function cycleStatus(ev,id){
     const d=ensureRosterDraft(id);if(!d)return;
     const cur=d.status||c.status;
     d.status=STATUS_ORDER[(STATUS_ORDER.indexOf(cur)+1)%STATUS_ORDER.length];
-    renderRoster();
+    updateRosterCard(id);
     return;
   }
   c.status=STATUS_ORDER[(STATUS_ORDER.indexOf(c.status)+1)%STATUS_ORDER.length];
