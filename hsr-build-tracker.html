@@ -1238,9 +1238,50 @@ html.png-export .dt-top button{
   max-width:none!important;
   max-height:none!important;
   object-fit:cover!important;
-  transform:scale(1.10)!important;
+  transform:scale(1.30)!important;
   transform-origin:center 24%!important;
 }
+
+
+
+/* ── Final roster controls fix: hidden really hides + cleaner edit buttons ── */
+#page-roster .roster-edit-actions{gap:8px;align-items:center;justify-content:flex-end;}
+#page-roster .roster-edit-actions>button[hidden]{display:none!important;}
+#page-roster .roster-edit-actions>button{
+  width:auto!important;
+  min-width:124px!important;
+  height:34px!important;
+  min-height:34px!important;
+  padding:0 14px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  line-height:1!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  letter-spacing:.2px!important;
+  white-space:nowrap!important;
+  box-shadow:none!important;
+}
+#roster-edit-btn,#roster-cancel-btn{
+  color:var(--gold)!important;
+  border:1px solid rgba(232,196,122,.42)!important;
+  background:rgba(232,196,122,.07)!important;
+}
+#roster-save-btn,#roster-import-btn{
+  color:#1a1206!important;
+  border:1px solid rgba(232,196,122,.58)!important;
+  background:linear-gradient(135deg,#d8ae5c,#e8c47a)!important;
+}
+#roster-add-btn{
+  color:#03101e!important;
+  border:1px solid rgba(76,201,240,.60)!important;
+  background:linear-gradient(135deg,#2ab8de,#4cc9f0)!important;
+}
+#roster-edit-btn:hover,#roster-cancel-btn:hover{background:rgba(232,196,122,.12)!important;box-shadow:0 0 12px rgba(232,196,122,.14)!important;}
+#roster-save-btn:hover,#roster-import-btn:hover{opacity:.9!important;box-shadow:0 0 14px rgba(232,196,122,.20)!important;}
+#roster-add-btn:hover{opacity:.9!important;box-shadow:0 0 14px rgba(76,201,240,.18)!important;}
+#page-detail .dt-portrait img{transform:scale(1.30)!important;transform-origin:center 24%!important;}
 
 </style>
 </head>
@@ -1313,10 +1354,10 @@ html.png-export .dt-top button{
       <div class="card-title">Character Roster</div>
       <div class="roster-edit-actions">
         <button class="btn-outline-s" id="roster-edit-btn" onclick="startRosterEdit()">✎ Edit Roster</button>
-        <button class="btn-gold" id="roster-save-btn" onclick="saveRosterEdit()" style="display:none;">Save</button>
-        <button class="btn-outline-s" id="roster-cancel-btn" onclick="cancelRosterEdit()" style="display:none;">Cancel</button>
-        <button class="btn-gold" onclick="openImport()">⬇ Import by UID</button>
-        <button class="btn-s" onclick="addCharacter()">+ Add Character</button>
+        <button class="btn-gold" id="roster-save-btn" onclick="saveRosterEdit()" hidden>Save</button>
+        <button class="btn-outline-s" id="roster-cancel-btn" onclick="cancelRosterEdit()" hidden>Cancel</button>
+        <button class="btn-gold" id="roster-import-btn" onclick="openImport()">⬇ Import by UID</button>
+        <button class="btn-s" id="roster-add-btn" onclick="addCharacter()">+ Add Character</button>
       </div>
     </div>
     <div class="tabs" id="roster-tabs">
@@ -1751,9 +1792,13 @@ function updateRosterEditControls(){
   const edit=document.getElementById('roster-edit-btn');
   const saveBtn=document.getElementById('roster-save-btn');
   const cancelBtn=document.getElementById('roster-cancel-btn');
-  if(edit)edit.style.display=rosterEditMode?'none':'';
-  if(saveBtn)saveBtn.style.display=rosterEditMode?'':'none';
-  if(cancelBtn)cancelBtn.style.display=rosterEditMode?'':'none';
+  const importBtn=document.getElementById('roster-import-btn');
+  const addBtn=document.getElementById('roster-add-btn');
+  if(edit)edit.hidden=rosterEditMode;
+  if(saveBtn)saveBtn.hidden=!rosterEditMode;
+  if(cancelBtn)cancelBtn.hidden=!rosterEditMode;
+  if(importBtn)importBtn.hidden=rosterEditMode;
+  if(addBtn)addBtn.hidden=rosterEditMode;
 }
 function setFilter(f,btn){
   if(rosterEditMode){
