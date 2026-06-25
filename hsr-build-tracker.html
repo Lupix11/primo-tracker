@@ -1202,6 +1202,46 @@ html.png-export .dt-top button{
   transform:none!important;object-fit:cover!important;
 }
 
+
+
+/* ── Roster edit cleanup: exact hint, same-size controls, visible splash zoom ── */
+#page-roster .roster-edit-hint{font-size:12.5px;line-height:1.35;}
+#page-roster .roster-edit-actions>button{
+  width:132px!important;
+  min-width:132px!important;
+  height:34px!important;
+  min-height:34px!important;
+  padding:0 10px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  line-height:34px!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  letter-spacing:.25px!important;
+  white-space:nowrap!important;
+}
+#roster-edit-btn,#roster-save-btn,#roster-cancel-btn{
+  color:var(--gold)!important;
+  border:1px solid rgba(232,196,122,.40)!important;
+  background:linear-gradient(90deg,rgba(232,196,122,.10),rgba(255,255,255,.025))!important;
+  box-shadow:none!important;
+}
+#roster-edit-btn:hover,#roster-save-btn:hover,#roster-cancel-btn:hover{
+  background:rgba(232,196,122,.13)!important;
+  box-shadow:0 0 12px rgba(232,196,122,.14)!important;
+}
+#page-detail .dt-portrait img{
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:cover!important;
+  transform:scale(1.10)!important;
+  transform-origin:center 24%!important;
+}
+
 </style>
 </head>
 <body>
@@ -1287,7 +1327,7 @@ html.png-export .dt-top button{
       <button class="tab" data-f="Farming" onclick="setFilter('Farming',this)">Farming</button>
       <button class="tab" data-f="Built" onclick="setFilter('Built',this)">Built</button>
     </div>
-    <div class="roster-edit-hint"><b>Edit Roster:</b> change fire priority/status freely. The roster order will not move until you press Save.</div>
+    <div class="roster-edit-hint"><b>Edit Roster:</b> The roster order will not move until you press Save.</div>
     <div class="char-grid" id="char-grid"></div>
     <div class="empty-hint" id="roster-empty" style="display:none;">No characters here — add one above ✦</div>
   </div>
@@ -2145,7 +2185,7 @@ async function exportChar(id){
           '#page-detail,#page-detail.active,.page.active{opacity:1!important;transform:none!important}'+
           '#page-detail .dt-top{gap:12px!important;align-items:center!important}'+
           '#page-detail .dt-name{overflow:visible!important}'+
-          '#page-detail .dt-portrait,#page-detail .dt-portrait img{transform:none!important}'+
+          '#page-detail .dt-portrait{transform:none!important}'+
           '#page-detail img{image-rendering:auto!important}';
         doc.head.appendChild(st);
       }
